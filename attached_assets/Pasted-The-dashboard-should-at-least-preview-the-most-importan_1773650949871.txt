@@ -1,0 +1,185 @@
+The dashboard should at least preview the most important stats.
+
+==================================================
+9. CLAN WARS
+==================================================
+
+Add a Clan Wars section if the player is in a clan.
+
+Show:
+- current clan war opponent
+- score
+- time remaining
+- clan contribution
+- clan leaderboard standing
+- Join War / Contribute button
+
+Example:
+BBC OG vs Shadow Clan
+Score: 14 - 11
+2 days remaining
+
+Clan members earn points by:
+- winning matches
+- ranked wins
+- tournament participation
+- challenge completion if desired
+
+Clan war rewards can include:
+- clan XP
+- cosmetics
+- badges
+- clan reputation
+
+==================================================
+10. ITEM SHOP / COSMETICS
+==================================================
+
+Add an Item Shop section or dashboard preview card.
+
+The shop should sell cosmetic items only.
+
+Examples:
+- profile banners
+- avatars
+- rank auras
+- air hockey paddle skins
+- pool cue skins
+- mini golf ball skins
+- victory animations
+- emotes
+- clan banner cosmetics
+
+Currency:
+- SCALPS
+
+Display:
+- item image
+- item name
+- category
+- price
+- preview / buy button
+
+The shop preview on the dashboard can show:
+- featured cosmetic
+- new arrivals
+- limited-time item
+
+==================================================
+11. DASHBOARD LAYOUT ORGANIZATION
+==================================================
+
+Keep the dashboard organized using this structure:
+
+TOP / PRIMARY PLAY ZONE
+- Start Match
+- Ranked Arena
+- Daily Challenges
+- Player Progression
+
+MIDDLE / COMPETITION ZONE
+- Live Matches
+- Featured Matches
+- Tournaments
+- Clan Wars
+- Weekly Leaderboards
+
+BOTTOM / DISCOVERY + LONG-TERM ZONE
+- Game Catalog
+- Achievements Preview
+- Shop Preview
+
+SIDEBAR
+- User Profile
+- Wallet
+- GOAT
+- Top Players
+- Live Activity Feed
+
+Do not dump all cards randomly on the page.
+Keep clear spacing and hierarchy.
+
+==================================================
+12. VISUAL DESIGN RULES
+==================================================
+
+All new sections must match the platform design language:
+
+- dark premium theme
+- glassmorphism cards
+- subtle neon accents
+- soft glow edges
+- clean typography
+- premium spacing
+- smooth hover states
+- lightweight motion
+
+Avoid clutter.
+Avoid making every panel equally loud.
+Use strong hierarchy.
+
+==================================================
+13. MICROINTERACTIONS
+==================================================
+
+Add polished interactions where relevant:
+
+- challenge claim animation
+- XP gain float-up text
+- level-up animation
+- achievement unlock popup
+- leaderboard hover highlight
+- featured match pulse
+- live activity feed subtle updates
+- shop card hover glow
+- clan war score update animation
+
+Keep all motion subtle and premium.
+
+==================================================
+14. RESPONSIVENESS
+==================================================
+
+Ensure all of this works cleanly on mobile and desktop.
+
+On mobile:
+- stack sections cleanly
+- keep challenge cards readable
+- keep feed scrollable
+- make quick actions easy to tap
+
+==================================================
+15. IMPLEMENTATION PRIORITY
+==================================================
+
+Implement in this order:
+1. Daily Challenges with claim flow
+2. Player Progression / XP / Levels
+3. Ranked Seasons
+4. Featured Matches
+5. Weekly Leaderboards
+6. Achievements
+7. Player Stats Hub
+8. Clan Wars
+9. Item Shop preview
+10. Live Activity improvements
+
+==================================================
+16. FINAL GOAL
+==================================================
+
+The dashboard should no longer feel like just a match launcher.
+
+It should feel like a living competitive platform where users can:
+- start matches
+- grind ranked
+- complete challenges
+- earn XP
+- unlock achievements
+- join tournaments
+- help their clan
+- follow featured matches
+- track progress
+- spend Scalps on cosmetics
+
+The platform should constantly give players reasons to stay, return, 

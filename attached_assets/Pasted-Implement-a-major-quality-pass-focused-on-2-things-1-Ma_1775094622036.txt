@@ -1,0 +1,439 @@
+Implement a major quality pass focused on 2 things:
+
+1. Make the in-game HUD feel more premium, active, rewarding, and dopamine-heavy
+2. Overhaul the Tron game so it looks much better, performs smoothly, includes power-ups, and feels like a real arcade game
+
+Do not give me a summary or plan first. Make the actual code changes in the repo.
+
+================================
+PART 1 — HUD UPGRADE ACROSS GAMES
+================================
+
+The current HUD is too empty and too plain. It needs more life, more status, more progression feeling, and more visual reward. Think more like the energy of our item shop and premium platform UI.
+
+GOAL:
+Make the HUD feel alive, premium, and rewarding without cluttering gameplay.
+
+ADD THESE HUD FEATURES:
+
+1. PLAYER PROFILE / STATUS STRIP
+Add a polished top HUD section that includes:
+- player avatar / initial
+- username
+- level
+- XP progress bar
+- currency / Scalp count
+- streak indicator
+- current game or mode label
+
+This should feel premium, clean, and high-status.
+
+2. XP / PROGRESSION FEEDBACK
+Add:
+- visible XP bar
+- XP gain popups after good actions
+- subtle animation when XP increases
+- level-up moment if applicable
+- small dopamine feedback on progression
+
+Examples:
+- +10 XP
+- +25 XP
+- Streak Bonus
+- Perfect Shot
+- Clean Win
+
+3. CURRENCY / REWARD HUD
+Show:
+- Scalps balance
+- optional small gain/loss feedback after wins or actions
+- premium currency display styling
+- make it feel important
+
+4. STREAK / HEAT INDICATOR
+Add:
+- streak counter
+- heat / combo / momentum indicator
+- visual glow when streak increases
+- make it feel rewarding and competitive
+
+5. MINI ACTION FEED / STATUS PILLS
+Add a small feed or pill row for short event messages such as:
+- +25 XP
+- Perfect Shot
+- Goal
+- Combo x2
+- Win Streak
+- New Cosmetic Unlocked
+- Match Point
+
+These should animate in cleanly and disappear smoothly.
+
+6. SHOP / COSMETIC HOOK
+Add a visible but tasteful SHOP button or cosmetic button into the HUD.
+The point is to make the HUD feel more like a premium game ecosystem, not just a bare gameplay screen.
+
+Could include:
+- Shop button
+- Cosmetics button
+- Loadout button
+- Effects button
+
+7. MORE DOPAMINE / MOMENT FEEDBACK
+Add subtle but polished:
+- screen pulse on major moments
+- glow flash on wins/scores
+- floating text for rewards
+- animated banners
+- stronger score reactions
+- tiny screen shake on important hits
+- pulse/glow around score when something big happens
+
+8. HUD DESIGN DIRECTION
+The HUD should feel:
+- premium
+- neon / modern
+- like our item shop and platform branding
+- more layered and alive
+- not flat
+- not boring
+- not too cluttered
+
+Use:
+- gradients
+- glows
+- translucent dark panels
+- stronger typography hierarchy
+- status chips / pills
+- polished icons
+- subtle animation
+
+9. APPLY THIS STYLE CONSISTENTLY
+Apply this upgraded HUD style at least to:
+- Air Hockey
+- Pool
+- Bowling
+- Tron
+and make it reusable so other games can use the same HUD system later.
+
+10. SHARED COMPONENTS
+Build reusable shared HUD components where possible:
+- GameHUD
+- XpBar
+- CurrencyBadge
+- StreakBadge
+- EventFeed
+- ShopButton
+- RewardToast
+- MatchStatusBadge
+
+This should not be hardcoded separately in every game if it can be shared cleanly.
+
+================================
+PART 2 — TRON GAME FULL UPGRADE
+================================
+
+The Tron game needs a serious upgrade. Right now it is visually too basic and also very laggy. I want it to feel fast, smooth, premium, and exciting, with more dopamine and more gameplay depth.
+
+GOAL:
+Make Tron feel like a polished modern arcade light-cycle game.
+
+================================
+TRON — PERFORMANCE FIRST
+================================
+
+This is critical because the game is laggy.
+
+Fix performance first:
+- use requestAnimationFrame game loop
+- do NOT use sloppy interval-based updates
+- reduce unnecessary React re-renders
+- separate game loop state from render state if needed
+- use refs/state wisely
+- optimize trail collision checks
+- avoid full expensive redraw logic if unnecessary
+- clean up memory properly
+- make gameplay smooth and responsive
+- target stable 60 FPS
+
+If needed:
+- move heavy logic into engine files
+- keep rendering efficient
+- optimize particle effects
+- optimize power-up spawning and cleanup
+
+The Tron game must stop feeling laggy.
+
+================================
+TRON — VISUAL OVERHAUL
+================================
+
+Upgrade the graphics heavily.
+
+Make Tron feel:
+- neon
+- premium
+- futuristic
+- fast
+- arcade
+- intense
+
+Visual improvements:
+- glowing light trails
+- brighter, cleaner bikes / player markers
+- stronger arena visuals
+- animated neon grid floor
+- better background depth
+- more glow and bloom feel
+- stronger contrast
+- more polished colors
+- motion emphasis
+- more interesting camera framing if possible
+- better death/explosion visuals
+- better round start / round win visuals
+
+The current version should not feel like a basic canvas toy.
+It should feel like a featured game on the platform.
+
+Add:
+- animated grid background
+- subtle arena pulsing
+- better trail rendering
+- stronger neon edge lighting
+- polished start countdown
+- modern win overlay
+- stronger elimination effect
+
+================================
+TRON — GAMEPLAY FEEL
+================================
+
+Core gameplay must feel tighter and better:
+- smoother turning
+- more responsive controls
+- better trail placement
+- reliable collision detection
+- fair deaths
+- cleaner round resets
+- faster and more satisfying pacing
+
+If the game supports increasing difficulty over time:
+- increase speed slightly over time
+- add pressure as round continues
+- keep it fair
+
+Make the base game more addictive and intense.
+
+================================
+TRON — POWER UPS
+================================
+
+Add power-ups. This is a big part of making the game feel more alive and dopamine-heavy.
+
+Spawn power-ups at reasonable intervals and in fair locations.
+
+Add these power-ups:
+
+1. SPEED BOOST
+- temporarily increases movement speed
+- strong visual pickup feedback
+- speed trail effect
+
+2. PHASE SHIFT
+- lets player pass through walls/trails briefly
+- very short duration
+- clear visual indicator while active
+
+3. TRAIL BOOST / THICK TRAIL
+- temporarily makes trail wider
+- increases offensive pressure
+
+4. SHRINK HITBOX
+- temporarily makes the player harder to kill
+- clear visual distinction
+
+5. EMP BLAST
+- clears a small zone of nearby trails
+- should feel dramatic and strong
+- must be balanced
+
+Power-up requirements:
+- each has a clear icon / color
+- pickup feedback animation
+- pickup sound
+- temporary HUD indicator
+- timer or duration indication if active
+- balanced spawn timing
+- balanced effects
+- no performance issues from spawning
+
+Power-ups should make the game more exciting, not random and sloppy.
+
+================================
+TRON — MORE DOPAMINE / FEEDBACK
+================================
+
+Add rewarding feedback for major moments:
+
+- round start countdown
+- near miss feeling if possible
+- elimination burst
+- screen flash on death
+- score / round win celebration
+- power-up pickup feedback
+- streak / combo / kill reward if applicable
+- better banners:
+  - ROUND WIN
+  - ELIMINATED
+  - POWER UP
+  - MATCH POINT
+  - VICTORY
+
+Add:
+- sound on collisions
+- sound on elimination
+- sound on power-up pickup
+- sound on round win
+- sound on match win
+- synth / arcade-style vibe
+
+Do not make it cheesy.
+Do make it feel rewarding and alive.
+
+================================
+TRON — BOT IMPROVEMENTS
+================================
+
+If Tron supports bots, improve them too.
+
+Need:
+- Easy bot
+- Medium bot
+- Hard bot
+
+Easy:
+- slower reactions
+- worse pathing
+- easier to bait
+
+Medium:
+- decent pathing
+- balanced pressure
+- reasonable reactions
+
+Hard:
+- anticipates movement
+- better cutoff behavior
+- more aggressive space control
+- harder to trap
+
+Bots must:
+- actually work reliably
+- not freeze
+- not crash
+- not make obviously broken decisions every time
+
+================================
+TRON — HUD / UI
+================================
+
+Add a premium Tron HUD using the shared HUD improvements.
+
+Show:
+- alive players / remaining players
+- round score
+- active power-up
+- speed indicator if useful
+- streak/combo if relevant
+- match status
+- restart/rematch option
+- difficulty if vs bot
+
+This should look polished and branded.
+
+================================
+TRON — FILE STRUCTURE / CLEAN CODE
+================================
+
+Refactor cleanly where needed.
+
+Suggested structure:
+- TronScene.tsx
+- engine.ts
+- renderer.ts
+- bot.ts
+- powerups.ts
+- hud.tsx or use shared HUD components
+
+Separate:
+- game logic
+- rendering
+- effects
+- bot behavior
+- power-up logic
+- UI/HUD
+
+Do not pile everything into one messy file.
+
+================================
+WHAT I WANT CHANGED RIGHT NOW
+================================
+
+1. Upgrade the shared game HUD to feel more premium and dopamine-heavy
+2. Apply that HUD upgrade to the main games, especially Air Hockey, Pool, Bowling, and Tron
+3. Fully upgrade Tron visuals
+4. Fix Tron lag / performance
+5. Add Tron power-ups
+6. Add stronger Tron feedback, effects, and sounds
+7. Improve Tron bots if bot mode exists
+
+================================
+TESTING REQUIREMENTS
+================================
+
+After implementing, test all of this:
+
+HUD:
+- HUD renders correctly
+- XP bar updates
+- reward popups appear
+- streak updates
+- currency displays correctly
+- shop button renders cleanly
+- layout works on desktop
+- layout works on mobile
+
+Tron:
+- game runs smoothly
+- no major lag
+- controls are responsive
+- trails render correctly
+- collisions work correctly
+- deaths register correctly
+- rounds reset correctly
+- power-ups spawn correctly
+- power-ups apply correctly
+- power-up effects expire correctly
+- no crashes from power-ups
+- bots work if enabled
+- HUD updates correctly during play
+
+================================
+SUCCESS CRITERIA
+================================
+
+This task is only complete if:
+- the HUD feels more premium, active, and rewarding
+- the HUD has more going on visually
+- the HUD feels closer to the item shop polish level
+- Tron looks significantly better
+- Tron feels smoother
+- Tron is no longer laggy
+- Tron has power-ups
+- Tron has more dopamine and better feedback
+- Tron feels like a serious arcade game, not a plain prototype
+
+Do actual implementation in the repo now.
+Do not summarize this prompt back to me.
+Do not just tell me what you plan to do.
+Make the code changes and then tell me exactly what files were changed and what now works.

@@ -1,0 +1,297 @@
+STOP making surface-level changes.
+
+The last update did NOT fix the actual problem.
+
+The games are still laggy, still look bad, and still do not feel AAA quality. I do not want another small polish pass. I want you to identify the real bottlenecks and fix them at the root.
+
+Your job is now to do a FULL PERFORMANCE + VISUAL + GAME FEEL REBUILD of the current games.
+
+==================================================
+WHAT WENT WRONG
+==================================================
+
+You likely made cosmetic tweaks instead of fixing the real issues.
+
+The real issues are:
+- bad performance
+- poor rendering
+- too many unnecessary re-renders
+- weak animation system
+- poor asset usage
+- clunky controls
+- weak game feel
+- flat graphics
+- inconsistent UI
+- mobile performance problems
+
+Do NOT just change colors, shadows, or text.
+Do NOT just say it is improved.
+Actually fix it.
+
+==================================================
+MISSION
+==================================================
+
+I want every game to:
+- run smoothly
+- feel responsive
+- look polished
+- feel premium
+- work well on desktop and mobile
+
+This needs to feel like a serious competitive game platform, not a rough prototype.
+
+==================================================
+STEP 1: AUDIT THE ROOT CAUSE
+==================================================
+
+Before changing anything else, audit why the games are lagging and why they look bad.
+
+I want you to inspect and identify:
+
+PERFORMANCE ISSUES:
+- unnecessary React re-renders
+- too many DOM nodes
+- heavy state updates
+- bad animation patterns
+- layout thrashing
+- expensive computations during gameplay
+- poor event listener handling
+- memory leaks
+- oversized assets
+- bad mobile rendering
+
+VISUAL ISSUES:
+- flat backgrounds
+- no depth
+- weak lighting
+- poor contrast
+- cheap effects
+- inconsistent styling
+- placeholder-looking elements
+
+GAME FEEL ISSUES:
+- delayed input
+- floaty movement
+- stiff motion
+- weak hit/collision feedback
+- abrupt transitions
+- dead or static UI
+
+Do not guess. Actually inspect the code and fix the real causes.
+
+==================================================
+STEP 2: PERFORMANCE FIRST
+==================================================
+
+Fix performance BEFORE visual polish.
+
+Requirements:
+- target smooth 60 FPS
+- remove frame drops
+- remove input lag
+- remove stuttering
+- reduce unnecessary renders
+- optimize state updates
+- optimize animation loops
+- optimize mobile performance
+
+Use best practices:
+- requestAnimationFrame where appropriate
+- GPU-friendly transforms
+- reduce expensive repaints
+- debounce/throttle only where useful
+- avoid rerendering full game trees unnecessarily
+- preload assets correctly
+- compress/optimize images and effects
+
+If the game still lags, it is not done.
+
+==================================================
+STEP 3: REBUILD THE VISUAL QUALITY
+==================================================
+
+Once performance is fixed, improve visuals properly.
+
+I want:
+- better lighting
+- shadows
+- depth
+- cleaner textures
+- stronger contrast
+- smoother animations
+- more premium UI
+- less “cheap web game” energy
+
+Each game should feel like its own polished experience.
+
+Do NOT overdo clutter.
+Do create better depth and immersion.
+
+==================================================
+STEP 4: FIX GAME FEEL
+==================================================
+
+Game feel is currently weak.
+
+Improve:
+- responsiveness
+- impact
+- movement smoothness
+- aiming feel
+- collision feel
+- button feedback
+- scoring feedback
+- win/loss feedback
+
+Examples:
+- 8-ball shots should feel weighted and smooth
+- chess moves should glide smoothly
+- air hockey should feel snappy and reactive
+- mini golf should feel precise
+- connect 4 should feel satisfying when pieces drop
+- rock paper scissors should have stronger reveal/result feedback
+
+Every action should feel intentional and satisfying.
+
+==================================================
+STEP 5: FIX MOBILE FOR REAL
+==================================================
+
+Do not just shrink the desktop version.
+
+Make every game actually usable on mobile:
+- bigger touch targets
+- better spacing
+- no cut-off UI
+- no tiny text
+- no laggy animations
+- no broken aspect ratios
+- no hard-to-use controls
+
+Mobile should feel intentionally designed.
+
+==================================================
+STEP 6: STANDARDIZE IN-GAME UI
+==================================================
+
+Clean up all game HUD/UI:
+- scores
+- timers
+- player names
+- status states
+- buttons
+- rematch flow
+
+Make all of it:
+- cleaner
+- more readable
+- more consistent
+- more premium
+
+==================================================
+STEP 7: GAME-BY-GAME REBUILD PASS
+==================================================
+
+Go through every active game one by one and do a serious rebuild pass.
+
+For each game:
+1. fix performance
+2. fix controls
+3. fix visuals
+4. fix animations
+5. fix UI
+6. fix bugs
+7. improve feel
+
+Current games include:
+- Chess
+- 8-Ball Pool
+- Mini Golf
+- Connect 4
+- Air Hockey
+- Rock Paper Scissors
+- Dots & Boxes
+- Bowling
+- Cup King
+- Stack Tower Duel
+- Block Blast
+- Tron
+- and any other live game
+
+Do not skip any.
+
+==================================================
+STEP 8: REMOVE PROTOTYPE ENERGY
+==================================================
+
+I want all prototype/demo energy gone.
+
+Remove:
+- clunky movement
+- abrupt transitions
+- flat visuals
+- dead interfaces
+- ugly spacing
+- inconsistent buttons
+- placeholder effects
+- laggy interactions
+
+Replace with:
+- polish
+- smoothness
+- clarity
+- responsiveness
+- premium presentation
+
+==================================================
+STEP 9: DELIVERABLE
+==================================================
+
+Do not tell me vague things like:
+- improved visuals
+- optimized performance
+- polished gameplay
+
+I want real output.
+
+After making changes, provide:
+- what root causes were found
+- what was changed technically
+- what was changed visually
+- which games improved
+- how performance was verified
+- what still needs work if anything remains
+
+==================================================
+FINAL STANDARD
+==================================================
+
+The games are only “done” if they meet this standard:
+
+- smooth
+- responsive
+- visually polished
+- mobile-friendly
+- satisfying to play
+- not embarrassing to show users
+- feels worth wagering on
+
+If it still feels laggy, cheap, flat, or clunky, then it is NOT done.
+
+==================================================
+FINAL GOAL
+==================================================
+
+Make Jango’s games feel like real premium arcade games.
+
+Users should think:
+- this feels smooth
+- this looks good
+- this is polished
+- this is fun
+
+NOT:
+- this is laggy
+- this looks cheap
+- this feels unfinished

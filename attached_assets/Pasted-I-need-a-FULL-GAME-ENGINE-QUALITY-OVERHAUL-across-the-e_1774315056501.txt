@@ -1,0 +1,285 @@
+I need a FULL GAME ENGINE + QUALITY OVERHAUL across the entire Jango platform.
+
+Right now the games are lagging, look bad, and do NOT feel AAA quality. This is unacceptable for a competitive wagering platform.
+
+Do NOT make small tweaks. Do NOT patch things. I want a serious rebuild of performance, rendering, controls, and visual quality.
+
+-----------------------------------
+CORE PROBLEM
+-----------------------------------
+
+Current issues:
+- lag / frame drops
+- input delay
+- stuttering animations
+- low-quality graphics
+- flat visuals (no depth)
+- poor lighting
+- weak physics feel
+- inconsistent UI
+- bad mobile performance
+- games feel cheap / unfinished
+
+-----------------------------------
+CORE GOAL
+-----------------------------------
+
+Every game must:
+- run smoothly (target 60 FPS)
+- feel responsive (no input delay)
+- look polished and modern
+- feel satisfying to play
+- work perfectly on mobile + desktop
+
+This must feel like a real game platform, not a web demo.
+
+-----------------------------------
+STEP 1: PERFORMANCE OVERHAUL (TOP PRIORITY)
+-----------------------------------
+
+Fix performance FIRST before visuals.
+
+Requirements:
+- stable 60 FPS
+- no stutters
+- no lag spikes
+- no delayed input
+
+Fix:
+- unnecessary re-renders
+- heavy DOM usage
+- inefficient loops
+- poor animation handling
+
+Use:
+- requestAnimationFrame for game loops
+- GPU-accelerated transforms (translate, scale)
+- avoid layout thrashing
+- minimize expensive calculations per frame
+
+-----------------------------------
+STEP 2: RENDERING SYSTEM CLEANUP
+-----------------------------------
+
+Audit how games are rendered.
+
+- Reduce DOM elements where possible
+- Move animations to canvas/WebGL where needed
+- Optimize draw calls
+- Use batching where possible
+
+Goal:
+Smooth visuals without performance cost.
+
+-----------------------------------
+STEP 3: INPUT / CONTROL FIX
+-----------------------------------
+
+Controls must feel instant.
+
+Fix:
+- input lag
+- delayed clicks
+- inconsistent touch response
+
+Requirements:
+- immediate feedback on click/tap
+- smooth drag/aim systems
+- no missed inputs
+
+Mobile:
+- large touch targets
+- no accidental misclicks
+
+-----------------------------------
+STEP 4: ANIMATION SYSTEM REBUILD
+-----------------------------------
+
+Replace all bad animations.
+
+Requirements:
+- smooth easing (ease-in-out)
+- no snapping or teleporting
+- consistent timing across games
+
+Fix:
+- jittery movement
+- inconsistent speeds
+- frame skipping
+
+-----------------------------------
+STEP 5: GRAPHICS UPGRADE
+-----------------------------------
+
+Improve visuals WITHOUT hurting performance.
+
+Fix:
+- flat colors
+- weak textures
+- poor lighting
+
+Add:
+- subtle shadows
+- lighting gradients
+- glow effects where appropriate
+- better contrast
+- depth layering
+
+Each game should feel visually distinct and polished.
+
+-----------------------------------
+STEP 6: PHYSICS / GAME FEEL
+-----------------------------------
+
+Fix gameplay feel.
+
+Problems to fix:
+- floaty movement
+- unrealistic collisions
+- stiff motion
+
+Improve:
+- smoother movement curves
+- better momentum
+- more satisfying interactions
+
+Example:
+- pool balls should feel weighted
+- air hockey should feel fast and reactive
+- golf should feel precise
+
+-----------------------------------
+STEP 7: UI + HUD CLEANUP
+-----------------------------------
+
+Fix in-game UI.
+
+Problems:
+- clutter
+- poor spacing
+- hard to read
+
+Fix:
+- consistent layout
+- clean score display
+- readable timers
+- aligned elements
+- proper scaling on all screens
+
+-----------------------------------
+STEP 8: MOBILE OPTIMIZATION (CRITICAL)
+-----------------------------------
+
+All games must be mobile-ready.
+
+Fix:
+- broken layouts
+- tiny buttons
+- poor scaling
+- lag on mobile
+
+Requirements:
+- smooth performance on phones
+- thumb-friendly controls
+- no desktop-only interactions
+
+-----------------------------------
+STEP 9: REMOVE ALL CHEAP / PLACEHOLDER ELEMENTS
+-----------------------------------
+
+Remove:
+- ugly default styles
+- basic shapes with no polish
+- awkward transitions
+- dead/static screens
+
+Replace with:
+- smooth motion
+- better visuals
+- consistent design
+
+-----------------------------------
+STEP 10: GAME-BY-GAME FIX PASS
+-----------------------------------
+
+Go through EVERY game:
+
+- Chess
+- 8 Ball
+- Mini Golf
+- Air Hockey
+- Connect 4
+- Rock Paper Scissors
+- Dots & Boxes
+- Bowling
+- Tron
+- etc.
+
+For EACH:
+- fix performance
+- fix controls
+- fix visuals
+- fix animations
+- fix bugs
+
+-----------------------------------
+STEP 11: TESTING
+-----------------------------------
+
+Verify:
+- no lag
+- no input delay
+- smooth animations
+- consistent behavior
+
+Test on:
+- desktop
+- mobile
+- slower devices
+
+-----------------------------------
+FINAL STANDARD
+-----------------------------------
+
+Every game must meet this:
+
+1. Runs smoothly (no lag)
+2. Feels responsive
+3. Looks polished
+4. Works on mobile
+5. Feels satisfying to play
+6. No obvious bugs
+7. Feels worth betting on
+
+-----------------------------------
+IMPORTANT
+-----------------------------------
+
+Do NOT:
+- apply quick fixes
+- ignore performance
+- prioritize visuals over smoothness
+
+Fix performance first, then polish visuals.
+
+-----------------------------------
+FINAL GOAL
+-----------------------------------
+
+The platform should feel:
+
+- fast
+- smooth
+- responsive
+- clean
+- premium
+
+Users should feel:
+“This runs well”
+“This feels good”
+“This is high quality”
+
+NOT:
+“This is laggy”
+“This feels broken”
+“This looks cheap”

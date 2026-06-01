@@ -1,0 +1,112 @@
+I want you to stop focusing only on surface-level features and start doing deeper product work for Jango.us. Build systems that make the platform feel complete, trustworthy, scalable, and sticky.
+
+Priority order:
+
+1. Full Settings System
+Create a real settings page and backend settings structure with:
+- account settings
+- profile visibility
+- privacy controls
+- notification preferences
+- gameplay preferences
+- sound/music toggles
+- theme/display settings
+- linked accounts
+- blocked users
+- security settings
+- payment preferences
+
+2. Wallet + Transaction History
+Build a full wallet dashboard that shows:
+- wallet balance
+- Scalps balance
+- deposit history
+- withdrawal history
+- wager history
+- item purchases
+- refunds/reversals
+- pending transactions
+- failed transactions
+Make it feel polished, trustworthy, and easy to understand.
+
+3. Reputation + Moderation System
+Build:
+- player reporting
+- sportsmanship/reputation score
+- toxic behavior flags
+- warning system
+- trust badges
+- dispute history
+- temporary restrictions/cooldowns if needed
+This needs both user-facing UI and admin moderation support.
+
+4. XP / Progression Backbone
+Create a real progression system with:
+- XP earned from matches
+- level progression
+- profile XP bar
+- progression rewards
+- seasonal progression support
+- challenge-based XP rewards
+
+5. Full Profile Ecosystem
+Expand user profiles to include:
+- match history
+- win/loss by game
+- favorite game
+- earned badges
+- item showcase
+- recent activity
+- reputation score
+- level/progression overview
+- friend list support
+
+6. Matchmaking + Private Match System
+Build real infrastructure for:
+- public matchmaking queues
+- private match codes
+- invite links
+- rematch flow
+- queue status UI
+- polished waiting states
+
+7. Notification System
+Add notifications for:
+- match invites
+- friend activity
+- purchases
+- rewards
+- challenge completion
+- tournament reminders
+- wager results
+
+8. Tournament System
+Build a tournament tab with:
+- tournament discovery
+- bracket views
+- entry/join flow
+- prize pool display
+- rules/info section
+- status updates
+- winner history
+
+9. Admin Tools
+Create internal tools for admins to:
+- review users
+- manage balances
+- review disputes
+- review reports
+- manage shop items
+- manage tournaments
+- inspect transaction logs
+- moderate content/accounts
+
+Important:
+- Think like a product engineer, not just a UI decorator.
+- Build both frontend experience and backend structure.
+- Make every system scalable and clean.
+- Reuse components where possible.
+- Keep everything mobile and desktop friendly.
+- Make the UX feel modern, polished, gamified, and premium.
+- Flag any missing database schema, API routes, or permissions needed before implementing.
+- If something only exists visually right now, turn it into a real working system.

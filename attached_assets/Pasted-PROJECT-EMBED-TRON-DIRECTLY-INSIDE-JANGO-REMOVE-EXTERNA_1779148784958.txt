@@ -1,0 +1,436 @@
+PROJECT: EMBED TRON DIRECTLY INSIDE JANGO — REMOVE EXTERNAL WINDOW FLOW
+
+GOAL:
+The Tron game should run fully inside the Jango website using the same in-game layout as the rest of the platform. When users click Play on Tron, it should NOT open a new external window, new tab, iframe-looking page, or separate experience.
+
+Tron must feel native to Jango.
+
+==================================================
+1. CURRENT ISSUE
+==================================================
+
+Right now:
+- User clicks Play on Tron
+- Tron opens in an external window / separate experience
+- This breaks the Jango UI/UX
+- It feels disconnected from the platform
+- It makes the match/wager/result flow harder to control
+
+This needs to be replaced with an internal game screen.
+
+==================================================
+2. REQUIRED BEHAVIOR
+==================================================
+
+When user clicks Tron:
+
+User should stay inside Jango.
+
+Flow:
+1. User selects Tron
+2. User clicks Play
+3. Match confirmation opens if needed
+4. User confirms
+5. Jango routes to internal Tron game page
+6. Tron loads inside the standard Jango GameLayout
+7. Match plays inside the site
+8. Result screen appears inside Jango
+9. User can Run It Back / Switch Game / Return Lobby
+
+NO external window.
+
+==================================================
+3. ROUTING
+==================================================
+
+Create internal route:
+
+/game/tron
+
+or dynamic route:
+
+/game/:gameId
+
+Tron should use:
+
+<GameLayout gameId="tron">
+  <TronGame />
+</GameLayout>
+
+Do not use:
+- window.open()
+- external links
+- new tab behavior
+- embedded external game page
+- separate domain flow
+
+Search the codebase for:
+- window.open
+- target="_blank"
+- external Tron URL
+- iframe
+- redirect logic
+
+Remove or replace anything that sends Tron outside the app.
+
+==================================================
+4. STANDARD GAME LAYOUT
+==================================================
+
+Tron must use the same standard layout as Air Hockey and the other polished games.
+
+Layout must include:
+
+TOP HUD:
+- Player card left
+- Opponent card right
+- Game title centered: “TRON”
+- Match type under title:
+  VS BOT / RANKED / TOURNAMENT / PRACTICE
+- Stake/pot badge
+- Score if applicable
+- Timer/survival timer
+- How to Play button
+
+CONTROL PILLS ABOVE ARENA:
+- Controls: “Arrow Keys / WASD”
+- Opponent: “Bot · Easy/Medium/Hard”
+- Win condition: “Survive the Grid” or “First to X wins”
+
+CENTER ARENA:
+- Tron game canvas/grid centered
+- neon border
+- cyber grid background
+- responsive scaling
+
+BOTTOM HELP CARD:
+- controls
+- objective
+- quick tips
+
+RESULT OVERLAY:
+- Victory
+- Defeat
+- Draw if applicable
+- Run It Back
+- Switch Game
+- View Stats
+
+==================================================
+5. TRON GAME VISUAL STANDARD
+==================================================
+
+Tron should be one of the most visually exciting games on the platform.
+
+Theme:
+- cyberpunk neon grid
+- dark navy / black background
+- cyan, blue, violet lighting
+- glowing trails
+- electric particle effects
+
+Arena:
+- centered rectangular neon grid
+- perspective or subtle 3D depth if possible
+- glowing outer walls
+- grid lines pulse faintly
+- player trail highly visible
+- bot/opponent trail different color
+
+Player:
+- player light-cycle/dot should glow
+- movement should feel smooth
+- direction changes should feel responsive
+- trail should remain behind player and glow
+
+Opponent/Bot:
+- different color
+- clearly readable
+- no confusion between trails
+
+Collision:
+- spark burst
+- screen shake
+- short slow-motion freeze
+- result overlay
+
+Win:
+- opponent trail dissolves/explodes
+- player trail surges/glows
+- Victory overlay
+
+Loss:
+- player trail sparks out
+- Defeat overlay
+- offer Run It Back
+
+==================================================
+6. GAME LOGIC REQUIREMENTS
+==================================================
+
+Tron must support at minimum:
+
+Modes:
+- Practice / Free
+- VS Bot
+- Ranked if supported
+- Tournament if supported
+
+Core rules:
+- player moves continuously
+- player leaves trail
+- collision with wall = lose
+- collision with trail = lose
+- opponent collision = win
+- if both collide simultaneously = draw or server-defined outcome
+
+Controls:
+Desktop:
+- WASD
+- Arrow keys
+
+Mobile:
+- swipe controls
+- optional on-screen D-pad
+- tap zones if needed
+
+Pause:
+- P key or pause button
+- pause should not be allowed in ranked/multiplayer unless rules allow it
+
+Restart:
+- only after match ends
+- no mid-match reset in wagered matches
+
+==================================================
+7. BACKEND / MATCH FLOW INTEGRATION
+==================================================
+
+Tron must connect to the same match system as other games.
+
+Do not let Tron run as disconnected standalone logic.
+
+Required integrations:
+- matchId
+- userId
+- opponentId or botId
+- stake
+- mode
+- status
+- result
+
+When match starts:
+- create/start match record
+- lock stake/pot if wagered
+
+When match ends:
+- send result to backend
+- backend verifies result where possible
+- backend updates match status
+- backend updates balance
+- backend creates transaction record
+
+Frontend must not directly credit balance.
+
+Result payload example:
+{
+  matchId,
+  gameId: "tron",
+  winnerId,
+  loserId,
+  reason: "collision_wall" | "collision_trail" | "opponent_collision",
+  duration,
+  score,
+  finalStateHash
+}
+
+==================================================
+8. BOT LOGIC
+==================================================
+
+If VS Bot mode exists:
+
+Bot difficulties:
+- Easy
+- Medium
+- Hard
+
+Easy:
+- slower reaction
+- makes occasional mistakes
+- avoids only obvious walls
+
+Medium:
+- decent pathing
+- avoids walls/trails better
+
+Hard:
+- stronger pathing
+- more aggressive
+- tries to trap player
+
+Bot should not feel random or broken.
+Bot movement must be smooth and readable.
+
+==================================================
+9. MOBILE SUPPORT
+==================================================
+
+Tron must work on mobile if enabled.
+
+Mobile controls:
+Option A:
+- Swipe direction
+
+Option B:
+- On-screen D-pad
+
+Mobile UI:
+- arena fits screen
+- controls do not cover arena
+- HUD compact
+- haptics on collision/win/loss
+
+If Tron is desktop-only:
+- do not show Play on mobile
+- show polished message:
+  “Tron is currently desktop only.”
+
+But preferred:
+Make Tron playable on mobile.
+
+==================================================
+10. PERFORMANCE
+==================================================
+
+Tron must feel smooth.
+
+Target:
+- 60fps gameplay
+- no laggy controls
+- no frame drops from particles
+
+Use:
+- canvas if needed
+- requestAnimationFrame
+- lightweight particles
+- CSS transforms for UI
+
+Avoid:
+- too many DOM elements for trails
+- heavy blur everywhere
+- blocking React re-renders during gameplay
+
+Important:
+Gameplay loop should not depend on frequent full React state updates.
+Use refs/canvas/game loop where appropriate.
+
+==================================================
+11. HOW TO PLAY MODAL
+==================================================
+
+Add Tron-specific How to Play modal.
+
+Content:
+Title:
+“How to Play Tron”
+
+Sections:
+Objective:
+“Survive the grid. Avoid walls and trails while trying to outlast your opponent.”
+
+Controls:
+Desktop:
+“Use WASD or Arrow Keys to turn.”
+
+Mobile:
+“Swipe to change direction.”
+
+Win Condition:
+“Win when your opponent crashes before you do.”
+
+Tips:
+- “Do not trap yourself early.”
+- “Use your trail to cut off space.”
+- “Watch the opponent’s path.”
+
+==================================================
+12. REMOVE EXTERNAL WINDOW CODE
+==================================================
+
+Find and remove/replace all Tron external launch logic.
+
+Search for:
+- Tron URL
+- window.open
+- target="_blank"
+- iframe
+- openExternal
+- externalGameUrl
+- launchTron
+- redirectToTron
+
+Replace with:
+navigate("/game/tron")
+
+or:
+startGame("tron")
+
+==================================================
+13. TESTING CHECKLIST
+==================================================
+
+Test:
+
+Routing:
+- clicking Tron Play keeps user inside Jango
+- no new tab
+- no external window
+- back button works
+
+UI:
+- standard GameLayout appears
+- HUD matches Air Hockey style
+- controls card appears
+- How to Play works
+
+Gameplay:
+- player moves
+- controls work
+- collision works
+- bot works
+- win/loss triggers result overlay
+
+Money:
+- wager displays correctly
+- pot displays correctly
+- balance only updates after backend result
+- practice mode shows no wager
+
+Mobile:
+- layout fits
+- controls work
+- no overflow
+
+Performance:
+- smooth gameplay
+- no console errors
+- no React crash
+
+==================================================
+FINAL EXPECTATION
+==================================================
+
+Tron should feel fully native to Jango.
+
+Users should never feel like they left the platform.
+
+The Tron experience should:
+- load inside the site
+- use the same premium HUD
+- use the same match system
+- use the same result screens
+- support Run It Back
+- match Jango’s cyber/luxury brand
+
+No external window. No separate experience. No disconnected game logic.

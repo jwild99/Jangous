@@ -1,0 +1,292 @@
+FEATURE: ADD “BACKSTORY / STORY MODE” TAB TO PROFILE DROPDOWN
+
+GOAL:
+Add a new tab in the top-right profile dropdown that introduces the Jango world, vision, and storyline in a visually immersive, premium way.
+
+This should NOT feel like a boring info page.
+
+It should feel like:
+- a cinematic introduction
+- a brand identity piece
+- a “welcome to the arena” experience
+- something users remember
+
+==================================================
+1. NAVIGATION PLACEMENT
+==================================================
+
+In the top-right profile dropdown:
+
+Current order:
+- Profile
+- Settings
+- Streamer Mode
+
+NEW ORDER:
+- Profile
+- Backstory (or Story Mode / Arena Origins)
+- Settings
+- Streamer Mode
+
+Label options (choose best fit):
+- “Backstory”
+- “Story Mode”
+- “Arena Origins” (preferred, more premium)
+- “The Jango World”
+
+Use an icon:
+- book
+- flame
+- crown
+- or glowing orb
+
+Hover:
+- glow effect
+- slight lift
+
+==================================================
+2. ROUTING
+==================================================
+
+Create route:
+
+/story  
+or  
+/arena-origins  
+
+Use a full-page immersive layout (NOT a small modal).
+
+==================================================
+3. PAGE STRUCTURE
+==================================================
+
+This page should be cinematic and scroll-based.
+
+Structure:
+
+SECTION 1: HERO INTRO
+SECTION 2: THE WORLD
+SECTION 3: THE PLAYER ROLE
+SECTION 4: THE STAKES
+SECTION 5: THE FUTURE / VISION
+
+==================================================
+4. HERO SECTION (TOP OF PAGE)
+==================================================
+
+Full screen.
+
+Background:
+- dark gradient
+- moving particles
+- subtle animation
+- radial glow
+
+Center content:
+Title:
+“Welcome to the Arena”
+
+Subtitle:
+Use your storyline here.
+
+Example tone:
+“Where skill decides everything. Where every move matters. Where only the best rise.”
+
+Add:
+- glowing text
+- slow fade-in animation
+- slight scale animation
+
+CTA button:
+“Enter the Arena”
+(scrolls down)
+
+==================================================
+5. STORY CONTENT SECTIONS
+==================================================
+
+Break your storyline into sections.
+
+DO NOT dump text.
+Make it immersive.
+
+----------------------------------------
+SECTION: THE WORLD
+----------------------------------------
+
+Title:
+“The Arena”
+
+Content:
+Use your storyline.
+
+Visual:
+- background image/asset from your brand pack
+- overlay gradient
+- parallax scroll
+
+----------------------------------------
+SECTION: THE PLAYER
+----------------------------------------
+
+Title:
+“You Are the Competitor”
+
+Content:
+Explain:
+- user is a competitor
+- skill matters
+- every match counts
+
+Add:
+- avatar-style visual
+- glowing outline
+
+----------------------------------------
+SECTION: THE STAKES
+----------------------------------------
+
+Title:
+“Every Game Has Consequences”
+
+Content:
+- mention Scalps
+- risk/reward
+- competition
+
+Add:
+- subtle balance animation visual
+- glowing numbers
+
+----------------------------------------
+SECTION: THE VISION
+----------------------------------------
+
+Title:
+“This Is Just the Beginning”
+
+Content:
+- tournaments
+- ranking
+- future expansion
+- global competition
+
+==================================================
+6. VISUAL STYLE
+==================================================
+
+This page should be one of the best-looking parts of the site.
+
+Use:
+- full-width sections
+- layered backgrounds
+- glow effects
+- soft animations
+- scroll-triggered transitions
+
+Effects:
+- fade in on scroll
+- text slides up
+- images scale slightly
+- particles move slowly
+
+DO NOT:
+- use plain white sections
+- use default text blocks
+- make it look like a blog
+
+==================================================
+7. IMAGE / ASSET USAGE
+==================================================
+
+Use the brand assets provided:
+- backgrounds
+- textures
+- icons
+- game visuals
+
+Each section should feel visually unique.
+
+Overlay images with:
+- gradient masks
+- glow accents
+- blur edges
+
+==================================================
+8. SOUND / IMMERSION (OPTIONAL BUT RECOMMENDED)
+==================================================
+
+Add subtle ambient sound:
+
+- low hum
+- arena ambience
+- soft synth
+
+Auto-play:
+- OFF by default
+- toggle available
+
+==================================================
+9. EXIT / NAVIGATION
+==================================================
+
+Top-left:
+Back button:
+“← Back to Arena”
+
+OR:
+Top nav remains accessible.
+
+==================================================
+10. MOBILE VERSION
+==================================================
+
+Mobile must:
+- stack sections vertically
+- keep text readable
+- reduce heavy effects
+- keep animations lightweight
+
+==================================================
+11. FINAL FEEL
+==================================================
+
+This should feel like:
+
+- a game intro
+- a cinematic experience
+- a brand identity moment
+
+Users should think:
+“This is different”
+“This is a real platform”
+“This feels like a world”
+
+NOT:
+“This is just a settings page with text”
+
+==================================================
+12. EXTRA POLISH (HIGH VALUE)
+==================================================
+
+Optional but recommended:
+
+- Add subtle glowing divider lines
+- Add animated background gradients
+- Add floating UI elements (orbs, lines)
+- Add a “Begin Playing” CTA at bottom
+- Add slight scroll snap between sections
+
+==================================================
+FINAL EXPECTATION
+==================================================
+
+The Backstory / Story Mode page should:
+- explain Jango without feeling like explanation
+- create emotion
+- create curiosity
+- reinforce brand identity
+- make users want to play
+
+This is not just a page.
+This is part of the experience.

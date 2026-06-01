@@ -1,0 +1,107 @@
+The dashboard hero is still too basic and too UI-shaped. I do not want simple neon outlines, icon-like objects, or abstract game diagrams.
+
+I want the dashboard artwork to become much more artistic, painterly, cinematic, and immersive — closer to a real illustrated world scene like the JANGO pitch-deck image, not a schematic game banner.
+
+Target:
+Update the main logged-in dashboard hero section only.
+
+Current problem:
+- The hero art feels too basic
+- It looks like glowing shapes and simple game symbols
+- It does not feel like real environment artwork
+- It needs stronger atmosphere, texture, depth, storytelling, and composition
+
+What I want instead:
+Create a rich illustrated environment that feels hand-crafted / concept-art driven / cinematic.
+
+Art direction:
+- painterly
+- moody
+- textured
+- immersive
+- worldbuilding-heavy
+- slightly gritty but still premium
+- dramatic lighting
+- layered depth
+- visually memorable
+
+Inspiration:
+Use the feeling of the JANGO pitch deck artwork:
+- illustrated environment
+- rich scene composition
+- buildings / structures / signage / props / atmosphere
+- not flat
+- not icon-based
+- not just glowing lines
+
+Theme requirements:
+The scene should still be inspired by my actual games:
+- Chess
+- Mini Golf
+- Connect 4
+- Air Hockey
+- Rock Paper Scissors
+- Dots & Boxes
+- 8-Ball Pool
+- Bowling
+- Cup Pong
+- Tron
+- Tower Stack
+
+But do NOT represent them as simple floating icons.
+Instead, weave them into the world naturally.
+
+Examples:
+- Chess as giant carved statues, murals, or battle monuments
+- Mini golf as ramps, bridges, flags, and playful terrain built into the environment
+- Connect 4 as architecture, windows, towers, or giant wall structures
+- Air hockey as glowing arena tables inside the world
+- Pool as lounge/table elements, cues, balls, and felt textures integrated into the setting
+- Bowling as alley structures, pins, neon signs, and industrial lane elements
+- Cup pong as tables, cups, party corners, or challenge stations
+- Tron as energy rails, neon tracks, digital pathways, and futuristic accents
+- Tower Stack as skyline towers or stacked structures
+- Dots & Boxes as environmental patterns, lights, grids, or wall designs
+- Rock Paper Scissors as symbols, banners, carvings, or holographic signage
+
+Composition direction:
+Build a real scene, not a collage.
+
+Possible scene idea:
+A premium futuristic skill-gaming district or arena city where each zone references a different game, with a central environment that feels alive and illustrated.
+
+Important:
+- The artwork should feel like one connected world
+- Use environmental storytelling
+- Add buildings, props, lighting, signage, pathways, layered scenery, atmosphere
+- Make it feel like concept art for a game universe
+- Avoid clean empty space
+- Avoid flat gradients as the main feature
+- Avoid overly geometric placeholder art
+- Avoid simplistic outlined elements
+
+Dashboard layout:
+- Keep the hero section at the top of the dashboard
+- Keep “Welcome back, Beau” readable over the artwork
+- Use a dark overlay, but do not hide the art too much
+- Let the art be the main visual star
+- Keep Featured Games below it, with cards floating in front of the world
+
+Rendering/style details:
+- painterly textures
+- cinematic shadows
+- rich color depth
+- atmospheric perspective
+- soft fog / haze / light bloom
+- layered foreground, midground, and background
+- premium composition
+- dramatic but readable
+
+Implementation:
+- Replace the current simple hero illustration with a much more detailed scene
+- Use a real illustrated background asset or generate a much richer composition
+- Increase the amount of environmental detail and visual storytelling
+- Make it feel like polished concept art, not UI decoration
+
+Goal:
+I want the dashboard hero to feel like a premium illustrated world that users remember, not just a nice dark background with game symbols.

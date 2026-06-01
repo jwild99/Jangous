@@ -1,0 +1,338 @@
+You are now performing a full **cross-platform gameplay optimization pass** for all games on Jango.us.
+
+Important:
+Jango.us must continue to have both:
+- a full desktop version of each game
+- a full mobile version of each game
+
+Do not replace the desktop versions.
+Do not simplify the desktop experience just to make mobile easier.
+Do not force the same exact controls or layout across all devices.
+
+Your job is to make every game work properly on both desktop and mobile, with each platform having controls, UI, and layout that fit that device.
+
+The goal is:
+- desktop players get a polished desktop experience
+- mobile players get a polished mobile experience
+- both versions support the same core gameplay, wagers, fairness, and match outcomes
+
+--------------------------------------------------
+CORE GOAL
+
+For every game on Jango.us:
+
+- preserve and improve the desktop version
+- build or fix a proper mobile version
+- make both versions fully playable
+- keep feature parity between platforms
+- use platform-specific controls where appropriate
+- keep the same rules, match flow, wager logic, and fairness across both platforms
+
+A game should feel like it was intentionally designed for desktop and intentionally designed for mobile — not like one version was awkwardly forced onto the other.
+
+--------------------------------------------------
+PLATFORM REQUIREMENTS
+
+DESKTOP VERSION REQUIREMENTS
+
+Desktop versions of the games must keep:
+- mouse support
+- keyboard support where appropriate
+- desktop-optimized HUD layout
+- desktop-sized play area
+- responsive gameplay
+- smooth performance
+- existing match and wager functionality
+
+MOBILE VERSION REQUIREMENTS
+
+Mobile versions of the games must have:
+- touch controls
+- mobile-optimized HUD
+- responsive game layout for small screens
+- readable score/timer/wager info
+- touch-safe buttons and gestures
+- stable performance on iPhone and Android
+- reconnect support during live matches
+
+--------------------------------------------------
+DO NOT BREAK DESKTOP
+
+While optimizing for mobile, do not:
+
+- remove desktop-only control advantages unless unfair
+- shrink desktop UI unnecessarily
+- replace mouse/keyboard controls with touch-first controls on desktop
+- reduce desktop visual clarity
+- make desktop layouts feel oversized or simplified
+- break existing desktop gameplay flow
+
+Desktop should remain strong and polished.
+
+--------------------------------------------------
+MOBILE SHOULD NOT JUST BE A SHRUNK DESKTOP VERSION
+
+Do not simply scale down the desktop game screen for phones.
+
+For mobile, create device-appropriate gameplay layouts, controls, HUD placement, and interaction patterns.
+
+Examples:
+- desktop can use mouse drag, click, hover
+- mobile should use tap, swipe, drag, hold, release, or virtual buttons where appropriate
+
+Both versions should feel natural on their own devices.
+
+--------------------------------------------------
+GAME-BY-GAME AUDIT
+
+For every game on Jango.us, audit and improve both desktop and mobile.
+
+For each game, determine:
+
+1. what the best desktop control scheme is
+2. what the best mobile control scheme is
+3. whether the HUD should differ by platform
+4. whether portrait or landscape is best on mobile
+5. whether certain buttons or interactions should be placed differently on mobile
+6. whether the game canvas needs different scaling rules on desktop vs mobile
+
+Then implement the best version for each platform.
+
+--------------------------------------------------
+CONTROL SYSTEMS BY PLATFORM
+
+DESKTOP
+Use the most natural desktop control system for each game:
+- mouse click
+- mouse drag
+- keyboard keys
+- keyboard + mouse combinations
+- hover states where useful
+
+MOBILE
+Use the most natural mobile control system for each game:
+- tap
+- swipe
+- drag
+- hold and release
+- virtual buttons
+- on-screen joystick only if truly needed
+
+Do not force desktop controls onto mobile.
+Do not force mobile controls onto desktop.
+
+--------------------------------------------------
+GAMEPLAY FAIRNESS
+
+Even if the controls differ between desktop and mobile, the games must remain fair.
+
+Requirements:
+- same game rules
+- same scoring logic
+- same win/loss conditions
+- same wager logic
+- same payout logic
+- same reconnect / forfeit logic
+- same stat tracking
+
+If necessary, rebalance control sensitivity so one platform does not have an unfair advantage.
+
+--------------------------------------------------
+HUD / UI BY PLATFORM
+
+DESKTOP HUD
+Desktop can show:
+- fuller HUD
+- wider layouts
+- more horizontal spacing
+- hover tooltips if useful
+
+MOBILE HUD
+Mobile should show:
+- compact HUD
+- stacked or repositioned info blocks
+- touch-safe controls
+- no overlap with gameplay
+- no clutter on smaller screens
+
+Both must show:
+- score
+- timer
+- player names
+- wager amount
+- match status
+
+--------------------------------------------------
+MOBILE ORIENTATION RULES
+
+Choose the best mobile orientation for each game.
+
+- Use portrait for games that work well vertically and need simple interaction
+- Use landscape for games that need more horizontal play space
+
+If landscape is better for a game:
+- optimize the entire gameplay screen for landscape
+- place HUD and controls appropriately
+- ensure rotation does not break match flow
+- ensure reconnect and end-of-match screens still work correctly
+
+Do not force all games into one orientation if that makes gameplay worse.
+
+--------------------------------------------------
+GAME CANVAS / PLAY AREA RULES
+
+Desktop:
+- use a layout that takes advantage of larger screens
+- maintain good spacing and visibility
+- preserve precision where needed
+
+Mobile:
+- scale canvas to fit phone screen
+- keep interaction targets large enough
+- do not let HUD cover important play space
+- maintain aspect ratio where needed
+- make gameplay comfortable with thumbs and touch gestures
+
+--------------------------------------------------
+MOBILE PLAYABILITY REQUIREMENTS
+
+Every game must be fully playable on mobile from start to finish.
+
+This includes:
+- opening game from mobile
+- entering match lobby
+- confirming wager
+- loading into game
+- using touch controls reliably
+- finishing the match
+- viewing result screen
+- receiving winnings
+- updating history and stats
+
+If any game currently does not work properly on mobile, rebuild the mobile gameplay implementation for that game.
+
+--------------------------------------------------
+DESKTOP PLAYABILITY REQUIREMENTS
+
+Every game must also remain fully playable on desktop from start to finish.
+
+This includes:
+- starting matches
+- using mouse/keyboard controls
+- viewing score and timers
+- completing full matches
+- reconnecting if needed
+- receiving winnings
+- updating stats and history
+
+--------------------------------------------------
+DISCONNECT / RECONNECT ON BOTH PLATFORMS
+
+Reconnect logic must work across desktop and mobile.
+
+Requirements:
+- preserve match state
+- allow reconnect within 5 minutes
+- restore into same live match
+- show timer clearly to opponent
+- apply forfeit and payout correctly if timer expires
+
+Test reconnect on:
+- mobile browser refresh
+- app/background interruption
+- desktop refresh
+- tab switching
+- temporary internet loss
+
+--------------------------------------------------
+PERFORMANCE REQUIREMENTS
+
+Optimize both versions separately where needed.
+
+Desktop:
+- smooth rendering
+- responsive controls
+- no unnecessary UI lag
+
+Mobile:
+- optimized graphics and animation load
+- lower latency touch response
+- no overheating / heavy rendering where possible
+- efficient use of assets and effects
+- stable frame rate on common devices
+
+Do not let mobile optimizations downgrade desktop quality.
+Do not let desktop complexity make mobile sluggish.
+
+--------------------------------------------------
+BUG FIX REQUIREMENTS
+
+Fix platform-specific issues on both desktop and mobile, including:
+- controls not responding
+- hitboxes feeling off
+- HUD overlap
+- buttons blocking gameplay
+- resolution issues
+- reconnect bugs
+- payout bugs
+- game state desync
+- touch gesture issues
+- keyboard/mouse issues
+- orientation issues
+- missing result screens
+- mobile controls feeling too cramped
+- desktop controls feeling awkward
+- mismatched gameplay behavior between platforms
+
+--------------------------------------------------
+TESTING REQUIREMENTS
+
+Test each game separately on both desktop and mobile.
+
+DESKTOP TESTING
+Test common desktop resolutions and browsers.
+Verify:
+- control responsiveness
+- correct HUD layout
+- match flow
+- wager logic
+- reconnect logic
+- results and payouts
+
+MOBILE TESTING
+Test at minimum:
+- 320px
+- 360px
+- 375px
+- 390px
+- 414px
+- 768px
+
+Test on:
+- iPhone Safari
+- Android Chrome
+
+Verify:
+- touch controls
+- canvas fit
+- HUD readability
+- reconnect behavior
+- score/timer visibility
+- match completion
+- payout logic
+
+--------------------------------------------------
+DELIVERABLES
+
+I want you to:
+
+1. audit every game on both desktop and mobile
+2. preserve and improve the desktop version of every game
+3. build or fix the mobile version of every game
+4. make the games easy and natural to play for mobile users
+5. keep the same core gameplay and fairness across both platforms
+6. fix all gameplay, control, HUD, reconnect, and payout bugs
+7. make all games feel polished and production-ready on both desktop and mobile
+
+Final result:
+Jango.us should have true cross-platform games where desktop players get a real desktop experience and mobile players get a real mobile experience, without either platform feeling neglected or broken.

@@ -1,0 +1,328 @@
+You are acting as a senior game developer, UI/UX designer, product designer, frontend engineer, and performance engineer. Your job is to significantly upgrade the gameplay experience across all games on Jango.us and add a complete item shop system while maintaining a fast, polished, and competitive platform.
+
+The final result should feel like a high quality skill-based gaming platform similar to modern mobile arcade games and platforms like GamePigeon and Skillz.
+
+Everything must work flawlessly on BOTH mobile and desktop.
+
+The platform must feel polished, responsive, competitive, rewarding, and easy for new users to understand.
+
+--------------------------------------------------
+
+PRIMARY GOALS
+
+1. Improve gameplay responsiveness and smoothness  
+2. Optimize all games for both mobile and desktop  
+3. Add visual polish, animation, and feedback systems  
+4. Improve UI clarity and modern design  
+5. Improve player engagement and replayability  
+6. Improve performance and loading speed  
+7. Add a fully functional item shop system  
+8. Maintain a consistent design language across the entire platform  
+
+--------------------------------------------------
+
+MOBILE AND DESKTOP OPTIMIZATION
+
+Every game and UI element must be optimized for both mobile and desktop.
+
+Mobile requirements:
+
+• Touch controls must be responsive and natural  
+• Buttons must be large enough for thumbs  
+• No small UI elements that are hard to tap  
+• Layout must adapt to portrait and landscape  
+• Controls must be thumb-friendly  
+• No hover-only mechanics  
+• Gameplay areas must scale to screen size  
+• UI must never overlap gameplay  
+
+Desktop requirements:
+
+• Mouse controls must feel precise  
+• Keyboard shortcuts should be added where useful  
+• Larger screen layouts should take advantage of space  
+• UI must scale properly on large monitors  
+• Gameplay should feel responsive with mouse input  
+
+Use responsive techniques such as:
+
+• flexible layouts  
+• scalable game canvases  
+• responsive breakpoints  
+• adaptive UI components  
+• dynamic resizing  
+
+--------------------------------------------------
+
+GAME FEEL AND RESPONSIVENESS
+
+Improve the overall feel of every game so actions feel satisfying.
+
+Add improvements such as:
+
+• reduced input delay  
+• smoother animation transitions  
+• consistent frame updates  
+• responsive interactions  
+
+Add micro animations when players interact with elements such as:
+
+• button press animations  
+• score popups  
+• combo indicators  
+• streak notifications  
+• glow or highlight effects  
+• smooth countdown animations before matches  
+
+Players should always receive immediate feedback when they perform an action.
+
+--------------------------------------------------
+
+GAMEPLAY EXPERIENCE IMPROVEMENTS
+
+Improve core gameplay loops for all games.
+
+Ensure that:
+
+• rules are understandable within 10 seconds  
+• gameplay feels competitive and fair  
+• pacing keeps players engaged  
+• players feel rewarded for skill  
+
+Add systems where appropriate such as:
+
+• combo scoring systems  
+• streak bonuses  
+• time pressure mechanics  
+• skill based scoring opportunities  
+
+Add satisfying match endings including:
+
+• animated victory screens  
+• score comparisons  
+• rematch buttons  
+• play again buttons  
+
+--------------------------------------------------
+
+USER INTERFACE IMPROVEMENTS
+
+Upgrade the design of all UI elements to feel modern and polished.
+
+Improve the design of:
+
+• score displays  
+• timers  
+• player indicators  
+• match results  
+• lobby screens  
+• loading screens  
+
+Ensure the UI includes:
+
+• smooth transitions  
+• polished typography  
+• strong visual hierarchy  
+• clean layouts  
+• minimal clutter  
+
+Important information like score and timer should always be clearly visible.
+
+--------------------------------------------------
+
+FIRST TIME PLAYER EXPERIENCE
+
+New players should understand how to play quickly.
+
+Add onboarding elements such as:
+
+• short tutorial overlays  
+• simple explanations of game objectives  
+• visual hints for controls  
+• optional tutorial skip  
+
+The player should learn by playing rather than reading long instructions.
+
+--------------------------------------------------
+
+REPLAYABILITY SYSTEMS
+
+Encourage players to keep playing.
+
+Add systems such as:
+
+• personal best scores  
+• win streak indicators  
+• quick rematch buttons  
+• play again functionality  
+• leaderboard visibility  
+• player ranking feedback  
+
+Players should feel motivated to improve their performance.
+
+--------------------------------------------------
+
+PERFORMANCE OPTIMIZATION
+
+Optimize performance across the entire platform.
+
+Improve:
+
+• asset loading  
+• game initialization speed  
+• animation efficiency  
+• memory usage  
+• mobile performance  
+
+Avoid:
+
+• heavy unnecessary libraries  
+• large uncompressed assets  
+• blocking scripts  
+
+Games should load quickly even on slower connections.
+
+--------------------------------------------------
+
+VISUAL POLISH
+
+Improve visual quality across all games.
+
+Add:
+
+• smooth animations  
+• subtle particle effects  
+• polished transitions  
+• satisfying win effects  
+• consistent color palette  
+
+The visual style should feel modern and cohesive across the platform.
+
+--------------------------------------------------
+
+SOUND DESIGN
+
+Add optional sound effects including:
+
+• button clicks  
+• scoring sounds  
+• combo sounds  
+• victory sounds  
+• countdown sounds  
+
+Sounds should be subtle and satisfying.
+
+Include a sound toggle in settings.
+
+--------------------------------------------------
+
+ITEM SHOP SYSTEM
+
+Create a complete in-game item shop that allows players to purchase cosmetic upgrades and visual items.
+
+The shop should feel modern, engaging, and easy to use.
+
+The shop must work perfectly on mobile and desktop.
+
+Shop features:
+
+• clean storefront interface  
+• category filtering  
+• item preview system  
+• purchase confirmation  
+• animated purchase feedback  
+• easy navigation  
+
+Shop categories should include:
+
+• profile cosmetics  
+• avatars  
+• badges  
+• emotes  
+• UI themes  
+• game board skins  
+• particle effects  
+• victory animations  
+
+Cosmetics must not provide gameplay advantages.
+
+--------------------------------------------------
+
+SHOP USER EXPERIENCE
+
+The shop interface should include:
+
+• featured items section  
+• rotating daily items  
+• clear item descriptions  
+• preview animations  
+• purchase confirmation modal  
+• visually satisfying purchase animations  
+
+When a player buys an item:
+
+• show a celebration animation  
+• show confirmation message  
+• add item to the player inventory  
+
+--------------------------------------------------
+
+PLAYER INVENTORY SYSTEM
+
+Create an inventory system where players can view and equip their purchased cosmetics.
+
+Inventory features:
+
+• equipped items display  
+• item management interface  
+• quick equip options  
+• cosmetic previews  
+
+Players should easily switch between cosmetics.
+
+--------------------------------------------------
+
+SHOP VISUAL DESIGN
+
+The shop should feel exciting and rewarding.
+
+Include:
+
+• card style item displays  
+• hover animations on desktop  
+• tap animations on mobile  
+• glowing rarity indicators  
+• clean category navigation  
+
+Use subtle animations to make the shop feel dynamic.
+
+--------------------------------------------------
+
+QUALITY CONTROL
+
+Before completing the upgrades ensure:
+
+• games work on mobile and desktop  
+• UI scales correctly across screen sizes  
+• controls feel responsive  
+• no overlapping UI elements  
+• animations remain smooth  
+• gameplay mechanics remain fair  
+
+--------------------------------------------------
+
+FINAL RESULT
+
+After these improvements the platform should feel:
+
+• modern  
+• polished  
+• fast  
+• competitive  
+• mobile optimized  
+• visually exciting  
+• rewarding to play  
+
+The experience should feel like a premium casual competitive gaming platform rather than simple browser games.
+
+Focus on improving player enjoyment, gameplay polish, and platform quality above all else.

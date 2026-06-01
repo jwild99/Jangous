@@ -1,0 +1,1190 @@
+PROJECT: JANGO NEXT MAJOR POLISH PASS — TRUST, RUN-IT-BACK, TOURNAMENTS, DEPTH, SOUND/HAPTICS, CLEANUP
+
+GOAL:
+Upgrade Jango so the platform feels more trustworthy, more polished, more alive, more competitive, and more production-ready.
+
+Focus areas:
+1. Trust gap / money clarity
+2. Run-it-back match loop
+3. Tournament system overhaul, especially polished brackets
+4. Visual depth / less flat UI
+5. Sound + haptics
+6. Remove confusing or unfinished features
+
+This needs to be implemented with real UI states, backend logic, animations, responsive behavior, and QA checks.
+
+==================================================
+SECTION 1: TRUST GAP / MONEY CLARITY
+==================================================
+
+This platform uses Scalps, wagers, deposits, prize pools, and payouts. Users must always understand:
+- how much they are risking
+- how much they can win
+- what fees/rake apply
+- when funds move
+- why their balance changed
+- whether an action is secure/verified
+
+--------------------------------------------------
+1.1 MATCH CONFIRMATION MODAL
+--------------------------------------------------
+
+Every wagered match must show a clear confirmation modal before joining.
+
+Modal title:
+“Confirm Match Entry”
+
+Modal content:
+- Game name
+- Match type:
+  Casual / Ranked / Tournament / Practice
+- Opponent:
+  username, bot name, or “Waiting for opponent”
+- Required wager:
+  “Entry: X Scalps”
+- Total pot:
+  “Total Pot: X Scalps”
+- Platform fee:
+  “Platform Fee: 3%”
+- Winner receives:
+  “Winner Receives: X Scalps”
+- User current balance
+- User balance after entry
+
+Example layout:
+Required Wager: 5 Scalps
+Your Balance: 20 Scalps
+Total Pot: 10 Scalps
+Platform Fee: 3%
+Winner Receives: 9.70 Scalps
+Balance After Joining: 15 Scalps
+
+Button:
+“Confirm & Join”
+
+Secondary:
+“Cancel”
+
+Rules:
+- If match is free, title it “Free Practice Match”
+- Do not show confusing 0 Scalp wager text
+- If user has insufficient funds, do not open confirm modal
+- Instead show Add Funds prompt
+
+--------------------------------------------------
+1.2 TOURNAMENT ENTRY CONFIRMATION
+--------------------------------------------------
+
+Every tournament entry needs a polished confirmation modal.
+
+Modal title:
+“Enter Tournament”
+
+Content:
+- Tournament name
+- Game
+- Entry fee
+- Current balance
+- Balance after entry
+- Current prize pool
+- Prize pool after your entry
+- Spots filled
+- Start time
+- Format:
+  Single Elimination / Bracket / Round Robin if added later
+- Payout structure
+- Refund/cancellation rule
+
+Example:
+Entry Fee: 10 Scalps
+Current Prize Pool: 80 Scalps
+Prize Pool After Entry: 90 Scalps
+Players: 9/16
+Starts In: 12m 44s
+Format: Single Elimination
+Payout: Winner takes 97% after platform fee
+
+Button:
+“Enter Tournament”
+
+When confirmed:
+- balance counts down
+- prize pool counts up
+- show “You’re In”
+- glow burst
+- redirect/open tournament lobby
+
+--------------------------------------------------
+1.3 DEPOSIT TRUST UI
+--------------------------------------------------
+
+Deposit pages must feel safe and clear.
+
+Add trust badges:
+- “Secure Deposit”
+- “Auto-detected”
+- “Blockchain Verified” for crypto
+- “Funds credited after confirmation”
+
+Crypto deposit screen must show:
+- asset
+- network
+- deposit address
+- QR code
+- copy button
+- amount to send
+- expiration timer
+- status tracker
+
+Status tracker:
+1. Address Generated
+2. Waiting for Payment
+3. Confirming
+4. Funds Added
+
+Important warnings:
+- “Only send [ASSET] on [NETWORK].”
+- “Sending the wrong asset or network may result in permanent loss.”
+- “Your balance updates automatically after confirmation.”
+
+Remove or rename:
+“I’ve Sent Funds”
+
+Replace with:
+“Track Deposit”
+
+Track Deposit must:
+- check status
+- never manually credit balance
+
+--------------------------------------------------
+1.4 BALANCE CHANGE CLARITY
+--------------------------------------------------
+
+Every balance movement must be explained.
+
+Transaction history should show:
+- type
+- amount
+- source
+- status
+- timestamp
+- previous balance
+- new balance
+
+Examples:
+Win:
+“Won 5 Scalps in Air Hockey”
+Previous: 20
+New: 25
+
+Tournament Entry:
+“Entered Mini Golf Masters”
+Previous: 20
+New: 10
+
+Deposit:
+“Deposit confirmed”
+Previous: 10
+New: 60
+
+Balance animation:
+- increase = green glow + count-up + floating “+X”
+- decrease = red/orange glow + count-down + floating “-X”
+
+Critical rule:
+Balance changes must only come from backend-confirmed events.
+Frontend must never be able to increase balance directly.
+
+--------------------------------------------------
+1.5 FAIR PLAY / SERVER VERIFIED MESSAGING
+--------------------------------------------------
+
+Add trust labels throughout the platform:
+- “Server Confirmed Result”
+- “Verified Match”
+- “Secure Pot”
+- “Prize Pool Locked”
+- “Funds Held Until Result”
+
+Where to show:
+- Match confirmation
+- Tournament lobby
+- Completed match history
+- Global stats fair play log
+- Deposit screen
+- Tournament bracket page
+
+Add tooltips:
+“Server Confirmed Result”
+Tooltip:
+“This result was finalized by the server and recorded in match history.”
+
+“Secure Pot”
+Tooltip:
+“Entry fees are locked when players join and released after the result is confirmed.”
+
+==================================================
+SECTION 2: RUN-IT-BACK MATCH LOOP
+==================================================
+
+Goal:
+After every match, users should always have a clear next action.
+No match should end in a dead screen.
+
+--------------------------------------------------
+2.1 POST-MATCH RESULT OVERLAY
+--------------------------------------------------
+
+Every game must show a post-match overlay.
+
+WIN VERSION:
+Title:
+“VICTORY”
+
+Show:
+- amount won
+- final score
+- opponent
+- updated balance
+- rank movement
+- XP gained
+- streak change
+- match duration
+
+Buttons:
+1. “Run It Back”
+2. “Increase Stakes”
+3. “Switch Game”
+4. “View Match Stats”
+
+Animation:
+1. freeze gameplay for 300ms
+2. background blur
+3. glow burst
+4. “VICTORY” scales in
+5. amount won counts up
+6. balance updates
+7. buttons fade in
+
+LOSS VERSION:
+Title:
+“DEFEAT”
+
+Show:
+- amount lost
+- final score
+- opponent
+- updated balance
+- helpful insight
+
+Buttons:
+1. “Run It Back”
+2. “Lower Stakes”
+3. “Practice”
+4. “Switch Game”
+
+Loss copy examples:
+- “Close match. Run it back?”
+- “You lost by 1 point.”
+- “Drop stakes and rebuild momentum.”
+- “Practice this game before rematching.”
+
+Draw:
+Title:
+“DRAW”
+
+Buttons:
+1. “Rematch”
+2. “New Opponent”
+3. “Switch Game”
+
+--------------------------------------------------
+2.2 RUN IT BACK LOGIC
+--------------------------------------------------
+
+When user clicks Run It Back:
+
+If same opponent is available:
+- send rematch invite
+- show:
+  “Rematch request sent”
+- opponent sees:
+  “[Username] wants to run it back”
+
+If bot match:
+- immediately restart same game with same settings
+
+If opponent unavailable:
+- show:
+  “Opponent unavailable”
+- offer:
+  “Find Similar Match”
+
+If user has insufficient balance:
+- show Add Funds modal
+- do not start match
+
+--------------------------------------------------
+2.3 INCREASE / LOWER STAKES LOGIC
+--------------------------------------------------
+
+Increase Stakes:
+- show stake selector
+- recommended next stake:
+  current stake → next tier
+
+Example:
+1 → 2
+2 → 5
+5 → 10
+10 → 25
+
+Lower Stakes:
+- show lower options
+- preserve same game
+- preserve opponent if possible
+
+Do not pressure users with free money.
+No bonus Scalps.
+No fake recovery funds.
+
+--------------------------------------------------
+2.4 MATCH STATS SCREEN
+--------------------------------------------------
+
+Add a match stats view after game.
+
+Show:
+- score
+- duration
+- stake
+- pot
+- payout
+- player performance
+- key moments if available
+
+Game-specific stats:
+Chess:
+- moves
+- captures
+- check/checkmate
+
+Air Hockey:
+- goals
+- saves
+- puck speed if tracked
+
+Mini Golf:
+- strokes
+- accuracy
+- best shot
+
+RPS:
+- move history
+
+Tron:
+- survival time
+- collision cause
+
+Buttons:
+- Run It Back
+- Share
+- Close
+
+==================================================
+SECTION 3: TOURNAMENT SYSTEM OVERHAUL
+==================================================
+
+This is a major priority. Tournaments should feel like one of the main reasons to use Jango.
+
+They should feel like:
+- esports events
+- high-stakes competitions
+- live brackets
+- real prize pools
+- polished, structured, and exciting
+
+--------------------------------------------------
+3.1 TOURNAMENT CARD REDESIGN
+--------------------------------------------------
+
+Tournament cards should not be simple rows.
+
+Each tournament card must show:
+- Tournament name
+- Game icon
+- Game world accent color
+- Prize pool
+- Entry fee
+- Players joined / max players
+- Start countdown
+- Status badge
+- Format
+- Skill/rank requirement
+- Join button
+
+Statuses:
+- Upcoming
+- Open
+- Filling Fast
+- Last Spots
+- Starting Soon
+- Live
+- Completed
+
+Visual rules:
+- Filling Fast = pulsing border
+- Last Spots = gold/orange glow
+- Live = red/pink live pulse
+- Completed = dimmed but clickable for results
+
+Card hierarchy:
+Prize pool should be most visually dominant.
+Entry fee and spots should be secondary.
+Join button should be clear.
+
+Example:
+Mini Golf Masters
+Prize Pool: 150 Scalps
+Entry: 10 Scalps
+Players: 12/16
+Starts In: 08:34
+Single Elimination
+[Enter Tournament]
+
+--------------------------------------------------
+3.2 TOURNAMENT JOIN FLOW
+--------------------------------------------------
+
+On clicking Enter Tournament:
+
+Step 1:
+Open confirmation modal.
+
+Step 2:
+Backend validates:
+- user is logged in
+- user has enough balance
+- tournament is open
+- tournament is not full
+- user is not already entered
+- user meets requirements
+- user is not banned/restricted
+
+Step 3:
+If valid, backend transaction:
+- deduct entry fee
+- create transaction record
+- add user to tournament_entries
+- increment prize pool
+- assign bracket seed/slot
+- emit tournament_update websocket event
+
+This must be atomic.
+No partial state.
+No double entry.
+No race conditions.
+
+Step 4:
+Frontend success:
+- “You’re In”
+- balance count-down
+- prize pool count-up
+- bracket opens
+- current user highlighted
+
+Failure cases:
+Insufficient funds:
+“You need X more Scalps to enter.”
+
+Tournament full:
+“This tournament just filled.”
+
+Already entered:
+“You’re already in this tournament.”
+
+Closed:
+“Entry has closed.”
+
+--------------------------------------------------
+3.3 TOURNAMENT LOBBY PAGE
+--------------------------------------------------
+
+Every tournament needs a full detail/lobby page.
+
+Sections:
+
+A. Header / Hero
+- Tournament name
+- Game
+- status
+- prize pool
+- entry fee
+- countdown
+- players joined
+- Join/Entered button
+
+B. Prize Pool Panel
+- Total prize pool
+- entry fee breakdown
+- platform fee/rake
+- payout distribution
+
+Example:
+Total Prize Pool: 160 Scalps
+Platform Fee: 3%
+Winner Receives: 155.20 Scalps
+
+If multi-place payouts are added:
+1st: 70%
+2nd: 20%
+3rd: 10%
+
+C. Entrants Panel
+- usernames
+- avatars
+- rank badges
+- seed numbers
+- current user highlight
+
+D. Bracket Panel
+- polished visual bracket
+- round-by-round progression
+
+E. Rules Panel
+- format
+- match rules
+- disconnect rules
+- payout rules
+- start time
+
+F. Live Activity / Hype Feed
+Examples:
+- “Beau entered the tournament”
+- “Mini Golf Masters is 75% full”
+- “Round 1 starting soon”
+- “PlayerX advanced to semifinals”
+
+--------------------------------------------------
+3.4 POLISHED BRACKET SYSTEM — VERY IMPORTANT
+--------------------------------------------------
+
+The bracket must be a visual bracket, not a list.
+
+Support:
+- 4 players
+- 8 players
+- 16 players
+- 32 players
+
+Initial format:
+Single elimination.
+
+Bracket layout:
+- horizontal layout on desktop
+- rounds progress left to right
+- each round is a column
+- match cards stack vertically
+- connector lines link winners to next round
+
+Mobile layout:
+- horizontal scroll bracket
+OR
+- round-by-round tabs:
+  Round 1 / Semifinal / Final
+
+Round labels:
+- Round 1
+- Quarterfinals
+- Semifinals
+- Final
+- Champion
+
+Each match card must show:
+- Match number
+- Player 1 avatar + username + seed
+- Player 2 avatar + username + seed
+- status badge
+- score if completed
+- winner highlight
+- current user “YOU” badge
+
+Match states:
+
+WAITING_FOR_PLAYER:
+- open slot says:
+  “Waiting”
+- skeleton username
+- subtle shimmer
+
+READY:
+- both players shown
+- status:
+  “Ready”
+- button if user is in match:
+  “Start Match”
+
+LIVE:
+- status:
+  “Live”
+- pulsing red/pink dot
+- animated border
+
+COMPLETED:
+- winner row glows
+- loser row dimmed
+- score shown
+- winner connector line lights up to next round
+
+BYE:
+- show:
+  “Bye”
+- automatically advances player
+- line advances with soft glow
+
+DISPUTED:
+- red/yellow badge
+- admin review needed
+
+--------------------------------------------------
+3.5 BRACKET ANIMATIONS
+--------------------------------------------------
+
+Bracket should feel alive.
+
+When player joins:
+- their name animates into open slot
+- prize pool counts up
+- player count updates
+
+When match starts:
+- match card glows
+- status changes to Live
+- small pulse animation
+
+When match completes:
+1. winner row flashes
+2. loser dims
+3. connector line animates toward next round
+4. winner avatar/name slides into next round slot
+5. next match card updates
+
+When tournament completes:
+- champion card expands
+- crown animation
+- confetti/particles
+- “TOURNAMENT CHAMPION”
+- prize reveal
+- social share prompt
+
+--------------------------------------------------
+3.6 BRACKET VISUAL STYLE
+--------------------------------------------------
+
+Use premium Jango style:
+- dark glass match cards
+- neon connector lines
+- glowing winner paths
+- gold final/champion area
+- current user highlighted with blue/pink ring
+- active matches pulse subtly
+
+Connector lines:
+- default = dim gray/blue
+- completed winner path = bright neon
+- current user path = special glow
+
+Champion slot:
+- bigger than other slots
+- trophy icon
+- gold glow
+- animated crown if completed
+
+Final match:
+- larger card
+- stronger glow
+- more visual importance
+
+--------------------------------------------------
+3.7 TOURNAMENT START SEQUENCE
+--------------------------------------------------
+
+When tournament starts:
+
+Show full-screen cinematic overlay:
+1. background dims
+2. tournament logo/name appears
+3. bracket flashes on screen
+4. user’s first opponent highlighted
+5. countdown:
+   “Round 1 Begins In 3...2...1...”
+6. redirect/start match
+
+Sound:
+- cinematic rise
+- soft impact on start
+
+Haptic:
+- light tick each countdown
+- medium pulse on start
+
+--------------------------------------------------
+3.8 BETWEEN ROUNDS EXPERIENCE
+--------------------------------------------------
+
+After user wins a tournament round:
+
+Show:
+“ADVANCING”
+
+Content:
+- current round won
+- next round
+- next opponent if known
+- countdown to next match
+
+Buttons:
+- View Bracket
+- Continue
+
+If waiting for opponent:
+Show:
+“Waiting for your next opponent”
+with live bracket view.
+
+After user loses:
+Show:
+“Eliminated”
+
+Content:
+- placement
+- match result
+- bracket position
+- CTA:
+  “Join Another Tournament”
+  “Play Match”
+  “View Final Bracket”
+
+--------------------------------------------------
+3.9 TOURNAMENT ADMIN CONTROLS
+--------------------------------------------------
+
+Admin tournament page should allow:
+- view entrants
+- view bracket
+- force start
+- cancel tournament
+- resolve disputed match
+- refund entry if cancellation
+- edit start time before tournament starts
+
+All admin actions must create audit log.
+
+--------------------------------------------------
+3.10 TOURNAMENT EDGE CASES
+--------------------------------------------------
+
+Handle:
+
+Tournament fills while user joins:
+- no deduction
+- show “Tournament filled”
+
+User refreshes:
+- tournament state reloads correctly
+
+User disconnects:
+- tournament entry remains
+- rules determine forfeit if match not joined in time
+
+Odd number of players:
+- use BYE slots
+- highest seeds get bye if seeding exists
+
+Duplicate click on join:
+- button loading/disabled
+- backend idempotency prevents double entry
+
+Prize pool mismatch:
+- recalculate from entries server-side
+- admin alert if mismatch
+
+==================================================
+SECTION 4: VISUAL DEPTH / LESS FLAT UI
+==================================================
+
+Goal:
+The platform should feel layered and premium, not flat/2D.
+
+--------------------------------------------------
+4.1 GLOBAL DEPTH SYSTEM
+--------------------------------------------------
+
+Create consistent layers:
+
+Layer 0:
+far background gradient
+
+Layer 1:
+ambient particles / noise
+
+Layer 2:
+page content cards
+
+Layer 3:
+hovered/active cards
+
+Layer 4:
+modals
+
+Layer 5:
+cinematic overlays
+
+Every major UI element should clearly sit on one layer.
+
+--------------------------------------------------
+4.2 CARD UPGRADE RULES
+--------------------------------------------------
+
+All cards should have:
+- dark glass base
+- subtle inner gradient
+- thin neon border
+- soft outer shadow
+- inner highlight
+- hover lift
+- active press state
+
+Hover:
+- translateY(-3px to -5px)
+- scale 1.01
+- glow strengthens
+
+Active:
+- scale 0.98
+- pressed shadow
+
+Important cards:
+- extra radial glow behind them
+
+--------------------------------------------------
+4.3 BACKGROUND QUALITY
+--------------------------------------------------
+
+Every page background should include:
+- dark gradient
+- subtle texture/noise
+- radial glow behind key areas
+- faint animated particles
+- optional themed lines/grid
+
+Do not leave large empty dark areas with no texture.
+
+--------------------------------------------------
+4.4 MODAL DEPTH
+--------------------------------------------------
+
+All modals:
+- backdrop blur
+- dark overlay
+- scale/fade entrance
+- strong shadow
+- glowing border
+- clear close button
+- focus trap if possible
+
+Entrance:
+- opacity 0 to 1
+- scale 0.96 to 1
+- 180–250ms
+
+--------------------------------------------------
+4.5 GAME WORLD DEPTH
+--------------------------------------------------
+
+Each game screen:
+- centered arena
+- deep background
+- themed glow
+- particle motion
+- clean HUD
+- not cluttered
+
+Use Air Hockey layout as the standard:
+- player cards top left/right
+- title center
+- stake badge
+- control tags above arena
+- arena centered
+- controls/help card below
+
+==================================================
+SECTION 5: SOUND + HAPTICS
+==================================================
+
+Add sound and haptic feedback without making the app annoying.
+
+--------------------------------------------------
+5.1 CENTRAL FEEDBACK MANAGER
+--------------------------------------------------
+
+Create one centralized system:
+
+Feedback.play(eventName)
+Feedback.haptic(patternName)
+
+Do not hardcode audio calls across random components.
+
+User settings:
+- sound on/off
+- haptics on/off
+- volume slider
+- reduce motion/effects toggle
+
+Persist settings in:
+- user settings if logged in
+- localStorage fallback
+
+--------------------------------------------------
+5.2 SOUND EVENTS
+--------------------------------------------------
+
+Add sounds for:
+
+Navigation:
+- nav click
+- tab switch
+- modal open
+- modal close
+
+Buttons:
+- hover
+- click
+- disabled/error click
+
+Match:
+- match found
+- countdown tick
+- match start
+- valid move
+- invalid move
+- win
+- loss
+- draw
+- run it back request
+
+Tournament:
+- enter tournament
+- bracket update
+- round start
+- advance round
+- eliminated
+- tournament champion
+
+Money:
+- balance increase
+- balance decrease
+- deposit confirmed
+- withdrawal requested
+- shop purchase
+
+Progression:
+- XP gain
+- rank up
+- achievement unlock
+- level up
+
+--------------------------------------------------
+5.3 HAPTIC EVENTS
+--------------------------------------------------
+
+Use navigator.vibrate() where supported.
+
+Patterns:
+light tap:
+[10]
+
+medium confirm:
+[20]
+
+success:
+[20, 40, 20]
+
+error:
+[50, 30, 50]
+
+big win:
+[40, 30, 40, 30, 80]
+
+tournament champion:
+[40, 20, 40, 20, 100]
+
+Do nothing if not supported.
+
+--------------------------------------------------
+5.4 SOUND QUALITY DIRECTION
+--------------------------------------------------
+
+Sound style:
+- premium
+- futuristic
+- arcade/casino blend
+- not childish
+- short and crisp
+- no long annoying sounds
+
+Important:
+Add cooldown so repeated clicks do not spam sound.
+
+==================================================
+SECTION 6: REMOVE CONFUSING / UNFINISHED FEATURES
+==================================================
+
+Be ruthless.
+
+--------------------------------------------------
+6.1 HIDE BROKEN FEATURES
+--------------------------------------------------
+
+If it does not work end-to-end, hide it.
+
+Hide or disable:
+- unsupported payment methods
+- unfinished tabs
+- broken match modes
+- dead settings
+- placeholder stats
+- admin actions not wired
+- fake buttons
+
+Do not show raw:
+- “coming soon” unless styled well
+- backend errors
+- 400/403 JSON
+- runtime errors
+- placeholder developer text
+
+--------------------------------------------------
+6.2 CLEAN NAVIGATION
+--------------------------------------------------
+
+Main nav should be simple:
+- Play
+- Compete
+- Social
+- Shop
+
+Move secondary items:
+- Dashboard
+- Stats
+- Friends
+- Settings
+- Admin
+
+Admin only visible to admin users.
+
+Mobile:
+- bottom nav
+- profile menu for secondary links
+
+--------------------------------------------------
+6.3 CONSISTENT ERROR HANDLING
+--------------------------------------------------
+
+Create standardized error UI.
+
+Every error should include:
+- plain title
+- short explanation
+- next action
+
+Examples:
+
+Insufficient funds:
+Title:
+“Not Enough Scalps”
+Text:
+“You need 5 more Scalps to join this match.”
+Button:
+“Add Funds”
+
+Device mismatch:
+Title:
+“Wrong Device”
+Text:
+“This match is only available on mobile.”
+Button:
+“Open on Mobile”
+
+Match full:
+Title:
+“Match Filled”
+Text:
+“This match just filled. Find another one.”
+Button:
+“Find Match”
+
+Raw backend errors should never be shown to users.
+
+==================================================
+FINAL QA CHECKLIST
+==================================================
+
+Before marking complete, test:
+
+Trust / Money:
+- match confirmation shows correct stake/pot/rake
+- tournament entry deducts correctly
+- prize pool updates correctly
+- deposit cannot manually credit
+- balance history matches balance
+
+Run-it-back:
+- win screen works
+- loss screen works
+- rematch works
+- increase stakes works
+- lower stakes works
+- insufficient funds handled
+
+Tournaments:
+- join works
+- duplicate join blocked
+- bracket displays
+- current user highlighted
+- player joins update bracket
+- match completion advances winner
+- final champion animation works
+- mobile bracket usable
+
+Visual:
+- cards have depth
+- modals feel premium
+- pages do not feel empty
+- no flat dead sections
+
+Sound/Haptics:
+- settings work
+- sounds not spammy
+- haptics do not error on unsupported devices
+
+Cleanup:
+- no broken tabs
+- no fake payment methods
+- no raw JSON errors
+- no console runtime errors
+
+FINAL EXPECTATION:
+Jango should feel more premium, more trustworthy, more alive, and more complete.
+
+The biggest priority is the tournament experience:
+- polished cards
+- secure entry
+- prize pool movement
+- real bracket
+- live updates
+- cinematic winner flow
+
+Do not treat tournaments like a simple list.
+They should feel like one of the main reasons users come back.

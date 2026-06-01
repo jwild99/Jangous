@@ -1,0 +1,194 @@
+You are continuing development of Jango.us, a competitive gaming platform with wagers using the in-game currency Scalps.
+
+The following systems have already been implemented:
+
+• Clan system  
+• Clan challenges  
+• Player reporting system  
+• Anti rage-quit reconnect system (5 minute reconnect timer)  
+• Cosmetic item shop  
+• Victory animations  
+• Profile cosmetics  
+
+Your task now is to connect these systems together and build the missing infrastructure that makes them fully functional and scalable.
+
+Everything must work on mobile and desktop, match the existing design system, and integrate with the current database structure.
+
+--------------------------------------------------
+
+NOTIFICATION SYSTEM
+
+Build a full real-time notification system.
+
+Notifications should appear:
+
+• in a notification bell icon in the header  
+• in a dropdown panel  
+• as temporary toast notifications for important events  
+
+Each notification must include:
+
+notification_id  
+user_id  
+type  
+title  
+message  
+created_at  
+is_read  
+related_entity_id (optional)
+
+Supported notification types:
+
+Clan invite received  
+Clan join request accepted  
+Clan join request denied  
+Clan challenge received  
+Clan challenge accepted  
+Clan challenge declined  
+Clan challenge won  
+Clan challenge lost  
+Match reconnect reminder  
+Opponent forfeited match  
+You forfeited match  
+Item purchased  
+Cosmetic equipped  
+Weekly shop refresh  
+
+UI requirements:
+
+Unread notification counter on the bell icon  
+Ability to mark notifications as read  
+Ability to clear all notifications  
+
+Notifications should automatically trigger when events happen in the system.
+
+Examples:
+
+When a clan challenge is accepted → notify all participating players.  
+When a player disconnects → send reconnect reminder.  
+When a player buys an item → confirm purchase notification.
+
+--------------------------------------------------
+
+MODERATION DASHBOARD
+
+Create an internal moderation dashboard for admins.
+
+The reporting system already exists, but moderators need tools to manage reports.
+
+Admin dashboard should show:
+
+Recent reports  
+Reports grouped by player  
+Reports grouped by category  
+High report count players  
+Recent bans or warnings  
+
+Each report entry should show:
+
+Reported player  
+Reporter  
+Reason  
+Description  
+Match reference  
+Time submitted  
+Report status  
+
+Moderators must be able to perform actions:
+
+Issue warning  
+Temporary matchmaking ban  
+Temporary wager restriction  
+Chat mute  
+Permanent ban  
+Dismiss report  
+
+Store moderation actions in a moderation log with:
+
+action_id  
+admin_id  
+target_user_id  
+action_type  
+reason  
+created_at  
+
+--------------------------------------------------
+
+PLAYER REPUTATION SYSTEM
+
+Create a sportsmanship reputation score for players.
+
+This system should integrate with:
+
+• rage quit detection  
+• valid reports  
+• completed matches  
+
+Reputation score range:
+
+0–100
+
+Reputation tiers displayed on profile:
+
+Excellent (80–100)  
+Good (60–79)  
+Warning (40–59)  
+Restricted (0–39)
+
+Reputation increases when:
+
+• matches are completed normally  
+• fair play streaks occur  
+• no reports over time  
+
+Reputation decreases when:
+
+• confirmed reports occur  
+• rage quits occur  
+• match abuse occurs  
+
+If reputation drops too low:
+
+• player may be restricted from wager matches  
+• player may be placed into low-reputation matchmaking pool  
+
+--------------------------------------------------
+
+SYSTEM INTEGRATION
+
+Verify that all previously built systems connect correctly.
+
+Ensure:
+
+Clan wins update clan stats  
+Clan challenges update leaderboards  
+Rage quits update player reputation  
+Reports feed into moderation dashboard  
+Shop purchases add items to inventory  
+Equipped cosmetics appear in matches and profiles  
+
+Also implement backend validation to prevent:
+
+Duplicate clan challenges  
+Shop purchase exploits  
+Reconnect abuse  
+Report spam  
+
+--------------------------------------------------
+
+PERFORMANCE AND RELIABILITY
+
+Ensure these systems support:
+
+Thousands of concurrent players  
+Fast database queries  
+Secure wallet transactions for Scalps  
+No UI lag on mobile devices  
+
+All pages must be fully responsive and optimized for both desktop and mobile.
+
+--------------------------------------------------
+
+FINAL GOAL
+
+These systems should make Jango.us feel like a polished competitive gaming platform similar to GamePigeon combined with Skillz and modern multiplayer games with clans, cosmetics, and social competition.

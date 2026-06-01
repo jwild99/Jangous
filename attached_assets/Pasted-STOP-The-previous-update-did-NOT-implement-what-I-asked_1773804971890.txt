@@ -1,0 +1,155 @@
+STOP. The previous update did NOT implement what I asked for.
+
+You added systems (XP layer, overlays, activity feed), but you did NOT change the visual experience of the lobby.
+
+The lobby still looks the same. That is the problem.
+
+-----------------------------------
+WHAT I ACTUALLY WANT
+-----------------------------------
+
+I want the lobby to feel IMMERSIVE and DIFFERENT depending on the game selected.
+
+Right now:
+- Background is static
+- No scene
+- No depth
+- No environmental change
+
+This needs to be completely fixed.
+
+-----------------------------------
+PART 1: GAME-BASED BACKGROUND SYSTEM (REQUIRED)
+-----------------------------------
+
+When the featured game changes (8-ball, air hockey, mini golf, etc):
+
+THE ENTIRE BACKGROUND MUST CHANGE.
+
+Not slightly — visibly.
+
+-----------------------------------
+EXAMPLES (IMPLEMENT THESE)
+-----------------------------------
+
+8-BALL POOL:
+- Dark green pool table surface
+- Soft spotlight lighting
+- Faint pool balls in background
+- Cue stick angled overlay
+- Subtle moving light reflections
+
+AIR HOCKEY:
+- Neon blue/cyan glowing table lines
+- Light streaks / motion trails
+- Futuristic feel
+- Slight animated glow pulses
+
+MINI GOLF:
+- Soft green course texture
+- Flag + hole in distance
+- Rolling ball animation loop
+- Light particles (wind/dust)
+
+-----------------------------------
+IMPORTANT RULES
+-----------------------------------
+
+- These are BACKGROUND SCENES, not UI elements
+- They must sit BEHIND the UI
+- They must be subtle but clearly visible
+- Each game must feel like a DIFFERENT environment
+
+-----------------------------------
+PART 2: TRANSITIONS (CRITICAL)
+-----------------------------------
+
+When switching games:
+
+DO NOT just swap instantly.
+
+Add:
+- Smooth fade
+- Light sweep transition
+- Slight zoom
+
+It should feel like:
+The environment is changing.
+
+-----------------------------------
+PART 3: DEPTH SYSTEM (THIS IS WHY IT FEELS FLAT)
+-----------------------------------
+
+Right now everything is one flat layer.
+
+You must add depth:
+
+Layer 1: Background scene (game environment)
+Layer 2: Grid + lighting overlay
+Layer 3: UI (cards, buttons)
+
+Add slight blur to background
+Add glow separation for UI
+
+-----------------------------------
+PART 4: PARALLAX (DESKTOP ONLY)
+-----------------------------------
+
+When user moves mouse:
+
+- Background shifts slightly
+- Light follows cursor a bit
+
+Very subtle — but adds life.
+
+-----------------------------------
+PART 5: PLAY BUTTON REACTION (IMPORTANT)
+-----------------------------------
+
+When hovering PLAY:
+
+- Background glow increases
+- Light focuses toward center
+- Slight zoom in
+
+Make it feel interactive.
+
+-----------------------------------
+PART 6: WHY THIS MATTERS
+-----------------------------------
+
+Right now the app feels like a website.
+
+I want it to feel like:
+- A game
+- A world
+- A place you’re inside of
+
+-----------------------------------
+FINAL REQUIREMENT
+-----------------------------------
+
+When I switch between:
+
+8-Ball → Air Hockey → Mini Golf
+
+It should feel like I entered a DIFFERENT GAME SPACE each time.
+
+If it still looks the same, it is NOT done.
+
+-----------------------------------
+DO NOT:
+-----------------------------------
+
+- Do not add more overlays
+- Do not add more text systems
+- Do not add backend features
+
+-----------------------------------
+ONLY FOCUS ON:
+-----------------------------------
+
+VISUAL IMMERSION
+BACKGROUND SYSTEM
+DEPTH
+TRANSITIONS

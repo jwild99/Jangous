@@ -1,0 +1,179 @@
+Update the main Lobby page to add a dedicated Ranked section so competitive players can quickly enter ranked play.
+
+Main goal:
+The lobby should clearly separate casual/quick play from ranked competition. Ranked needs to feel like an important part of the platform, not hidden inside other menus.
+
+==================================================
+1. ADD A NEW RANKED SECTION TO THE MAIN LOBBY
+==================================================
+
+Add a clearly visible section on the main lobby/dashboard called:
+
+Ranked
+or
+Ranked Arena
+
+This section should appear high enough on the page that users notice it quickly, ideally near:
+- Start Match
+- Live Matches
+- Tournaments
+- Leaderboard
+
+Ranked should feel like a core pillar of the platform.
+
+==================================================
+2. RANKED SECTION CONTENT
+==================================================
+
+The Ranked section should include:
+
+- headline: Ranked
+- short description like:
+  “Compete for rating, climb the ladder, and prove your skill.”
+- current rank display
+- current skill rating / ELO
+- season progress
+- ranked queue buttons
+
+Example content:
+
+Current Rank: Gold
+Rating: 1325
+Season Wins: 24
+Season Losses: 18
+
+==================================================
+3. RANKED QUEUE ACTIONS
+==================================================
+
+Inside the Ranked section, add clear ranked actions such as:
+
+- Queue Ranked Match
+- View Ranked Leaderboard
+- Ranked History
+- Season Rewards
+
+Primary CTA:
+Queue Ranked Match
+
+Optional quick ranked filters:
+- Ranked 1v1
+- Ranked by Game
+- Solo Queue
+
+==================================================
+4. RANKED GAME SELECTION
+==================================================
+
+Allow users to choose which game they want to queue for in ranked.
+
+Games to support if available:
+- Chess
+- Mini Golf
+- Connect 4
+- Air Hockey
+- Rock Paper Scissors
+- Dots & Boxes
+- 8-Ball Pool
+- Bowling
+- Cup Pong
+- Tron
+- Tower Stack
+
+Possible UI:
+- tabs
+- dropdown
+- game chips
+- small ranked game cards
+
+Each option should clearly show that it is ranked matchmaking.
+
+==================================================
+5. SHOW RANK / RATING VISUALLY
+==================================================
+
+Make rank feel meaningful.
+
+Display:
+- rank badge
+- rank tier name
+- numeric rating
+- progress to next tier if applicable
+
+Example:
+Gold — 1325 Rating
+Progress to Platinum: 75 points
+
+Use strong visual hierarchy so the rank feels important.
+
+==================================================
+6. RANKED MATCH INFO
+==================================================
+
+Show what players can expect from ranked.
+
+Include small details like:
+- rating changes after wins/losses
+- matched against similar skill
+- ranked seasons
+- no mixed casual queue
+
+This helps users understand the value of ranked play.
+
+==================================================
+7. RANKED LEADERBOARD CONNECTION
+==================================================
+
+Connect the Ranked section to the ranked leaderboard.
+
+Show:
+- top ranked players
+- your current rank position
+- button to open full ranked leaderboard
+
+Optional mini preview:
+#1 Alex — Champion
+#2 Jordan — Diamond
+#3 Maya — Diamond
+
+==================================================
+8. RANKED HISTORY / STATS
+==================================================
+
+If possible, include ranked match history in the Ranked section.
+
+Show:
+- recent ranked games
+- wins/losses
+- rating gained/lost
+- game played
+
+Example:
+Won vs Alex — Chess — +14
+Lost vs Maya — Mini Golf — -9
+
+==================================================
+9. VISUAL DESIGN
+==================================================
+
+Make the Ranked section feel more intense and premium than normal game browsing.
+
+Use:
+- darker competitive styling
+- stronger glow accents
+- premium rank badge visuals
+- cleaner high-stakes feel
+- glassmorphism panels matching the rest of the site
+
+Ranked should feel more serious than Quick Play.
+
+==================================================
+10. FINAL GOAL
+==================================================
+
+The main lobby should have a clear Ranked section that:
+- stands out
+- shows current rank and rating
+- lets players queue ranked matches quickly
+- connects to leaderboard and ranked history
+- makes competitive play feel like a major feature of the platform

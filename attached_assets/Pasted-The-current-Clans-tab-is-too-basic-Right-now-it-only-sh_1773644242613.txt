@@ -1,0 +1,256 @@
+The current Clans tab is too basic.
+
+Right now it only shows that a user belongs to a clan, which is not enough to make clans meaningful or engaging.
+
+We need to redesign the Clans system so it becomes a full interactive clan hub where players can compete together, communicate, and progress as a team.
+
+The goal is to make clans feel like real competitive gaming teams or guilds.
+
+--------------------------------------------------
+
+1. CLAN DASHBOARD
+
+When a user clicks a clan, they should enter a full Clan Dashboard.
+
+The clan dashboard should include:
+
+• Clan banner
+• Clan logo
+• Clan name
+• Clan tag
+• Clan description
+• Clan leader
+• Clan member count
+• Clan level
+• Clan rank
+
+Layout example:
+
+[Clan Banner]
+
+Clan Name [TAG]
+Description
+
+Leader: PlayerName
+Members: 12/20
+Clan Level: 8
+
+--------------------------------------------------
+
+2. CLAN MEMBER LIST
+
+Add a full clan member roster.
+
+Display:
+
+• Player avatar
+• Username
+• Rank within clan
+• Skill rating
+• Games played
+• Win rate
+• Last active
+
+Roles should include:
+
+Leader
+Officer
+Member
+
+Officers should have moderation permissions.
+
+--------------------------------------------------
+
+3. CLAN CHAT
+
+Each clan should have its own chat.
+
+Features:
+
+• real-time messaging
+• emoji reactions
+• match sharing
+• challenge invitations
+• pinned messages
+
+This makes clans social and active.
+
+--------------------------------------------------
+
+4. CLAN LEADERBOARD
+
+Add a clan leaderboard showing:
+
+• Total clan wins
+• Total clan wagers
+• Total clan earnings
+• Clan win rate
+
+Display top clans globally.
+
+Example leaderboard:
+
+1. [BBC] OG
+2. [SKL] Elite
+3. [PRO] Champions
+
+--------------------------------------------------
+
+5. CLAN XP / LEVELING
+
+Clans should level up.
+
+Clan XP should increase when members:
+
+• win matches
+• participate in tournaments
+• complete challenges
+• recruit members
+
+Clan levels unlock:
+
+• larger member cap
+• banner customization
+• clan cosmetics
+• clan badges
+
+Example:
+
+Level 1 → 10 members  
+Level 5 → 20 members  
+Level 10 → custom banner  
+
+--------------------------------------------------
+
+6. CLAN ACHIEVEMENTS
+
+Add clan achievements such as:
+
+• First 100 wins
+• 10 match win streak
+• 1,000 Scalps won
+• 50 clan members recruited
+• Tournament champion
+
+Achievements should appear in the clan profile.
+
+--------------------------------------------------
+
+7. CLAN WARS
+
+Add clan vs clan competition.
+
+Features:
+
+• challenge another clan
+• best-of series matches
+• team score tracking
+
+Example:
+
+Clan A vs Clan B
+Score: 4 – 2
+
+This would massively increase engagement.
+
+--------------------------------------------------
+
+8. CLAN EVENTS
+
+Allow clan leaders to create events.
+
+Examples:
+
+• Clan tournaments
+• Weekly match nights
+• Internal competitions
+
+Members can RSVP or join.
+
+--------------------------------------------------
+
+9. CLAN ACTIVITY FEED
+
+Add a clan activity feed showing:
+
+• Member wins
+• New members joining
+• Clan achievements
+• Match highlights
+
+Example:
+
+Beau won 15 Scalps in Chess  
+Alex joined the clan  
+Clan reached Level 5  
+
+--------------------------------------------------
+
+10. CLAN CUSTOMIZATION
+
+Allow clans to customize:
+
+• clan banner
+• clan logo
+• clan colors
+• clan motto
+
+Make the clan page visually unique.
+
+--------------------------------------------------
+
+11. CLAN STATS PANEL
+
+Add statistics like:
+
+• Total clan earnings
+• Total matches played
+• Average skill rating
+• Most active member
+• Top earner
+
+--------------------------------------------------
+
+12. CLAN RECRUITMENT SYSTEM
+
+Allow clans to recruit players.
+
+Features:
+
+• open recruitment
+• invite players
+• apply to join clan
+• approval system
+
+--------------------------------------------------
+
+13. CLAN HOME UI
+
+The clan page should feel like a team headquarters.
+
+Layout suggestion:
+
+LEFT SIDE
+Clan profile + stats
+
+CENTER
+Clan activity feed
+
+RIGHT SIDE
+Member list + clan chat
+
+--------------------------------------------------
+
+FINAL GOAL
+
+The clan system should feel like a real competitive gaming community system, not just a label.
+
+Users should be able to:
+
+• compete together
+• talk to their team
+• level up the clan
+• track achievements
+• challenge other clans
+• participate in clan wars
+• build a reputation as a team.

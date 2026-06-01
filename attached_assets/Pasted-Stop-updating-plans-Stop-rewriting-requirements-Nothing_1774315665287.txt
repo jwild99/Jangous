@@ -1,0 +1,161 @@
+Stop updating plans.
+
+Stop rewriting requirements.
+
+Nothing has actually improved in the product.
+
+The games are still laggy, still look bad, and still feel low quality.
+
+I do NOT want another plan or explanation.
+
+I want you to start fixing real issues immediately.
+
+==================================================
+NEW RULE
+==================================================
+
+Do NOT respond with:
+- plans
+- summaries
+- “I will…”
+- “next steps…”
+- “analysis…”
+
+Only make real code changes that improve the actual games.
+
+==================================================
+STEP 1: PROVE THE PROBLEM (MANDATORY)
+==================================================
+
+For ONE game (start with 8-Ball or Air Hockey):
+
+Measure and show:
+- FPS during gameplay
+- number of re-renders per second
+- input delay timing
+
+Log:
+- where frame drops happen
+- what causes lag
+
+If you don’t measure it, you’re guessing.
+
+==================================================
+STEP 2: FIX PERFORMANCE (FIRST — NO EXCUSES)
+==================================================
+
+Pick ONE game and fully fix it before touching others.
+
+Fix:
+- unnecessary React re-renders
+- large component trees updating every frame
+- heavy state updates
+- DOM-based animation instead of efficient rendering
+
+Requirements:
+- smooth 60 FPS
+- zero input delay feeling
+- no stuttering
+
+If the game still lags → keep fixing.
+
+==================================================
+STEP 3: REBUILD RENDERING (THIS IS WHY IT LOOKS BAD)
+==================================================
+
+Current issue: games look like UI apps, not games.
+
+Fix:
+- reduce DOM usage
+- move game visuals to canvas or optimized rendering layer if needed
+- remove excessive nested elements
+
+Goal:
+Game elements should render efficiently and smoothly.
+
+==================================================
+STEP 4: FIX GAME FEEL (CRITICAL)
+==================================================
+
+Right now everything feels:
+- stiff
+- delayed
+- weak
+
+Fix:
+- add easing to movement
+- improve collision response
+- remove floaty motion
+- make interactions feel immediate
+
+Example:
+- pool balls must feel heavy and smooth
+- air hockey must feel fast and reactive
+- mini golf must feel precise
+
+==================================================
+STEP 5: VISUAL UPGRADE (AFTER PERFORMANCE)
+==================================================
+
+Once smooth:
+
+Improve:
+- lighting (gradients, highlights)
+- shadows
+- contrast
+- depth
+
+Remove:
+- flat colors
+- dull backgrounds
+- “basic web app” look
+
+Each game should feel like a real game environment.
+
+==================================================
+STEP 6: DO NOT TOUCH EVERYTHING AT ONCE
+==================================================
+
+Process:
+
+1. Pick ONE game
+2. Fix performance completely
+3. Improve feel
+4. Improve visuals
+5. Verify it feels GOOD
+6. THEN move to next game
+
+==================================================
+STEP 7: SHOW REAL RESULTS
+==================================================
+
+After fixing ONE game, show:
+
+- before vs after performance
+- what was actually changed
+- what improved (FPS, smoothness, responsiveness)
+
+If nothing measurable improved, it was not fixed.
+
+==================================================
+FINAL RULE
+==================================================
+
+No more planning.
+
+No more prompts.
+
+No more summaries.
+
+Only real improvements to:
+- performance
+- responsiveness
+- visuals
+- game feel
+
+==================================================
+START WITH:
+8-BALL POOL OR AIR HOCKEY
+
+Fix it completely.
+Then move to the next game.

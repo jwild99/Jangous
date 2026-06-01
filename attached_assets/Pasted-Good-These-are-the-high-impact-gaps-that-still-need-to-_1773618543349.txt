@@ -1,0 +1,90 @@
+Good. These are the high-impact gaps that still need to be built. I want you to fully implement them in a polished, production-ready way across desktop and mobile. Do not leave these as placeholders, partial UI, or mockups.
+
+Priority features to build now:
+
+1. Wallet Dashboard (/wallet)
+- Build a real dedicated wallet page, not just a thin deposit wrapper.
+- The wallet page should feel like a full financial dashboard.
+- Include:
+  - Current total balance
+  - Scalp balance
+  - Available funds
+  - Pending funds if applicable
+  - Deposit button
+  - Withdraw button
+  - Recent transactions
+  - Recent withdrawals
+  - Wallet activity summary
+  - Clean balance cards
+  - Quick actions
+- Make the page visually polished, modern, and easy to understand.
+- Desktop and mobile must both feel complete and smooth.
+- The wallet should feel trustworthy and premium, not basic.
+
+2. Reputation / Sportsmanship Score
+- Add a real schema field and backend logic for player reputation / sportsmanship.
+- Display the score on the player profile in a clean and simple way.
+- Reputation should be affected by:
+  - Completed matches
+  - Disconnect rate
+  - Reports from other players
+  - Confirmed bad behavior
+  - Positive standing over time
+- Do not make it confusing or overly harsh.
+- Make it feel fair, readable, and useful for matchmaking and trust.
+- Add supporting UI language so users understand what it means.
+
+3. Player Reporting System
+- Build a full reporting system because this is currently missing.
+- Allow users to report players for:
+  - Cheating
+  - Stalling
+  - Abusive chat
+  - Inappropriate behavior
+  - Exploiting or unfair play
+- Reports should be accessible from profiles, match history, and live/private match screens where appropriate.
+- Add a clean modal or form for submitting reports.
+- Reports should connect to moderation/reputation logic.
+- Make the reporting flow quick, easy, and serious-looking.
+- Prevent spam reporting where possible.
+
+4. XP Progress Bar on Profile
+- There is already a level badge, but there is no real XP bar. Build the full progression display.
+- Add a visual XP progress bar to the profile page.
+- Show:
+  - Current level
+  - Current XP
+  - XP needed for next level
+  - Progress percentage or visual fill
+- Make leveling feel rewarding and polished.
+- The XP section should look modern and fit the profile design.
+- Ensure it updates based on actual player activity and progression rules.
+
+5. Private Matches
+- Build a true private match system with invite code support.
+- Users should be able to:
+  - Create a private match
+  - Generate an invite code or private room code
+  - Share the code
+  - Join a private match using the code
+- Private matches should feel fast, clean, and easy to use.
+- Add clear UI for host and join actions.
+- Make sure this works well on mobile and desktop.
+- Support direct challenge flows where possible.
+
+Implementation expectations:
+- Build real backend logic, real UI, and real user flows.
+- Do not ship half-finished components.
+- Make all features responsive and polished.
+- Make sure all new systems match the current platform branding and visual style.
+- Focus on trust, competitive integrity, and user retention.
+
+Priority order:
+1. Wallet Dashboard
+2. Private Matches
+3. Player Reporting
+4. Reputation / Sportsmanship
+5. XP Progress Bar
+
+Final goal:
+Close these gaps in a way that makes the platform feel much more complete, trustworthy, and competitive. I want these features implemented as real product systems, not rough prototypes.

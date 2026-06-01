@@ -1,0 +1,332 @@
+PROJECT: FIX JANGO STORY / ARENA ORIGINS PAGE — USE REAL STORYLINE + REAL BRAND ARTWORK
+
+The current Story/Arena Origins page layout is okay, but the content is wrong. It is creating random lore that does NOT represent the real Jango.us story.
+
+We need to rebuild the page content around the actual Jango brand story and use the provided artwork from our pitch deck / brand assets.
+
+IMPORTANT:
+Do NOT invent random characters, fake years, fake lore, fake founders, fake “Jango Vex,” fake Tokyo/underground sport details, fake codes, fake 1.2M users, or fake historical events.
+
+This page should tell the REAL Jango story in a cinematic way:
+- Built by college students / young founders
+- A skill-based competitive gaming platform
+- Players compete in simple games for real stakes
+- The platform is social, competitive, fast, and mobile-first
+- The art should show the underground/community/college energy behind Jango
+- The tone should feel raw, ambitious, competitive, and real
+
+==================================================
+1. REMOVE CURRENT FAKE CONTENT
+==================================================
+
+Remove or rewrite the current story sections that say things like:
+- “Founded 2089, Old Tokyo”
+- “Jango Vex”
+- “The Last Arcade”
+- “The Rise of the Rake”
+- “The Eight Disciplines”
+- “The Crowned & the Cursed”
+- “1.2M registered fighters”
+- Any fake futuristic lore that was not provided
+
+This is not the direction.
+
+The page should not feel like random sci-fi fiction.
+
+It should feel like:
+“Here is the origin and vision of Jango.us.”
+
+==================================================
+2. USE PROVIDED ARTWORK
+==================================================
+
+Use these uploaded / provided images in the Story page:
+
+- JangoCollegeKidsPhones.png
+- JangoCollegeKidsGamblingOnPhones.png
+- JangoBackground.png
+- JangoBackground1.png
+
+These are the correct visual direction.
+
+Image usage:
+
+HERO:
+Use one of the strongest wide artworks as the hero background:
+- JangoCollegeKidsPhones.png
+or
+- JangoCollegeKidsGamblingOnPhones.png
+
+STORY SECTIONS:
+Use the other images as full-width cinematic panels between text sections.
+
+BACKGROUND / WORLD SECTION:
+Use:
+- JangoBackground.png
+- JangoBackground1.png
+
+Do NOT use random generated imagery unless it matches these assets exactly.
+
+==================================================
+3. VISUAL STYLE
+==================================================
+
+The page should feel like:
+- underground competitive gaming
+- college hustle
+- mobile-first social wagering
+- gritty but premium
+- neon street energy
+- cyber/luxury Jango brand
+
+Use:
+- dark overlays on images
+- pink/orange/cyan glow accents
+- cinematic gradients
+- large bold typography
+- scroll animations
+- glass text cards over images
+- parallax image movement if performant
+
+Do NOT make it look like:
+- a blog post
+- generic lore page
+- sci-fi novel
+- random AI fantasy page
+
+==================================================
+4. PAGE STRUCTURE
+==================================================
+
+Route:
+/story
+or keep current /story route
+
+Profile dropdown:
+Place this tab between Settings and Streamer Mode.
+
+Name options:
+Preferred:
+“Arena Origins”
+
+Other acceptable names:
+- Backstory
+- Story Mode
+- The Jango Story
+
+==================================================
+5. NEW PAGE CONTENT STRUCTURE
+==================================================
+
+SECTION 1 — HERO
+
+Background:
+Use JangoCollegeKidsPhones.png or JangoCollegeKidsGamblingOnPhones.png
+
+Headline:
+“Jango.us”
+
+Subheadline:
+“Skill games. Real stakes. Built for the players who want more than casual.”
+
+Short body:
+“Jango started with a simple idea: make competitive games feel social, fast, and meaningful again. A place where friends, rivals, and strangers can compete in familiar games with real pressure behind every move.”
+
+CTA buttons:
+- “Enter the Arena”
+- “Play Now”
+
+Visual:
+Dark image overlay with neon orange/pink glow.
+Text should sit cleanly over the image.
+
+==================================================
+SECTION 2 — THE PROBLEM
+
+Title:
+“Games Got Too Passive”
+
+Content:
+“Most mobile games are built to waste time. Endless ads, fake rewards, and no real pressure. Jango was built for the opposite reason: fast competition, real stakes, and games where skill actually matters.”
+
+Visual:
+Use a dark glass card over background artwork.
+Add small icons:
+- timer
+- trophy
+- phone
+- lightning bolt
+
+==================================================
+SECTION 3 — THE ORIGIN
+
+Title:
+“Built From the Ground Up”
+
+Content:
+“Jango is being built by young founders with a simple mission: turn everyday skill games into a competitive arena. The idea was not to create another boring casino clone. The idea was to create a platform where simple games feel intense, social, and worth playing.”
+
+Image:
+Use JangoBackground.png or JangoBackground1.png
+
+Design:
+Full-width image panel with text overlay.
+
+==================================================
+SECTION 4 — THE ARENA
+
+Title:
+“The Arena Is the Platform”
+
+Content:
+“Every match is a challenge. Every tournament is a chance to climb. Every win builds your reputation. Jango is designed around competition, progression, and the feeling that every game means something.”
+
+Add feature tiles:
+- Skill-Based Games
+- Tournaments
+- Leaderboards
+- Social Competition
+- Scalps Economy
+- Fast Matchmaking
+
+==================================================
+SECTION 5 — THE PLAYERS
+
+Title:
+“Built for the Competitors”
+
+Content:
+“Jango is for players who want to test themselves. The people who say ‘run it back’ after a close loss. The people who want rankings, rivalries, tournaments, and a platform that feels alive.”
+
+Image:
+Use JangoCollegeKidsGamblingOnPhones.png
+
+Design:
+Image left, text right on desktop.
+Stack on mobile.
+
+==================================================
+SECTION 6 — THE STYLE / WORLD
+
+Title:
+“The Jango World”
+
+Content:
+“The artwork is part of the identity: underground, social, competitive, and alive. It should feel like a digital arena built out of college energy, street competition, and high-stakes gaming culture.”
+
+Use:
+JangoBackground1.png
+
+Add:
+Subtle animated particles and neon lighting.
+
+==================================================
+SECTION 7 — THE FUTURE
+
+Title:
+“This Is Just the Start”
+
+Content:
+“Jango is growing into a full competitive ecosystem: more games, live tournaments, polished brackets, player profiles, seasons, cosmetics, ranks, and a social layer built around winning.”
+
+CTA:
+“Start Playing”
+
+==================================================
+6. TONE OF WRITING
+==================================================
+
+Tone should be:
+- confident
+- raw
+- ambitious
+- simple
+- not corny
+- not fake sci-fi
+- not overly corporate
+
+Avoid:
+- fake dates
+- fake characters
+- fake future history
+- fake user counts
+- fake mythological lore
+- random AI-generated worldbuilding
+
+Use real brand language:
+- skill games
+- real stakes
+- competition
+- social gaming
+- tournaments
+- rankings
+- run it back
+- built for players
+
+==================================================
+7. IMAGE IMPLEMENTATION DETAILS
+==================================================
+
+For each image:
+- optimize file size
+- use responsive loading
+- preserve image quality
+- use object-fit: cover
+- add dark gradient overlay for readability
+- add subtle parallax only on desktop
+- disable heavy parallax on mobile
+
+Image treatment:
+- border radius on section images
+- soft glow around image panels
+- slight shadow
+- no harsh cropping on important subjects
+
+==================================================
+8. SCROLL / ANIMATION
+==================================================
+
+Add smooth section animations:
+- hero fades in
+- text slides up
+- cards fade in one by one
+- images slightly scale on scroll
+- CTA buttons glow subtly
+
+Keep animations premium:
+- not cartoonish
+- not too fast
+- not distracting
+
+==================================================
+9. MOBILE REQUIREMENTS
+==================================================
+
+Mobile version must:
+- keep images readable
+- stack text/cards cleanly
+- avoid tiny text
+- avoid horizontal scroll
+- keep CTA visible
+- reduce heavy animation
+
+==================================================
+10. FINAL EXPECTATION
+==================================================
+
+The Story page should no longer feel random or fake.
+
+It should feel like:
+- Jango’s origin
+- Jango’s brand identity
+- Jango’s vision
+- a cinematic pitch deck page inside the product
+
+Users should understand:
+- what Jango is
+- why it exists
+- what world the brand is building
+- why the artwork matters
+- why the platform feels different
+
+The final page should be polished enough that it could be shown to users, investors, and developers without needing explanation.

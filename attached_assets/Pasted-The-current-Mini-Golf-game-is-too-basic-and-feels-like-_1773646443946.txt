@@ -1,0 +1,213 @@
+The current Mini Golf game is too basic and feels like a prototype.
+
+We need to completely overhaul the game to make it feel like a real competitive skill-based mini golf game similar to GamePigeon Mini Golf.
+
+Focus on improving:
+
+• physics
+• graphics
+• mechanics
+• skill expression
+• map design
+• shot control
+• match flow
+
+This game must feel polished enough for real-money competitive matches.
+
+--------------------------------------------------
+
+1. PHYSICS ENGINE IMPROVEMENT
+
+The ball physics currently feel too simple.
+
+Upgrade the physics so they behave more realistically.
+
+Requirements:
+
+• smooth ball acceleration and deceleration
+• proper friction on the green
+• realistic bounce off walls
+• angle-based reflection
+• velocity preservation on rebounds
+• slight spin effect based on shot angle
+
+Ball movement should feel smooth and skill-based.
+
+Do NOT allow random physics.
+
+Players should be able to learn and master shot angles.
+
+--------------------------------------------------
+
+2. SHOT MECHANICS
+
+The shot system should be redesigned to feel more competitive.
+
+New aiming system:
+
+Step 1: Click and drag to aim  
+Step 2: Pull back to control shot power  
+Step 3: Release to shoot
+
+Visual indicators:
+
+• aiming line
+• power meter
+• trajectory preview
+
+Power bar should show:
+
+low power  
+medium power  
+high power
+
+Add slight camera zoom during aiming to improve precision.
+
+--------------------------------------------------
+
+3. GRAPHICS UPGRADE
+
+The course currently looks flat and empty.
+
+Improve visual quality:
+
+• textured grass
+• shaded walls
+• realistic shadows
+• better lighting
+• smooth gradients
+• subtle reflections on the ball
+
+Add depth so the map feels more like a real mini golf course.
+
+--------------------------------------------------
+
+4. COURSE DESIGN
+
+Current course layout is too simple.
+
+Improve map design by adding:
+
+• ramps
+• tunnels
+• curved walls
+• bumpers
+• sand traps
+• water hazards
+• moving obstacles
+• bounce pads
+
+Courses should require strategy and skill.
+
+--------------------------------------------------
+
+5. BALL VISUALS
+
+Upgrade the ball visuals.
+
+Add:
+
+• glossy surface
+• lighting reflections
+• subtle shadow under ball
+• motion blur when moving fast
+
+Ball should feel dynamic and alive.
+
+--------------------------------------------------
+
+6. CAMERA IMPROVEMENT
+
+Improve the camera system.
+
+Features:
+
+• slight zoom when aiming
+• smooth camera follow after shot
+• small shake when hitting walls
+
+The camera should help players track their shots.
+
+--------------------------------------------------
+
+7. MATCH FLOW
+
+Improve how the match plays.
+
+Add:
+
+• turn indicator
+• shot counter
+• hole progress tracker
+• better scoreboard UI
+
+Players should always know:
+
+• whose turn it is
+• how many strokes were taken
+• current hole progress
+
+--------------------------------------------------
+
+8. COURSE THEMES
+
+Add themed environments.
+
+Examples:
+
+Neon Course  
+Stone Ruins Course  
+Classic Mini Golf Course  
+Night City Course
+
+Each course should feel visually different.
+
+--------------------------------------------------
+
+9. SOUND DESIGN
+
+Add satisfying sound effects.
+
+Examples:
+
+• putter hit sound
+• wall bounce
+• hole-in sound
+• crowd cheer for hole-in-one
+
+Sound feedback improves player satisfaction.
+
+--------------------------------------------------
+
+10. SKILL-BASED FEATURES
+
+Add mechanics that reward skill.
+
+Examples:
+
+• bank shots
+• trick shots
+• power control
+• angle mastery
+• obstacle navigation
+
+Players should feel rewarded for precision.
+
+--------------------------------------------------
+
+11. PERFORMANCE
+
+Ensure the game runs smoothly on both:
+
+• mobile
+• desktop
+
+Physics and rendering must remain lightweight but polished.
+
+--------------------------------------------------
+
+FINAL GOAL
+
+The Mini Golf game should feel like a polished competitive mini golf experience suitable for wagering matches.
+
+It should feel closer to GamePigeon Mini Golf rather than a simple demo game.

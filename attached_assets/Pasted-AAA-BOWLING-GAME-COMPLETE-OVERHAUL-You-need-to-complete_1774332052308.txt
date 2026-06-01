@@ -1,0 +1,140 @@
+AAA BOWLING GAME COMPLETE OVERHAUL
+
+You need to completely rebuild and polish the bowling game to feel like a AAA-quality experience (console/mobile level like Wii Sports Bowling + realistic physics like PBA Bowling). The current version feels cheap, unresponsive, and unrealistic. Fix EVERYTHING below.
+
+CORE GOAL:
+Make bowling feel smooth, realistic, competitive, visually polished, and addictive. This should feel like a real bowling simulator with arcade polish, not a basic mini-game.
+
+----------------------------------
+
+PHYSICS ENGINE (MOST IMPORTANT)
+
+Rebuild bowling physics from scratch.
+
+Ball Physics:
+- Implement realistic weight, momentum, and inertia
+- Add a true spin system (hook mechanics)
+- Player can apply left/right spin that affects trajectory over time (not instantly)
+- Simulate oil patterns:
+  - Front of lane = low friction (ball slides)
+  - Mid lane = transition
+  - Back of lane = high friction (ball hooks)
+- Speed affects hook (faster = less hook, slower = more hook)
+
+Collision Physics:
+- Pins must behave realistically (no random explosions or fake knockdowns)
+- Use proper collision physics with chain reactions
+- Add pin weight and correct center of mass
+- Pins should tumble, slide, and collide naturally
+- Fix all clipping, jittering, and unrealistic reactions
+
+Lane Interaction:
+- Ball must roll smoothly (no floating or sliding glitches)
+- Proper ground contact at all times
+- Add realistic gutter behavior when ball falls in
+
+----------------------------------
+
+CONTROLS (MAKE IT FEEL PREMIUM)
+
+Input System:
+- Smooth swipe/drag system for mobile and mouse input for desktop
+- 3-phase mechanic:
+  1. Aim (left/right positioning)
+  2. Power (timing bar or pull-back system)
+  3. Spin (left/right curve control)
+
+Features:
+- Add precision sensitivity scaling
+- Inputs must be instant (no delay or lag)
+- Add slight aim assist for new players but keep skill-based ceiling high
+
+----------------------------------
+
+CAMERA SYSTEM
+
+- Dynamic camera that follows the ball smoothly down the lane
+- Add cinematic slow motion on pin impact
+- Camera angles:
+  - Behind player (default)
+  - Follow cam (tracking ball)
+  - Impact cam (close-up on pins)
+- All transitions must be smooth (no snapping or jitter)
+
+----------------------------------
+
+GRAPHICS (AAA VISUAL UPGRADE)
+
+Environment:
+- Realistic bowling alley lighting
+- Polished wood lane with reflections
+- Dynamic shadows for ball and pins
+
+Ball:
+- High-quality textures
+- Glossy, reflective surface
+- Visible spin while rolling
+
+Pins:
+- Clean, detailed models
+- Smooth animations when hit
+- No stiff or robotic movement
+
+Effects:
+- Subtle motion blur on fast throws
+- Light impact effects (keep realistic, not arcade-heavy)
+
+----------------------------------
+
+SOUND DESIGN (VERY IMPORTANT)
+
+- Realistic ball rolling sound that changes with speed
+- Layered pin impact sounds (not repetitive)
+- Gutter sound effect
+- Subtle crowd/ambience audio
+
+Feedback Sounds:
+- Strike = powerful, satisfying sound with bass
+- Spare = clean confirmation sound
+
+----------------------------------
+
+GAME FEEL & FEEDBACK
+
+- Add subtle screen shake on pin impact
+- Add impact feedback (visual + audio combined)
+- Strike:
+  - Brief slow motion moment
+  - Highlight effect
+- Spare:
+  - Clean, satisfying animation
+
+----------------------------------
+
+GAME MODES
+
+- Practice Mode
+- Ranked Matches
+- 1v1 real-time multiplayer
+- Tournament mode
+
+----------------------------------
+
+MOBILE OPTIMIZATION
+
+- Controls must feel natural on mobile devices
+- UI must be clean and not cluttered
+- Ensure consistent performance across all devices
+- Fix ALL lag, frame drops, and input delay issues
+
+----------------------------------
+
+FINAL REQUIREMENTS
+
+- No lag
+- No physics bugs
+- No unrealistic behavior
+- Everything must feel smooth and responsive
+- This should feel like a polished, premium, competitive bowling game
+
+Do not do partial improvements. This is a full overhaul. Treat this like building a flagship game.

@@ -1,0 +1,361 @@
+I want to add 3 new games to Jango, and each one needs to feel polished, competitive, and built for both wagering and replayability.
+
+These games must feel like real premium arcade games, not cheap demos.
+
+The 3 games are:
+
+1. Football game inspired by Retro Bowl
+2. Basketball game that works great on mobile and desktop
+3. Top-down racing game with multiple tracks
+
+-----------------------------------
+GENERAL REQUIREMENTS FOR ALL 3 GAMES
+-----------------------------------
+
+- Must be polished and visually clean
+- Must be easy to understand quickly
+- Must be competitive and fun for wagers
+- Must work smoothly on both desktop and mobile
+- Must feel responsive with good animations and satisfying feedback
+- Must fit the Jango visual identity and quality level
+
+These should not feel like random side games. They should feel like major additions to the platform.
+
+==================================================
+GAME 1: FOOTBALL GAME (RETRO BOWL INSPIRED)
+==================================================
+
+I want the football game to feel inspired by Retro Bowl.
+
+That means:
+- arcade football feel
+- simple to control
+- clean field view
+- satisfying passing and play execution
+- fast and fun, not overly realistic
+
+IMPORTANT:
+Do NOT make it a full football simulator.
+Make it a fast arcade-style football game with Retro Bowl energy.
+
+-----------------------------------
+FOOTBALL CORE GAMEPLAY
+-----------------------------------
+
+- Side-view or angled retro-style football field presentation
+- Focus on offensive skill gameplay first
+- Quarterback passing mechanic should feel really good
+- Player should be able to:
+  - aim passes
+  - control power/touch
+  - lead receivers
+- Defensive players should move in ways that create pressure and force skillful passes
+
+-----------------------------------
+FOOTBALL GAME FEEL
+-----------------------------------
+
+I want:
+- clean retro-inspired style
+- crisp movement
+- satisfying throw animations
+- smooth catches
+- nice touchdown moments
+- exciting big-play feel
+
+-----------------------------------
+FOOTBALL MODES / FORMAT
+-----------------------------------
+
+Keep matches fast.
+
+Possible format:
+- short head-to-head drive battles
+- each player gets equal possessions
+- score more points in fewer drives
+- or timed offensive duel
+
+This game should work well for 1v1 competition and wagering.
+
+-----------------------------------
+FOOTBALL VISUAL STYLE
+-----------------------------------
+
+- Retro Bowl inspired style but upgraded/polished for Jango
+- Bright field markings
+- clean player sprites/models
+- satisfying pass arcs
+- touchdown feedback
+- scoreboard should look clean and premium
+
+-----------------------------------
+FOOTBALL UI / FEEDBACK
+-----------------------------------
+
+Add:
+- clean score display
+- down / possession info if needed
+- pass target feedback
+- touchdown animation
+- turnover / interception feedback if included
+
+-----------------------------------
+FOOTBALL SOUND
+-----------------------------------
+
+- pass throw sound
+- catch sound
+- tackle impact sound
+- crowd/touchdown feedback
+- menu/UI sound polish
+
+==================================================
+GAME 2: BASKETBALL GAME (MOBILE + DESKTOP)
+==================================================
+
+I want the basketball game to be very strong on both mobile and desktop.
+
+This is extremely important:
+The controls must feel natural on both platforms.
+
+Do NOT design this as desktop-first only.
+Do NOT design it as mobile-only either.
+It must feel good on both.
+
+-----------------------------------
+BASKETBALL CORE CONCEPT
+-----------------------------------
+
+Build a fast, skill-based arcade basketball game.
+
+Best direction:
+- 1v1 shootout
+- timed scoring battle
+- skill shots
+- release timing
+- streak/combo pressure
+
+This game needs to be:
+- very replayable
+- easy to understand
+- hard to master
+
+-----------------------------------
+BASKETBALL CONTROLS
+-----------------------------------
+
+Desktop:
+- click/hold/release
+or
+- drag and release shot mechanic
+
+Mobile:
+- tap/hold/release
+or
+- swipe shot mechanic
+
+The release/timing must feel smooth and fair on both.
+
+-----------------------------------
+BASKETBALL GAMEPLAY FEATURES
+-----------------------------------
+
+- shot meter or release timing
+- perfect release window
+- combo or heat streak system
+- moving hoop or increasing difficulty in some modes
+- score race or timed battle
+
+-----------------------------------
+BASKETBALL GAME FEEL
+-----------------------------------
+
+I want it to feel:
+- smooth
+- addictive
+- clean
+- satisfying when a perfect shot lands
+
+Shots should have:
+- good arc
+- good net feedback
+- good swish/rim sounds
+- strong visual feedback on perfect release
+
+-----------------------------------
+BASKETBALL VISUALS
+-----------------------------------
+
+- polished court
+- glowing shot feedback
+- premium hoop/net feel
+- clean ball motion
+- score popups
+- good contrast so it is easy to read on phones
+
+-----------------------------------
+BASKETBALL MOBILE REQUIREMENTS
+-----------------------------------
+
+- buttons/touch areas must be thumb-friendly
+- no tiny controls
+- no clutter
+- animations must still look smooth on mobile
+- game must fit well in portrait or landscape depending on final design choice
+
+-----------------------------------
+BASKETBALL DESKTOP REQUIREMENTS
+-----------------------------------
+
+- should not feel oversized or awkward
+- smooth mouse controls
+- fast rematch flow
+- responsive shot timing
+
+==================================================
+GAME 3: TOP-DOWN RACING GAME
+==================================================
+
+I want the racing game to be a top-down racing game, not a full 3D racing simulator.
+
+This should be a polished arcade racing game with multiple tracks.
+
+-----------------------------------
+RACING CORE CONCEPT
+-----------------------------------
+
+- top-down or slightly angled top-down camera
+- fast arcade handling
+- drift/turn skill
+- boost opportunities
+- multiple tracks
+- short races that work for 1v1 competition
+
+-----------------------------------
+RACING MATCH FORMAT
+-----------------------------------
+
+- 1v1 races
+- short races under 2–3 minutes
+- 2–3 laps depending on track size
+- winner determined by finish placement or best time depending on mode
+
+-----------------------------------
+RACING TRACK SYSTEM
+-----------------------------------
+
+I want MULTIPLE TRACKS.
+
+Need a good variety:
+- beginner/easy track
+- medium track
+- technical track with tighter turns
+- neon/city style track
+- desert or canyon style track
+- maybe one futuristic style track
+
+Tracks should feel visually different, not just slightly rearranged.
+
+-----------------------------------
+RACING GAMEPLAY FEATURES
+-----------------------------------
+
+- smooth steering
+- braking/drift feeling
+- acceleration that feels responsive
+- boost pads or speed zones
+- collision feedback
+- clean lap tracking
+- race countdown intro
+
+-----------------------------------
+RACING VISUAL FEEL
+-----------------------------------
+
+- top-down arcade style
+- clean road textures
+- track edge glow or contrast
+- tire mark/drift feedback
+- motion streaks on speed
+- good camera stability
+
+-----------------------------------
+RACING CONTROLS
+-----------------------------------
+
+Desktop:
+- keyboard controls or well-designed input system
+
+Mobile:
+- touch steering or tap/hold controls
+- must feel simple and competitive
+- no overcomplicated mobile input
+
+-----------------------------------
+RACING UI
+-----------------------------------
+
+- lap counter
+- position indicator
+- boost meter if used
+- countdown at race start
+- finish screen with clear winner
+
+==================================================
+QUALITY BAR FOR ALL 3 GAMES
+==================================================
+
+I want these games to feel like serious additions to Jango.
+
+That means:
+- polished graphics
+- good feedback
+- clean UI
+- satisfying sound
+- responsive controls
+- competitive match flow
+- mobile + desktop compatibility where needed
+
+Do NOT make these feel like quick prototypes.
+
+-----------------------------------
+AAA / PREMIUM FEEL REQUIREMENTS
+-----------------------------------
+
+Add across all 3 games:
+- smooth transitions
+- sound effects
+- hover/click feedback where relevant
+- win/lose feedback
+- clean loading states
+- polished animations
+- high readability
+- visually satisfying moments
+
+-----------------------------------
+WAGER / COMPETITIVE FRIENDLY
+-----------------------------------
+
+All 3 games must be designed in a way that makes them good for:
+- casual matches
+- ranked matches
+- tournaments
+- wagers
+
+So keep them:
+- fair
+- skill-based
+- fast enough for replayability
+- exciting to watch and play
+
+-----------------------------------
+FINAL GOAL
+-----------------------------------
+
+Football should feel like a polished Retro Bowl-inspired arcade football experience.
+
+Basketball should feel amazing on both mobile and desktop with smooth timing-based gameplay.
+
+Racing should feel like a fun, competitive top-down arcade racer with multiple tracks and strong replay value.
+
+Build these as premium Jango games, not placeholders.

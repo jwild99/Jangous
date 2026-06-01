@@ -1,0 +1,391 @@
+PROJECT: PLAY MODAL TOURNAMENT FLOW — SHOW LIVE TOURNAMENTS WHEN USER CLICKS TOURNAMENT
+
+GOAL:
+When a user clicks “Tournament” in the Play modal, they should NOT be sent into a generic game/options flow first.
+
+They should immediately see a polished list of live/open tournaments they can join.
+
+Current screen:
+Mode selection modal shows:
+- Casual
+- Ranked
+- VS Bot
+- Tournament
+- Private
+
+Required behavior:
+When user clicks the Tournament card:
+→ Replace the modal content with a “Live Tournaments” step.
+→ Show tournaments that are open, starting soon, or live/enterable.
+→ Let the user join directly from this modal.
+
+==================================================
+1. TOURNAMENT CARD CLICK BEHAVIOR
+==================================================
+
+Current:
+Tournament is just one of the mode options.
+
+Change to:
+
+On click Tournament:
+1. Keep user inside the same modal
+2. Move to tournament selection step
+3. Update stepper:
+   Step 1: Mode
+   Step 2: Tournament
+   Step 3: Confirm
+4. Modal title changes from:
+   “How do you want to play?”
+   to:
+   “Choose a Tournament”
+
+Do NOT make user choose game first unless they want to filter by game.
+
+==================================================
+2. LIVE TOURNAMENTS MODAL LAYOUT
+==================================================
+
+Inside modal show:
+
+HEADER:
+Title:
+“Live Tournaments”
+
+Subtitle:
+“Join an open event and compete for the prize pool.”
+
+Top right:
+- Back button to Mode selection
+- Close X
+
+FILTER ROW:
+- All
+- Starting Soon
+- Live
+- Open
+- My Eligible
+- By Game dropdown
+
+SEARCH:
+Optional search input:
+“Search tournaments…”
+
+TOURNAMENT LIST:
+Scrollable list of tournament cards.
+
+If there are many tournaments:
+- modal body scrolls
+- footer stays sticky
+
+==================================================
+3. TOURNAMENT CARD CONTENT
+==================================================
+
+Each tournament card must show:
+
+- Tournament name
+- Game icon
+- Game name
+- Status badge
+- Prize pool
+- Entry fee
+- Players joined / max players
+- Countdown to start
+- Format
+- Join button
+
+Example card:
+
+Chess Grand Prix
+Chess
+Status: Starting Soon
+Prize Pool: 38 Scalps
+Entry: 5 Scalps
+Players: 0/8
+Starts in: 12m 30s
+Single Elimination
+
+Button:
+“Enter — 5 Scalps”
+
+==================================================
+4. TOURNAMENT STATUS BADGES
+==================================================
+
+Use clear visual badges:
+
+OPEN:
+- green
+- text: “Open”
+
+STARTING SOON:
+- orange/yellow pulse
+- text: “Starting Soon”
+
+LIVE:
+- red/pink pulse
+- text: “Live”
+
+FILLING FAST:
+- orange glow
+- text: “Filling Fast”
+
+LAST SPOTS:
+- gold flash
+- text: “Last Spots”
+
+FULL:
+- gray
+- text: “Full”
+
+COMPLETED:
+- muted gray
+- text: “Ended”
+
+Only allow joining when:
+- tournament status is open or starting soon
+- tournament is not full
+- registration is still open
+- user meets requirements
+
+==================================================
+5. JOIN BUTTON LOGIC
+==================================================
+
+Button states:
+
+Eligible:
+“Enter — X Scalps”
+
+Already Entered:
+“View Bracket”
+
+Insufficient Balance:
+“Add Funds”
+
+Tournament Full:
+“Full”
+
+Registration Closed:
+“Closed”
+
+Rank Requirement Failed:
+“Rank Locked”
+
+Device Requirement Failed:
+“Wrong Device”
+
+When clicked:
+Eligible → opens tournament entry confirmation
+Already Entered → opens tournament bracket/lobby
+Add Funds → opens Add Funds modal
+Full/Closed/Locked → disabled with tooltip
+
+==================================================
+6. TOURNAMENT ENTRY CONFIRMATION
+==================================================
+
+After user clicks “Enter”:
+
+Show confirmation step inside same modal or nested modal.
+
+Title:
+“Enter Tournament”
+
+Show:
+- Tournament name
+- Game
+- Entry fee
+- Current balance
+- Balance after entry
+- Current prize pool
+- Prize pool after entry
+- Players joined
+- Bracket size
+- Format
+- Start time/countdown
+- Platform fee/rake
+- Winner receives estimate
+
+Buttons:
+- Cancel
+- Confirm Entry
+
+Confirm button text:
+“Confirm & Enter”
+
+==================================================
+7. BACKEND VALIDATION
+==================================================
+
+Before showing user as entered, backend must validate:
+
+- user is authenticated
+- tournament exists
+- tournament is open
+- registration not closed
+- tournament not full
+- user is not already entered
+- user has enough balance
+- user meets rank requirement
+- user meets device requirement if applicable
+
+If any fail:
+Return structured error:
+- TOURNAMENT_FULL
+- REGISTRATION_CLOSED
+- ALREADY_ENTERED
+- INSUFFICIENT_FUNDS
+- RANK_LOCKED
+- DEVICE_NOT_SUPPORTED
+
+Frontend must map errors into clean messages.
+
+==================================================
+8. ENTRY FEE + PRIZE POOL LOGIC
+==================================================
+
+When user confirms entry:
+
+Backend must atomically:
+1. Deduct entry fee from user balance
+2. Create transaction record
+3. Add user to tournament_entries
+4. Add entry fee to prize pool
+5. Assign bracket slot
+6. Return updated tournament data
+7. Emit tournament_update websocket event
+
+Frontend then:
+- animates balance countdown
+- animates prize pool count up
+- shows success state:
+  “You’re In”
+- opens tournament bracket/lobby
+
+Never update balance from frontend only.
+
+==================================================
+9. SUCCESS STATE
+==================================================
+
+After successful entry:
+
+Show:
+- glowing success animation
+- text:
+  “You’re In”
+- subtext:
+  “Your spot is locked in the bracket.”
+
+Buttons:
+- “View Bracket”
+- “Back to Tournaments”
+
+If tournament is starting soon:
+Show:
+“Starts in X minutes”
+
+==================================================
+10. EMPTY STATE
+==================================================
+
+If no tournaments are open:
+
+Show polished empty state.
+
+Title:
+“No tournaments open right now”
+
+Subtext:
+“Check back soon or start a casual match while you wait.”
+
+Buttons:
+- “Play Casual”
+- “View Tournament Page”
+
+Visual:
+- glowing trophy icon
+- subtle particles
+
+Do NOT show a blank modal.
+
+==================================================
+11. REAL-TIME UPDATES
+==================================================
+
+Use websocket updates inside modal.
+
+When another user joins:
+- player count updates
+- prize pool updates
+- bracket availability updates
+
+If tournament fills while modal is open:
+- button changes to “Full”
+- card status changes to Full
+
+If tournament starts:
+- status changes to Live
+- join button becomes disabled or View Bracket depending user entry
+
+Event:
+tournament_update
+
+==================================================
+12. POLISHED VISUAL STYLE
+==================================================
+
+The tournament modal should match Jango’s premium UI:
+
+- dark glass modal
+- neon border
+- soft shadows
+- glowing tournament cards
+- smooth transitions
+- status badge animations
+- sticky footer if needed
+- clean spacing
+
+Tournament cards should feel exciting:
+- prize pool visually prominent
+- entry fee clear
+- countdown obvious
+- join button strong
+
+==================================================
+13. MOBILE REQUIREMENTS
+==================================================
+
+On mobile:
+- modal becomes full-screen drawer
+- cards stack vertically
+- filters become horizontal scroll pills
+- join button is large and easy to tap
+- countdown and prize pool remain visible
+- no horizontal overflow
+
+==================================================
+14. FINAL EXPECTATION
+==================================================
+
+When user clicks Tournament from the Play modal:
+
+They should immediately see:
+- live/open tournaments
+- prize pools
+- entry fees
+- spots remaining
+- start countdowns
+- clear join buttons
+
+The flow should be:
+
+Play → Tournament → Choose Tournament → Confirm Entry → View Bracket
+
+No confusion.
+No unnecessary game selection first.
+No dead end.
+
+Tournaments should feel like a main event, not a hidden submenu.

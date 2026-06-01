@@ -1,0 +1,264 @@
+I need to finalize and upgrade the Battle Pass system with strict economy rules, a GOAT rarity tier, and a high-quality preview system that matches the Item Shop experience.
+
+-----------------------------------
+CRITICAL ECONOMY RULE (MANDATORY)
+-----------------------------------
+
+Scalps (currency) must NEVER be given away in the Battle Pass.
+
+Remove ALL currency rewards from:
+- Free track
+- Premium track
+- All tiers
+
+Scalps must ONLY be:
+- Purchased
+- Won through gameplay systems (if implemented later)
+
+Do NOT include currency rewards anywhere in the Battle Pass.
+
+-----------------------------------
+100 TIER SYSTEM
+-----------------------------------
+
+- Battle Pass has 100 tiers
+- Every tier has a UNIQUE reward
+- No duplicates
+- No filler content
+
+-----------------------------------
+TIER 100 = GOAT RARITY
+-----------------------------------
+
+Tier 100 must ALWAYS be:
+
+GOAT rarity (highest tier in the game)
+
+-----------------------------------
+GOAT RARITY RULES
+-----------------------------------
+
+- Only exists at Tier 100
+- Never appears in Item Shop
+- Never appears in lower tiers
+- Unique every season
+- Must feel elite and exclusive
+
+-----------------------------------
+GOAT VISUAL + ANIMATION SYSTEM (VERY IMPORTANT)
+-----------------------------------
+
+GOAT items must be visually and emotionally different from ALL other items.
+
+Design requirements:
+
+1. COLOR SYSTEM
+- Use a UNIQUE animated gradient (not used anywhere else)
+- Suggested styles:
+  - Red → Gold flowing gradient
+  - Multi-color shifting gradient
+  - Electric neon blend
+
+2. GLOW + AURA
+- Strong outer glow
+- Pulsing aura effect
+- Light bloom around item
+- Subtle particle effects (sparks, energy, shimmer)
+
+3. ANIMATION
+- Continuous subtle motion:
+  - Glow pulse
+  - Color shifting
+  - Particle drift
+- Smooth, not distracting
+
+4. BORDER STYLE
+- Custom animated border
+- Thicker + more complex than other rarities
+- Slight movement or shimmer
+
+5. INTERACTION EFFECTS
+When hovered or previewed:
+- Glow intensifies
+- Animation speeds up slightly
+- Small energy burst or pulse
+
+6. CLAIM EFFECT (BIG MOMENT)
+When user unlocks Tier 100:
+
+- Screen slightly dims
+- GOAT item appears center screen
+- Large glow burst
+- Particles expand outward
+- Text appears:
+  “GOAT UNLOCKED”
+- Strong reward sound plays
+
+This must feel like a MAJOR achievement moment.
+
+-----------------------------------
+RARITY SYSTEM (UNIFIED)
+-----------------------------------
+
+Battle Pass MUST match Item Shop rarity system exactly.
+
+Common → Gray  
+Rare → Blue  
+Epic → Purple  
+Legendary → Gold/Orange  
+GOAT → Custom animated (highest)
+
+Apply rarity visuals to:
+- Borders
+- Glow effects
+- Text accents
+- Background highlights
+
+-----------------------------------
+ITEM SHOP INTEGRATION
+-----------------------------------
+
+Battle Pass must be purchasable in Item Shop:
+
+- “Season 1 Battle Pass”
+- Price: 10 Scalps
+- Show preview of rewards
+- Show value proposition
+
+-----------------------------------
+PLAYER DASHBOARD INTEGRATION
+-----------------------------------
+
+Battle Pass progression must live in:
+
+Dashboard → Battle Pass
+
+Include:
+- Current Tier
+- XP bar
+- XP to next tier
+- Scrollable reward track
+- Free vs Premium lanes
+- Claim buttons
+
+-----------------------------------
+BATTLE PASS PREVIEW SYSTEM (VERY IMPORTANT)
+-----------------------------------
+
+Users who have NOT purchased the Battle Pass must be able to:
+
+- See ALL 100 tiers
+- View ALL rewards (including premium)
+- Click and preview ANY item
+
+-----------------------------------
+LOCKED ITEM DESIGN
+-----------------------------------
+
+For non-owners:
+
+- Show premium items but locked
+- Slight dim effect
+- Lock icon
+- “Premium” tag
+
+-----------------------------------
+ITEM PREVIEW EXPERIENCE (CRITICAL)
+-----------------------------------
+
+When a user clicks ANY item (locked or unlocked):
+
+Open a preview modal that is IDENTICAL in QUALITY to the Item Shop preview.
+
+-----------------------------------
+PREVIEW MUST MATCH ITEM SHOP EXACTLY
+-----------------------------------
+
+The preview experience must have:
+
+- Same lighting
+- Same glow intensity
+- Same animations
+- Same color vibrance
+- Same “premium feel”
+
+-----------------------------------
+DOPAMINE / EXCITEMENT REQUIREMENT
+-----------------------------------
+
+Preview must feel:
+
+- Visually exciting
+- Colorful
+- High contrast
+- Polished
+- Rewarding to look at
+
+It should feel like:
+“I WANT this item”
+
+NOT:
+- flat
+- dull
+- basic
+
+-----------------------------------
+PREVIEW CONTENT
+-----------------------------------
+
+Show:
+
+- Large item display (centered)
+- Rarity color + glow
+- Item name
+- Rarity label
+- Short description
+- Tier number
+- “Unlock at Tier X”
+
+If not owned:
+Show CTA:
+“Get Battle Pass – 10 Scalps”
+
+-----------------------------------
+INTERACTIONS
+-----------------------------------
+
+- Hover = glow effect based on rarity
+- Click = opens preview modal
+- Smooth animations (no instant pop)
+
+-----------------------------------
+CLAIM EXPERIENCE
+-----------------------------------
+
+When claiming rewards:
+
+- Sound plays
+- Item glows
+- “UNLOCKED” animation
+- Button changes to “Claimed”
+
+-----------------------------------
+FINAL GOAL
+-----------------------------------
+
+Users should:
+
+- Scroll Battle Pass
+- See exciting rewards
+- Click preview
+- Feel dopamine hit
+- Want to buy Battle Pass
+
+This should act as a VISUAL SALES SYSTEM, not just progression.
+
+-----------------------------------
+IMPORTANT
+-----------------------------------
+
+- No currency rewards
+- Tier 100 = GOAT only
+- Preview must match Item Shop EXACTLY
+- GOAT must feel elite and rare
+- Everything must feel AAA quality

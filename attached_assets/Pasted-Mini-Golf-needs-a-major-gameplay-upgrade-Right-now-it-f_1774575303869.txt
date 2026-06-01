@@ -1,0 +1,247 @@
+Mini Golf needs a major gameplay upgrade. Right now it feels too easy, too predictable, and too static. The holes are not randomized enough, and the courses need more challenge, more variety, and more real mini-golf obstacles.
+
+This next pass should make Mini Golf feel replayable.
+
+GOAL
+Make Mini Golf courses feel dynamic, less predictable, and more skill-based by adding randomized course generation elements and more hazards like water and sand traps.
+
+================================
+PRIORITY 1 — RANDOMIZE THE COURSES
+================================
+
+Right now the courses feel too fixed and too easy to learn. I want the mini golf mode to have much better replay value.
+
+Add procedural/randomized layout variation so courses are not the exact same every time.
+
+Randomize things like:
+- hole position
+- tee/start position
+- wall placements
+- obstacle placements
+- angle layouts
+- lane widths
+- bank shot opportunities
+- moving obstacle placement if supported
+- hazard placement
+- safe path vs risky path options
+
+Important:
+Do NOT make the randomization sloppy or unfair.
+Each generated hole still needs to:
+- be beatable
+- feel intentional
+- have a clean path to the hole
+- allow some skill expression
+- not create impossible geometry
+
+The randomness should feel curated, not chaotic.
+
+================================
+PRIORITY 2 — ADD WATER HAZARDS
+================================
+
+Add water traps to courses.
+
+Water hazard behavior:
+- if the ball lands in water, it counts as a penalty
+- reset the ball to the last valid position or a smart drop position
+- show clear feedback that the ball landed in water
+- add a splash effect and sound
+- apply stroke penalty if that fits the rules
+
+Water hazards should:
+- create risk/reward decisions
+- punish bad aim or too much power
+- make courses more interesting
+- visually stand out clearly from normal ground
+
+Need:
+- good collision/detection
+- clear hazard boundaries
+- consistent reset behavior
+- no weird clipping or getting stuck
+
+================================
+PRIORITY 3 — ADD SAND TRAPS
+================================
+
+Add sand traps too.
+
+Sand trap behavior:
+- ball can enter sand
+- movement slows down much faster in sand
+- shots out of sand feel weaker / harder
+- sand should affect friction realistically enough to change gameplay
+
+Sand traps should:
+- punish bad placement
+- add strategy
+- make players think about angle/power more carefully
+- create more varied course design
+
+Need:
+- separate surface physics for sand
+- clear visual difference from normal turf
+- smooth transition in/out of sand
+- no physics bugs at surface borders
+
+================================
+PRIORITY 4 — MAKE THE HOLES HARDER AND SMARTER
+================================
+
+The game is too easy right now.
+
+Increase difficulty through smarter design, not just unfair randomness.
+
+Add tougher hole design ideas like:
+- narrower lanes
+- angled walls
+- guarded hole positions
+- hazard-protected greens
+- bank-shot opportunities
+- split path choices
+- safer long route vs risky shortcut
+- more thoughtful geometry
+- stronger placement of traps near common miss zones
+
+Difficulty should come from:
+- better course design
+- hazard placement
+- precision requirements
+- decision-making
+
+Not from:
+- impossible shots
+- unfair random bounces
+- tiny hole hitboxes
+- broken physics
+
+================================
+PRIORITY 5 — BETTER COURSE VARIETY
+================================
+
+I want each hole to feel different.
+
+Add more course themes / patterns like:
+- straight technical holes
+- bank-shot holes
+- hazard-heavy holes
+- narrow precision holes
+- open power holes
+- maze-like holes
+- split-lane holes
+- obstacle timing holes if moving objects are supported
+
+Each round should feel less repetitive.
+
+If possible, build a system that generates from a set of “hole archetypes” and then randomizes within those archetypes.
+
+For example:
+- precision archetype
+- hazard archetype
+- banking archetype
+- long-shot archetype
+- multi-route archetype
+
+That would make the randomness feel more intentional.
+
+================================
+PRIORITY 6 — VISUAL IMPROVEMENTS FOR HAZARDS
+================================
+
+Water and sand traps need to look good, not just function.
+
+Water should have:
+- better color and depth
+- subtle shine/reflection
+- clean edge definition
+- splash FX when hit
+
+Sand should have:
+- distinct texture/color
+- softer edge blending
+- clear difference from grass/turf
+- visible gameplay readability
+
+Make hazards visually obvious at a glance.
+
+================================
+PRIORITY 7 — KEEP IT FAIR
+================================
+
+Randomization must not create broken or unfair holes.
+
+Add validation rules so generated holes:
+- always have a playable path
+- are not blocked off
+- do not trap the ball permanently
+- do not place the hole in unfair locations
+- do not spawn start/hole inside hazards
+- do not create impossible bounce geometry
+- do not create instant unavoidable penalties
+
+If needed, generate the course, then validate it before using it.
+
+================================
+PRIORITY 8 — BOT / GAMEPLAY COMPATIBILITY
+================================
+
+Make sure the randomization and new hazards work with:
+- player vs player
+- player vs bot
+- easy/medium/hard bot modes
+- score tracking
+- hole progression
+- full match completion
+
+Bots must be able to:
+- understand randomized holes
+- avoid hazards somewhat based on difficulty
+- still take valid shots
+- not break when water or sand is present
+
+================================
+PRIORITY 9 — FEEDBACK / DOPAMINE
+================================
+
+Add better feedback when interacting with hazards:
+- water splash FX
+- sand hit puff effect
+- penalty popup for water
+- slowed roll feel in sand
+- better hole completion feedback
+- stronger course identity per hole
+
+This will make the mode feel more alive.
+
+================================
+STRICT ORDER OF WORK
+================================
+
+Do this in order:
+
+1. Build randomized hole generation/variation system
+2. Add validation so holes stay fair and playable
+3. Add water hazards with penalty/reset behavior
+4. Add sand traps with different friction physics
+5. Increase difficulty through smarter layouts
+6. Improve hazard visuals and effects
+7. Verify bots and progression still work
+8. Final polish and replayability pass
+
+================================
+FINAL ACCEPTANCE CRITERIA
+================================
+
+This is complete only if:
+- mini golf courses are no longer overly predictable
+- layouts vary from game to game
+- water hazards exist and work correctly
+- sand traps exist and affect gameplay correctly
+- the game is harder in a smart way
+- holes remain fair and beatable
+- courses feel more replayable
+- hazards look visually clear and polished
+- bots and progression still work on randomized courses
+
+Do not just slightly move the cup around. This needs real course randomization, real hazards, and a real difficulty/replayability upgrade.

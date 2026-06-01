@@ -1,0 +1,211 @@
+Add a Card Management system that allows users to configure, add, edit, and manage their saved payment cards securely.
+
+Main goal:
+Users should be able to add a Visa card, save it to their account, and manage their cards from a clean “Payment Methods” or “Cards” section in their account settings.
+
+This system should feel similar to how modern apps manage saved cards (Stripe-style UX).
+
+==================================================
+1. PAYMENT METHODS PAGE
+==================================================
+
+Create a new page or section called:
+
+Payment Methods
+or
+Saved Cards
+
+Users should be able to access it from:
+
+Profile → Settings → Payment Methods
+
+This page should display all saved cards for the user.
+
+Example layout:
+
+Saved Cards
+
+[ Visa **** 4242 ]
+Expires 12/28
+Default Payment Method
+Edit | Remove
+
+==================================================
+2. ADD NEW CARD
+==================================================
+
+Add a button:
+
+Add New Card
+
+Clicking it opens a card configuration form.
+
+Card form fields should include:
+
+• Cardholder Name
+• Card Number
+• Expiration Date (MM/YY)
+• CVV
+• Billing ZIP Code
+
+Input improvements:
+
+• auto-format card number
+• MM/YY formatting
+• numeric-only fields where appropriate
+• inline validation
+• clear placeholder text
+
+Example placeholders:
+
+John Smith  
+4111 1111 1111 1111  
+12/28  
+123  
+97214
+
+==================================================
+3. SAVE CARD
+==================================================
+
+When the user submits the form:
+
+• validate inputs
+• securely save the card
+• only store masked card number (last 4 digits)
+
+Example stored display:
+
+Visa **** 4242
+
+Add a success message:
+
+“Card added successfully.”
+
+==================================================
+4. DEFAULT CARD
+==================================================
+
+Allow users to select a default card.
+
+Default card will automatically populate when users add funds using Visa.
+
+Add option:
+
+Set as Default
+
+Default card should display a badge:
+
+Default Payment Method
+
+==================================================
+5. EDIT CARD
+==================================================
+
+Allow users to edit card details.
+
+Editable fields:
+
+• expiration date
+• billing ZIP code
+• card nickname (optional)
+
+Card number and CVV should not be editable for security reasons.
+
+==================================================
+6. REMOVE CARD
+==================================================
+
+Allow users to remove a saved card.
+
+Before removal, show confirmation:
+
+“Are you sure you want to remove this card?”
+
+After removal:
+
+“Card removed successfully.”
+
+==================================================
+7. SECURITY INDICATORS
+==================================================
+
+Add trust indicators to the card form.
+
+Examples:
+
+• lock icon
+• message: “Your payment details are encrypted”
+• secure badge icon
+
+Cards should always display as masked numbers:
+
+**** **** **** 4242
+
+==================================================
+8. VISUAL DESIGN
+==================================================
+
+Match the JANGO platform design system.
+
+Use:
+
+• dark premium theme
+• glass-style cards
+• soft shadows
+• clean spacing
+• subtle glow effects
+• smooth hover animations
+
+Saved card cards should look like stylized payment cards.
+
+Example visual card:
+
+Visa
+**** **** **** 4242
+Expires 12/28
+
+==================================================
+9. INTEGRATION WITH ADD FUNDS
+==================================================
+
+When users go to Add Funds → Visa:
+
+If saved cards exist:
+
+Show them as quick selection options.
+
+Example:
+
+Use Saved Card
+
+Visa **** 4242  
+Visa **** 1138  
+
+Users can choose a saved card or add a new one.
+
+==================================================
+10. MOBILE SUPPORT
+==================================================
+
+Ensure the card management page works well on mobile.
+
+• cards stack vertically
+• forms resize properly
+• buttons remain easy to tap
+• numeric keyboard appears for number fields
+
+==================================================
+11. FINAL GOAL
+==================================================
+
+Users should be able to:
+
+• add cards
+• save cards
+• edit cards
+• remove cards
+• choose default cards
+• use saved cards when adding funds
+
+The experience should feel secure, modern, and consistent with professional payment platforms.

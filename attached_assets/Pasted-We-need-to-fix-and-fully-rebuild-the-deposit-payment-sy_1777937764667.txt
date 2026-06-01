@@ -1,0 +1,271 @@
+We need to fix and fully rebuild the deposit/payment system for Jango. Right now the system is insecure and allows users to credit themselves without paying. This must be treated as a critical production issue.
+
+========================
+CRITICAL ISSUE #1 – FREE MONEY EXPLOIT
+========================
+
+Right now, when a user generates a crypto deposit address, there is a button that says “I’ve sent the funds.” If the user clicks it, their balance is credited instantly even if no crypto was sent.
+
+THIS IS A CRITICAL SECURITY VULNERABILITY.
+
+Fix immediately:
+
+- Remove ANY logic where frontend actions can credit balance
+- The frontend must NEVER trigger balance updates
+- Clicking “I’ve sent funds” should NOT affect balance in any way
+- At most, it can update UI state only (optional)
+
+STRICT RULE:
+User balance must ONLY update from verified backend payment confirmations.
+
+========================
+CRITICAL ISSUE #2 – CRYPTO DEPOSITS NOT VERIFIED
+========================
+
+Rebuild crypto deposit flow properly:
+
+Flow:
+1. User clicks “Generate Deposit Address”
+2. Backend:
+   - Creates deposit record (status = pending)
+   - Requests real deposit address from crypto provider
+3. Frontend displays:
+   - Wallet address
+   - QR code
+   - Network warning
+4. User sends crypto externally
+5. Backend listens for provider webhook / blockchain confirmation
+6. Only after confirmation:
+   - Mark deposit = confirmed
+   - Credit user balance
+
+Deposit statuses:
+- pending
+- awaiting_confirmation
+- confirmed
+- failed
+- expired
+
+Do NOT credit users:
+- when address is generated
+- when user clicks anything
+- when transaction is unconfirmed
+
+========================
+CRITICAL ISSUE #3 – REMOVE ALL FAKE CREDIT LOGIC
+========================
+
+Audit and REMOVE:
+- Any addBalance() calls from frontend
+- Any dev/test shortcuts that auto-credit users
+- Any “mock payment success” logic still active
+
+Balance updates must:
+- Happen ONLY on backend
+- Require verified payment ID
+- Be idempotent (no double crediting)
+
+========================
+CRITICAL ISSUE #4 – PAYMENT METHODS BROKEN
+========================
+
+Current issue:
+“Card payments are not available yet…”
+
+Fix properly:
+
+If implemented:
+- Fully integrate and enable
+
+If NOT implemented:
+- Hide completely OR show “Coming Soon”
+- No broken buttons or flows
+
+========================
+RECOMMENDED PAYMENT STACK (IMPLEMENT THIS)
+========================
+
+Use a real, production-ready stack:
+
+CRYPTO:
+- Use Coinbase Commerce OR NOWPayments OR similar
+- Support:
+  - Bitcoin
+  - Ethereum
+  - Solana
+  - USDC
+
+FIAT (Cards, Apple Pay):
+- Use Stripe
+- Enable:
+  - Visa / Mastercard / Debit
+  - Apple Pay (via Stripe)
+- Use Stripe Checkout or Elements
+- Handle payments via Payment Intents
+
+PayPal / Venmo:
+- Only add if supported for this business type
+- Otherwise do NOT force it (compliance risk)
+
+IMPORTANT:
+This platform involves real money gaming.
+Ensure compliance with:
+- KYC / AML requirements
+- Gambling/sweepstakes laws
+- State restrictions
+- Payment provider terms
+- Age restrictions
+
+========================
+BACKEND REQUIREMENTS
+========================
+
+Create secure backend APIs:
+
+- createCryptoDeposit
+- createCardPaymentIntent (Stripe)
+- createPayPalSession (if allowed)
+- getDepositStatus
+- getDepositHistory
+- verifyEmail
+- checkDepositEligibility
+- webhook handlers (crypto + Stripe)
+
+========================
+WEBHOOK SYSTEM (MANDATORY)
+========================
+
+- Handle provider webhooks securely
+- Verify signatures
+- Store all events in DB
+- Make idempotent (no double processing)
+- Only update balance AFTER confirmed payment
+
+========================
+DATABASE STRUCTURE
+========================
+
+Users:
+- emailVerified
+- paymentCustomerId
+- kycStatus
+- depositEligible
+
+Deposits:
+- id
+- userId
+- method
+- asset/network
+- amountUsd
+- amountCrypto
+- fee
+- creditedAmount
+- status
+- providerPaymentId
+- walletAddress
+- transactionHash
+- createdAt
+- confirmedAt
+
+PaymentEvents:
+- id
+- provider
+- eventId
+- type
+- payload
+- processed
+
+========================
+UI / UX FIXES
+========================
+
+Crypto UI:
+- REMOVE “I’ve sent funds”
+- Replace with:
+  “Waiting for payment confirmation”
+- Add status steps:
+  1. Address generated
+  2. Waiting for payment
+  3. Confirming
+  4. Funds added
+
+Show:
+“Your balance updates automatically after confirmation.”
+
+Disable broken methods:
+- Hide or mark “Coming Soon”
+
+ERROR HANDLING:
+Replace technical errors with:
+- “Verify your email before adding funds”
+- “Payment failed”
+- “Deposit expired”
+- “Unable to generate address”
+
+========================
+REWARDING EXPERIENCE
+========================
+
+When deposit is confirmed:
+
+- Show success animation (clean, premium, not childish)
+- Animate balance increasing
+- Show:
+  “Deposit Confirmed”
+  “+$50 added”
+- Add glow/coin animation consistent with UI
+- Smooth transitions
+
+========================
+HACKER-STYLE SECURITY AUDIT (FIX ALL)
+========================
+
+Check and secure against:
+
+1. Frontend balance injection
+2. Fake API calls to credit balance
+3. Replay attacks (reusing payment IDs)
+4. Duplicate webhook processing
+5. Manually calling success endpoints
+6. Skipping verification checks
+7. Modifying deposit amounts client-side
+8. Using expired deposit sessions
+9. Sending wrong crypto/network
+10. Race conditions in balance updates
+
+All balance changes must:
+- Be server-side only
+- Be tied to verified payment events
+- Be logged
+- Be non-repeatable
+
+========================
+TESTING (REQUIRED)
+========================
+
+Test all flows:
+
+- Unverified user (blocked)
+- Verified user
+- BTC deposit
+- ETH deposit
+- SOL deposit
+- Card payment (Stripe)
+- Payment failure
+- Expired deposit
+- Duplicate webhook
+- Mobile UI
+- Production deployment
+
+========================
+FINAL EXPECTATION
+========================
+
+After this fix:
+
+- Users CANNOT generate free balance
+- Deposits ONLY credit after real confirmed payment
+- Crypto uses blockchain confirmation
+- Stripe handles cards securely
+- UI is clean, modern, and consistent with Jango
+- System is production-ready and abuse-proof

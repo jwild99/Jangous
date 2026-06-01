@@ -1,0 +1,240 @@
+You are updating the Jango.us platform economy system.
+
+Your task is to build a complete in-platform currency system called "Scalps". Scalps should function like a game currency similar to V-Bucks, but with a fixed value of 1 Scalp = 1 USD.
+
+All money or crypto users deposit must automatically convert into Scalps so the platform only operates with one unified currency.
+
+-----------------------------
+
+CORE CURRENCY RULE
+
+• 1 USD = 1 Scalp  
+• All deposits convert into Scalps automatically  
+• Users never wager with raw USD or crypto  
+• Everything inside the platform runs using Scalps  
+
+Examples:
+
+$10 deposit → 10 Scalps  
+$50 deposit → 50 Scalps  
+$100 deposit → 100 Scalps  
+
+-----------------------------
+
+CRYPTO CONVERSION SYSTEM
+
+Supported crypto deposits:
+
+• Bitcoin (BTC)  
+• Ethereum (ETH)  
+• Solana (SOL)  
+
+When users deposit crypto:
+
+1. Pull the live USD market price at the moment the deposit is initiated or confirmed.
+2. Convert the crypto amount into its USD value.
+3. Credit the user with the same number of Scalps.
+
+Examples:
+
+If BTC price = $60,000  
+User deposits 0.001 BTC  
+USD value = $60  
+User receives 60 Scalps
+
+If ETH price = $3,000  
+User deposits 0.02 ETH  
+USD value = $60  
+User receives 60 Scalps
+
+If SOL price = $100  
+User deposits 0.5 SOL  
+USD value = $50  
+User receives 50 Scalps
+
+The UI must clearly show:
+
+• Estimated Scalps before deposit confirmation  
+• Final Scalps received after transaction  
+
+Store the exchange rate used for each transaction.
+
+-----------------------------
+
+SUPPORTED PAYMENT METHODS
+
+Users must be able to add funds with:
+
+• Bitcoin (BTC)  
+• Ethereum (ETH)  
+• Solana (SOL)  
+• Apple Pay  
+• Venmo  
+• Visa  
+• Debit cards  
+• Credit cards  
+
+Fiat deposits convert directly:
+
+$1 = 1 Scalp
+
+-----------------------------
+
+SCALPS WALLET SYSTEM
+
+Each user account needs a Scalps Wallet that tracks:
+
+• Current Scalps balance  
+• Deposits  
+• Crypto conversions  
+• Wagers placed  
+• Wagers won  
+• Item purchases  
+• Full transaction history  
+
+Every transaction should log:
+
+• Timestamp  
+• Action type (deposit, wager, item purchase)  
+• Amount of Scalps  
+• Original crypto amount (if applicable)  
+• USD conversion value  
+
+-----------------------------
+
+USING SCALPS
+
+Scalps can be used for two main things:
+
+1. GAME WAGERS
+
+Players wager Scalps against other players.
+
+Example:
+
+Player A wagers 10 Scalps  
+Player B wagers 10 Scalps  
+
+Total pot = 20 Scalps  
+
+Winner receives the pot (minus optional platform rake).
+
+Platform rake example: 5%
+
+Pot = 20  
+Platform fee = 1  
+Winner receives = 19 Scalps
+
+2. ITEM SHOP PURCHASES
+
+Users can buy cosmetic items only using Scalps.
+
+Examples:
+
+• Profile skins  
+• Avatars  
+• Username effects  
+• Chat emotes  
+• Profile frames  
+• Game visual effects  
+• Background themes  
+
+Items must NOT give gameplay advantages.
+
+-----------------------------
+
+ITEM SHOP SYSTEM
+
+Create a rotating item shop with sections like:
+
+• Featured Items  
+• Daily Items  
+• Limited-Time Items  
+
+Example pricing:
+
+Common items → 2–5 Scalps  
+Rare items → 10–20 Scalps  
+Epic items → 25–50 Scalps  
+Legendary items → 75–100 Scalps  
+
+The shop must include:
+
+• Item preview  
+• Scalps price display  
+• Purchase confirmation  
+• Owned items inventory
+
+-----------------------------
+
+DEPOSIT EXPERIENCE (GAMIFIED)
+
+Adding money should feel rewarding.
+
+Include:
+
+• Animated wallet balance increase  
+• Coin or money sound (cash register / cha-ching)  
+• Smooth number count-up animation  
+• Success animation after deposit  
+• Clear confirmation screen showing Scalps received
+
+-----------------------------
+
+UI PLATFORM CHANGES
+
+Update the entire platform so that:
+
+• Scalps balance appears in the top navigation bar
+• Wagers display Scalps instead of USD
+• Player profiles show total Scalps won
+• Item shop uses Scalps pricing
+• Deposit page explains 1 Scalp = 1 USD
+
+-----------------------------
+
+SECURITY REQUIREMENTS
+
+Implement protections against:
+
+• duplicate transactions
+• wallet manipulation
+• double wagers
+• deposit exploits
+
+Every transaction must be recorded in a secure ledger.
+
+-----------------------------
+
+MOBILE + DESKTOP
+
+The system must work perfectly on:
+
+• mobile browsers
+• desktop browsers
+
+Responsive UI required.
+
+-----------------------------
+
+SCALABILITY
+
+Build the Scalps system so it can later support:
+
+• tournaments
+• battle passes
+• seasonal rewards
+• daily challenges
+• referral rewards
+• leaderboards
+
+-----------------------------
+
+FINAL GOAL
+
+Create a simple, trustworthy, game-style economy where:
+
+• Players deposit money or crypto  
+• Funds convert to Scalps  
+• Scalps are used to wager on games or buy cosmetics  
+• Everything feels smooth, fun, and professional like a modern gaming platform.

@@ -1,0 +1,445 @@
+PROJECT: JANGO FULL SYSTEM SPEC — EXTREME IMPLEMENTATION DETAIL
+
+THIS DOCUMENT IS NOT CONCEPTUAL.
+THIS IS A BUILD SPEC.
+
+Every section must be implemented with:
+- clear UI states
+- backend logic
+- frontend behavior
+- animations
+- edge case handling
+
+==================================================
+GLOBAL RULES (APPLIES TO EVERYTHING)
+==================================================
+
+1. NO FRONTEND MONEY LOGIC
+- Balance NEVER updates from frontend
+- Balance updates ONLY from backend-confirmed events
+
+2. EVERY ACTION HAS A STATE
+Each action must have:
+- idle
+- hover
+- active
+- loading
+- success
+- error
+
+3. EVERY NUMBER ANIMATES
+- balances count up/down
+- XP fills
+- ranks update with motion
+
+4. EVERY SYSTEM HAS FEEDBACK
+- clicks respond instantly
+- wins feel big
+- losses feel recoverable
+
+5. PERFORMANCE TARGET
+- animations must stay 60fps
+- use CSS transforms (not layout thrashing)
+- debounce heavy updates
+
+==================================================
+SECTION 1: ECONOMY SYSTEM (FULL IMPLEMENTATION)
+==================================================
+
+DATA MODEL:
+
+User:
+- balance
+- sessionStartBalance
+- todayStartBalance
+- weeklyStartBalance
+- totalWinnings
+- totalLosses
+- winStreak
+- lossStreak
+
+Transaction:
+- id
+- userId
+- type (win, loss, deposit, withdrawal, entry_fee, shop_purchase)
+- amount
+- game
+- opponent
+- timestamp
+- status
+
+FRONTEND COMPONENTS:
+
+1. BALANCE DISPLAY
+- always visible in navbar
+- format: "12.50 SCALPS"
+- animate changes:
+  increase:
+    - green glow
+    - count up (300–600ms)
+  decrease:
+    - red/orange glow
+    - count down
+
+2. FLOATING TRANSACTION FEEDBACK
+- appears near balance or center screen
+- example:
+  "+5 SCALPS"
+  "-2 SCALPS"
+- fades out after 800ms
+- slight upward movement
+
+3. SESSION PANEL (dashboard)
+SHOW:
+- session P/L
+- today P/L
+- weekly P/L
+- best win
+- current streak
+
+CALCULATIONS:
+session P/L = currentBalance - sessionStartBalance
+today P/L = currentBalance - todayStartBalance
+weekly P/L = currentBalance - weeklyStartBalance
+
+VISUAL:
+- positive = green
+- negative = red
+
+==================================================
+SECTION 2: MATCH FLOW (FULL STATE MACHINE)
+==================================================
+
+MATCH STATES:
+
+- idle
+- searching
+- match_found
+- confirming
+- in_game
+- completed
+- error
+
+FLOW:
+
+1. USER CLICKS PLAY
+→ state = searching
+
+UI:
+- spinner
+- “Finding opponent...”
+
+2. MATCH FOUND
+→ state = match_found
+
+UI:
+- opponent card
+- stake amount
+- accept/decline buttons
+- countdown timer (5–10s)
+
+3. CONFIRMATION
+→ state = confirming
+
+UI:
+- show:
+  - wager
+  - pot
+  - fees
+- confirm button
+- loading state
+
+4. GAME START
+→ state = in_game
+
+5. GAME END
+→ state = completed
+
+==================================================
+SECTION 3: POST MATCH SYSTEM (WIN/LOSS)
+==================================================
+
+WIN SCREEN:
+
+UI:
+- overlay (z-index top)
+- background blur
+- glow effect
+
+CONTENT:
+- “VICTORY”
+- amount won
+- new balance
+- rank change
+- XP gained
+- streak
+
+ANIMATION SEQUENCE:
+1. overlay fade in (200ms)
+2. “VICTORY” scale (0.9 → 1)
+3. amount appears
+4. balance counts up
+5. particles/confetti (if medium+ win)
+
+BUTTONS:
+- Run It Back
+- Increase Stakes
+- Switch Game
+
+LOSS SCREEN:
+
+UI:
+- dim background
+- softer colors
+
+CONTENT:
+- “DEFEAT”
+- amount lost
+- new balance
+- insight text
+
+INSIGHT RULES:
+- if close match:
+  “Close match.”
+- if skill mismatch:
+  “Try lower stakes.”
+- if repeat losses:
+  “Switch game or practice.”
+
+BUTTONS:
+- Run It Back
+- Lower Stakes
+- Practice
+
+==================================================
+SECTION 4: STAKES MATCHMAKING LOGIC
+==================================================
+
+INPUT:
+- selected stake
+- selected game
+- user skill/rank
+- device type
+
+MATCH FILTER:
+- same stake
+- compatible skill range
+- correct device (mobile/desktop)
+
+QUEUE SYSTEM:
+- users enter queue bucket per stake + game
+
+MATCH CARD:
+
+DISPLAY:
+- game
+- stake
+- pot
+- players (1/2, 3/4)
+- wait time
+
+BADGES:
+- HOT MATCH (queue > threshold)
+- LAST SPOT (1 slot left)
+- READY NOW (instant start)
+
+EDGE CASES:
+- insufficient balance → block
+- device mismatch → block
+- expired match → remove
+
+==================================================
+SECTION 5: SEASON SYSTEM
+==================================================
+
+DATA:
+- seasonId
+- startDate
+- endDate
+- leaderboard snapshot
+- rewards
+
+LOGIC:
+- leaderboard resets each season
+- archive past results
+
+UI:
+
+SHOW:
+- season name
+- countdown
+- rank
+- rewards preview
+
+REWARD DISTRIBUTION:
+- triggered at season end
+- assign items (NOT scalps)
+
+==================================================
+SECTION 6: TOURNAMENT SYSTEM
+==================================================
+
+TOURNAMENT STATES:
+- upcoming
+- open
+- full
+- live
+- completed
+
+JOIN FLOW:
+- user clicks join
+- backend checks:
+  - balance
+  - eligibility
+- deduct entry fee
+- confirm entry
+
+BRACKET:
+- single elimination or defined structure
+
+MATCH PROGRESSION:
+- winners advance
+- losers eliminated
+
+UI:
+- bracket view
+- highlight current user path
+
+FINAL WIN:
+- trigger tournament win animation
+- assign rewards
+
+==================================================
+SECTION 7: PROGRESSION SYSTEM
+==================================================
+
+XP SOURCES:
+- match completion
+- tournament participation
+- achievements
+
+XP CALCULATION:
+- base XP per match
+- bonus for win
+- no XP for quitting early
+
+LEVEL UP:
+- threshold system
+
+REWARDS:
+- cosmetics only
+
+UI:
+- XP bar
+- level indicator
+
+ANIMATION:
+- XP fills
+- level pop
+
+==================================================
+SECTION 8: COMPETITION SYSTEM
+==================================================
+
+PERSONALIZED DATA:
+- user rank
+- nearby ranks
+- rivals
+
+UI:
+- “You are #X”
+- “You need X wins to reach next rank”
+
+RIVAL SYSTEM:
+- identify nearest ranked users
+- show comparison
+
+==================================================
+SECTION 9: LIVE SYSTEM
+==================================================
+
+DATA STREAM:
+- wins
+- matches
+- tournaments
+
+TICKER:
+- auto-scrolling
+- new items push old ones
+
+EXAMPLE:
+“User123 won 5 SCALPS in Chess”
+
+==================================================
+SECTION 10: GAME WORLD SYSTEM (DETAILED)
+==================================================
+
+Each game must define:
+
+- background color palette
+- particle system
+- motion behavior
+- lighting
+- icon animation
+
+IMPLEMENTATION:
+
+Component: GameWorld
+
+Props:
+- gameId
+
+Switch logic:
+if gameId === "tron":
+  apply tron config
+if gameId === "block_blast":
+  apply block blast config
+
+ANIMATION RULES:
+- use GPU-friendly transforms
+- avoid heavy DOM updates
+
+TRANSITION:
+- crossfade backgrounds (300ms)
+- animate particles in/out
+
+==================================================
+SECTION 11: ERROR HANDLING
+==================================================
+
+ALL ERRORS MUST BE USER-FRIENDLY
+
+Example:
+
+Instead of:
+403 error
+
+Show:
+“Match not available on this device”
+
+ERROR TYPES:
+- device mismatch
+- insufficient funds
+- match expired
+- network error
+
+==================================================
+FINAL EXPECTATION
+==================================================
+
+The system must:
+
+- feel alive at all times
+- respond instantly
+- guide user to next action
+- reinforce behavior loops
+- never allow confusion
+- never allow silent failure
+
+If something happens:
+- user must see it
+- understand it
+- know what to do next
+
+This is not just UI.
+This is a full behavioral system.

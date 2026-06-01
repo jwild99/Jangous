@@ -1,0 +1,380 @@
+Add the following platform features in one cohesive update: Rank / Skill Rating System, Daily & Weekly Challenges, Better Game Discovery, Notification System, Achievements & Badges, and full User Profile Pages.
+
+Main goal:
+Make the platform feel much more competitive, social, rewarding, and polished. These systems should work together and feel like one connected product ecosystem, not separate add-ons.
+
+The final experience should increase:
+- player identity
+- competition
+- retention
+- discoverability
+- engagement
+- progression
+
+==================================================
+1. RANK / SKILL RATING SYSTEM
+==================================================
+
+Add a full Rank and Skill Rating system across the platform.
+
+Use an ELO-style rating system.
+
+Each player should have:
+- Skill Rating (numeric)
+- Rank Tier
+- Rank Badge
+
+Suggested starting rating:
+1200
+
+Rating should update after matches based on:
+- win/loss
+- opponent rating
+- game type
+
+Create these rank tiers:
+
+- Bronze
+- Silver
+- Gold
+- Platinum
+- Diamond
+- Champion
+
+Suggested rating ranges:
+- Bronze: 0–999
+- Silver: 1000–1199
+- Gold: 1200–1399
+- Platinum: 1400–1599
+- Diamond: 1600–1799
+- Champion: 1800+
+
+Each tier should have:
+- its own badge
+- distinct color styling
+- premium visual treatment
+
+Show rank in:
+- leaderboard
+- user profiles
+- chat
+- game lobbies
+- match result screens
+- friend lists
+
+After each match, show:
+- win/loss result
+- rating change (+12 / -9 style)
+- updated rating
+- rank promotion if applicable
+
+Add a small promotion animation if a player ranks up.
+
+==================================================
+2. DAILY & WEEKLY CHALLENGES
+==================================================
+
+Add a Daily and Weekly Challenges system.
+
+Create two challenge categories:
+- Daily Challenges
+- Weekly Challenges
+
+Daily challenge examples:
+- Play 3 games
+- Win 1 match
+- Try a new game
+- Score a goal in Air Hockey
+- Drop 10 chips in Connect 4
+
+Weekly challenge examples:
+- Win 10 games
+- Play 5 different games
+- Win 3 Chess matches
+- Play 20 total matches
+- Win matches in 3 different games
+
+Each challenge should display:
+- title
+- description
+- reward
+- progress bar
+- completion state
+
+Rewards can include:
+- coins
+- XP
+- badges
+- leaderboard bonus points
+
+Add a dashboard Challenges section showing:
+- today’s challenges
+- weekly progress
+- completed rewards
+
+Show a success animation when a challenge is completed.
+
+==================================================
+3. BETTER GAME DISCOVERY
+==================================================
+
+Improve the games browsing experience so users can quickly find what they want to play.
+
+Add a search and filter system above the game listings.
+
+Filters should include:
+- Trending
+- Most Played
+- New
+- Quick Games
+- Strategy Games
+- Multiplayer
+
+Allow sorting by:
+- Popularity
+- Newest
+- Fastest Matches
+- Highest Rated
+
+Add a game search bar so players can search by name.
+
+Each game card should include tags like:
+- Strategy
+- Arcade
+- Skill
+- Competitive
+- Fast
+- Multiplayer
+
+Make discovery feel fast and clean.
+
+==================================================
+4. NOTIFICATION SYSTEM
+==================================================
+
+Add a platform-wide notification system.
+
+Add a bell icon to the top navbar.
+
+Features:
+- unread badge count
+- dropdown notification center
+- recent notifications list
+- read/unread state
+
+Trigger notifications for:
+- new messages
+- game challenges
+- rank promotions
+- deposit confirmations
+- challenge completions
+- friend online status
+- achievement unlocks
+
+Example notifications:
+- Alex challenged you to Chess
+- Your deposit was successful
+- You reached Gold Rank
+- Sam sent you a message
+- You completed a Daily Challenge
+- Achievement unlocked: First Win
+
+Unread notifications should:
+- highlight visually
+- show badge count
+- clear when read
+
+Also add small toast/pop-up alerts for important events.
+
+==================================================
+5. ACHIEVEMENTS & BADGES
+==================================================
+
+Add an Achievements and Badges system.
+
+Create achievements such as:
+- First Win
+- 5 Win Streak
+- 100 Games Played
+- Chess Master
+- Mini Golf Expert
+- Perfect Shot
+- Top 10 Leaderboard
+- Daily Grinder
+- Weekly Warrior
+
+Each achievement should include:
+- name
+- description
+- badge icon
+- unlock requirement
+
+Badges should feel collectible and premium.
+
+Display badges on:
+- user profiles
+- leaderboard
+- chat messages
+- match result screens
+
+When an achievement unlocks, show:
+- achievement unlocked popup
+- badge icon
+- short description
+- subtle celebration animation
+
+==================================================
+6. USER PROFILE PAGES
+==================================================
+
+Add full player profile pages.
+
+Users should be able to click a username anywhere on the site to open that player’s profile.
+
+Each profile should include:
+
+HEADER
+- username
+- avatar
+- rank badge
+- skill rating
+
+OVERVIEW
+- total games played
+- win/loss record
+- total earnings
+- favorite game
+
+STATS SECTION
+- wins
+- losses
+- win rate
+- rating history
+- leaderboard rank
+
+MATCH HISTORY
+Show recent matches including:
+- game type
+- opponent
+- result
+- date
+- wager amount
+
+Example:
+Chess vs Alex — Win — $5 — 2 hours ago
+
+ACHIEVEMENTS
+- earned badges
+- unlocked achievements
+
+FRIENDS
+- friend list
+- challenge button
+- message button
+
+==================================================
+7. SYSTEM INTEGRATION
+==================================================
+
+All of these features should connect together.
+
+Examples:
+- rank should appear on profiles, leaderboard, chat, and results
+- achievements should appear on profiles and notifications
+- challenge completion should trigger notifications
+- match results should update rating and profile history
+- user profiles should show badges, rank, and recent match activity
+- game discovery filters should connect to the actual game catalog
+
+These should not feel like isolated features.
+
+==================================================
+8. UI / UX DESIGN REQUIREMENTS
+==================================================
+
+Match the existing platform design system.
+
+Use:
+- dark premium theme
+- glassmorphism panels
+- subtle neon/glow accents
+- smooth hover states
+- clean spacing
+- polished typography
+- consistent buttons and cards
+
+Feature-specific design notes:
+
+Rank System:
+- badges should look premium and competitive
+
+Challenges:
+- progress bars should feel clear and rewarding
+
+Notifications:
+- dropdown should be clean and easy to scan
+
+Achievements:
+- badges should feel collectible
+
+Profiles:
+- should feel like real player identity pages, not plain data tables
+
+Game Discovery:
+- filters should feel modern and easy to use
+
+==================================================
+9. INTERACTIONS / MICROANIMATIONS
+==================================================
+
+Add polished motion where helpful:
+
+- rank-up animation
+- achievement unlock popup
+- challenge completion celebration
+- notification badge pulse
+- smooth dropdown open/close
+- profile hover interactions
+- filter button active state animation
+
+Keep motion subtle and premium.
+
+==================================================
+10. RESPONSIVENESS
+==================================================
+
+Ensure all features work on desktop and mobile.
+
+Mobile support should include:
+- stacked profile sections
+- collapsible filters
+- responsive leaderboard/profile layouts
+- easy-to-tap notifications and challenge cards
+
+==================================================
+11. IMPLEMENTATION PRIORITY
+==================================================
+
+Implement in this order:
+
+1. Rank / Skill Rating System
+2. User Profile Pages
+3. Achievements & Badges
+4. Notification System
+5. Daily & Weekly Challenges
+6. Better Game Discovery
+
+==================================================
+12. FINAL GOAL
+==================================================
+
+The platform should feel like a real competitive gaming ecosystem.
+
+Players should have:
+- identity through profiles
+- progression through ranks
+- rewards through achievements and challenges
+- awareness through notifications
+- easier navigation through better discovery
+
+The final product should feel more social, competitive, sticky, and polished.

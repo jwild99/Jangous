@@ -1,0 +1,420 @@
+Expand the main lobby/dashboard into a full competitive gaming home screen by adding the following major systems and sections in one cohesive update:
+
+Current core structure to preserve:
+- Header
+- Start Match
+- Ranked Arena
+- Live Matches
+- Tournaments
+- Game Catalog
+
+Now add and integrate these additional systems so the platform feels more engaging, competitive, and worth returning to daily:
+
+- Daily Challenges
+- Player Progression / XP / Levels
+- Ranked Seasons
+- Featured Matches
+- Community / Live Activity Feed
+- Weekly Leaderboards
+- Achievements
+- Player Stats Hub
+- Clan Wars
+- Item Shop / Cosmetics
+
+Main goal:
+Turn the dashboard into a true competitive gaming ecosystem where players always have something to do, chase, claim, unlock, and compete for.
+
+==================================================
+1. DAILY CHALLENGES SECTION
+==================================================
+
+Add a clear Daily Challenges section to the dashboard.
+
+This section should show:
+- 3 to 5 active daily challenges
+- challenge title
+- short description
+- XP reward
+- progress bar
+- status
+
+Example daily challenges:
+- Win 3 matches → +150 XP
+- Play 5 games → +100 XP
+- Win 1 ranked match → +200 XP
+- Beat a higher-ranked player → +250 XP
+- Join a tournament → +100 XP
+
+Challenge states:
+- In Progress
+- Complete — Ready to Claim
+- Claimed
+
+When a challenge is completed:
+- show a Claim button
+- let the user manually press Claim
+- award XP
+- animate the XP gain
+- play a clean reward sound
+- update level progression
+
+Add a small indicator on the dashboard if multiple challenges are ready to claim:
+- “2 Rewards Ready to Claim”
+
+==================================================
+2. PLAYER PROGRESSION / XP / LEVEL SYSTEM
+==================================================
+
+Add a Player Progression section or card.
+
+Display:
+- current level
+- total XP
+- XP progress bar
+- XP needed to next level
+- next unlock / next reward
+
+Example:
+Level 12
+XP: 3200 / 4000
+Next Reward: Neon Profile Banner
+
+The XP bar should animate when XP is gained from:
+- claimed challenges
+- achievements
+- events
+- progression rewards
+
+If the user levels up:
+- show a level-up animation
+- show a message like:
+  “Level Up! You reached Level 13”
+
+==================================================
+3. RANKED SEASONS
+==================================================
+
+Add a Ranked Season module to the dashboard and ranked area.
+
+Show:
+- current season name
+- days remaining
+- season reward preview
+- season rank progress
+- ranked season leaderboard link
+
+Example:
+Season 1: Neon Arena
+42 days remaining
+
+Season rewards examples:
+- rank badges
+- profile banners
+- cosmetics
+- titles
+
+This section should make ranked feel ongoing and meaningful.
+
+==================================================
+4. FEATURED MATCHES
+==================================================
+
+Add a Featured Matches section.
+
+This section should highlight exciting live or high-rank matches.
+
+Each featured match card should show:
+- player names
+- rank tiers
+- game
+- wager amount
+- live status
+
+Examples:
+Diamond vs Champion
+Chess
+50 SCALPS
+Live Now
+
+This helps make the platform feel alive and competitive.
+
+==================================================
+5. COMMUNITY / LIVE ACTIVITY FEED
+==================================================
+
+Add a live platform activity feed to the dashboard or sidebar.
+
+Examples of feed items:
+- Nova became the new GOAT
+- Sam won 120 Scalps in 8-Ball
+- Jordan reached Diamond rank
+- Clan BBC OG won a Clan War
+- Maya completed 3 daily challenges
+- Alex unlocked Chess Master
+
+Display:
+- activity type icon
+- username
+- action text
+- time ago
+
+Keep the feed readable and lightweight.
+
+==================================================
+6. WEEKLY LEADERBOARDS
+==================================================
+
+Add a Weekly Leaderboards section separate from the all-time leaderboard.
+
+Categories can include:
+- Most Wins This Week
+- Highest Scalps Won This Week
+- Longest Win Streak
+- Most XP Earned
+- Top Ranked Climbers
+
+Show:
+- player rank
+- username
+- stat value
+- small badge if top 3
+
+This encourages short-term grinding.
+
+==================================================
+7. ACHIEVEMENTS SYSTEM
+==================================================
+
+Add a full Achievements system and a dashboard preview section.
+
+Achievement examples:
+- First Win
+- Win 10 Matches
+- Win 100 Matches
+- Win 10 Ranked Games
+- Beat a Champion Player
+- Earn 10,000 XP
+- Join Your First Clan
+- Win a Tournament
+- Reach Gold Rank
+- Reach Champion Rank
+
+Each achievement should have:
+- title
+- description
+- badge icon
+- unlock requirement
+- claimed/unlocked state if needed
+
+When unlocked:
+- show a small achievement unlocked popup
+- award XP or rewards if applicable
+- add it to the user profile and achievements list
+
+==================================================
+8. PLAYER STATS HUB
+==================================================
+
+Add a Player Stats section that gives users a clearer personal performance overview.
+
+Display:
+- total wins
+- total losses
+- win rate
+- current streak
+- biggest win
+- total Scalps won
+- favorite game
+- ranked record
+- total games played
+
+This can live in:
+- dashboard summary card
+- profile page
+- stats hub page
+
+The dashboard should at least preview the most important stats.
+
+==================================================
+9. CLAN WARS
+==================================================
+
+Add a Clan Wars section if the player is in a clan.
+
+Show:
+- current clan war opponent
+- score
+- time remaining
+- clan contribution
+- clan leaderboard standing
+- Join War / Contribute button
+
+Example:
+BBC OG vs Shadow Clan
+Score: 14 - 11
+2 days remaining
+
+Clan members earn points by:
+- winning matches
+- ranked wins
+- tournament participation
+- challenge completion if desired
+
+Clan war rewards can include:
+- clan XP
+- cosmetics
+- badges
+- clan reputation
+
+==================================================
+10. ITEM SHOP / COSMETICS
+==================================================
+
+Add an Item Shop section or dashboard preview card.
+
+The shop should sell cosmetic items only.
+
+Examples:
+- profile banners
+- avatars
+- rank auras
+- air hockey paddle skins
+- pool cue skins
+- mini golf ball skins
+- victory animations
+- emotes
+- clan banner cosmetics
+
+Currency:
+- SCALPS
+
+Display:
+- item image
+- item name
+- category
+- price
+- preview / buy button
+
+The shop preview on the dashboard can show:
+- featured cosmetic
+- new arrivals
+- limited-time item
+
+==================================================
+11. DASHBOARD LAYOUT ORGANIZATION
+==================================================
+
+Keep the dashboard organized using this structure:
+
+TOP / PRIMARY PLAY ZONE
+- Start Match
+- Ranked Arena
+- Daily Challenges
+- Player Progression
+
+MIDDLE / COMPETITION ZONE
+- Live Matches
+- Featured Matches
+- Tournaments
+- Clan Wars
+- Weekly Leaderboards
+
+BOTTOM / DISCOVERY + LONG-TERM ZONE
+- Game Catalog
+- Achievements Preview
+- Shop Preview
+
+SIDEBAR
+- User Profile
+- Wallet
+- GOAT
+- Top Players
+- Live Activity Feed
+
+Do not dump all cards randomly on the page.
+Keep clear spacing and hierarchy.
+
+==================================================
+12. VISUAL DESIGN RULES
+==================================================
+
+All new sections must match the platform design language:
+
+- dark premium theme
+- glassmorphism cards
+- subtle neon accents
+- soft glow edges
+- clean typography
+- premium spacing
+- smooth hover states
+- lightweight motion
+
+Avoid clutter.
+Avoid making every panel equally loud.
+Use strong hierarchy.
+
+==================================================
+13. MICROINTERACTIONS
+==================================================
+
+Add polished interactions where relevant:
+
+- challenge claim animation
+- XP gain float-up text
+- level-up animation
+- achievement unlock popup
+- leaderboard hover highlight
+- featured match pulse
+- live activity feed subtle updates
+- shop card hover glow
+- clan war score update animation
+
+Keep all motion subtle and premium.
+
+==================================================
+14. RESPONSIVENESS
+==================================================
+
+Ensure all of this works cleanly on mobile and desktop.
+
+On mobile:
+- stack sections cleanly
+- keep challenge cards readable
+- keep feed scrollable
+- make quick actions easy to tap
+
+==================================================
+15. IMPLEMENTATION PRIORITY
+==================================================
+
+Implement in this order:
+1. Daily Challenges with claim flow
+2. Player Progression / XP / Levels
+3. Ranked Seasons
+4. Featured Matches
+5. Weekly Leaderboards
+6. Achievements
+7. Player Stats Hub
+8. Clan Wars
+9. Item Shop preview
+10. Live Activity improvements
+
+==================================================
+16. FINAL GOAL
+==================================================
+
+The dashboard should no longer feel like just a match launcher.
+
+It should feel like a living competitive platform where users can:
+- start matches
+- grind ranked
+- complete challenges
+- earn XP
+- unlock achievements
+- join tournaments
+- help their clan
+- follow featured matches
+- track progress
+- spend Scalps on cosmetics
+
+The platform should constantly give players reasons to stay, return, and compete.

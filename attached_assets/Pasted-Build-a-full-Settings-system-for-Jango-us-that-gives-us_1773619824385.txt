@@ -1,0 +1,167 @@
+Build a full Settings system for Jango.us that gives users control over their account, security, notifications, gameplay preferences, and wallet behavior. The settings page must be clean, modern, easy to use, and fully responsive for both desktop and mobile.
+
+The Settings page should be accessible from the user profile and main navigation.
+
+Create the following settings sections:
+
+-----------------------------------
+1. Account Settings
+-----------------------------------
+
+Allow users to manage their core account information.
+
+Features:
+- Change username (if allowed within platform rules)
+- Change email address
+- Update profile picture/avatar
+- Change display name
+- Bio or short player description
+- Favorite game selector
+- Language preference (if multilingual support exists)
+
+Include:
+- Save confirmation
+- Input validation
+- Clear error handling
+
+-----------------------------------
+2. Security Settings
+-----------------------------------
+
+Give users full control over account protection.
+
+Features:
+- Change password
+- Enable / disable two-factor authentication (2FA)
+- View active login sessions
+- Log out of other devices
+- Login history (IP, device, location if available)
+- Account recovery options
+- Email verification status
+
+Security UX expectations:
+- Clear warnings for risky actions
+- Confirmation dialogs for important changes
+- Password strength indicator
+
+-----------------------------------
+3. Wallet Settings
+-----------------------------------
+
+Let users manage payment preferences and wallet behavior.
+
+Features:
+- Default deposit method
+- Preferred withdrawal method
+- Save and manage payment methods
+- Auto-convert deposits to Scalps
+- Currency display preference (USD or Scalp)
+- View connected crypto wallets
+- Withdrawal security confirmation toggle
+- Wallet activity notifications
+
+-----------------------------------
+4. Notification Settings
+-----------------------------------
+
+Give users control over what notifications they receive.
+
+Categories:
+- Match invites
+- Friend requests
+- Challenge completions
+- Tournament announcements
+- Wallet activity
+- Rewards / achievements
+- Platform announcements
+
+Controls:
+- Enable / disable push notifications
+- Enable / disable email notifications
+- Per-category notification toggles
+
+-----------------------------------
+5. Gameplay Preferences
+-----------------------------------
+
+Allow users to customize gameplay experience.
+
+Options:
+- Enable / disable game sounds
+- Enable / disable animations
+- Turn timer display preference
+- Quick rematch toggle
+- Preferred game mode (ranked / casual)
+- Auto-join matchmaking toggle
+
+-----------------------------------
+6. Privacy Settings
+-----------------------------------
+
+Give players control over what other users can see.
+
+Options:
+- Show / hide online status
+- Show / hide match history
+- Show / hide wallet winnings on profile
+- Allow friend requests
+- Allow private match invites
+- Allow spectators
+
+-----------------------------------
+7. Social Settings
+-----------------------------------
+
+Manage friend and social interactions.
+
+Features:
+- Blocked users list
+- Muted users list
+- Friend request permissions
+- Chat filter settings
+- Emote visibility toggle
+
+-----------------------------------
+8. Appearance Settings
+-----------------------------------
+
+Let users customize how the platform looks.
+
+Options:
+- Dark / light mode
+- Accent color preference
+- UI density (compact / comfortable)
+- Animation intensity toggle
+
+-----------------------------------
+9. Danger Zone
+-----------------------------------
+
+Sensitive account actions should be grouped in a clearly labeled section.
+
+Actions:
+- Log out of all devices
+- Disable account temporarily
+- Request account deletion
+- Clear saved payment methods
+
+Include confirmation steps to prevent accidental actions.
+
+-----------------------------------
+Design and UX expectations
+-----------------------------------
+
+The settings page must:
+
+- Work smoothly on desktop and mobile
+- Use clear sections and tabs
+- Have intuitive toggles, dropdowns, and inputs
+- Match the platform’s design system
+- Provide confirmation feedback after changes
+- Avoid clutter while still offering full control
+
+-----------------------------------
+Final expectation
+-----------------------------------
+
+The settings system should feel like a complete professional dashboard, not a basic form page. It should give users real control over their account, gameplay experience, wallet preferences, and privacy.

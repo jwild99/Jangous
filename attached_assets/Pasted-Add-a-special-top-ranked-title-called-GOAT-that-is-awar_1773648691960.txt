@@ -1,0 +1,164 @@
+Add a special top-ranked title called **GOAT** that is awarded ONLY to the single highest ranked player on the platform.
+
+This system should function similarly to Rainbow Six Siege's Champion ranking system where Champion players receive a numbered placement. However, only the #1 player globally receives GOAT status.
+
+---
+
+1. RANK STRUCTURE
+
+Update the rank ladder so it works like this:
+
+Bronze
+Silver
+Gold
+Platinum
+Diamond
+Champion
+GOAT (only 1 player)
+
+GOAT is not a traditional rank tier — it is a **title given exclusively to the #1 ranked player globally**.
+
+---
+
+2. CHAMPION RANK SYSTEM
+
+Champion players should display their leaderboard position.
+
+Example:
+
+Champion #4
+Champion #17
+Champion #83
+
+Champion rank is determined by highest ELO rating among Champion-tier players.
+
+---
+
+3. GOAT STATUS
+
+The player with the **highest ELO rating on the platform** becomes GOAT.
+
+Rules:
+
+Only ONE player can hold GOAT status at a time.
+
+When another player surpasses the GOAT's rating, the title transfers automatically.
+
+The new GOAT should instantly replace the previous one.
+
+---
+
+4. GOAT BADGE
+
+Create a special GOAT badge that visually stands out.
+
+Design style:
+
+Neon crown icon
+Gold + pink glow
+Subtle animated glow effect
+
+The GOAT badge should be more visually impressive than Champion.
+
+---
+
+5. GOAT DISPLAY LOCATIONS
+
+The GOAT title should appear in multiple places across the platform.
+
+Locations:
+
+Leaderboard (#1 slot)
+Player profile
+Rank display on dashboard
+Live match rows
+Clan pages
+Match results
+
+Example display:
+
+GOAT
+Global Rank #1
+
+---
+
+6. GOAT SPOTLIGHT SECTION
+
+Add a small "Current GOAT" panel to the main lobby.
+
+This panel should show:
+
+Player name
+Rank badge
+ELO rating
+Win rate
+Total wins
+
+Example:
+
+Current GOAT
+
+Player: ShadowKing
+Rating: 2314
+Win Rate: 68%
+Wins: 514
+
+---
+
+7. GOAT HISTORY
+
+Track GOAT history so the platform remembers past GOAT players.
+
+Store:
+
+Player name
+Date they became GOAT
+Date they lost GOAT
+Peak rating
+
+Example:
+
+GOAT History
+
+ShadowKing — 34 days
+Nova — 19 days
+Ghost — 12 days
+
+---
+
+8. REAL-TIME GOAT TRANSFER
+
+When a new player surpasses the current GOAT's rating:
+
+Immediately transfer GOAT status.
+
+Display a global notification:
+
+"NEW GOAT HAS RISEN"
+
+Example:
+
+Nova has claimed GOAT status with a rating of 2341.
+
+---
+
+9. CHAMPION LEADERBOARD
+
+Champion players should see their exact leaderboard placement.
+
+Example:
+
+Champion #1 (GOAT)
+Champion #2
+Champion #3
+Champion #4
+
+The leaderboard should always update based on ELO rating.
+
+---
+
+10. FINAL GOAL
+
+The GOAT system should create a clear competitive peak where players are motivated to grind for the #1 global spot.
+
+It should feel prestigious, rare, and highly visible across the platform.

@@ -1,0 +1,101 @@
+FEATURE: STANDARDIZE ALL GAME SCREENS TO AIR HOCKEY STYLE LAYOUT
+
+Goal:
+Make every game use the same clean premium in-game layout style as the current Air Hockey screen.
+
+Use Air Hockey as the reference layout.
+
+ALL games should share this structure:
+
+1. TOP GAME HUD
+- Left player card on top-left
+- Right/opponent card on top-right
+- Game title centered at top
+- Match type under title, like “VS BOT” / “RANKED” / “TOURNAMENT”
+- Stake/pot badge centered under title
+- Score displayed clearly near top
+- How to Play button top-right
+- Keep navbar hidden/minimized during gameplay so the game feels focused
+
+2. CENTER GAME ARENA
+- Main game board/table/field centered on screen
+- Large, readable, polished play area
+- Neon border/glow matching each game theme
+- Slight 3D depth and glass effect
+- Keep the actual game controls inside/around the arena, not scattered
+
+3. CONTROL TAGS ABOVE ARENA
+Add small pill tags above every game:
+- Controls, ex: “WASD / Mouse”
+- Opponent difficulty, ex: “Bot · Easy”
+- Win condition, ex: “First to 7 wins”
+
+4. GAME-SPECIFIC ARENA
+Use same layout but customize arena art per game:
+- Chess: centered glowing chessboard
+- Mini Golf: centered course panel
+- Connect 4: centered vertical board
+- Air Hockey: current table style
+- RPS: centered versus arena
+- Dots & Boxes: centered grid board
+- 8 Ball: centered pool table
+- Bowling: centered lane
+- Cup King: centered cup table
+- Stack Tower: centered vertical tower area
+- Block Blast: centered puzzle grid
+- Tron: centered neon grid arena
+- Basketball: centered court/hoop arena
+- Football: centered field
+- Racing: centered track
+
+5. INSTRUCTIONS CARD
+Every game should have a small controls/help card under the arena like Air Hockey:
+- Controls
+- Objective
+- Quick tips
+Keep it compact and styled as a dark glass card.
+
+6. CONSISTENT VISUAL STYLE
+All game screens should use:
+- dark cyber/luxury background
+- neon accent color per game
+- glass panels
+- soft glow
+- smooth hover/click animations
+- clean spacing
+- no clutter
+
+7. GAME PAGE STRUCTURE
+Use one shared reusable GameLayout component.
+
+Suggested structure:
+
+GameLayout
+- GameTopHud
+- GameStatusPills
+- GameArenaWrapper
+- GameControlsCard
+- GameResultOverlay
+- HowToPlayModal
+
+Each game should plug into this layout instead of building its own separate page style.
+
+8. RESPONSIVE REQUIREMENTS
+Desktop:
+- arena centered
+- HUD stays at top
+- controls card below arena
+
+Mobile:
+- player cards compact
+- arena scales to fit screen
+- controls collapse into “How to Play”
+- no horizontal overflow
+
+9. FINAL RESULT
+Every game should feel like it belongs to the same Jango system.
+
+No game should feel like a random mini-game page.
+
+Use the current Air Hockey screen as the visual standard:
+focused, centered, clean, premium, and game-first.

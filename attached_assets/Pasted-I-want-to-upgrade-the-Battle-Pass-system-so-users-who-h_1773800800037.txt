@@ -1,0 +1,165 @@
+I want to upgrade the Battle Pass system so users who have NOT purchased it can still preview all rewards, and I want full visual consistency between Battle Pass items and Item Shop rarity colors.
+
+-----------------------------------
+PART 1: BATTLE PASS PREVIEW SYSTEM (VERY IMPORTANT)
+-----------------------------------
+
+Users who have NOT purchased the Battle Pass must still be able to:
+
+- View ALL 100 tiers
+- See every reward (free + premium)
+- Inspect items before buying
+
+-----------------------------------
+PREVIEW REQUIREMENTS
+-----------------------------------
+
+1. LOCKED BUT VISIBLE
+- Premium rewards should NOT be hidden
+- They should be visible but locked
+
+Show:
+- Slight dim/opacity
+- Lock icon
+- “Premium” tag
+
+-----------------------------------
+2. ITEM PREVIEW (INSPECT FEATURE)
+-----------------------------------
+
+When a user clicks ANY reward (locked or unlocked):
+
+Open a preview modal that shows:
+
+- Large item preview (centered)
+- Item name
+- Item rarity
+- Description (short but clean)
+- Tier number
+- “Unlock at Tier X”
+
+If user does NOT own battle pass:
+Show CTA:
+👉 “Get Battle Pass – 10 Scalps”
+
+-----------------------------------
+3. HOVER / CLICK FEEDBACK
+-----------------------------------
+
+- Hover = glow based on rarity
+- Click = opens preview modal
+- Locked items should still feel interactive
+
+-----------------------------------
+4. PURCHASE PROMPTS (SMART)
+-----------------------------------
+
+If user interacts with premium rewards:
+
+Show subtle prompts like:
+- “Unlock with Battle Pass”
+- “This reward is part of Premium Track”
+
+DO NOT spam — keep it clean and premium.
+
+-----------------------------------
+PART 2: RARITY COLOR SYSTEM (MATCH ITEM SHOP)
+-----------------------------------
+
+Battle Pass items must use the SAME rarity system as the Item Shop.
+
+-----------------------------------
+RARITY TIERS
+-----------------------------------
+
+Define and standardize:
+
+Common → Gray  
+Rare → Blue  
+Epic → Purple  
+Legendary → Gold/Orange  
+
+-----------------------------------
+APPLY THIS EVERYWHERE
+-----------------------------------
+
+For BOTH:
+- Item Shop
+- Battle Pass
+
+Apply rarity colors to:
+
+- Item borders
+- Glow effects
+- Text accents
+- Background highlights
+
+-----------------------------------
+VISUAL CONSISTENCY RULE
+-----------------------------------
+
+If an item is:
+- Epic in the shop → it MUST look Epic in Battle Pass
+- Legendary in shop → MUST look Legendary in Battle Pass
+
+No mismatched styles.
+
+-----------------------------------
+UI IMPLEMENTATION
+-----------------------------------
+
+Each reward card should:
+
+- Glow based on rarity
+- Have colored border
+- Show rarity label
+- Animate slightly on hover
+
+-----------------------------------
+PREMIUM TRACK VISUAL DIFFERENCE
+-----------------------------------
+
+Premium items should ALSO have:
+
+- Slight glow overlay
+- “Premium” tag
+- Better visual emphasis
+
+-----------------------------------
+PART 3: AAA EXPERIENCE GOAL
+-----------------------------------
+
+This system should make users think:
+
+“I can see everything I’m missing”
+“I want those items”
+“This is worth buying”
+
+-----------------------------------
+FINAL USER FLOW
+-----------------------------------
+
+User opens Battle Pass  
+→ Scrolls through tiers  
+→ Sees locked premium rewards  
+→ Clicks item  
+→ Sees preview  
+→ Gets desire  
+→ Clicks “Get Battle Pass”  
+
+-----------------------------------
+IMPORTANT
+-----------------------------------
+
+- Do NOT hide premium rewards
+- Do NOT make preview feel restricted
+- Make everything feel visible and desirable
+- Maintain clean, premium UI (no clutter)
+
+-----------------------------------
+FINAL GOAL
+-----------------------------------
+
+Turn Battle Pass into a VISUAL SALES TOOL, not just a progression system.
+
+Users should WANT to buy it after seeing the rewards.

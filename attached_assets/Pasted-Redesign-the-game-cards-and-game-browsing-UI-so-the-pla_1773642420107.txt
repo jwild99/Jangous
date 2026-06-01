@@ -1,0 +1,186 @@
+Redesign the game cards and game browsing UI so the platform feels competitive, modern, and premium instead of playful or kiddish.
+
+Right now the game cards look too arcade/mobile-game style. The design needs to shift toward a more competitive skill-gaming aesthetic similar to platforms like Duel, Chess.com, and modern esports dashboards.
+
+MAIN DESIGN GOAL
+
+The games section should feel like a competitive arena where players choose games to challenge opponents — not like a casual mobile app.
+
+The tone should be:
+
+• modern
+• competitive
+• sleek
+• serious
+• skill-focused
+• premium
+
+Avoid anything that looks cartoonish or childish.
+
+--------------------------------------------------
+
+GAME CARD REDESIGN
+
+Update the design of every game card.
+
+Each card should include:
+
+• larger game artwork or icon
+• game title
+• difficulty label
+• short competitive description
+• average match time
+• player activity indicator
+• "Play Now" or "Challenge" button
+
+But the layout should feel more minimal and premium.
+
+Remove the playful arcade vibe.
+
+--------------------------------------------------
+
+CARD STYLE
+
+Make the cards look more like competitive game tiles.
+
+Use:
+
+• darker gradients
+• subtle glow edges
+• sharper corners
+• glass or matte panels
+• deeper shadows
+• cleaner typography
+• more breathing space
+
+Cards should feel like **high-end gaming UI panels**.
+
+--------------------------------------------------
+
+ART DIRECTION
+
+The artwork should feel stylized but serious.
+
+Example directions:
+
+Chess
+→ dramatic lighting on pieces
+→ dark board with glowing edges
+
+Mini Golf
+→ minimal course spotlight
+→ cinematic lighting
+
+Connect 4
+→ metallic board with glowing discs
+
+Air Hockey
+→ neon-lit competitive table
+
+Pool
+→ dark felt table with spotlight on balls
+
+Bowling
+→ cinematic lane perspective
+
+Stack Tower
+→ glowing stacked blocks in a competitive arena
+
+Block Blast
+→ modern geometric puzzle pieces
+
+Avoid:
+
+• bright toy colors
+• cartoon shapes
+• childish iconography
+
+--------------------------------------------------
+
+GAME INFORMATION
+
+Each card should show small competitive indicators:
+
+Example:
+
+Match Time: 2–3 min
+Skill Level: Medium
+Players Online: 120
+
+This reinforces the competitive environment.
+
+--------------------------------------------------
+
+BUTTON STYLE
+
+Replace simple blue buttons with a stronger competitive CTA.
+
+Example:
+
+Play Now
+Challenge Player
+Enter Match
+
+Buttons should feel:
+
+• solid
+• modern
+• minimal
+• slightly glowing on hover
+
+--------------------------------------------------
+
+HOVER INTERACTION
+
+When hovering over a card:
+
+• card slightly lifts
+• glow border appears
+• background artwork becomes more visible
+• subtle animation
+
+This should feel smooth and premium.
+
+--------------------------------------------------
+
+SECTION HEADER
+
+Replace “Quick Play” with something more competitive.
+
+Examples:
+
+Skill Arena
+Competitive Games
+Game Arena
+Challenge Arena
+
+--------------------------------------------------
+
+COLOR PALETTE
+
+Use deeper tones:
+
+• navy
+• black
+• dark blue
+• subtle neon accents
+• steel / chrome highlights
+
+Avoid bright candy colors.
+
+--------------------------------------------------
+
+FINAL GOAL
+
+The games page should feel like a **modern competitive skill gaming platform** where players select games to compete for wins and rankings.
+
+It should look closer to:
+
+• esports dashboards
+• competitive gaming platforms
+• high-end gaming launchers
+
+and less like:
+
+• mobile arcade apps
+• casual children’s games.

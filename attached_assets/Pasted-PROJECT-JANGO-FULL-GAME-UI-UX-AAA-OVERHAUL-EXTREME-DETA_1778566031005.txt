@@ -1,0 +1,1354 @@
+PROJECT: JANGO FULL GAME UI/UX AAA OVERHAUL — EXTREME DETAIL BUILD SPEC
+
+This is a full rebuild/polish pass for every game on Jango.
+
+The goal is NOT to simply make the games look “cooler.”
+The goal is to make every game feel like it belongs inside the same premium Jango ecosystem.
+
+Every game must feel:
+- polished
+- responsive
+- cinematic
+- modern
+- dopamine-heavy
+- competitive
+- premium
+- on-brand
+- not flat
+- not prototype-looking
+- not generic
+
+Jango’s visual identity should be:
+
+CYBER ARENA + LUXURY CASINO + COMPETITIVE ESPORTS
+
+Meaning:
+- dark premium base
+- neon lighting
+- glass panels
+- glowing borders
+- smooth movement
+- cinematic transitions
+- satisfying sounds/haptics
+- high-stakes energy
+- clean UI hierarchy
+
+Games included:
+1. Chess
+2. Mini Golf
+3. Connect 4
+4. Air Hockey
+5. Rock Paper Scissors
+6. Dots & Boxes
+7. 8 Ball
+8. Bowling
+9. Cup King
+10. Stack Tower
+11. Block Blast
+12. Tron
+13. Basketball
+14. Football
+15. Racing
+
+==================================================
+GLOBAL REQUIREMENT
+==================================================
+
+Every game must share a consistent “Jango Game Shell.”
+
+This means the games should not look like 15 separate mini apps.
+
+They should all share:
+- same HUD structure
+- same match intro structure
+- same win/loss structure
+- same player panel style
+- same buttons
+- same sound/haptic logic
+- same transition style
+- same balance/scalps display behavior
+- same tournament/ranked/casual indicators
+
+But each game should have:
+- unique art direction
+- unique background world
+- unique animations
+- unique sound style
+- unique victory effect
+- unique gameplay visual effects
+
+==================================================
+1. UNIVERSAL GAME SHELL
+==================================================
+
+Every game screen must include the following layout:
+
+A. GAME WORLD BACKGROUND
+- Full-screen background unique to the selected game
+- Layered depth, not flat
+- Animated but subtle
+- Must not interfere with gameplay readability
+- Should use dark premium tones with game-specific accent colors
+
+Layers:
+1. Far background gradient
+2. Ambient particles
+3. Subtle themed motion layer
+4. Radial glow behind game arena
+5. Foreground vignette for depth
+
+B. TOP MATCH HUD
+A glass/neon HUD at the top of every game.
+
+Must show:
+- Player 1 panel
+- Player 2 panel
+- match type
+- stake/pot
+- timer
+- round number if applicable
+- connection/status indicator
+
+Player panel should show:
+- avatar
+- username
+- rank badge
+- win/loss record if available
+- current streak
+- active turn glow
+
+Active player:
+- glowing ring around avatar
+- pulsing border
+- subtle “Your Turn” or “Thinking…” indicator
+
+C. CENTER GAME ARENA
+Main playable area.
+
+The arena should:
+- feel embedded into the page
+- have inner glow edges
+- have subtle shadow
+- have polished borders
+- have responsive scaling
+- stay centered
+
+D. BOTTOM ACTION BAR
+Every game should include a bottom control bar.
+
+Buttons:
+- Settings
+- Mute
+- Rules
+- Leave Match
+- Rematch after game ends
+- Run It Back after game ends
+- Challenge Again if opponent exists
+
+Button states:
+- idle
+- hover
+- pressed
+- loading
+- disabled
+- success
+- error
+
+E. MATCH STATUS OVERLAY
+Used for:
+- match starting
+- countdown
+- your turn
+- opponent turn
+- final move
+- victory
+- defeat
+- draw
+- disconnected opponent
+- waiting for opponent
+
+==================================================
+2. UNIVERSAL MATCH INTRO
+==================================================
+
+Before every match starts, show a polished intro.
+
+Sequence:
+1. Background dims
+2. Game title appears
+3. Player cards slide in left and right
+4. “VS” appears in center
+5. Stake/pot appears below
+6. Countdown: 3, 2, 1
+7. “BEGIN” / “START”
+8. Game arena becomes active
+
+Visual style:
+- fast
+- cinematic
+- not too long
+- 2–4 seconds max
+- skippable for casual/free mode if needed
+
+Sound:
+- soft rising tone
+- click/tick countdown
+- match start impact sound
+
+Haptics:
+- light tap on countdown
+- medium pulse on start
+
+==================================================
+3. UNIVERSAL WIN / LOSS EXPERIENCE
+==================================================
+
+Every game needs a strong ending moment.
+
+WIN SCREEN:
+Show:
+- “VICTORY”
+- amount won
+- new balance
+- XP gained
+- rank movement
+- streak increase
+- game-specific win animation
+
+Animation:
+1. freeze gameplay moment briefly
+2. screen glow burst
+3. “VICTORY” scales in
+4. winnings count up
+5. balance updates
+6. buttons appear
+
+Buttons:
+- Run It Back
+- Increase Stakes
+- Switch Game
+- View Stats
+- Share Win if social system exists
+
+LOSS SCREEN:
+Show:
+- “DEFEAT”
+- amount lost
+- balance after loss
+- short insight
+- next action buttons
+
+Loss should not feel dead or depressing.
+It should guide the user into a useful next step.
+
+Buttons:
+- Run It Back
+- Lower Stakes
+- Practice
+- Switch Game
+
+Draw screen:
+- “DRAW”
+- rematch CTA
+- no excessive punishment feeling
+
+==================================================
+4. UNIVERSAL MONEY / SCALPS DISPLAY
+==================================================
+
+Every match must clearly show:
+- required stake
+- total pot
+- platform rake
+- winner receives
+- user balance before entering
+
+During match:
+- do NOT distract with money too much
+- show small stake/pot badge in HUD
+
+After match:
+- winnings/losses must animate clearly
+
+Important:
+Frontend must NEVER update balance directly.
+Balance updates only from backend-confirmed match result.
+
+==================================================
+5. UNIVERSAL SOUND + HAPTICS
+==================================================
+
+Each game must use the global feedback system.
+
+Add sounds for:
+- button click
+- hover
+- match found
+- countdown tick
+- match start
+- turn change
+- valid move
+- invalid move
+- win
+- loss
+- draw
+- rank up
+- balance increase
+- balance decrease
+- tournament win
+
+Add haptics for:
+- tap
+- confirm
+- error
+- win
+- loss
+- big win
+- tournament win
+
+Settings:
+- sound on/off
+- haptics on/off
+- volume slider
+
+Do not hardcode sounds randomly.
+Use centralized system:
+Feedback.play("game_move")
+Feedback.play("win")
+Feedback.haptic("success")
+
+==================================================
+6. UNIVERSAL GAME QUALITY CHECKLIST
+==================================================
+
+Every game must have:
+
+- polished background world
+- clean HUD
+- visible player identity
+- turn/status clarity
+- smooth animations
+- responsive controls
+- readable text
+- strong win/loss screens
+- no default browser-looking UI
+- no flat gray panels
+- no unstyled buttons
+- no confusing states
+- no dead empty screens
+- no laggy motion
+- mobile support
+
+==================================================
+7. CHESS — FULL UI/UX OVERHAUL
+==================================================
+
+Theme:
+Royal cyber strategy arena.
+
+Color palette:
+- black
+- deep navy
+- gold
+- electric blue
+- subtle purple shadows
+
+Background:
+- dark chessboard perspective floor fading into distance
+- floating chess piece silhouettes
+- soft gold spotlight behind board
+- subtle fog/particles
+- royal casino atmosphere
+
+Board design:
+- chessboard should feel premium
+- squares should not be plain flat colors
+- add subtle material texture
+- add soft inner shadows
+- legal move highlights should glow
+- selected piece should have a gold ring
+- last move should have a soft blue trail
+
+Pieces:
+- update piece design if possible
+- pieces should feel modern and clean
+- add soft drop shadow
+- active piece should lift slightly when selected
+- captured piece animation should be smooth
+
+Move interaction:
+- click piece → selected glow
+- show legal moves with small glowing dots
+- invalid click → soft red pulse
+- piece move → smooth glide animation
+- capture → small particle burst
+- check → king glows red/gold
+- checkmate → cinematic board flash
+
+HUD:
+- show player timers clearly
+- show captured pieces
+- show turn indicator
+- show “Check” warning when relevant
+
+Win animation:
+- king falls or glows out
+- “CHECKMATE” appears
+- then Victory overlay
+
+Chess should feel slow, premium, tense, and intelligent.
+
+==================================================
+8. MINI GOLF — FULL UI/UX OVERHAUL
+==================================================
+
+Theme:
+Neon mini golf arena.
+
+Color palette:
+- dark green
+- neon lime
+- cyan
+- pink accents
+
+Background:
+- glowing mini golf course
+- curved neon lanes
+- animated turf shimmer
+- soft light trails
+- floating score markers
+
+Course design:
+- course should not look flat
+- add layered edges
+- obstacles should have depth
+- holes should glow subtly
+- boundaries should have neon trims
+
+Ball:
+- ball should have glow trail
+- ball movement should feel smooth
+- impact should create tiny particles
+- stronger hit = stronger trail
+
+Controls:
+- aim line must be polished
+- power meter should be clean and animated
+- drag/aim should feel responsive
+- show predicted direction without clutter
+
+UX:
+- show current stroke count
+- show par
+- show opponent progress
+- show “Your Shot”
+- show “Nice Shot” when close
+- show “Hole-in-One” cinematic animation
+
+Win/round moments:
+- ball sinks → glow ripple from hole
+- hole complete → score card pops up
+- match win → victory animation with golf ball trail
+
+Mini Golf should feel smooth, bright, playful, and skill-based.
+
+==================================================
+9. CONNECT 4 — FULL UI/UX OVERHAUL
+==================================================
+
+Theme:
+Vertical neon strategy board.
+
+Color palette:
+- deep blue
+- red
+- yellow
+- cyan
+- dark glass
+
+Background:
+- glowing digital arena
+- subtle falling token particles
+- large blurred board silhouette in background
+
+Board:
+- board should look like a physical glowing frame
+- slots should have inner shadows
+- discs should feel layered
+- add reflections and highlights
+
+Disc animation:
+- disc drops from top
+- bounce slightly on landing
+- glow trail while falling
+- sound on drop
+
+Turn UX:
+- active player color lights up
+- column hover preview
+- invalid move shows locked column pulse
+
+Win:
+- winning 4 discs pulse
+- connect line draws through them
+- board flashes
+- “CONNECT 4” victory moment
+
+Draw:
+- board fills
+- neutral animation
+
+Connect 4 should feel clean, fast, strategic, and satisfying.
+
+==================================================
+10. AIR HOCKEY — FULL UI/UX OVERHAUL
+==================================================
+
+Theme:
+Futuristic neon air hockey table.
+
+Color palette:
+- cyan
+- blue
+- purple
+- white sparks
+- dark navy
+
+Background:
+- neon arena
+- glowing table border
+- overhead light reflections
+- fast-moving streaks
+
+Table:
+- table should look like a real glowing surface
+- add inner rails
+- add center line
+- add goal zones
+- add subtle reflection
+
+Puck:
+- glowing puck
+- motion trail
+- impact sparks
+- speed-based trail intensity
+
+Controls:
+- mallet should feel responsive
+- collision should feel satisfying
+- add small screen shake on hard hits
+- goal impact should be cinematic
+
+HUD:
+- score large and readable
+- timer
+- match status
+- next point countdown
+
+Goal animation:
+- puck enters goal
+- goal area flashes
+- scoreboard increments with sound
+- quick replay flash if possible
+
+Air Hockey should feel fast, kinetic, and electric.
+
+==================================================
+11. ROCK PAPER SCISSORS — FULL UI/UX OVERHAUL
+==================================================
+
+Theme:
+Arcade fight-card / versus reveal.
+
+Color palette:
+- red
+- blue
+- purple
+- gold hits
+- dark arena
+
+Background:
+- split-screen energy background
+- left player color vs right player color
+- animated sparks in center
+- subtle fighting game vibe
+
+Selection UI:
+- Rock, Paper, Scissors buttons should be big and tactile
+- each option has animated icon
+- hover makes icon bounce
+- selected option locks in with glow
+
+Round flow:
+1. choose move
+2. waiting for opponent
+3. countdown reveal
+4. both moves slam into center
+5. result explosion
+
+Animations:
+- rock = heavy impact
+- paper = sweeping motion
+- scissors = sharp slash effect
+
+Result:
+- win = bright glow
+- loss = dim/red pulse
+- draw = electric clash
+
+RPS should feel like a fast arcade duel, not just three buttons.
+
+==================================================
+12. DOTS & BOXES — FULL UI/UX OVERHAUL
+==================================================
+
+Theme:
+Tactical neon grid.
+
+Color palette:
+- dark navy
+- teal
+- violet
+- white highlights
+
+Background:
+- subtle geometric grid
+- dots floating in background
+- line-drawing particles
+
+Grid:
+- dots should glow softly
+- selectable line segments should highlight on hover
+- placed lines should animate drawing from one dot to another
+- captured boxes should fill with player color
+
+UX:
+- clearly show active player
+- show score
+- show combo chain if player captures multiple boxes
+- show “Extra Turn” animation
+
+Animations:
+- line draw = quick neon stroke
+- box capture = fill ripple
+- combo = stronger glow each capture
+- invalid move = red flash
+
+Win:
+- final boxes pulse
+- winning player’s color spreads across grid
+- Victory overlay
+
+Dots & Boxes should feel more tactical and satisfying.
+
+==================================================
+13. 8 BALL — FULL UI/UX OVERHAUL
+==================================================
+
+Theme:
+Premium pool hall / luxury neon table.
+
+Color palette:
+- emerald green
+- dark wood/black
+- gold
+- blue highlights
+
+Background:
+- premium dark pool hall
+- soft overhead lights
+- subtle smoke/fog
+- spotlight on table
+
+Table:
+- realistic felt texture
+- beveled rails
+- pocket shadows
+- ball reflections
+- subtle table shadow
+
+Cue controls:
+- aim line polished
+- power meter clean
+- cue stick animation
+- spin/english controls if supported
+
+Ball physics visual:
+- balls roll smoothly
+- collisions have small impact sound
+- pocketed ball triggers subtle glow
+- shot prediction line should be visible but not ugly
+
+HUD:
+- solids/stripes assignment
+- player turn
+- remaining balls
+- timer
+
+Win:
+- 8 ball pocket moment slows slightly
+- table lights glow
+- Victory overlay
+
+8 Ball should feel premium, smooth, and realistic.
+
+==================================================
+14. BOWLING — FULL UI/UX OVERHAUL
+==================================================
+
+Theme:
+Neon bowling alley.
+
+Color palette:
+- purple
+- cyan
+- orange
+- dark alley
+
+Background:
+- long lane perspective
+- glowing lane arrows
+- pins in distance
+- animated ceiling lights
+- subtle crowd/arcade atmosphere
+
+Lane:
+- add depth/perspective
+- ball path should feel 3D
+- lane should not be flat rectangle
+- polished lane reflection
+
+Ball:
+- ball should roll with rotation
+- trail based on speed
+- impact sparks/dust when hitting pins
+
+Controls:
+- aim direction
+- power meter
+- curve/spin if supported
+- show release timing
+
+Pins:
+- pins should fall with physics
+- strike should trigger cinematic effect
+- spare should trigger smaller celebration
+
+Scoreboard:
+- clear frames
+- strike/spare markers
+- current score
+
+Bowling should feel like a neon arcade sports game.
+
+==================================================
+15. CUP KING — FULL UI/UX OVERHAUL
+==================================================
+
+Theme:
+High-stakes carnival reflex / shell game.
+
+Color palette:
+- gold
+- purple
+- red
+- black
+
+Background:
+- spotlight table
+- casino/carnival blend
+- mysterious glow
+- floating sparkles
+
+Cups:
+- cups should look premium
+- glossy highlights
+- shadows under cups
+- smooth shuffle animation
+
+Flow:
+1. show item/ball under cup
+2. cups lower
+3. shuffle begins
+4. player selects
+5. dramatic reveal
+
+UX:
+- shuffle speed should be readable
+- countdown before pick
+- selected cup glows
+- reveal should pause for tension
+
+Win:
+- cup lifts
+- gold burst
+- “Correct” animation
+
+Loss:
+- reveal correct cup
+- soft red dim
+- “Try again” CTA
+
+Cup King should feel tense, mysterious, and rewarding.
+
+==================================================
+16. STACK TOWER — FULL UI/UX OVERHAUL
+==================================================
+
+Theme:
+Vertical neon tower / precision challenge.
+
+Color palette:
+- cyan
+- purple
+- pink
+- dark skyline
+
+Background:
+- vertical city/tower
+- upward light trails
+- depth layers moving upward
+- height markers
+
+Blocks:
+- blocks should have depth
+- glowing edges
+- shadows
+- slight perspective
+
+Gameplay:
+- moving block should glide smoothly
+- placement should feel responsive
+- perfect placement = strong glow
+- bad placement = sliced-off animation
+
+Feedback:
+- “Perfect”
+- “Great”
+- “Close”
+- combo streak
+
+Progress:
+- height meter
+- current level
+- best height
+
+Win/fail:
+- tower zoom-out effect
+- final height reveal
+- reward/status overlay
+
+Stack Tower should feel precise, satisfying, and vertical.
+
+==================================================
+17. BLOCK BLAST — FULL UI/UX OVERHAUL
+==================================================
+
+Theme:
+Colorful neon puzzle arena.
+
+Color palette:
+- pink
+- purple
+- cyan
+- orange
+- deep black
+
+Background:
+- floating puzzle blocks
+- falling block silhouettes
+- soft radial glow
+- animated block particles
+
+Grid:
+- grid should feel glassy and modern
+- cells should have subtle inner shadow
+- blocks should pop with color and glow
+
+Block interaction:
+- drag blocks smoothly
+- preview placement
+- invalid placement red outline
+- valid placement glow outline
+
+Line clear:
+- row/column flashes
+- blocks dissolve into particles
+- combo multiplier pops
+
+Combo system visual:
+- “Combo x2”
+- “Mega Clear”
+- “Perfect Fit”
+
+Score:
+- count-up animation
+- streak glow
+- high score marker
+
+Block Blast should feel colorful, snappy, and addictive.
+
+==================================================
+18. TRON — FULL UI/UX OVERHAUL
+==================================================
+
+Theme:
+Cyberpunk neon grid survival.
+
+Color palette:
+- cyan
+- electric blue
+- violet
+- black
+
+Background:
+- deep grid arena
+- glowing horizon
+- neon trails
+- faint digital particles
+- speed lines
+
+Arena:
+- grid floor should have depth/perspective
+- walls/edges should glow
+- player trails should be bright and readable
+
+Player:
+- light-cycle or glowing dot should be clear
+- movement should feel smooth
+- direction changes should snap cleanly
+- trails should persist and glow
+
+UX:
+- countdown start
+- speed indicator
+- opponent trail color
+- danger pulse near collision
+
+Collision:
+- bright spark burst
+- small screen shake
+- slow-motion moment
+- then result overlay
+
+Win:
+- opponent trail explodes/dissolves
+- player trail surges
+- Victory overlay
+
+Tron should be one of the most visually exciting games on the platform.
+
+==================================================
+19. BASKETBALL — FULL UI/UX OVERHAUL
+==================================================
+
+Theme:
+Neon street court / arena shootout.
+
+Color palette:
+- orange
+- red
+- purple
+- dark court
+
+Background:
+- street court under neon lights
+- hoop silhouette
+- court markings
+- subtle crowd glow
+- floating dust particles
+
+Court:
+- floor should have perspective
+- hoop should feel layered
+- shot arc should be polished
+
+Ball:
+- ball rotation
+- bounce animation
+- trail on shot
+- rim impact effects
+
+Controls:
+- aim
+- power
+- timing meter
+- release feedback
+
+Feedback:
+- perfect shot = green/gold flash
+- rim hit = sparks/bounce
+- miss = soft dim
+- make = net glow
+
+HUD:
+- score
+- timer
+- streak
+- shot percentage if supported
+
+Basketball should feel like a fast arcade skill challenge.
+
+==================================================
+20. FOOTBALL — FULL UI/UX OVERHAUL
+==================================================
+
+Theme:
+Neon stadium / competitive field.
+
+Color palette:
+- green turf
+- white stadium lights
+- orange accents
+- dark crowd
+
+Background:
+- stadium lights
+- turf field
+- yard lines
+- scoreboard glow
+- faint crowd lights
+
+Field:
+- field should have perspective/depth
+- yard markers readable
+- goal/end zone highlighted
+
+Gameplay visuals:
+- ball trail
+- player movement effects
+- impact sparks/dust
+- score moment flash
+
+Controls:
+- directional control
+- power meter
+- timing indicator
+- route/trajectory preview if relevant
+
+Score moment:
+- stadium lights sweep
+- scoreboard updates
+- touchdown/goal text animation
+
+Football should feel energetic and stadium-like.
+
+==================================================
+21. RACING — FULL UI/UX OVERHAUL
+==================================================
+
+Theme:
+Neon speedway / high-speed cyber race.
+
+Color palette:
+- red
+- orange
+- cyan
+- black
+- headlight white
+
+Background:
+- road perspective
+- speed lines
+- blurred lights
+- track barriers
+- distant city lights
+
+Track:
+- strong depth
+- clear lanes
+- animated road movement
+- edge glow
+
+Vehicle:
+- headlights
+- motion blur
+- tire smoke
+- boost trail
+- collision effects
+
+HUD:
+- lap counter
+- position
+- speed
+- boost
+- timer
+
+Controls:
+- responsive steering
+- boost feedback
+- collision shake
+- finish line animation
+
+Win:
+- car crosses finish line
+- camera burst/flash
+- “FINISH”
+- Victory overlay
+
+Racing should feel fast, polished, and kinetic.
+
+==================================================
+22. GAME-SPECIFIC EMPTY / LOADING STATES
+==================================================
+
+No game should show boring loading.
+
+Each game gets themed loading:
+- Chess: pieces assembling
+- Mini Golf: ball rolling into hole
+- Connect 4: discs dropping
+- Air Hockey: puck sliding
+- RPS: icons cycling
+- Dots & Boxes: lines drawing
+- 8 Ball: balls racking
+- Bowling: pins setting
+- Cup King: cups shuffling
+- Stack Tower: blocks stacking
+- Block Blast: blocks falling
+- Tron: grid booting
+- Basketball: ball bouncing
+- Football: stadium lights turning on
+- Racing: countdown lights
+
+Loading text examples:
+- “Setting the arena…”
+- “Finding opponent…”
+- “Preparing match…”
+- “Syncing game state…”
+
+==================================================
+23. GAME SETTINGS PANEL
+==================================================
+
+Every game should have a clean settings panel.
+
+Settings:
+- sound on/off
+- haptics on/off
+- reduce motion
+- show/hide tips
+- control sensitivity if relevant
+- exit game
+
+Panel style:
+- glass modal
+- neon border
+- smooth open/close
+
+==================================================
+24. RULES / HELP PANEL
+==================================================
+
+Every game should have a short rules modal.
+
+Rules modal:
+- simple explanation
+- how to win
+- controls
+- stake/pot reminder
+- fair play note
+
+Must be easy to open but not intrusive.
+
+==================================================
+25. MOBILE UX REQUIREMENTS
+==================================================
+
+Every game must be tested on mobile.
+
+Mobile rules:
+- larger touch targets
+- no tiny buttons
+- no hover-only interactions
+- controls should be thumb-friendly
+- HUD should not cover gameplay
+- modals should fit screen
+- haptics should work where supported
+
+For mobile-only games:
+- desktop must show a clean message
+- not a raw error
+
+For desktop-only games:
+- mobile must show clean message
+
+==================================================
+26. RESPONSIVENESS / SCALING
+==================================================
+
+Each game arena must:
+- scale to viewport
+- maintain aspect ratio where needed
+- avoid overflow
+- not clip HUD
+- not require weird scrolling during gameplay
+
+Desktop:
+- centered max-width arena
+- wider HUD
+
+Mobile:
+- stacked HUD
+- compact player panels
+- sticky action controls if needed
+
+==================================================
+27. PERFORMANCE REQUIREMENTS
+==================================================
+
+Do not sacrifice performance for visuals.
+
+Rules:
+- use transform and opacity animations
+- avoid layout thrashing
+- use lightweight particles
+- cap particle count
+- avoid giant blur layers everywhere
+- keep animations smooth at 60fps
+
+If performance drops:
+- reduce particles
+- reduce background effects
+- simplify mobile effects
+
+==================================================
+28. ERROR STATES
+==================================================
+
+Every game must handle errors beautifully.
+
+Errors:
+- opponent disconnected
+- match expired
+- insufficient funds
+- server sync issue
+- invalid move
+- device not supported
+- matchmaking failed
+
+Do NOT show raw JSON/toasts only.
+
+Show:
+- clean modal
+- plain language
+- next action button
+
+Examples:
+“Opponent disconnected. You can return to lobby or wait for reconnect.”
+“This match is no longer available.”
+“You do not have enough Scalps to enter this match.”
+
+==================================================
+29. TOURNAMENT MODE INSIDE GAMES
+==================================================
+
+If game is played inside tournament:
+
+HUD should show:
+- tournament name
+- round number
+- bracket position
+- prize pool
+- next round indicator
+
+After winning tournament round:
+- show “Advancing to next round”
+- update bracket
+- show next opponent if available
+
+Tournament final:
+- stronger cinematic treatment
+- trophy/crown animation
+
+==================================================
+30. RANKED MODE INSIDE GAMES
+==================================================
+
+If game is ranked:
+
+HUD should show:
+- ranked badge
+- rating at stake
+- opponent rank
+- current tier
+
+After match:
+- rating change animation
+- rank progress bar
+- “Next rank in X points”
+
+==================================================
+31. PRACTICE / FREE MODE
+==================================================
+
+If game is free/practice:
+
+Make it clear:
+- “Practice Match”
+- “No wager”
+- “Earn XP only” if applicable
+
+Do not show confusing pot/wager numbers.
+
+==================================================
+32. FINAL QA CHECKLIST
+==================================================
+
+For each game, test:
+
+Visual:
+- looks on-brand
+- has themed background
+- has polished HUD
+- no flat ugly UI
+
+Interaction:
+- controls feel responsive
+- hover/tap states work
+- invalid actions give feedback
+
+Match:
+- intro works
+- gameplay works
+- win/loss screen works
+- rematch works
+
+Money:
+- stake displays correctly
+- pot displays correctly
+- balance updates only from backend
+
+Mobile:
+- playable
+- readable
+- no clipped UI
+
+Performance:
+- no lag
+- no janky animations
+
+==================================================
+FINAL EXPECTATION
+==================================================
+
+After this overhaul, every game should feel like it belongs in one premium ecosystem.
+
+The user should not feel like:
+“I am playing random web mini games.”
+
+They should feel like:
+“I am inside the Jango arena.”
+
+Every game should have:
+- identity
+- depth
+- feedback
+- polish
+- clean UX
+- satisfying motion
+- strong win/loss moments
+
+This is a full AAA polish pass for every game.
+Do not stop at small style tweaks.
+Rework the structure, HUD, animations, backgrounds, feedback, and game-specific identity for each game.

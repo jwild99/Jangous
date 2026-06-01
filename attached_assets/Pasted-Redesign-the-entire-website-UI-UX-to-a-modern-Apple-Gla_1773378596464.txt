@@ -1,0 +1,63 @@
+Redesign the entire website UI/UX to a modern Apple “Glass” design style while keeping the current layout structure and game artwork similar to duel.com.
+
+Goals:
+- Make the interface look like Apple Vision Pro / Apple Glass design language.
+- Use glassmorphism UI (blurred glass panels, transparency, soft shadows).
+- Keep the colorful illustrated artwork style similar to Duel.com for the hero section and game cards.
+- The UI should feel premium, minimal, and futuristic.
+
+Design Requirements:
+
+1. Navigation Bar
+- Convert the top navbar into a semi-transparent glass bar.
+- Use backdrop blur and subtle border glow.
+- Rounded corners.
+- Floating effect over the background.
+- Keep logo on the left and Login/Register on the right.
+
+2. Hero Section
+- Keep large illustrated artwork like Duel.com.
+- Add depth using gradients and blur layers.
+- Center the main headline.
+- Use large Apple-style typography (SF Pro style).
+- Add soft glow behind the title.
+
+3. Game Cards
+- Convert game cards into floating glass cards.
+- Rounded corners (16–20px).
+- Transparent backgrounds with blur.
+- Subtle hover animation (lift + glow).
+- Maintain colorful icons/artwork for each game.
+
+4. Chat Panel
+- Turn the chat sidebar into a dark glass panel.
+- Apply blur + transparency.
+- Messages appear as floating bubbles.
+- Add smooth scroll and subtle animations.
+
+5. Buttons
+- Use Apple-style pill buttons.
+- Primary buttons = gradient glass.
+- Secondary buttons = outlined glass.
+
+6. Background
+- Use layered gradients with subtle lighting.
+- Keep Duel-style artwork but add depth effects.
+- Add slight particle or glow effects.
+
+7. Animations
+- Smooth hover animations.
+- Cards slightly lift on hover.
+- Glass reflections shift slightly on mouse move.
+
+Technical Requirements:
+- Use modern CSS (backdrop-filter, blur, gradients).
+- Use Tailwind or clean CSS if available.
+- Maintain responsiveness for mobile and desktop.
+- Do not break existing functionality.
+
+Visual Style Reference:
+Apple VisionOS UI + glassmorphism + Duel.com artwork style.
+
+Output:
+Update the HTML/CSS and components to implement this Apple Glass design across the entire site.

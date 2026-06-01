@@ -1,0 +1,210 @@
+Make this HUD change immediately.
+
+I do NOT want the Shop button in the in-game HUD.
+I only wanted the HUD to have the same premium aura as the item shop — the glow, polish, layering, effects, and feel — not an actual button letting players go to the shop during the match.
+
+Also add a clean pre-match pot animation that shows both players’ Scalps going into the pot before gameplay starts.
+
+Do actual implementation in the repo now.
+
+================================
+PART 1 — REMOVE SHOP BUTTON
+================================
+
+Remove the in-game Shop button from the HUD anywhere it was added during gameplay.
+
+Important:
+- do not leave an empty gap or awkward spacing
+- rebalance the HUD layout after removing it
+- keep the premium glow / aura / polished styling
+- preserve the item-shop-inspired visual quality:
+  - gradients
+  - glow
+  - polished dark glass panels
+  - high-end spacing
+  - animated status feel
+- but no actual shop access inside the match HUD
+
+The goal is:
+premium item-shop energy
+WITHOUT a distracting shop button
+
+================================
+PART 2 — ADD PRE-MATCH POT ANIMATION
+================================
+
+Before the match fully begins, I want a short polished animation showing the wager / Scalps from both players going into the pot.
+
+GOAL:
+Make it feel like both players are putting money into the match.
+
+This should happen on match load / match intro before full gameplay starts.
+
+ANIMATION REQUIREMENTS:
+- show Player 1 Scalp amount
+- show Player 2 Scalp amount
+- both values visually move / animate toward a central pot
+- central pot total updates as both deposits happen
+- then transition into the live match HUD / gameplay
+
+Example flow:
+1. match intro appears
+2. player A stake appears on left
+3. player B stake appears on right
+4. both animate into center
+5. center pot shows total
+6. small glow / pulse / confirmation effect
+7. transition into active game
+
+This should feel:
+- premium
+- smooth
+- competitive
+- high-stakes
+- satisfying
+- not cheesy
+- not too slow
+
+================================
+PART 3 — POT ANIMATION VISUAL STYLE
+================================
+
+Make the pot intro match the platform aesthetic:
+- dark premium background
+- neon glow accents
+- polished chip / token / coin / Scalp styling
+- subtle blur / bloom
+- animated numbers
+- central pot glow
+- high-end sportsbook / arcade feel
+
+Possible visual elements:
+- each player amount in a glowing chip/card
+- central pot number in a brighter highlighted container
+- energy lines / trail as the values move inward
+- small pulse when total locks in
+- soft sound cue when each stake enters
+- final “Match Start” or similar cue before gameplay starts
+
+Do NOT make it feel tacky or casino-cheap.
+Make it feel premium and clean.
+
+================================
+PART 4 — POT ANIMATION BEHAVIOR
+================================
+
+Support these rules:
+- in ranked, always use the locked 1 Scalp amount per player
+- in casual, use actual selected wager amount
+- in tournament, use the event entry amount if applicable
+- central pot should reflect real match stake total
+- animation should work in:
+  - bot matches
+  - player vs player
+  - ranked
+  - casual
+  - tournament where applicable
+
+If bot match:
+- still show both stakes going in
+- bot side should still feel intentional
+
+================================
+PART 5 — HUD POLISH AFTER INTRO
+================================
+
+After the intro animation finishes:
+- fade smoothly into the live game HUD
+- HUD should remain premium and polished
+- keep:
+  - profile/status strip
+  - XP/progression feel
+  - currency display if appropriate
+  - streak / status pills
+  - premium glow / aura
+- remove:
+  - shop button
+  - any direct item shop navigation during match
+
+The HUD should still feel rich and alive, just cleaner and more focused.
+
+================================
+PART 6 — GAMES TO APPLY THIS TO
+================================
+
+Apply this system at minimum to:
+- Pool
+- Air Hockey
+- Bowling
+- Tron
+- Racing if it uses the same premium HUD structure
+
+If shared HUD components were created, update them there so behavior is consistent.
+
+================================
+PART 7 — SOUND / FEEDBACK
+================================
+
+Add subtle feedback to the pot intro:
+- sound when left player stake enters
+- sound when right player stake enters
+- small lock-in sound when pot total finalizes
+- optional “match start” stinger
+
+Keep it tasteful and premium.
+
+================================
+PART 8 — IMPLEMENTATION NOTES
+================================
+
+Suggested structure:
+- shared match intro / pot animation component
+- reusable prop-based system:
+  - playerOneStake
+  - playerTwoStake
+  - totalPot
+  - mode
+  - onComplete
+- shared styling so multiple games can reuse it
+
+Need:
+- smooth timing
+- no janky transitions
+- no blocking bugs
+- no stuck intro state
+- gameplay begins cleanly after animation
+
+================================
+TESTING REQUIREMENTS
+================================
+
+Test:
+- ranked match intro
+- casual match intro
+- bot match intro
+- pvp match intro
+- intro completes and gameplay starts
+- HUD looks correct after intro
+- no shop button remains
+- no broken spacing after shop removal
+- pot total displays correctly
+- intro does not replay incorrectly mid-match
+- rematch flow behaves correctly
+
+================================
+SUCCESS CRITERIA
+================================
+
+This task is only complete if:
+- the Shop button is removed from in-game HUD
+- the HUD still has the premium item-shop-like aura
+- a clean pre-match pot animation plays on load
+- both players’ Scalps visibly go into the pot
+- the center pot total is shown clearly
+- the match transitions smoothly into gameplay
+- no layout bugs remain
+- no gameplay flow bugs are introduced
+
+Do actual implementation now.
+Do not summarize the prompt back to me.
+After coding, tell me exactly what files were changed and how the intro works.

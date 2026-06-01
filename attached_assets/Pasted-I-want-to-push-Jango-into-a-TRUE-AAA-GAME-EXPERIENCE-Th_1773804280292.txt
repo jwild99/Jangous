@@ -1,0 +1,320 @@
+I want to push Jango into a TRUE AAA GAME EXPERIENCE. This is no longer just UI polish — this is about creating emotion, excitement, and addictive gameplay feel.
+
+Everything must feel like:
+- A real game (not a website)
+- Cinematic
+- Responsive
+- Rewarding
+
+-----------------------------------
+CORE DESIGN PRINCIPLE
+-----------------------------------
+
+Every action should:
+- Feel impactful
+- Trigger feedback (visual + sound)
+- Create excitement
+
+Nothing should feel flat or instant.
+
+-----------------------------------
+PART 1: MATCH START EXPERIENCE (VERY IMPORTANT)
+-----------------------------------
+
+When a user clicks PLAY:
+
+DO NOT instantly start the game.
+
+Create a cinematic match intro.
+
+-----------------------------------
+FLOW:
+-----------------------------------
+
+1. Screen slightly dims
+2. Game logo appears center screen
+3. Opponent found (if multiplayer)
+4. VS screen appears:
+
+Player 1 vs Player 2
+
+- Avatars displayed
+- Subtle glow around both players
+- Background animation continues
+
+5. Countdown:
+
+3 → 2 → 1
+
+Each number:
+- Scales up
+- Glow pulse
+- Sound effect
+
+6. Transition into game:
+- Quick zoom + fade
+- Smooth entry
+
+-----------------------------------
+GOAL:
+-----------------------------------
+
+Make starting a match feel IMPORTANT.
+
+-----------------------------------
+PART 2: WIN / LOSS CINEMATIC
+-----------------------------------
+
+After a match ends:
+
+-----------------------------------
+WIN:
+-----------------------------------
+
+- Screen glow (gold or rarity-based)
+- Text appears:
+
+“VICTORY”
+
+- XP + rewards animate in
+- Sound plays (reward sound)
+- Subtle particle burst
+
+-----------------------------------
+LOSS:
+-----------------------------------
+
+- Dimmed screen
+- Text:
+
+“DEFEAT”
+
+- Softer animation
+- No harsh effects
+
+-----------------------------------
+GOAL:
+-----------------------------------
+
+Even losing should feel clean, not frustrating.
+
+-----------------------------------
+PART 3: RANK UP SYSTEM (HIGH IMPACT)
+-----------------------------------
+
+When player ranks up:
+
+-----------------------------------
+ANIMATION:
+-----------------------------------
+
+- Screen darkens slightly
+- Rank badge appears center
+- Glow builds up
+- Burst effect
+- Text:
+
+“RANK UP”
+
+- Sound plays (big moment)
+
+-----------------------------------
+GOAL:
+-----------------------------------
+
+This should feel like a BIG achievement.
+
+-----------------------------------
+PART 4: LOBBY AUDIO + ATMOSPHERE
+-----------------------------------
+
+Add ambient experience:
+
+-----------------------------------
+LOBBY:
+-----------------------------------
+
+- Soft background music (loop)
+- Subtle ambient sound (energy hum, UI tone)
+
+-----------------------------------
+INTERACTIONS:
+-----------------------------------
+
+- Button clicks → clean sound
+- Hover → soft tick
+- Rewards → satisfying chime
+
+-----------------------------------
+RULE:
+-----------------------------------
+
+Audio must be subtle, not annoying.
+
+-----------------------------------
+PART 5: LIVE ACTIVITY SYSTEM (VERY IMPORTANT)
+-----------------------------------
+
+Make the world feel alive.
+
+-----------------------------------
+ADD:
+-----------------------------------
+
+Real-time feed in lobby:
+
+Examples:
+- “Beau just won 25 Scalps”
+- “Tournament starting now”
+- “Player123 reached Gold Rank”
+
+-----------------------------------
+ANIMATION:
+-----------------------------------
+
+- Slide in
+- Fade out
+- Small glow
+
+-----------------------------------
+GOAL:
+-----------------------------------
+
+Make players feel like others are playing.
+
+-----------------------------------
+PART 6: DAILY STREAK SYSTEM (UPGRADE)
+-----------------------------------
+
+Make streaks feel addictive.
+
+-----------------------------------
+RULE:
+-----------------------------------
+
+To maintain streak:
+- Must play at least 1 game
+- Must wager at least 1 scalp
+
+-----------------------------------
+VISUAL:
+-----------------------------------
+
+- Flame icon
+- Flame grows with streak
+- Color intensifies
+
+-----------------------------------
+REWARD FEEL:
+-----------------------------------
+
+When streak increases:
+- Glow pulse
+- Small animation
+- Sound
+
+-----------------------------------
+GOAL:
+-----------------------------------
+
+Encourage daily return behavior.
+
+-----------------------------------
+PART 7: XP + PROGRESSION FEEDBACK
+-----------------------------------
+
+XP must feel physical.
+
+-----------------------------------
+WHEN XP IS EARNED:
+-----------------------------------
+
+- XP number pops up (+50 XP)
+- Moves toward XP bar
+- XP bar fills smoothly
+- Light travels across bar
+
+-----------------------------------
+LEVEL UP:
+-----------------------------------
+
+- Glow effect
+- Sound
+- Small burst
+
+-----------------------------------
+GOAL:
+-----------------------------------
+
+XP should feel satisfying, not invisible.
+
+-----------------------------------
+PART 8: SOCIAL ENERGY SYSTEM
+-----------------------------------
+
+Make players feel presence.
+
+-----------------------------------
+ADD:
+-----------------------------------
+
+- Online indicators
+- Friend activity
+- “Playing now” tags
+
+-----------------------------------
+OPTIONAL:
+-----------------------------------
+
+- Small notifications when friends win
+
+-----------------------------------
+PART 9: ITEM + REWARD HYPE SYSTEM
+-----------------------------------
+
+Every reward must feel valuable.
+
+-----------------------------------
+WHEN UNLOCKING ITEM:
+-----------------------------------
+
+- Item appears center screen
+- Glow based on rarity
+- Animation plays
+- Sound plays
+
+-----------------------------------
+GOAL:
+-----------------------------------
+
+Unlocking should feel exciting.
+
+-----------------------------------
+PART 10: GLOBAL POLISH RULES
+-----------------------------------
+
+- No instant UI changes
+- Everything has animation
+- Everything has feedback
+- Everything feels smooth
+
+-----------------------------------
+FINAL EXPERIENCE GOAL
+-----------------------------------
+
+Jango should feel like:
+
+- A real competitive gaming platform
+- Alive and active
+- Smooth and cinematic
+- Addictive and rewarding
+
+User should feel:
+
+“This is fun”
+“This feels premium”
+“I want to keep playing”
+
+NOT:
+
+“This is just a website”

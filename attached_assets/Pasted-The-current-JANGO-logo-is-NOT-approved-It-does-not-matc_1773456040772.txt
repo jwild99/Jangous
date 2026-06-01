@@ -1,0 +1,69 @@
+The current JANGO logo is NOT approved. It does not match the reference sign and it is using the wrong colors. The official brand colors are HOT PINK and ORANGE. Fix the logo before making any other UI changes.
+
+GOAL  
+The logo must look like a real neon sign using hot pink and orange neon lighting. The current logo looks like a flat digital button instead of a neon sign.
+
+BRAND COLORS (STRICT)
+Hot Pink Neon: #FF2D8A  
+Bright Neon Orange: #FF7A00  
+
+Do NOT use yellow or gold.
+
+DESIGN REQUIREMENTS
+
+1. SIGN STRUCTURE
+- Rectangular neon sign
+- Thin hot-pink neon border
+- Small glowing corner dots (neon screw lights)
+- Very dark interior background (#050508 or near black)
+- Border should be thin and crisp, not thick or cartoony
+
+2. NEON EFFECT
+- Realistic neon glow
+- Bright inner glow
+- Soft outer glow
+- Strong vibrant lighting
+- Glow must look crisp, not blurry
+
+3. TEXT STYLE
+- Text must say: JANGO
+- Text color must be bright neon ORANGE (#FF7A00)
+- Letters should appear illuminated from inside
+- Bold retro arcade / casino style
+- Clean blocky font
+- Slight neon glow around letters
+
+4. PROPORTIONS
+- Logo slightly wider than tall
+- Reduce vertical height so it fits nicely in the header
+- Balanced padding inside the neon frame
+- Should look like a physical sign, not a button
+
+5. MOBILE OPTIMIZATION
+- Must scale properly on phones
+- Do not let the logo become oversized
+- Maintain crisp edges on retina displays
+- Center it properly in the hero section
+
+6. VISUAL QUALITY
+- Premium
+- Arcade / skill gaming aesthetic
+- Strong contrast on dark background
+- Clean glow layers
+- No cartoon UI styling
+
+IMPLEMENTATION
+Rebuild the logo as either:
+• A high-quality SVG neon sign
+OR
+• A CSS neon sign component with layered glow effects
+
+Do NOT:
+- change the brand name
+- invent new colors
+- use yellow/gold
+- simplify the neon effect
+- convert it to a flat logo
+
+FINAL RESULT
+The logo should immediately look like a hot pink and orange neon sign and match the reference sign aesthetic closely.

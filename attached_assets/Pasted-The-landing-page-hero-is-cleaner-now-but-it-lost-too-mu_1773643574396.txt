@@ -1,0 +1,197 @@
+The landing page hero is cleaner now, but it lost too much personality and brand presence.
+
+Current problems:
+- it feels too empty
+- it has no life
+- it looks too much like a generic SaaS landing page
+- Jango.us is not visually present enough
+- the hero needs more brand identity and controlled atmosphere
+
+I want to keep the cleaner Apple-glass / futuristic direction, but bring back more life, branding, and visual energy.
+
+MAIN GOAL
+
+Create a hero section that feels:
+- futuristic
+- premium
+- branded
+- alive
+- immersive
+- competitive
+
+It should look like a next-generation skill gaming platform, not a generic startup homepage.
+
+==================================================
+1. BRING JANGO.US INTO THE HERO
+==================================================
+
+Jango.us needs to be clearly visible in the hero.
+
+Add the Jango.us brand into the hero in one or more of these ways:
+
+- a glowing JANGO.US wordmark above the headline
+- a floating glass brand plaque
+- a subtle neon/glass logo panel behind or near the headline
+- a premium top-center brand lockup in the hero
+
+Important:
+Do NOT bring back the old loud billboard.
+Instead, create a more refined Apple-glass brand presence.
+
+The Jango.us branding should feel iconic and premium.
+
+==================================================
+2. KEEP THE HEADLINE, BUT IMPROVE THE COMPOSITION
+==================================================
+
+Keep the main headline:
+
+Bet on Skill, Not Luck.
+
+Keep the supporting text below it.
+
+But improve the layout so the hero feels more intentional and less empty.
+
+The hero should include:
+- Jango.us brand presence
+- main headline
+- subheadline
+- CTA buttons
+- live stats
+- layered visual atmosphere
+
+==================================================
+3. ADD LIFE BACK INTO THE BACKGROUND
+==================================================
+
+The background is currently too dead and flat.
+
+Add subtle life back in using:
+- soft animated light waves
+- depth gradients
+- slow-moving glow clouds
+- floating glass reflections
+- faint ambient particles
+- subtle light streaks
+- gentle atmospheric motion
+
+Important:
+Do NOT add noisy grain or clutter.
+The movement should feel elegant and premium.
+
+==================================================
+4. APPLE-GLASS VISUAL LAYERS
+==================================================
+
+Build the hero using layered depth.
+
+Suggested layers:
+- far background: deep navy / midnight gradient
+- mid background: soft glowing color clouds
+- foreground: floating glass stat panels / branded elements
+- text layer: centered headline and CTAs
+
+Use blur, transparency, subtle borders, and glow to make the page feel dimensional.
+
+==================================================
+5. IMPROVE THE STAT PANELS
+==================================================
+
+The stat panels are a good direction, but they need more presence and better layout.
+
+Make them feel more premium and integrated.
+
+Improve them by:
+- making them slightly larger
+- giving them more glass depth
+- stronger glow accents
+- cleaner icon treatment
+- better spacing
+- more polished typography
+
+Possible layout ideas:
+- horizontal row under CTAs
+- slight arc layout
+- floating cards with staggered depth
+
+Stats:
+- Players Online
+- Active Matches
+- Today's Winners
+
+==================================================
+6. MAKE THE HERO FEEL MORE LIKE A PRODUCT
+==================================================
+
+Add one or two subtle floating product UI elements in the hero background so it feels more like Jango.us.
+
+Examples:
+- a small floating match card
+- a challenge notification panel
+- a mini leaderboard glass widget
+- a subtle live game tile preview
+
+These should be secondary and softly blurred/faded so they support the hero without cluttering it.
+
+This will make the page feel alive and branded.
+
+==================================================
+7. ADD A STRONGER BRANDED COLOR STORY
+==================================================
+
+The hero needs more Jango identity.
+
+Use a refined color mix such as:
+- deep navy / black base
+- cool blue glow
+- violet accents
+- subtle pink/magenta edge highlights if needed
+
+Keep it premium and restrained, but more recognizable than the current flat dark blue.
+
+==================================================
+8. CTA BUTTONS
+==================================================
+
+Keep:
+- Start Playing
+- View Games
+
+But make them feel more premium.
+
+Primary button:
+- stronger glass glow
+- slightly more depth
+- subtle hover bloom
+
+Secondary button:
+- frosted glass
+- clean border
+- modern Apple-style button feel
+
+==================================================
+9. OVERALL FEEL
+==================================================
+
+The hero should feel like:
+- Apple Vision Pro meets competitive gaming
+- futuristic product landing page
+- premium skill-gaming brand
+- modern, alive, and memorable
+
+Avoid:
+- generic SaaS emptiness
+- loud casino billboard energy
+- childish arcade visuals
+- noisy grain overload
+
+==================================================
+10. FINAL GOAL
+==================================================
+
+I want the hero to land in the sweet spot between:
+- clean and futuristic
+- branded and memorable
+- minimal and alive
+
+It should clearly say Jango.us, clearly communicate “Bet on Skill, Not Luck,” and feel like a premium next-generation competitive gaming platform.

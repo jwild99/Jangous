@@ -1,0 +1,56 @@
+Prompt:
+Create a fast-paced, head-to-head Tetris / Block Blast–style skill game for Duel, focused on real-time competition and strategy.
+
+The game concept:
+Two players play simultaneously on mirrored grids. Each must place falling or spawned blocks strategically to clear as many lines (or clusters) as possible before the timer runs out.
+At the end of the timer (default: 90 seconds), the player with the highest score or most lines cleared wins.
+
+Include the following features:
+
+Clean modern UI — dark theme with neon highlights (blue for Player 1, red/purple for Player 2).
+
+Visible countdown timer and dynamic “Hurry Up” effect in the final 10 seconds.
+
+Next block preview window and current score counter for both players.
+
+Animated line clears with glowing particle effects and combo multipliers.
+
+Optional duel mode: one player’s cleared lines can drop “garbage rows” on the opponent’s board for added tension.
+
+Music and sound effects: subtle background beat that speeds up as time runs out; satisfying pop/spark sounds when clearing lines.
+
+Responsive controls: arrow keys or swipe controls for mobile.
+
+Scoring system:
+
+100 points per cleared line
+
+Combo bonus (+50 per additional chain)
+
+Time bonus for finishing moves under the timer
+
+Game flow: countdown → active play → final results screen showing both boards, scores, and a “Play Again” button.
+
+Technical specs:
+
+Built with HTML5 Canvas or React + Tailwind.
+
+Use a fixed-timestep loop (60 FPS) for block physics.
+
+Timer uses precise requestAnimationFrame updates.
+
+Include a configurable JSON or JS constants file to tweak grid size, drop speed, and scoring.
+
+Deliverables:
+
+Functional single-player timed mode (local).
+
+Optional PvP mode setup using Socket.IO for synchronous duels.
+
+End screen with win/loss state and total points displayed.
+
+Clear, polished animations and consistent branding for Duel’s competitive look.
+
+Would you like me to make a version of that prompt specifically focused on real-time PvP mode (two-player duel with live mirrored gameplay and garbage rows)?
+
+ChatGPT can make mistakes. Check important info.

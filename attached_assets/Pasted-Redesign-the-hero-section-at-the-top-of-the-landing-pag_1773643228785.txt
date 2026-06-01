@@ -1,0 +1,135 @@
+Redesign the hero section at the top of the landing page.
+
+Two problems need to be fixed:
+
+1. Replace the headline text
+2. Improve the hero layout so it feels cleaner and more premium.
+
+--------------------------------------------------
+
+HEADLINE CHANGE
+
+Replace the current headline:
+
+Compete. Win. Dominate.
+
+with the platform slogan:
+
+Bet on Skill, Not Luck.
+
+This should be the main headline on the landing page.
+
+Typography rules:
+
+• make the text large and bold
+• use clean modern typography
+• keep it centered
+• avoid excessive gradients
+• subtle glow is okay
+
+Example layout:
+
+Bet on Skill, Not Luck.
+
+Below the headline add a small supporting line:
+
+“Real players. Real competition. Pure skill.”
+
+--------------------------------------------------
+
+REMOVE THE BILLBOARD STYLE HERO
+
+The large sign/billboard graphic currently behind the text does not fit the Apple-glass futuristic design.
+
+Replace the billboard with a cleaner hero environment.
+
+The hero background should instead use:
+
+• soft gradients
+• subtle floating glass panels
+• light particle movement
+• blurred shapes
+• depth layers
+
+It should feel futuristic and minimal.
+
+--------------------------------------------------
+
+APPLE GLASS STYLE PANELS
+
+Add floating glass-style stat panels around the hero.
+
+Examples:
+
+Players Online  
+1,247
+
+Active Matches  
+342
+
+Today's Winners  
+891
+
+These should look like Apple-style floating UI widgets.
+
+Use:
+
+• frosted glass blur
+• thin borders
+• soft glow
+• subtle shadow
+
+--------------------------------------------------
+
+PRIMARY ACTION BUTTONS
+
+Keep two clear call-to-actions:
+
+Start Playing  
+View Games
+
+Buttons should be:
+
+• rounded
+• modern
+• subtle glow
+• lift slightly on hover
+
+--------------------------------------------------
+
+HERO STRUCTURE
+
+The hero layout should be:
+
+Headline  
+Supporting text  
+Call-to-action buttons  
+Floating stat panels
+
+Avoid large noisy background elements.
+
+--------------------------------------------------
+
+VISUAL STYLE
+
+The hero should feel like:
+
+Apple Vision Pro UI  
+Modern SaaS landing pages  
+High-end gaming platforms
+
+Avoid:
+
+• casino billboard visuals
+• grainy backgrounds
+• overly loud neon effects
+
+--------------------------------------------------
+
+FINAL GOAL
+
+The landing page hero should clearly communicate the platform’s core message:
+
+Bet on Skill, Not Luck.
+
+The design should feel futuristic, premium, and competitive.

@@ -1,0 +1,328 @@
+FEATURE: LEADERBOARD + GLOBAL STATS — FULL UI/UX OVERHAUL (HIGH DOPAMINE + COMPETITION FOCUSED)
+
+GOAL:
+Turn Leaderboard and Global Stats from passive data displays into:
+- competitive environments
+- ego-driven systems
+- constantly updating experiences
+- visually rewarding + dynamic
+
+==================================================
+SECTION 1: LEADERBOARD — COMPLETE REDESIGN
+==================================================
+
+--------------------------------------------------
+1. HERO AREA (TOP OF PAGE)
+--------------------------------------------------
+
+Replace static “Leaderboard” header with:
+
+SHOW:
+- "YOU ARE #X" (large, bold)
+- rating / MMR number
+- small subtitle:
+  “You are 3 wins away from Top 10”
+
+ADD PROGRESS BAR:
+- shows distance to next rank
+- animated fill
+
+ANIMATION:
+- number count up on load
+- glow pulse on rank
+
+--------------------------------------------------
+2. TOP 3 PODIUM (CRITICAL FEATURE)
+--------------------------------------------------
+
+Instead of a table at top → show PODIUM:
+
+#1:
+- center, biggest
+- gold glow
+- crown icon
+- floating animation
+
+#2:
+- left, slightly smaller
+- silver glow
+
+#3:
+- right, bronze glow
+
+EACH PLAYER CARD:
+- username
+- rating
+- winrate
+- streak badge
+
+ANIMATION:
+- subtle floating motion
+- glow pulse every few seconds
+
+--------------------------------------------------
+3. LIVE LEADERBOARD TABLE (NOT STATIC)
+--------------------------------------------------
+
+TABLE MUST FEEL ALIVE.
+
+Add:
+- rank change arrows (↑ ↓)
+- green/red flash on movement
+- animated row transitions
+
+ROW STATES:
+- hover → glow + slight scale
+- your row → highlighted + “YOU” badge
+
+--------------------------------------------------
+4. “CLIMB SYSTEM” (CRITICAL)
+--------------------------------------------------
+
+Add panel above table:
+
+SHOW:
+- “Next Target: #12 (PlayerName)”
+- their rating
+- gap (ex: +42 points needed)
+
+BUTTON:
+→ “Challenge”
+
+This creates:
+COMPETITION LOOP
+
+--------------------------------------------------
+5. FILTERS UPGRADE
+--------------------------------------------------
+
+Current filters are boring.
+
+REPLACE WITH:
+- pill buttons (glow on select)
+- icons per game
+
+ADD:
+- “Hot Players” filter (recent win streaks)
+- “Big Earners” filter
+- “Rising Players” (fast rank gain)
+
+--------------------------------------------------
+6. EMPTY STATE FIX
+--------------------------------------------------
+
+Right now:
+“No rankings yet” = dead.
+
+REPLACE WITH:
+- animated ghost leaderboard
+- CTA:
+  “Play 3 matches to get ranked”
+
+BUTTON:
+→ “Play Now”
+
+==================================================
+SECTION 2: GLOBAL STATS — FULL OVERHAUL
+==================================================
+
+PROBLEM:
+Right now it’s just numbers. No meaning.
+
+FIX:
+Turn it into a **LIVE SYSTEM DASHBOARD**
+
+--------------------------------------------------
+1. HERO METRICS (MAKE THEM FEEL BIG)
+--------------------------------------------------
+
+Current:
+22 matches
+$0 winnings
+
+Fix:
+
+Make each card:
+- bigger
+- animated
+- glowing
+
+ANIMATIONS:
+- numbers count up
+- small pulse every few seconds
+
+ADD MICRO TEXT:
+“+12 today”
+“+3% from yesterday”
+
+--------------------------------------------------
+2. LIVE ACTIVITY FEED (MOST IMPORTANT ADD)
+--------------------------------------------------
+
+Add RIGHT SIDE PANEL:
+
+LIVE FEED:
+
+Example:
+“Beau won 5 SCALPS in Chess”
+“PlayerX lost 3 SCALPS in Tron”
+
+BEHAVIOR:
+- auto updates every few seconds
+- smooth slide-in animation
+
+THIS MAKES PLATFORM FEEL ALIVE
+
+--------------------------------------------------
+3. FAIR PLAY LOG (CURRENT TABLE IS BORING)
+--------------------------------------------------
+
+Turn into cards instead of rows.
+
+Each entry becomes:
+
+CARD:
+- game icon
+- players
+- result
+- score
+- verification badge
+
+ADD:
+- expandable view
+- “View Match Replay” (future feature)
+
+--------------------------------------------------
+4. “BIG WINS” SECTION (NEW)
+--------------------------------------------------
+
+Add section:
+
+“Top Wins Today”
+
+Show:
+- biggest payouts
+- highlight player
+
+VISUAL:
+- glowing gold cards
+- large numbers
+
+--------------------------------------------------
+5. PERFORMANCE CHARTS (DYNAMIC)
+--------------------------------------------------
+
+Add charts:
+
+- matches per hour
+- winnings over time
+- active players
+
+ANIMATION:
+- lines animate in
+- smooth transitions
+
+--------------------------------------------------
+6. “PLATFORM ENERGY” BAR (NEW IDEA)
+--------------------------------------------------
+
+Show a global activity meter:
+
+“Platform Activity: HIGH”
+
+Bar fills based on:
+- matches running
+- players online
+
+Adds urgency.
+
+==================================================
+SECTION 3: GLOBAL UX IMPROVEMENTS
+==================================================
+
+--------------------------------------------------
+1. MOTION SYSTEM
+--------------------------------------------------
+
+EVERYTHING SHOULD MOVE:
+
+- numbers animate
+- cards hover
+- tables shift smoothly
+
+NO STATIC UI.
+
+--------------------------------------------------
+2. COLOR SYSTEM
+--------------------------------------------------
+
+Use meaning:
+
+GREEN:
+- wins
+- gains
+
+RED:
+- losses
+
+GOLD:
+- top ranks
+- big wins
+
+PURPLE/NEON:
+- system highlights
+
+--------------------------------------------------
+3. MICRO INTERACTIONS
+--------------------------------------------------
+
+Add:
+- hover sounds (optional)
+- glow on click
+- subtle vibrations (if mobile)
+
+--------------------------------------------------
+4. SPEED
+--------------------------------------------------
+
+Everything must:
+- load instantly
+- animate under 500ms
+
+==================================================
+SECTION 4: PSYCHOLOGY (WHY THIS MATTERS)
+==================================================
+
+This overhaul creates:
+
+- COMPETITION → leaderboard climb
+- SOCIAL PROOF → live feed
+- REWARD LOOP → animations + wins
+- URGENCY → live activity
+- IDENTITY → “YOU ARE #X”
+
+Without this:
+UI = boring
+Users = leave
+
+With this:
+Users = stay + compete
+
+==================================================
+FINAL EXPECTATION
+==================================================
+
+Leaderboard should feel like:
+→ a ranked arena
+
+Stats page should feel like:
+→ a live system, not a report
+
+If built correctly:
+Users should feel:
+“I need to climb”
+“I need to win”
+“I’m close”
+
+NOT:
+“Oh cool numbers”

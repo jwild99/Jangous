@@ -1,0 +1,162 @@
+Add a dedicated "Rank System" section to the player's personal dashboard so users can clearly see their current rank, progress, and what each rank means.
+
+This should make the ranking system feel rewarding and transparent.
+
+---
+
+1. CURRENT RANK CARD
+
+Add a large rank card at the top of the personal dashboard showing:
+
+Current Rank Name
+Rank Badge/Icon
+ELO Rating Number
+Progress Bar to Next Rank
+
+Example layout:
+
+Rank: Silver
+Rating: 1,248
+
+Progress bar:
+[██████████░░░░░░░░]
+52% to Gold
+
+Also show:
+
+Wins this season
+Ranked games played
+
+---
+
+2. FULL RANK LADDER DISPLAY
+
+Below the current rank card, display the full rank ladder so players understand the progression.
+
+Ranks should be displayed vertically or horizontally with badges.
+
+Example ranks:
+
+Bronze — 0-999
+Silver — 1000-1299
+Gold — 1300-1599
+Platinum — 1600-1899
+Diamond — 1900-2199
+Champion — 2200+
+
+Each rank should show:
+
+Rank badge
+Rank name
+ELO range
+
+The player’s current rank should glow or highlight.
+
+---
+
+3. TOOLTIP / INFO FOR EACH RANK
+
+When hovering or tapping a rank, show a tooltip explaining the skill level.
+
+Example:
+
+Bronze
+Beginner players learning the basics.
+
+Silver
+Average players with basic strategy.
+
+Gold
+Strong players with good consistency.
+
+Platinum
+Advanced players with strong mechanics.
+
+Diamond
+Top competitive players.
+
+Champion
+Elite players in the top percentile.
+
+---
+
+4. RANK PROGRESSION DETAILS
+
+Below the ladder add a small section explaining how rank works:
+
+Rank increases when you win ranked matches.
+
+Your rating adjusts based on opponent skill.
+
+Winning against stronger opponents gives more rating.
+
+Losing against weaker opponents loses more rating.
+
+Season resets may adjust ranks slightly.
+
+---
+
+5. RANK BADGES
+
+Create clean badge icons for each rank:
+
+Bronze → bronze shield
+Silver → silver shield
+Gold → gold crown
+Platinum → blue diamond
+Diamond → glowing crystal
+Champion → neon crown with glow
+
+Badges should feel premium and esports-style.
+
+---
+
+6. ADD RANK HISTORY
+
+Add a small card showing:
+
+Highest rank achieved
+Current season rank
+Previous season rank
+
+Example:
+
+Highest Rank: Platinum
+Season Rank: Gold
+Last Season: Silver
+
+---
+
+7. VISUAL DESIGN
+
+Use glass cards matching the platform style.
+
+Each rank badge should have a unique glow color:
+
+Bronze → warm bronze glow
+Silver → cool silver glow
+Gold → gold glow
+Platinum → cyan glow
+Diamond → purple glow
+Champion → neon pink glow
+
+---
+
+8. MOBILE SUPPORT
+
+On mobile, the rank ladder should become a horizontal scrollable row of rank badges.
+
+The current rank should stay centered.
+
+---
+
+9. FINAL GOAL
+
+When a player opens their dashboard they should instantly understand:
+
+What rank they are
+How close they are to the next rank
+What ranks exist in the system
+What skill level each rank represents
+
+The rank system should feel like a core progression system that motivates players to keep playing.

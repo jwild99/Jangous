@@ -1,0 +1,127 @@
+Update the matchmaking system so mobile users are never paired with desktop users.
+
+Main goal:
+Ensure fair gameplay by only matching players with others using the same device type.
+
+Device categories should be:
+
+• Mobile (phones and tablets)
+• Desktop (laptops and PCs)
+
+==================================================
+1. DEVICE DETECTION
+==================================================
+
+Detect the player’s device type when they load the platform.
+
+Determine whether the user is:
+
+Mobile User
+Desktop User
+
+This can be determined using:
+
+- screen size
+- user agent
+- device type detection
+
+Save this value in the session or user state as:
+
+deviceType
+
+Example values:
+
+deviceType = "mobile"
+deviceType = "desktop"
+
+==================================================
+2. MATCHMAKING FILTER
+==================================================
+
+When creating matches, only pair users with the same deviceType.
+
+Rules:
+
+mobile users can only match with mobile users  
+desktop users can only match with desktop users
+
+Never mix the two groups.
+
+Example logic:
+
+mobile → mobile only  
+desktop → desktop only
+
+==================================================
+3. MATCHMAKING QUEUES
+==================================================
+
+Create separate matchmaking queues.
+
+Example:
+
+Mobile Queue
+Desktop Queue
+
+When players search for a match, place them in the correct queue based on deviceType.
+
+==================================================
+4. GAME LOBBIES
+==================================================
+
+If game lobbies exist, they should also respect device type.
+
+Mobile users should only see mobile-compatible lobbies.
+
+Desktop users should only see desktop-compatible lobbies.
+
+==================================================
+5. UI FEEDBACK
+==================================================
+
+Optionally display device information in the lobby.
+
+Examples:
+
+Mobile Player  
+Desktop Player
+
+Or show small device icons.
+
+==================================================
+6. MOBILE GAME MODES
+==================================================
+
+Ensure mobile matches only launch games using mobile-optimized controls.
+
+Desktop matches should use the desktop control scheme.
+
+==================================================
+7. EDGE CASES
+==================================================
+
+Handle cases where there are not enough players in the queue.
+
+Options:
+
+- extend wait time
+- show message: "Searching for players on your device type"
+
+Do NOT mix device types to reduce wait times.
+
+==================================================
+8. TESTING
+==================================================
+
+Test matchmaking with:
+
+mobile vs mobile matches  
+desktop vs desktop matches  
+
+Ensure cross-device pairing never occurs.
+
+==================================================
+9. GOAL
+==================================================
+
+Players should always compete against others using the same type of device so the gameplay experience remains fair and balanced.

@@ -1,0 +1,258 @@
+The 8-ball pool game is still not acceptable. The biggest issue is that the core shot mechanic is still broken. I can pull back the cue stick and release, but nothing happens. The cue ball does not move. That means the game is still not functional, and until that is fixed, visual work does not matter.
+
+Also, the game still looks bland, empty, and low-energy. It needs a much stronger visual identity, more polish, more motion, more feedback, and more premium arcade feel. Right now it still feels like a bare prototype.
+
+THIS NEXT PASS HAS 2 PRIMARY GOALS:
+1. FIX THE GAME so shots actually fire every single time
+2. MAKE THE GAME LOOK PREMIUM, EXCITING, AND ALIVE
+
+================================
+PRIORITY 1 — FIX THE SHOT SYSTEM
+================================
+
+This is the top priority. Stop doing visual tweaks before the shot mechanic is truly fixed.
+
+Current issue:
+- I can aim
+- I can pull back
+- I can release
+- but the cue ball does not move
+- the shot is not actually being applied
+
+I need the drag-back-and-release system to work every single time.
+
+Implement this cleanly:
+- pointer down / mouse down / touch start begins aiming + charge state
+- drag distance sets shot power
+- release always calls one shared fireShot() function
+- fireShot() must directly apply velocity/impulse to the cue ball
+- after release, cue ball velocity must be non-zero unless the shot power is below a tiny minimum threshold
+- if a shot does not fire, log exactly why
+
+DO NOT rely on scattered event logic.
+DO NOT let the animation run without the actual physics impulse.
+DO NOT split desktop and mobile shot execution into separate broken paths.
+
+I want one clean firing pipeline:
+1. start charge
+2. update drag vector
+3. compute aim direction
+4. compute power
+5. on release call fireShot()
+6. apply cue ball velocity
+7. lock input until balls settle
+
+Possible bugs to inspect immediately:
+- pointerup not firing because cursor leaves canvas
+- release event swallowed by another layer/div
+- stale React state causing shot power to reset before fireShot
+- cue ball reference not current at release time
+- balls marked “not shootable” due to turn/physics flags
+- immediate friction/velocity clamp reducing shot to zero
+- fireShot running before drag vector is stored
+- canvas coordinate mismatch causing invalid vector
+- game state blocking shots during break or turn transitions
+- cue ball being flagged as already moving
+- event listeners attached to wrong element
+- touchend / mouseup inconsistency
+- power scaling returning near-zero values
+- physics tick instantly zeroing velocity
+
+Required debugging:
+Add temporary logs for:
+- pointer down
+- drag distance
+- shot power
+- release detected
+- fireShot called
+- velocity applied to cue ball
+- cue ball velocity after 1 frame
+- reason shot was blocked if blocked
+
+Required acceptance test:
+- click and drag back, release -> cue ball moves
+- do this 20 times in a row with no dead shots
+- weak shot works
+- strong shot works
+- break shot works
+- touch release works too
+
+The task is NOT complete until drag-and-release reliably shoots every single time.
+
+================================
+PRIORITY 2 — MAKE THE TABLE LOOK PREMIUM
+================================
+
+Use the attached pool table image as visual inspiration for shape, pocket scale, proportions, and a more believable table look.
+
+What I want from the table:
+- more realistic table proportions
+- bigger, more believable corner pockets
+- better side pockets
+- more detailed wood rails
+- more premium felt texture
+- better shading and depth
+- darker, cleaner pocket interiors
+- richer lighting so the table feels dimensional
+- more realistic highlights and shadows around rails and balls
+
+Right now the table still looks too flat and empty.
+Push it toward:
+- premium mobile pool game
+- arcade-realistic
+- polished
+- richer contrast
+- more depth
+- more visual interest
+
+Use the reference image to improve:
+- pocket mouth shape
+- corner pocket size
+- rail shape
+- overall table silhouette
+- sense of realism
+
+Do not copy it exactly, but use it as clear visual inspiration.
+
+================================
+PRIORITY 3 — REMOVE THE “EMPTY / DEAD” FEEL
+================================
+
+The game still feels like there is not much going on. It needs more dopamine and more visible reactions.
+
+Add more feedback and motion:
+- animated event banner when something important happens
+- small glow pulse on pocketed shots
+- impact feedback on cue strike
+- cleaner collision sounds
+- pocket drop sound
+- turn highlight animation
+- player card reaction when it is their turn
+- stronger aiming visuals
+- subtle cue pullback tension and release snap
+- smoother UI transitions
+- more dynamic HUD
+
+The screen should not feel static.
+It should feel active, modern, and game-like.
+
+================================
+PRIORITY 4 — ADD STRONGER GAME EVENT FEEDBACK
+================================
+
+When things happen, I want the game to react in a satisfying way.
+
+When a ball is pocketed:
+- show a quick premium popup/banner:
+  - “Nice Shot”
+  - “Ball Sunk”
+  - “Clean Pocket”
+- pocket pulse/glow
+- satisfying sound
+- slight player card highlight
+- make it feel rewarding
+
+When the cue ball scratches:
+- strong “Scratch” feedback
+- different sound
+- clear foul state message
+
+When the 8-ball is pocketed early or incorrectly:
+- dramatic fail feedback
+- stronger banner:
+  - “You Sunk the 8”
+  - “8-Ball Foul”
+  - “Bad Pocket”
+- darker/red feedback moment
+- clear loss/foul handling
+
+When turns change:
+- make it obvious
+- animated active turn indicator
+- more visible turn state in the player cards
+
+================================
+PRIORITY 5 — LAYOUT / PRESENTATION PASS
+================================
+
+The overall screen composition still feels bland.
+
+Improve layout:
+- make the table the obvious centerpiece
+- enlarge it visually and give it more presence
+- tighten surrounding spacing
+- better top HUD
+- cleaner player cards
+- add small icons / ball group indicators if relevant
+- make status text look intentional, not like placeholder helper text
+
+The current screen still feels too empty around the table.
+Make the whole scene feel designed.
+
+Potential improvements:
+- subtle background gradient or vignette
+- stronger spotlight effect around table
+- refined player panels
+- cleaner top bar
+- small ambient UI motion
+- more polished fonts / hierarchy / spacing
+
+================================
+PRIORITY 6 — CUE / SHOT FEEL
+================================
+
+Even after the shot works, the cue strike needs to feel better.
+
+Improve:
+- pullback tension
+- release snap
+- cue movement smoothness
+- shot power response
+- hit impact
+- ball launch clarity
+
+The shot should feel satisfying, not soft or ambiguous.
+
+================================
+STRICT ORDER OF WORK
+================================
+
+Do the work in this order:
+
+1. Fix drag-and-release shot so it actually moves the cue ball every time
+2. Verify physics input path is reliable
+3. Improve table visuals using the attached pool table reference
+4. Improve pocket size/shape and realism
+5. Add event feedback, dopamine, and motion
+6. Improve HUD and layout polish
+7. Final QA pass
+
+================================
+FINAL ACCEPTANCE CRITERIA
+================================
+
+This is only done if ALL of the following are true:
+
+FUNCTIONAL:
+- drag back and release shoots every single time
+- cue ball always moves when a valid shot is released
+- no fake cue animation with no actual shot
+- break shot works
+- repeat shots work
+- gameplay is actually playable
+
+VISUAL:
+- table looks more realistic and premium
+- pockets look larger and more believable
+- layout looks polished and less empty
+- screen has more energy and visual interest
+- game no longer feels bland or prototype-level
+
+FEEL:
+- shots feel responsive
+- pocketed balls feel rewarding
+- scratches feel noticeable
+- 8-ball mistakes feel dramatic
+- UI reacts to gameplay events
+
+Do not tell me it is fixed until the actual shot mechanic has been tested and confirmed working repeatedly.

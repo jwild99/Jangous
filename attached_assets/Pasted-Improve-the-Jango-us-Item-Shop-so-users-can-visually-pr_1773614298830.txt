@@ -1,0 +1,175 @@
+Improve the Jango.us Item Shop so users can visually preview cosmetic equipment items before purchasing, but they cannot use them in a playable demo.
+
+The preview should allow users to look at the item from different angles and see its visual effects, but no gameplay interaction should occur.
+
+Everything must work on mobile and desktop.
+
+---
+
+# ITEM SHOP PREVIEW SYSTEM
+
+Each item card must include:
+
+• Item Name  
+• Item Type  
+• Rarity  
+• Price in Scalps  
+• Short Description  
+• Preview Button  
+• Buy Button  
+
+When users click Preview, a preview window opens showing the cosmetic item in a 3D viewer.
+
+---
+
+# 3D PREVIEW VIEWER
+
+The preview window should allow users to:
+
+• Rotate the item  
+• Zoom in and out  
+• See lighting reflections  
+• View animated cosmetic effects  
+
+Users should not be able to use the item in a game.
+
+Example previews:
+
+Ping Pong Paddle Preview
+• Paddle slowly rotates on screen  
+• Glow or flame animations play  
+• Lighting highlights textures
+
+Pool Cue Preview
+• Cue rotates horizontally  
+• Shine effects reflect light  
+• Small idle animation plays
+
+The preview should look like a showroom display.
+
+---
+
+# SHOP LAYOUT
+
+The item shop should have these sections:
+
+Featured Items  
+Daily Rotation  
+Legendary Items  
+
+Each item card should show:
+
+• Cosmetic image or render  
+• Rarity color border  
+• Item name  
+• Price in Scalps  
+• Preview button  
+• Purchase button
+
+---
+
+# RARITY COLORS
+
+Common – Gray  
+Rare – Blue  
+Epic – Purple  
+Legendary – Gold  
+Mythic – Red  
+
+---
+
+# EQUIPMENT COSMETIC ITEMS
+
+Neon Pulse Paddle  
+Type: Ping Pong Paddle  
+Rarity: Rare  
+Price: 6 Scalps  
+
+Description:  
+A sleek paddle surrounded by glowing neon edges that pulse with energy.
+
+Visual Appearance:  
+Hot pink paddle with animated orange glow along the rim.
+
+---
+
+Inferno Paddle  
+Type: Ping Pong Paddle  
+Rarity: Epic  
+Price: 10 Scalps  
+
+Description:  
+A paddle forged in digital flames for players who dominate the table.
+
+Visual Appearance:  
+Black paddle with animated fire patterns moving across the surface.
+
+---
+
+Galaxy Paddle  
+Type: Ping Pong Paddle  
+Rarity: Legendary  
+Price: 14 Scalps  
+
+Description:  
+A cosmic paddle filled with swirling stars and deep space colors.
+
+Visual Appearance:  
+Animated galaxy texture with glowing stars drifting across the surface.
+
+---
+
+Diamond Pro Cue  
+Type: Pool Cue  
+Rarity: Rare  
+Price: 7 Scalps  
+
+Description:  
+A sleek professional cue with a polished diamond finish.
+
+Visual Appearance:  
+Glossy white cue with reflective diamond patterns.
+
+---
+
+Neon Strike Cue  
+Type: Pool Cue  
+Rarity: Epic  
+Price: 11 Scalps  
+
+Description:  
+A futuristic cue glowing with electric neon energy.
+
+Visual Appearance:  
+Black cue with glowing pink and orange light strips.
+
+---
+
+Royal Gold Cue  
+Type: Pool Cue  
+Rarity: Legendary  
+Price: 16 Scalps  
+
+Description:  
+A luxurious gold-plated cue reserved for champions.
+
+Visual Appearance:  
+Gold cue with engraved crown details and shimmering highlights.
+
+---
+
+# SHOP UX IMPROVEMENTS
+
+Add these improvements:
+
+• Smooth hover animations  
+• Large item cards for mobile users  
+• 3D preview pop-up window  
+• Countdown timer for shop refresh  
+• “New Today” badge for fresh items
+
+---
+
+# FINAL GOAL
+
+The item shop should feel like a cosmetic showroom where users can inspect items in detail before buying them, while keeping gameplay fair and competitive.

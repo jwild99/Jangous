@@ -1,0 +1,199 @@
+You are updating our competitive gaming platform. Build a complete Ranking & Skill Rating System that works across all games on the website. The system must be simple, fair, competitive, and motivating for players.
+
+Goal: create a ranking system that measures player skill, improves matchmaking, and encourages progression.
+
+--------------------------------
+
+SYSTEM OVERVIEW
+
+Every player must have:
+
+• Hidden MMR (Matchmaking Rating) used for matchmaking  
+• Visible Rank Tier shown on profiles and leaderboards  
+• Win/Loss record  
+• Win streak tracker
+
+MMR should update after every ranked match.
+
+--------------------------------
+
+RATING SYSTEM
+
+Implement an Elo-based rating system.
+
+Formula:
+
+NewRating = CurrentRating + K × (Result − ExpectedScore)
+
+Where:
+
+Result = 1 for win, 0 for loss
+
+ExpectedScore =  
+1 / (1 + 10^((OpponentRating - CurrentRating) / 400))
+
+Use a dynamic K-factor:
+
+K = 40 for new players  
+K = 25 for normal players  
+K = 15 for high rank players
+
+--------------------------------
+
+RANK TIERS
+
+Create visible ranks based on MMR ranges.
+
+Bronze: 0–999  
+Silver: 1000–1399  
+Gold: 1400–1799  
+Platinum: 1800–2199  
+Diamond: 2200–2599  
+Champion: 2600+
+
+Each rank must have:
+
+• Unique badge icon  
+• Unique color theme  
+• Rank progress bar toward next tier
+
+--------------------------------
+
+POST MATCH RANK UPDATE
+
+After every ranked match show a rank update screen that includes:
+
+• MMR gained or lost  
+• Progress bar animation  
+• Rank promotion animation if tier changes
+
+Add sound effects:
+
+• Rank up → victory sound  
+• Rank down → subtle loss sound
+
+--------------------------------
+
+MATCHMAKING
+
+Build a matchmaking system based on MMR.
+
+Match players within:
+
+±100 rating initially
+
+If no match is found expand range every 10 seconds.
+
+Matchmaking should prioritize:
+
+• Similar skill rating  
+• Similar win rate  
+• Low latency connection
+
+--------------------------------
+
+PLACEMENT MATCHES
+
+New accounts must complete 5 placement matches.
+
+During placements:
+
+• Rating changes are larger  
+• Rank is hidden
+
+After placements the player receives their first rank.
+
+--------------------------------
+
+ANTI-SMURF PROTECTION
+
+Implement detection for suspicious accounts.
+
+Monitor:
+
+• Extremely high win rate  
+• Very fast MMR increases  
+• New accounts beating high ranked players
+
+When detected increase rating gain to push the player upward faster.
+
+--------------------------------
+
+LEADERBOARDS
+
+Create leaderboards for:
+
+• Global ranking  
+• Each individual game  
+• Weekly leaderboard  
+• Monthly leaderboard  
+• All-time leaderboard
+
+Leaderboard should display:
+
+• Rank position  
+• Username  
+• Rank badge  
+• MMR  
+• Wins
+
+--------------------------------
+
+PLAYER PROFILE INTEGRATION
+
+Add ranking information to user profiles.
+
+Profiles must display:
+
+• Rank badge  
+• MMR rating  
+• Win rate  
+• Total matches played  
+• Rank history graph
+
+--------------------------------
+
+SEASON SYSTEM
+
+Add competitive seasons lasting 90 days.
+
+At the start of each season:
+
+• Slight rank reset  
+• Players must complete placement matches again
+
+Season rewards should include:
+
+• Exclusive badges  
+• Profile cosmetics  
+• Rank borders
+
+--------------------------------
+
+SECURITY
+
+All rating calculations must run server-side to prevent manipulation.
+
+Implement:
+
+• Match validation  
+• Anti-exploit protection  
+• Detection of repeated match farming
+
+--------------------------------
+
+UI DESIGN
+
+The ranking system UI must include:
+
+• Rank badges  
+• Rank progress bars  
+• Promotion animations  
+• Leaderboards page  
+• Match result rank updates
+
+Design must match the website’s competitive gaming aesthetic.
+
+--------------------------------
+
+Ensure the ranking system works across all games on the platform and integrates with existing user accounts and matchmaking systems.

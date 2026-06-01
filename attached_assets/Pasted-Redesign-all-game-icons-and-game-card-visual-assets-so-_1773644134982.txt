@@ -1,0 +1,201 @@
+Redesign all game icons and game card visual assets so they feel modern, premium, competitive, and visually consistent with the Jango.us brand.
+
+Current problem:
+- the game icons look outdated
+- they feel childish / arcade-like
+- they look too much like casual mobile game art
+- they reduce the premium competitive feel of the platform
+
+Main goal:
+Replace the current icons with a more modern, sleek, and serious visual style that fits a competitive skill-gaming platform.
+
+==================================================
+1. NEW ICON DIRECTION
+==================================================
+
+The new game icons should feel like:
+
+- premium game emblems
+- modern cover-art thumbnails
+- competitive gaming badges
+- sleek branded symbols
+- high-end UI assets
+
+Avoid:
+- cartoonish mini illustrations
+- toy-like colors
+- childish shapes
+- overly cute / playful design
+- generic app icon look
+
+The icons should feel more like:
+- esports UI
+- premium launchers
+- modern game hub thumbnails
+- dark polished app/game covers
+
+==================================================
+2. VISUAL STYLE
+==================================================
+
+Update each game icon to use:
+
+- darker tones
+- richer contrast
+- cleaner silhouettes
+- subtle lighting
+- glow accents
+- depth / layering
+- sharper composition
+- premium materials
+
+Use a more serious palette:
+- deep navy
+- black
+- steel blue
+- violet accents
+- subtle neon highlights
+
+Do not use bright toy-like primary colors as the main feel.
+
+==================================================
+3. ICON FORMAT
+==================================================
+
+Each game icon should feel like a compact premium tile.
+
+Recommended format:
+- dark background tile
+- centered game symbol or scene
+- layered lighting
+- subtle glow rim
+- polished, detailed finish
+
+Icons should look good on:
+- game cards
+- featured sections
+- quick play
+- future lobby/game selectors
+
+==================================================
+4. GAME-SPECIFIC ICON REDESIGN
+==================================================
+
+Redesign each game icon with a more modern and competitive feel:
+
+Chess
+- use a dramatic king or knight piece
+- metallic or glossy finish
+- dark board or spotlight background
+- make it feel strategic and elite
+
+Mini Golf
+- use a sleek putting green scene
+- spotlighted flag / ball
+- not cartoon golf art
+- make it feel minimal and skill-based
+
+Connect 4
+- use a polished board with dimensional chips
+- dark frame and glowing chip accents
+- make it feel tactical, not toy-like
+
+Air Hockey
+- use a sleek neon-lit table or puck emblem
+- add motion or energy feel
+- make it feel fast and competitive
+
+Rock Paper Scissors
+- replace playful hand-sign look with a more stylized competitive emblem
+- use sharp layered symbolism or polished duel-style iconography
+- make it feel more tactical than childish
+
+Dots & Boxes
+- use a clean grid with connected illuminated nodes
+- subtle strategic/tactical look
+- avoid school-game vibes
+
+8-Ball Pool
+- use a glossy 8-ball with dark felt and cue-light highlight
+- more premium lounge / skill-game feel
+
+Bowling
+- use a dramatic ball/pin composition
+- polished reflections
+- deeper shadows
+- make it feel competitive, not party-game
+
+Cup King / Cup Pong
+- use darker premium table styling
+- glowing cups with controlled lighting
+- avoid frat-party / childish visuals
+- make it feel precise and skill-based
+
+Stack Tower Duel
+- use stacked illuminated blocks with depth and tension
+- make it feel modern and clean
+- avoid toy block look
+
+Block Blast
+- use polished geometric pieces with sleek lighting
+- more tactical puzzle feel
+- less childish arcade feel
+
+==================================================
+5. CARD INTEGRATION
+==================================================
+
+The icon redesign should also improve how icons sit inside the cards.
+
+Update icon containers so they feel more premium:
+- slightly larger visual area
+- cleaner padding
+- better framing
+- subtle glow behind icon
+- less “small square app icon” feeling
+
+Icons should feel embedded into the card design, not pasted on top.
+
+==================================================
+6. CONSISTENT QUALITY
+==================================================
+
+All game icons should feel like they belong to the same brand system.
+
+Make them consistent in:
+- lighting
+- contrast
+- framing
+- polish
+- depth
+- color treatment
+
+They should vary by game identity, but still feel like one cohesive icon family.
+
+==================================================
+7. HOVER / INTERACTION
+==================================================
+
+Improve icon behavior on hover:
+- subtle brighten
+- slight scale increase
+- stronger glow
+- maybe a tiny motion/parallax effect
+
+Keep it premium and subtle.
+
+==================================================
+8. FINAL GOAL
+==================================================
+
+The game icons should no longer feel outdated or childish.
+
+They should feel:
+- premium
+- modern
+- competitive
+- polished
+- brand-consistent
+- visually sharp
+
+The result should make the entire games page feel more like a serious competitive gaming platform and less like a casual mobile arcade app.

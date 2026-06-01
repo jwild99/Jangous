@@ -1,0 +1,196 @@
+BUG FIX: TOURNAMENT BUTTON IN PLAY MODAL STILL DOES NOT OPEN LIVE TOURNAMENTS
+
+The previous request was not implemented correctly.
+
+CURRENT PROBLEM:
+When I click “Tournament” inside the Play modal, it still does not show the live/open tournaments list. I need this exact click behavior changed.
+
+REQUIRED EXACT BEHAVIOR:
+When the user clicks the Tournament card in the Play modal:
+
+1. DO NOT continue to normal Game selection.
+2. DO NOT route away immediately.
+3. DO NOT require selecting a game first.
+4. DO NOT just select “Tournament” as a mode.
+5. INSTEAD, replace the modal content with a Live Tournaments list.
+
+The flow must be:
+
+Play button
+→ Mode modal opens
+→ User clicks Tournament
+→ Same modal changes to “Live Tournaments”
+→ User sees all open/starting tournaments
+→ User clicks Enter
+→ Entry confirmation opens
+→ User confirms
+→ User is entered
+→ Bracket opens
+
+==================================================
+IMPLEMENTATION INSTRUCTIONS
+==================================================
+
+Find the component that renders the Play modal / mode selection.
+
+It likely has state like:
+- selectedMode
+- currentStep
+- mode
+- step = "mode" | "game" | "options"
+
+Add a new step:
+
+step = "tournaments"
+
+When mode === "tournament":
+DO NOT set step to "game".
+Set:
+
+setSelectedMode("tournament")
+setStep("tournaments")
+
+Example logic:
+
+function handleModeSelect(mode) {
+  if (mode === "tournament") {
+    setSelectedMode("tournament");
+    setStep("tournaments");
+    return;
+  }
+
+  setSelectedMode(mode);
+  setStep("game");
+}
+
+==================================================
+LIVE TOURNAMENTS COMPONENT
+==================================================
+
+Create or use:
+
+<LiveTournamentSelection />
+
+This component must render inside the same modal body.
+
+It must fetch tournaments from backend:
+
+GET /api/tournaments?status=open,starting_soon
+
+or use existing tournament data source.
+
+Show only tournaments users can view:
+- open
+- starting soon
+- enterable live tournaments if rules allow
+
+Do NOT show completed tournaments in this modal unless under a separate “Ended” filter.
+
+==================================================
+MODAL STEP CONTENT
+==================================================
+
+If step === "mode":
+Render mode cards.
+
+If step === "tournaments":
+Render:
+
+Header:
+“Live Tournaments”
+
+Subtext:
+“Choose an open event and compete for the prize pool.”
+
+Back button:
+Returns to step === "mode"
+
+Tournament cards:
+- tournament name
+- game
+- prize pool
+- entry fee
+- players joined/max
+- starts in
+- status badge
+- Enter button
+
+If no tournaments:
+Show empty state:
+“No tournaments open right now”
+Buttons:
+- Play Casual
+- View Tournament Page
+
+==================================================
+ENTER BUTTON
+==================================================
+
+Clicking Enter should NOT instantly enter without confirmation.
+
+Click Enter:
+setSelectedTournament(tournament)
+setStep("tournament-confirm")
+
+If step === "tournament-confirm":
+Render confirmation:
+
+- Tournament name
+- Game
+- Entry fee
+- Current balance
+- Balance after entry
+- Prize pool now
+- Prize pool after entry
+- Players
+- Bracket size
+- Start time
+
+Button:
+“Confirm & Enter”
+
+==================================================
+BACKEND JOIN
+==================================================
+
+On confirm:
+POST /api/tournaments/:id/join
+
+Backend must:
+- verify user
+- check tournament open
+- check not full
+- check not already entered
+- check balance
+- deduct entry fee
+- add to prize pool
+- add bracket slot
+- return updated tournament
+
+Frontend success:
+setStep("tournament-success")
+
+Show:
+“You’re In”
+Buttons:
+- View Bracket
+- Back to Tournaments
+
+==================================================
+CRITICAL ACCEPTANCE TEST
+==================================================
+
+This is how I will test it:
+
+1. I click Play.
+2. I click Tournament.
+3. I should immediately see a list of live/open tournaments inside the modal.
+
+If I still see game selection after clicking Tournament, the task is NOT done.
+
+If I have to go to the tournament page manually, the task is NOT done.
+
+If Tournament only changes the selected mode but does not show tournaments, the task is NOT done.
+
+Final expected flow:
+Play → Tournament → Live Tournament List → Confirm Entry → Bracket

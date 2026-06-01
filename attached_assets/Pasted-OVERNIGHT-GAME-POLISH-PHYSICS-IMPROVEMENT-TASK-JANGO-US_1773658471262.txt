@@ -1,0 +1,336 @@
+OVERNIGHT GAME POLISH + PHYSICS IMPROVEMENT TASK
+JANGO.US GAME PLATFORM
+
+You are performing a full overnight polish pass on all games inside Jango.us.
+
+The goal is NOT to redesign the games. The goal is to make every game feel polished, smooth, responsive, and professional like top HTML5 mobile games (GamePigeon, 8 Ball Pool, Miniclip).
+
+Focus on:
+• smooth gameplay
+• responsive controls
+• modern UI
+• improved physics
+• mobile + desktop compatibility
+• optimized performance
+• bug fixing
+
+Do not remove working systems. Improve and polish what already exists.
+
+--------------------------------------------------
+
+GLOBAL IMPROVEMENTS (APPLY TO ALL GAMES)
+
+1. GAME LOOP OPTIMIZATION
+
+Ensure every game uses a proper animation loop.
+
+Implement:
+- requestAnimationFrame for rendering
+- delta time physics updates
+- frame rate independent movement
+- smooth collision detection
+- optimized redraw cycles
+
+Games should feel smooth on both desktop and mobile.
+
+--------------------------------------------------
+
+2. UI POLISH
+
+All games should have a clean arcade-style UI.
+
+Add where missing:
+- subtle hover animations
+- smooth transitions
+- modern fonts
+- glowing button effects
+- small particle effects on impacts
+- subtle sound effects
+
+Each game should include:
+
+Start Game
+Rematch
+Play Again
+Exit Match
+
+Add a small 3-2-1 countdown before matches start.
+
+--------------------------------------------------
+
+3. MOBILE OPTIMIZATION
+
+All games must work perfectly on phones.
+
+Implement:
+- touch controls
+- responsive canvas scaling
+- no UI elements off screen
+- mobile-safe button sizes
+- landscape mode support
+
+Games must work on both:
+- desktop mouse
+- mobile touch
+
+--------------------------------------------------
+
+4. PERFORMANCE
+
+Optimize all games for performance.
+
+Reduce:
+- unnecessary redraws
+- physics calculations per frame
+- memory leaks
+- lag spikes
+
+Target:
+60fps gameplay.
+
+--------------------------------------------------
+
+GAME SPECIFIC TASKS
+
+--------------------------------------------------
+
+CHESS
+
+Chess already works but needs polish.
+
+Improve:
+- board graphics
+- piece graphics
+- move animations
+- highlight legal moves
+- smooth piece movement
+- capture animation
+- check/checkmate visual feedback
+
+Goal: make it feel like a polished online chess game.
+
+--------------------------------------------------
+
+MINI GOLF
+
+Mini golf needs visual and physics improvements.
+
+Update:
+- map graphics
+- hole textures
+- ball physics
+- collision detection
+- bounce and friction
+- smoother camera behavior
+
+Add:
+- shot power meter
+- smoother ball roll
+- better hit feedback
+
+Make it feel like a real mini golf game.
+
+--------------------------------------------------
+
+CONNECT FOUR
+
+Simple game, only polish needed.
+
+Improve:
+- board visuals
+- chip drop animation
+- win highlight animation
+- smoother piece falling physics
+- modern UI styling
+
+Keep gameplay simple.
+
+--------------------------------------------------
+
+AIR HOCKEY
+
+Air hockey needs better physics.
+
+Improve:
+- puck movement physics
+- paddle movement
+- collision response
+- goal detection
+- puck friction
+
+Make the puck feel fast but realistic.
+
+Add:
+- impact particle effects
+- sound on puck collision
+
+--------------------------------------------------
+
+ROCK PAPER SCISSORS
+
+Add more visual polish.
+
+Add:
+- animated hand icons
+- reveal animation
+- win/lose effects
+- round counter
+- better UI visuals
+
+Gameplay stays the same.
+
+--------------------------------------------------
+
+DOTS AND BOXES
+
+Game logic already works.
+
+Only improve:
+- line drawing animations
+- box capture animation
+- UI polish
+- smoother interactions
+
+Do not change gameplay mechanics.
+
+--------------------------------------------------
+
+8 BALL POOL
+
+This game needs the most improvement.
+
+The goal is physics similar to the mobile game "8 Ball Pool".
+
+Improve:
+- cue stick aiming
+- ball physics
+- realistic ball collisions
+- spin mechanics
+- friction
+- pocket detection
+
+Add:
+- cue pullback power mechanic
+- aiming guideline
+- ball collision sounds
+- smooth camera view
+
+Make gameplay feel satisfying and realistic.
+
+--------------------------------------------------
+
+BOWLING
+
+Bowling needs improved physics and design.
+
+Improve:
+- ball roll physics
+- lane friction
+- pin collisions
+- strike detection
+- spin behavior
+
+Add:
+- ball power meter
+- throw animation
+- pin impact effects
+
+Make it feel like a real bowling game.
+
+--------------------------------------------------
+
+CUP KING
+
+Cup King gameplay needs clarity.
+
+Improve:
+- instructions
+- gameplay explanation
+- better animations
+- smoother interactions
+
+Make the game easy to understand.
+
+--------------------------------------------------
+
+STACK TOWER DUEL
+
+This game should behave like the mobile game "Stack" by Ketchapp.
+
+Implement the following gameplay:
+
+Two towers exist:
+- player tower
+- opponent tower
+
+Blocks slide across the screen.
+
+When a block lands:
+- overlapping area stays
+- excess area falls off
+- next block becomes smaller
+
+Goal:
+Stack blocks higher than your opponent.
+
+Lose condition:
+If the tower becomes too small or runs out of space.
+
+Add:
+- falling block animation
+- tower height comparison
+- satisfying stacking sound effects
+
+--------------------------------------------------
+
+BLOCK BLAST
+
+Block Blast is simple.
+
+Improve:
+- visuals
+- block placement animations
+- UI polish
+- sound effects
+- smooth grid interactions
+
+Gameplay stays the same.
+
+--------------------------------------------------
+
+TRON MULTIPLAYER
+
+There is already a multiplayer Tron game built.
+
+Your task:
+Integrate the Tron game into the platform.
+
+Ensure:
+- matchmaking works
+- controls are responsive
+- trails render smoothly
+- collision detection works
+- multiplayer sync is stable
+
+Add:
+- neon trail glow
+- smooth player movement
+- game start countdown
+
+--------------------------------------------------
+
+FINAL TASK
+
+After all improvements:
+
+Test every game for:
+
+- mobile compatibility
+- desktop compatibility
+- responsive UI
+- physics stability
+- gameplay smoothness
+
+Fix any bugs discovered during testing.
+
+Do not stop until every game loads correctly and plays smoothly.

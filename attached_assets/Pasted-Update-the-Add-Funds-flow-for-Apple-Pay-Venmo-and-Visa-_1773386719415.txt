@@ -1,0 +1,183 @@
+Update the Add Funds flow for Apple Pay, Venmo, and Visa so users can actually enter their payment information in a clean, professional payment form.
+
+Main goal:
+Make the card/app payment section feel like a real payment checkout flow instead of just a selection screen.
+
+Supported payment methods for this flow:
+- Apple Pay
+- Venmo
+- Visa
+
+When a user selects one of these payment methods, open a proper payment form that lets them enter the required information.
+
+==================================================
+1. PAYMENT METHOD SELECTION
+==================================================
+
+Keep the three payment cards:
+
+- Apple Pay
+- Venmo
+- Visa
+
+When a user clicks one, open that payment method’s form in the payment panel below or in a modal.
+
+The selected method should:
+- highlight clearly
+- show an active border/glow state
+- update the form fields dynamically based on the selected method
+
+==================================================
+2. AMOUNT INPUT
+==================================================
+
+At the top of the payment form, include:
+
+- deposit amount input
+- quick amount buttons: $10, $25, $50, $100
+- balance preview after deposit
+
+Example:
+Amount: $50
+New balance after deposit: $X
+
+==================================================
+3. VISA PAYMENT FORM
+==================================================
+
+For Visa, create a standard card payment form with these fields:
+
+- Cardholder Name
+- Card Number
+- Expiration Date
+- CVV
+- Billing ZIP Code
+
+Add:
+- card brand indicator
+- input formatting for card number
+- MM/YY formatting for expiration date
+- numeric-only handling where needed
+- inline validation errors
+- clear placeholder text
+
+Example placeholders:
+- John Smith
+- 4111 1111 1111 1111
+- 12/28
+- 123
+- 97214
+
+Also include:
+- secure payment notice
+- lock icon
+- “Your payment details are encrypted” message
+
+==================================================
+4. APPLE PAY FLOW
+==================================================
+
+For Apple Pay, show a clean Apple Pay payment panel.
+
+Include:
+- amount field
+- selected payment summary
+- Apple Pay button
+- short instruction text like:
+  “Continue with Apple Pay to securely complete your deposit.”
+
+If a full Apple Pay integration is not yet connected, create the UI and flow structure so it is ready for integration.
+
+==================================================
+5. VENMO FLOW
+==================================================
+
+For Venmo, show a Venmo payment panel.
+
+Include:
+- amount field
+- Venmo username / account field if needed
+- Venmo continue button
+- instruction text like:
+  “Continue with Venmo to complete your deposit.”
+
+If full Venmo integration is not yet connected, create the UI structure and mock flow so it behaves like a real supported payment option.
+
+==================================================
+6. FORM UX IMPROVEMENTS
+==================================================
+
+Make the forms feel polished and easy to use.
+
+Add:
+- floating or clear labels
+- inline validation
+- required field indicators
+- disabled confirm button until valid
+- error messaging under invalid fields
+- success state after submit
+- loading state while processing payment
+
+Make the form clean, readable, and not cramped.
+
+==================================================
+7. VISUAL DESIGN
+==================================================
+
+Match the form design to the rest of the JANGO platform:
+
+- dark premium theme
+- glassmorphism panel
+- soft border glow
+- subtle shadows
+- clean spacing
+- premium typography
+- polished buttons
+- smooth transitions
+
+The payment form should feel secure and modern.
+
+==================================================
+8. CONFIRMATION FLOW
+==================================================
+
+After valid payment info is entered and the user clicks Add Funds / Confirm Payment:
+
+Show:
+- processing state
+- loading animation
+- success confirmation
+- balance update animation
+- success message
+
+Example:
+“Payment Successful”
+“Funds have been added to your account.”
+
+==================================================
+9. MOBILE SUPPORT
+==================================================
+
+Make sure the form is easy to use on mobile:
+
+- inputs stack cleanly
+- keypad-friendly numeric fields
+- large tap targets
+- responsive spacing
+- readable labels
+
+==================================================
+10. IMPORTANT
+==================================================
+
+Do not keep the payment methods as static cards only.
+Make them functional by adding real input forms and validation UI.
+
+For Visa:
+- build a proper card form
+
+For Apple Pay and Venmo:
+- build the proper payment flow UI and continuation states
+
+Goal:
+Users should be able to select Apple Pay, Venmo, or Visa and then enter the required information in a way that feels like a real checkout experience.

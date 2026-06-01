@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Duel — Air Hockey (Half-Line Restriction)</title>
+<style>
+  html,body{margin:0;background:#0b0f14;color:#e5e7eb;font-family:sans-serif}
+  canvas{background:radial-gradient(ellipse at center,#0f172a 0%,#0b0f14 70%);
+    display:block;margin:auto;border:2px solid #1f2937;border-radius:16px;margin-top:10px}
+</style>
+</head>
+<body>
+<canvas id="game" width="900" height="500"></canvas>
+
+<script>
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
+const W = canvas.width, H = canvas.height;
+const MID = W / 2;
+const tableMargin = 20;
+const goalSize = 140;
+const keys = {};
+
+document.addEventListener("keydown", e => keys[e.code] = true);
+document.addEventListener("keyup", e => keys[e.code] = false);
+
+const paddleL = { x: 150, y: H/2, r: 30, speed: 6, color: "#22d3ee" };
+const paddleR = { x: W-150, y: H/2, r: 30, speed: 6, color: "#a78bfa" };
+const puck = { x: W/2, y: H/2, r: 12, vx: 4, vy: 3, color: "#f59e0b" };
+
+function drawTable() {
+  ctx.strokeStyle = "rgba(34,211,238,0.8)";
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(MID, tableMargin);
+  ctx.lineTo(MID, H - tableMargin);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.arc(MID, H/2, 50, 0, Math.PI*2);
+  ctx.stroke();
+}
+
+function drawCircle(obj) {
+  ctx.beginPath();
+  ctx.arc(obj.x, obj.y, obj.r, 0, Math.PI*2);
+  ctx.fillStyle = obj.color;
+  ctx.fill();
+}
+
+function movePaddles() {
+  // Left paddle: WASD
+  if (keys["KeyW"]) paddleL.y -= paddleL.speed;
+  if (keys["KeyS"]) paddleL.y += paddleL.speed;
+  if (keys["KeyA"]) paddleL.x -= paddleL.speed;
+  if (keys["KeyD"]) paddleL.x += paddleL.speed;
+
+  // Right paddle: Arrow keys
+  if (keys["ArrowUp"]) paddleR.y -= paddleR.speed;
+  if (keys["ArrowDown"]) paddleR.y += paddleR.speed;
+  if (keys["ArrowLeft"]) paddleR.x -= paddleR.speed;
+  if (keys["ArrowRight"]) paddleR.x += paddleR.speed;
+
+  // Keep paddles in bounds
+  const top = tableMargin + paddleL.r;
+  const bottom = H - tableMargin - paddleL.r;
+  paddleL.y = Math.max(top, Math.min(bottom, paddleL.y));
+  paddleR.y = Math.max(top, Math.min(bottom, paddleR.y));
+
+  // Restrict to half
+  const leftBound = tableMargin + paddleL.r;
+  const rightBound = W - tableMargin - paddleR.r;
+  paddleL.x = Math.min(MID - paddleL.r, Math.max(leftBound, paddleL.x));
+  paddleR.x = Math.max(MID + paddleR.r, Math.min(rightBound, paddleR.x));
+}
+
+function movePuck() {
+  puck.x += puck.vx;
+  puck.y += puck.vy;
+
+  // Bounce top/bottom
+  if (puck.y - puck.r < tableMargin || puck.y + puck.r > H - tableMargin) {
+    puck.vy *= -1;
+  }
+
+  // Bounce left/right
+  if (puck.x - puck.r < tableMargin || puck.x + puck.r > W - tableMargin) {
+    puck.vx *= -1;
+  }
+
+  // Collision with paddles
+  [paddleL, paddleR].forEach(p => {
+    const dx = puck.x - p.x;
+    const dy = puck.y - p.y;
+    const dist = Math.hypot(dx, dy);
+    if (dist < puck.r + p.r) {
+      const angle = Math.atan2(dy, dx);
+      const overlap = puck.r + p.r - dist;
+      puck.x += Math.cos(angle) * overlap;
+      puck.y += Math.sin(angle) * overlap;
+      const speed = Math.hypot(puck.vx, puck.vy);
+      puck.vx = Math.cos(angle) * speed;
+      puck.vy = Math.sin(angle) * speed;
+    }
+  });
+}
+
+function draw() {
+  ctx.clearRect(0,0,W,H);
+  drawTable();
+  drawCircle(puck);
+  drawCircle(paddleL);
+  drawCircle(paddleR);
+}
+
+function loop() {
+  movePaddles();
+  movePuck();
+  draw();
+  requestAnimationFrame(loop);
+}
+
+loop();
+</script>
+</body>
+</html>

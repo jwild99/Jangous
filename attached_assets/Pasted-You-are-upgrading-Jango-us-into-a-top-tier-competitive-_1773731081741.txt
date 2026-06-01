@@ -1,0 +1,314 @@
+You are upgrading Jango.us into a top-tier competitive gaming platform.
+
+This is NOT small polish work. This is deep system building.
+
+Your goal is to increase:
+1. Retention (people stay longer)
+2. Monetization (people spend money)
+3. Competition (people care about winning)
+4. Social/viral growth (people invite others)
+
+Build ALL systems below fully integrated, production-ready, and mobile + desktop compatible.
+
+---------------------------------------
+🔥 1. PARTY SYSTEM (LIKE GAMEPIGEON)
+---------------------------------------
+
+Users can:
+- Create a party (private lobby)
+- Invite friends via:
+  - Username
+  - Invite code
+  - Share link
+- Party chat (real-time)
+- Queue games together
+- Place wagers together
+
+Features:
+- Party leader controls game selection
+- Kick/leave system
+- Ready-up system before matches
+- Party voice chat (if possible, WebRTC)
+
+---------------------------------------
+🏆 2. TOURNAMENT ENGINE (ADVANCED)
+---------------------------------------
+
+Create a full tournament system:
+
+Types:
+- Single elimination
+- Double elimination
+- Round robin
+
+Features:
+- Auto bracket generation
+- Live updating bracket UI
+- Entry fee (in Scalps)
+- Prize pool distribution
+- Spectator mode
+- Tournament chat
+
+Add:
+- Scheduled tournaments (start time countdown)
+- Auto start when full
+- Admin-created tournaments
+
+---------------------------------------
+💰 3. REAL ECONOMY + WALLET 2.0
+---------------------------------------
+
+Upgrade wallet system:
+
+- Full /wallet dashboard
+- Transaction history (clean UI)
+- Deposit / withdraw flows
+- Crypto → USD → Scalps conversion (already exists, refine it)
+
+Add:
+- Wager confirmation screen (prevents accidental bets)
+- “Recent wins” ticker (live feed of big wins)
+- Anti-fraud checks:
+  - Rapid betting detection
+  - Suspicious activity flags
+
+---------------------------------------
+📈 4. LEADERBOARDS THAT ACTUALLY MATTER
+---------------------------------------
+
+Build multiple leaderboards:
+
+- Global leaderboard (all-time winnings)
+- Weekly leaderboard (resets weekly)
+- Game-specific leaderboards
+- Clan leaderboard
+
+Special feature:
+- #1 player gets “GOAT” badge (already concepted — implement fully)
+
+Make leaderboard:
+- Scrollable
+- Filterable
+- Clickable profiles
+
+---------------------------------------
+👥 5. CLAN SYSTEM (HIGH PRIORITY)
+---------------------------------------
+
+Users can:
+- Create/join clans
+- Clan tag next to username
+- Clan chat
+
+Clan features:
+- Total winnings stat
+- Clan vs Clan battles
+- Clan leaderboard
+- Clan roles:
+  - Owner
+  - Admin
+  - Member
+
+Add:
+- Clan challenges (wager vs other clans)
+
+---------------------------------------
+🧠 6. SKILL-BASED MATCHMAKING (IMPORTANT)
+---------------------------------------
+
+Implement ranking system like R6:
+
+- Hidden MMR system
+- Visible ranks (Bronze → Champion)
+- Champion shows leaderboard rank number
+
+Matchmaking:
+- Match players of similar skill
+- Faster queue fallback if needed
+
+---------------------------------------
+🚫 7. ANTI-RAGE QUIT SYSTEM
+---------------------------------------
+
+If player leaves mid-match:
+- 5 minute reconnect timer
+- If they don’t return:
+  → opponent wins automatically
+  → wager awarded
+
+Add:
+- Quit penalty (temporary matchmaking ban)
+
+---------------------------------------
+🎯 8. DAILY / WEEKLY CHALLENGES 2.0
+---------------------------------------
+
+Upgrade challenge system:
+
+- UI with progress bars
+- “Claim reward” button
+- Claim animation + sound
+
+Examples:
+- Win 3 games
+- Win $50 total
+- Play 5 matches
+
+Rewards:
+- XP
+- Scalps
+- Cosmetic items
+
+---------------------------------------
+🎮 9. GAME IMPROVEMENTS (CORE EXPERIENCE)
+---------------------------------------
+
+All games must feel smooth + competitive:
+
+Chess:
+- Clean UI
+- Move animations
+- Timer modes
+
+8 Ball Pool:
+- Real physics (like mobile 8 ball pool)
+- Aim guide
+- Spin system
+
+Air Hockey:
+- Better collision physics
+
+Mini Golf:
+- Better maps + textures
+- Improved physics
+
+ALL GAMES:
+- Mobile controls must feel native
+- No lag
+- Fast load times
+
+---------------------------------------
+🛍️ 10. ITEM SHOP (DEMO STYLE)
+---------------------------------------
+
+Create a visual shop (cosmetic only):
+
+Categories:
+- Pool cues
+- Ping pong paddles
+- Avatars
+- Name effects
+- Emotes
+
+Features:
+- 3D preview or display
+- Price in Scalps
+- “Equip” system
+
+IMPORTANT:
+- Items are viewable but not testable in-game yet
+
+---------------------------------------
+💬 11. SOCIAL TAB (MERGED WITH MESSAGING)
+---------------------------------------
+
+Merge messaging + social into ONE tab called:
+
+SOCIAL
+
+Features:
+- Global feed (like Kalshi/Twitter)
+- Post wins
+- Call people out
+- Comment system
+- Like system
+
+Messaging:
+- 1-on-1 chat
+- Group chat
+
+---------------------------------------
+📊 12. PLAYER PROFILE 2.0
+---------------------------------------
+
+Upgrade profiles:
+
+- Stats dashboard
+- Match history
+- Win rate
+- Total earnings
+- Favorite game
+
+Add:
+- XP progress bar
+- Badge showcase
+- Reputation score
+
+---------------------------------------
+⚙️ 13. SETTINGS PAGE (FULL)
+---------------------------------------
+
+Build full settings:
+
+Sections:
+- Account
+- Privacy
+- Notifications
+- Gameplay
+- Audio
+
+Add:
+- Toggle sounds
+- Toggle animations
+- Block users
+- Report system
+
+---------------------------------------
+📱 14. MOBILE PERFECTION (CRITICAL)
+---------------------------------------
+
+Fix ALL mobile issues:
+
+- Responsive UI everywhere
+- Buttons easy to tap
+- No overlapping elements
+- Games fully playable on phone
+
+Mobile = SAME features as desktop
+
+---------------------------------------
+⚡ 15. PERFORMANCE + BACKEND
+---------------------------------------
+
+Optimize everything:
+
+- Reduce latency in games
+- Optimize database queries
+- Cache leaderboards
+- Improve matchmaking speed
+
+---------------------------------------
+🚀 16. VIRAL FEATURES (GROWTH)
+---------------------------------------
+
+Add:
+
+- Share match results
+- Invite rewards (refer a friend → bonus)
+- “Beat this player” challenges
+- Public match spectating
+
+---------------------------------------
+
+FINAL RULES:
+- Everything must be clean UI/UX
+- Everything must be fast
+- Everything must work on mobile + desktop
+- No placeholder systems — build real implementations
+
+Focus on systems that increase:
+RETENTION
+COMPETITION
+MONEY FLOW
+
+Build like this is a real money gaming company.

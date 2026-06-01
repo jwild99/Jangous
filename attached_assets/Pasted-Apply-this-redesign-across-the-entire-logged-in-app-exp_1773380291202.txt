@@ -1,0 +1,81 @@
+Apply this redesign across the entire logged-in app experience so all tabs/pages share one consistent design system.
+
+I want the new visual style applied consistently across:
+- Dashboard / Home
+- Lobby
+- Leaderboard
+- Global Stats
+- Messages
+- Friends
+- Admin
+- any other logged-in internal tabs/pages
+
+It is okay if the login/register pages are also visually aligned, but the main priority is that all in-app logged-in pages match each other and feel like one polished platform.
+
+Design direction:
+- Premium dark Apple-glass design
+- Inspired by Apple Vision Pro / glassmorphism
+- Cinematic illustrated worldbuilding similar in impact to duel.com
+- Custom artwork inspired by the actual games on my platform:
+  - Chess
+  - Mini Golf
+  - Connect 4
+  - Air Hockey
+  - Rock Paper Scissors
+  - Dots & Boxes
+  - 8-Ball Pool
+  - Bowling
+  - Cup Pong
+  - Tron
+  - Tower Stack
+
+Main goal:
+Create a unified design language across all tabs so the site feels like one premium product instead of separate pages with mismatched styling.
+
+Global style requirements:
+1. Use the same navbar styling across all logged-in pages.
+2. Use the same glass card system everywhere:
+   - rounded corners
+   - subtle transparency
+   - backdrop blur
+   - soft border glow
+   - layered shadows
+3. Use the same typography hierarchy across all pages.
+4. Use the same button system across all pages.
+5. Use the same spacing, paddings, and section rhythm across all pages.
+6. Use the same background language across all pages:
+   - dark premium gradients
+   - subtle glow
+   - optional scene artwork or thematic illustrated elements
+7. Keep the design futuristic, premium, playful, and competitive.
+
+Artwork direction:
+- The dashboard/homepage should have the largest hero artwork presence.
+- Other tabs should still visually connect to that same world through background motifs, lighting, illustrated elements, glow, and themed decorative details.
+- Do not make every page identical, but make them clearly part of the same product ecosystem.
+- The artwork/world should be inspired by the listed games, not generic casino visuals.
+
+Dashboard-specific requirement:
+- Add a strong hero section above or around Featured Games.
+- Use large illustrated background artwork inspired by the games library.
+- Make the cards float visually in front of the artwork.
+
+Other tabs/pages:
+- Keep them cleaner and more functional, but still use the same Apple-glass style and thematic background language.
+- Add subtle visual depth, gradients, lighting, and game-inspired motifs where appropriate.
+
+Important:
+- Do not break existing functionality.
+- Do not redesign only the auth pages.
+- Update the whole logged-in app so all tabs feel consistent.
+- Preserve Jango.us branding.
+- Make the final UI feel custom, premium, and cohesive.
+
+Implementation guidance:
+- Create shared design tokens or reusable styles for colors, spacing, blur, shadows, and card treatments.
+- Use shared layout components so every page inherits the same design system.
+- Update all major pages/components to use the new system.
+- Ensure responsiveness on desktop and mobile.
+
+Goal:
+I want a fully consistent UI/UX across the whole product, with the dashboard as the visual centerpiece and all other tabs matching the same premium Apple-glass + custom illustrated gaming-world style.

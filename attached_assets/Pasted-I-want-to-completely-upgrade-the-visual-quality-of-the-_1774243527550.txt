@@ -1,0 +1,213 @@
+I want to completely upgrade the visual quality of the 8-Ball Pool game and the Chess game so they feel like premium, AAA-level mini-games.
+
+Right now they feel too basic and flat. I want them to feel polished, immersive, and satisfying to play.
+
+-----------------------------------
+GENERAL GOALS (APPLY TO BOTH GAMES)
+-----------------------------------
+
+- Improve lighting and depth
+- Add shadows and reflections
+- Improve textures and materials
+- Add smooth animations
+- Make interactions feel responsive and satisfying
+- Maintain performance (no lag)
+
+Everything should feel:
+- Clean
+- Realistic (or stylized premium)
+- High quality
+
+-----------------------------------
+PART 1: 8-BALL POOL GRAPHICS UPGRADE
+-----------------------------------
+
+-----------------------------------
+TABLE DESIGN
+-----------------------------------
+
+- Use a high-quality felt texture (deep green or selectable themes)
+- Add subtle lighting gradient across table
+- Add soft vignette around edges
+- Add realistic rail edges (wood or dark finish)
+
+-----------------------------------
+BALL DESIGN
+-----------------------------------
+
+- Balls must have:
+  - Glossy reflections
+  - Proper shading
+  - Light reflection highlights
+  - Slight environment reflection
+
+- Add spin visual (subtle rotation blur when moving)
+
+-----------------------------------
+LIGHTING
+-----------------------------------
+
+- Add top-down spotlight effect
+- Soft shadows under balls
+- Dynamic light reflection on ball movement
+
+-----------------------------------
+PHYSICS VISUAL FEEDBACK
+-----------------------------------
+
+When balls collide:
+- Add subtle impact effect (tiny flash or sound sync)
+- Smooth realistic motion (no jitter)
+
+-----------------------------------
+CUE + AIM SYSTEM
+-----------------------------------
+
+- Add aiming line with glow
+- Add power meter with gradient color
+- Cue stick should animate smoothly when shooting
+
+-----------------------------------
+SHOT FEEDBACK
+-----------------------------------
+
+When shooting:
+- Cue moves forward smoothly
+- Slight camera zoom or shake
+- Sound sync with shot
+- Ball movement feels smooth and weighted
+
+-----------------------------------
+POCKET EFFECTS
+-----------------------------------
+
+When ball goes in:
+- Smooth drop animation
+- Subtle shadow fade
+- Sound effect (clean, satisfying)
+
+-----------------------------------
+PART 2: CHESS GRAPHICS UPGRADE
+-----------------------------------
+
+-----------------------------------
+BOARD DESIGN
+-----------------------------------
+
+- Use premium board textures:
+  - Wood (light vs dark)
+  OR
+  - Clean modern neon style
+
+- Add subtle lighting gradient
+- Add slight 3D depth (not flat)
+
+-----------------------------------
+PIECE DESIGN
+-----------------------------------
+
+- Pieces must:
+  - Have smooth shading
+  - Slight reflection
+  - Soft shadows
+  - Clear silhouettes
+
+- Optional:
+  Add slight 3D effect (depth without heavy rendering)
+
+-----------------------------------
+MOVE ANIMATIONS
+-----------------------------------
+
+- Pieces should NOT teleport
+
+Instead:
+- Smooth glide animation
+- Slight easing (ease-in-out)
+- Captures should have:
+  - Fade out or pop effect
+
+-----------------------------------
+HOVER + SELECT FEEDBACK
+-----------------------------------
+
+- When hovering a piece:
+  - Soft glow
+  - Slight scale up
+
+- When selected:
+  - Highlight square
+  - Show possible moves with clean indicators
+
+-----------------------------------
+MOVE FEEDBACK
+-----------------------------------
+
+- When a move is made:
+  - Subtle sound (click or piece placement)
+  - Square highlight pulse
+  - Opponent move animates clearly
+
+-----------------------------------
+CHECK / CHECKMATE EFFECTS
+-----------------------------------
+
+CHECK:
+- King square glows red briefly
+
+CHECKMATE:
+- Stronger animation
+- Slight screen pulse
+- “CHECKMATE” text appears cleanly
+
+-----------------------------------
+PART 3: CAMERA + DEPTH (BOTH GAMES)
+-----------------------------------
+
+- Add slight camera perspective (not fully flat)
+- Optional slight tilt for depth
+- Keep it subtle and clean
+
+-----------------------------------
+PART 4: SOUND DESIGN
+-----------------------------------
+
+Add:
+
+POOL:
+- Ball hit sounds
+- Pocket sound
+- Cue hit sound
+
+CHESS:
+- Piece move click
+- Capture sound
+- Check sound
+
+-----------------------------------
+PART 5: PERFORMANCE RULES
+-----------------------------------
+
+- Must run smoothly on mobile + desktop
+- Use lightweight effects (CSS, canvas, or optimized rendering)
+- Avoid heavy 3D engines unless optimized
+
+-----------------------------------
+FINAL GOAL
+-----------------------------------
+
+Both games should feel:
+
+- Premium
+- Smooth
+- Satisfying
+- Worth playing for money
+
+Users should feel:
+
+“This feels like a real game”
+“This is clean and high quality”
+
+NOT:
+
+“This looks like a basic web game”

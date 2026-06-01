@@ -1,0 +1,502 @@
+PROJECT: JANGO PHASE 3 — COMPETITIVE ECOSYSTEM + ADDICTION LOOP + LIVE EXPERIENCE
+
+GOAL:
+Transform Jango from a collection of games into a:
+- competitive ecosystem
+- spectator-driven platform
+- emotionally engaging product
+- high-retention system
+
+This is NOT UI polish.
+This is SYSTEM + EXPERIENCE DESIGN.
+
+==================================================
+SECTION 1: TRUE COMPETITIVE SYSTEM (MMR + RANKING)
+==================================================
+
+GOAL:
+Make players care about winning, improving, and ranking up.
+
+--------------------------------------------------
+1.1 MMR SYSTEM (PER GAME)
+--------------------------------------------------
+
+Each game must have its own hidden rating:
+- chessMMR
+- miniGolfMMR
+- tronMMR
+- etc.
+
+Store:
+user_game_stats table:
+- user_id
+- game_id
+- mmr
+- wins
+- losses
+- streak
+- last_played
+
+Initial MMR:
+- 1000 baseline
+
+MMR formula (ELO-based):
+
+expectedScore = 1 / (1 + 10^((opponentMMR - playerMMR)/400))
+
+mmrChange = K * (actualScore - expectedScore)
+
+Where:
+- win = 1
+- loss = 0
+- draw = 0.5
+- K = 32 (default)
+
+--------------------------------------------------
+1.2 BONUS SYSTEM (MAKE IT FEEL GOOD)
+--------------------------------------------------
+
+Add modifiers:
+
+Upset Bonus:
+If playerMMR < opponentMMR:
++10 to +50 extra MMR depending on gap
+
+Close Loss Protection:
+If loss is within small margin:
+reduce loss by 30–50%
+
+Win Streak Multiplier:
+2 wins → +5%
+3 wins → +10%
+5 wins → +20%
+
+Loss Streak Dampener:
+3 losses → -20% penalty reduction
+
+--------------------------------------------------
+1.3 RANK TIERS (VISIBLE)
+--------------------------------------------------
+
+Map MMR to rank tiers:
+
+Bronze: 0–999  
+Silver: 1000–1399  
+Gold: 1400–1799  
+Platinum: 1800–2199  
+Diamond: 2200–2599  
+Champion: 2600–2999  
+GOAT: 3000+
+
+Each tier must have:
+- unique color
+- badge icon
+- glow style
+
+--------------------------------------------------
+1.4 POST MATCH FEEDBACK
+--------------------------------------------------
+
+After match show:
+
++32 MMR
++12 Upset Bonus
+Win Streak x3
+
+OR
+
+-18 MMR
+Close Match Protection (-40%)
+
+Animation:
+- numbers tick up/down
+- glow effect based on gain/loss
+
+--------------------------------------------------
+1.5 RANK DECAY
+--------------------------------------------------
+
+If inactive 7+ days:
+- small MMR decay per day
+
+Display:
+“Inactive — rating decaying”
+
+--------------------------------------------------
+1.6 SEASONS
+--------------------------------------------------
+
+Every 90 days:
+- soft reset MMR
+- keep rank badge history
+
+Add:
+Season 1, Season 2, etc.
+
+Leaderboard shows:
+- current season
+- past champions
+
+==================================================
+SECTION 2: LIVE TOURNAMENT SYSTEM (CORE FEATURE)
+==================================================
+
+GOAL:
+Make tournaments feel like EVENTS, not features.
+
+--------------------------------------------------
+2.1 GLOBAL LIVE STATE
+--------------------------------------------------
+
+Backend:
+tournaments table:
+- id
+- game_id
+- status
+- prize_pool
+- entry_fee
+- start_time
+- max_players
+
+States:
+- upcoming
+- open
+- starting_soon
+- live
+- completed
+
+Frontend:
+When tournament = LIVE:
+- global banner appears:
+“🔥 Mini Golf Masters LIVE”
+
+--------------------------------------------------
+2.2 LIVE BRACKET ENGINE
+--------------------------------------------------
+
+Bracket must:
+- update in real-time via WebSocket
+- animate transitions
+
+Each match:
+- has match_id
+- player1_id
+- player2_id
+- winner_id
+- round
+
+When match ends:
+- emit:
+tournament_update event
+
+Frontend:
+- update bracket
+- animate winner progression
+
+--------------------------------------------------
+2.3 SPECTATOR MODE
+--------------------------------------------------
+
+Allow:
+user clicks live match → watch
+
+Requirements:
+- stream game state (or replay loop if real-time not possible)
+- show:
+  - players
+  - stakes
+  - match progress
+  - spectators count
+
+UI:
+“🔥 42 watching”
+
+Optional:
+simple emoji reactions (no chat spam)
+
+--------------------------------------------------
+2.4 HYPE SYSTEM
+--------------------------------------------------
+
+Trigger notifications:
+
+Examples:
+- “🚨 UPSET ALERT — #1 seed eliminated”
+- “🔥 FINAL MATCH STARTING”
+- “⚡ 3 players left”
+
+Show:
+- top banner
+- floating feed
+- tournament page
+
+--------------------------------------------------
+2.5 FINALS EXPERIENCE
+--------------------------------------------------
+
+Final match must feel special:
+
+Changes:
+- larger UI scale
+- stronger glow
+- darker background
+- spotlight effect
+
+Pre-match:
+- cinematic intro
+- “FINAL MATCH”
+
+Winner:
+- trophy animation
+- confetti
+- “TOURNAMENT CHAMPION”
+- prize reveal
+
+==================================================
+SECTION 3: HIGH STAKES + MONEY PSYCHOLOGY
+==================================================
+
+GOAL:
+Make money feel real without giving free money.
+
+--------------------------------------------------
+3.1 HIGH STAKES SECTION
+--------------------------------------------------
+
+Homepage section:
+
+“🔥 High Stakes Matches”
+
+Show only:
+- matches > threshold (10+, 25+, etc.)
+
+Visual:
+- gold/red glow
+- pulsing borders
+
+--------------------------------------------------
+3.2 RECENT BIG WINS FEED
+--------------------------------------------------
+
+Global ticker:
+
+Examples:
+“Beau won 25 Scalps in Air Hockey”
+“John won 150 Scalps in Mini Golf Masters”
+
+Update via WebSocket.
+
+--------------------------------------------------
+3.3 BALANCE DRAMA
+--------------------------------------------------
+
+When balance changes:
+
+WIN:
+- green burst
+- number ticks up
+- sound impact
+
+LOSS:
+- subtle red drain
+- quiet drop sound
+
+Must feel emotional.
+
+==================================================
+SECTION 4: GAME WORLDS (IDENTITY SYSTEM)
+==================================================
+
+Each game must feel like its own universe.
+
+--------------------------------------------------
+4.1 GAME THEMES
+--------------------------------------------------
+
+Assign per game:
+
+Tron:
+- neon grid
+- blue glow
+
+Mini Golf:
+- luxury glow greens
+
+Chess:
+- dark elite
+
+Air Hockey:
+- arcade neon
+
+Each game gets:
+- unique background
+- accent colors
+- particles
+- sound theme
+
+--------------------------------------------------
+4.2 GAME INTRO SEQUENCES
+--------------------------------------------------
+
+Before match:
+
+Tron:
+- grid lights up
+- “SURVIVE THE GRID”
+
+Mini Golf:
+- camera pan
+- “SINK IT”
+
+Chess:
+- pieces animate in
+
+Duration:
+1–2 seconds max
+
+==================================================
+SECTION 5: PLAYER IDENTITY SYSTEM
+==================================================
+
+GOAL:
+Make users feel like they “have an account identity”
+
+--------------------------------------------------
+5.1 PLAYER PROFILE
+--------------------------------------------------
+
+Add profile page:
+
+Show:
+- avatar
+- rank
+- favorite game
+- win rate
+- earnings
+- badges
+
+--------------------------------------------------
+5.2 BADGE SYSTEM
+--------------------------------------------------
+
+Examples:
+- Win Streak 5
+- Tournament Winner
+- High Roller
+- Clutch Player
+
+Badges appear:
+- profile
+- next to username
+
+--------------------------------------------------
+5.3 TITLE SYSTEM
+--------------------------------------------------
+
+Under username:
+- “Mini Golf Specialist”
+- “Air Hockey Demon”
+- “GOAT Contender”
+
+Auto-assigned based on stats.
+
+==================================================
+SECTION 6: ADDICTION LOOP (MOST IMPORTANT)
+==================================================
+
+GOAL:
+Always push user into next action.
+
+--------------------------------------------------
+6.1 LOOP DESIGN
+--------------------------------------------------
+
+Flow:
+
+Match → Result → Run It Back → Increase Stakes → Rank Up → Tournament → Repeat
+
+Every screen must have:
+- a next action
+
+--------------------------------------------------
+6.2 RESULT SCREEN BUTTONS
+--------------------------------------------------
+
+Win:
+- Run It Back
+- Increase Stakes
+- Tournament
+
+Loss:
+- Run It Back
+- Lower Stakes
+- Practice
+
+--------------------------------------------------
+6.3 NO DEAD ENDS
+--------------------------------------------------
+
+Never leave user on static screen.
+
+==================================================
+SECTION 7: PLATFORM SYSTEMS
+==================================================
+
+--------------------------------------------------
+7.1 SEASONS
+--------------------------------------------------
+
+- leaderboard reset
+- rewards (cosmetic only)
+
+--------------------------------------------------
+7.2 EVENTS
+--------------------------------------------------
+
+Weekend:
+- high stakes tournaments
+- themed UI
+
+--------------------------------------------------
+7.3 PROGRESSION
+--------------------------------------------------
+
+- levels
+- XP
+- cosmetic unlocks (NOT money)
+
+==================================================
+SECTION 8: IMPLEMENTATION PRIORITY
+==================================================
+
+1. Tournament system (BRACKETS + LIVE)
+2. MMR + ranking
+3. Run-it-back loop
+4. Balance + money clarity
+5. Game world theming
+6. Player identity
+7. Sound/haptics
+8. Events + seasons
+
+==================================================
+FINAL EXPECTATION
+==================================================
+
+After this:
+
+Jango should feel like:
+- a real competitive platform
+- something users grind
+- something users watch
+- something users feel emotionally
+
+NOT:
+- a basic game site
+- a static dashboard
+- a flat UI
+
+SUCCESS = users say:
+“I want to win”
+“I want to rank up”
+“I want to enter that tournament”
+“I want to run it back”

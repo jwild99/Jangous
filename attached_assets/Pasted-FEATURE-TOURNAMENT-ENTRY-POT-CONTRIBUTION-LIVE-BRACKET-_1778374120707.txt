@@ -1,0 +1,234 @@
+FEATURE: TOURNAMENT ENTRY → POT CONTRIBUTION + LIVE BRACKET VISUALIZATION
+
+GOAL:
+When a user joins a tournament:
+1. Their entry fee (Scalps) is securely deducted and added to the prize pool
+2. They immediately see a visual bracket with all players and their position
+
+This must be handled securely, visually, and in real-time.
+
+==================================================
+1. TOURNAMENT JOIN FLOW (CRITICAL LOGIC)
+==================================================
+
+When user clicks “Join Tournament”:
+
+STEP 1: VALIDATION (BACKEND)
+- Check user is authenticated
+- Check user has enough Scalps
+- Check tournament is still open
+- Check tournament is not full
+- Check user is not already entered
+
+If ANY fail:
+→ return structured error
+→ DO NOT deduct funds
+
+STEP 2: DEDUCT ENTRY FEE
+- Deduct entry fee from user balance (server-side only)
+- Create transaction:
+  type: "tournament_entry"
+  amount: -X
+  tournamentId
+
+STEP 3: ADD TO PRIZE POOL
+- Increase tournament prize pool:
+  prize_pool += entry_fee
+
+IMPORTANT:
+- This must be atomic (transaction-safe)
+- No double-entry allowed
+- No race conditions
+
+STEP 4: CREATE ENTRY RECORD
+- Add user to tournament_entries table
+
+STEP 5: RETURN UPDATED DATA
+- updated balance
+- updated prize pool
+- current player list
+- bracket structure
+
+==================================================
+2. FRONTEND JOIN EXPERIENCE
+==================================================
+
+When user clicks “Join Tournament”:
+
+LOADING STATE:
+- disable button
+- show spinner
+- text: “Entering tournament...”
+
+SUCCESS STATE:
+- show animation:
+  - “You’re In!”
+  - small glow burst
+  - balance count-down animation
+  - prize pool count-up animation
+
+ERROR STATE:
+- show clean message (not raw error)
+- example:
+  “Tournament is full”
+  “Insufficient balance”
+
+==================================================
+3. PRIZE POOL VISUALIZATION
+==================================================
+
+Display prize pool prominently:
+
+- large bold number
+- “Total Prize Pool: X Scalps”
+
+ANIMATION:
+- when user joins:
+  prize pool counts up smoothly
+  glow effect
+
+OPTIONAL:
+- breakdown:
+  “X players × Y entry = Z total”
+
+==================================================
+4. BRACKET SYSTEM (CORE FEATURE)
+==================================================
+
+After user joins, show TOURNAMENT BRACKET VIEW.
+
+BRACKET TYPES:
+- Start with single elimination (simplest)
+- Support 4, 8, 16, 32 players
+
+DATA STRUCTURE:
+
+Bracket:
+- rounds[]
+  - matches[]
+    - player1
+    - player2
+    - winner
+    - status
+
+==================================================
+5. BRACKET UI (VERY IMPORTANT)
+==================================================
+
+Create a visual bracket (not a list).
+
+LAYOUT:
+- horizontal bracket
+- rounds displayed left → right
+
+Example:
+Round 1 → Quarterfinals → Semifinals → Finals
+
+Each match card shows:
+- Player 1 username
+- Player 2 username
+- vs indicator
+- winner highlight (if completed)
+
+USER HIGHLIGHT:
+- highlight current user:
+  - glow border
+  - different color
+  - label: “YOU”
+
+MATCH STATES:
+
+WAITING:
+- “Waiting for opponent”
+
+LIVE:
+- “Match in progress”
+- small pulse animation
+
+COMPLETED:
+- winner highlighted
+- loser dimmed
+
+==================================================
+6. REAL-TIME BRACKET UPDATES
+==================================================
+
+Use WebSockets:
+
+EVENT: tournament_update
+
+Triggered when:
+- player joins
+- match completes
+- bracket advances
+
+Frontend must:
+- update bracket instantly
+- animate changes:
+  - winner moves forward
+  - glow transition
+
+==================================================
+7. USER EXPERIENCE AFTER JOIN
+==================================================
+
+After joining:
+
+AUTO-REDIRECT OR MODAL:
+- show bracket immediately
+- show:
+  “Tournament starts in X minutes”
+
+ADD:
+- countdown timer
+- player count
+- “Your next match is in Round 1”
+
+==================================================
+8. EDGE CASES
+==================================================
+
+- If tournament fills while user is joining:
+  → reject safely
+  → no funds deducted
+
+- If user refreshes:
+  → bracket reloads correctly
+
+- If user disconnects:
+  → bracket still updates
+
+==================================================
+9. SECURITY RULES (IMPORTANT)
+==================================================
+
+- NEVER deduct balance on frontend
+- NEVER trust client-side join
+- ALWAYS validate on backend
+- USE database transactions
+
+==================================================
+10. OPTIONAL ENHANCEMENTS (HIGH VALUE)
+==================================================
+
+- Show seed numbers (#1, #2, etc.)
+- Add avatars next to usernames
+- Add small match timers
+- Add “Next match starting soon” indicator
+- Add tournament chat/hype feed
+
+==================================================
+FINAL RESULT
+==================================================
+
+When a user joins a tournament:
+- Their Scalps are securely deducted
+- Prize pool increases in real-time
+- They immediately see a live bracket
+- They know exactly who they play and when
+- The system feels competitive, structured, and alive
+
+This should feel like:
+- an esports bracket
+- a real competition
+- not just a list of players

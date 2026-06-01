@@ -1,0 +1,115 @@
+Your task is to completely upgrade the visual quality and immersion of the Mini Golf game. Focus ONLY on graphics, environments, and visual polish — do NOT break existing gameplay.
+
+GOAL:
+Make the Mini Golf game feel like a high-quality mobile/desktop game with depth, lighting, and personality — similar to popular polished games.
+
+----------------------------------------
+
+🌍 ENVIRONMENT & MAP DESIGN
+
+1. Replace flat maps with fully styled environments:
+   - Grass should have texture (not solid color)
+   - Add subtle height variation (small hills, slopes)
+   - Edges should feel natural (no sharp cut-offs)
+
+2. Add themed maps:
+   - Classic Golf Course (clean grass, sand bunkers)
+   - Neon/Arcade (glow edges, dark background, neon rails)
+   - Beach Map (sand, water edges, palm decorations)
+   - Space Map (dark void, glowing holes, floating platforms)
+
+3. Add environmental props:
+   - Rocks, bushes, trees
+   - Sand traps
+   - Water hazards with reflections
+   - Barriers that match the theme
+
+----------------------------------------
+
+💡 LIGHTING & SHADING
+
+1. Implement dynamic lighting:
+   - Soft shadows under the ball and objects
+   - Light direction (sun or glow source)
+   - Slight shading on terrain
+
+2. Add glow effects for:
+   - Hole (subtle pulsing glow)
+   - Power shots
+   - Neon maps
+
+3. Add ambient lighting:
+   - Slight vignette or background fade
+   - Depth-based shading
+
+----------------------------------------
+
+🏌️ BALL & PHYSICS VISUALS
+
+1. Upgrade the golf ball:
+   - Add texture (dimples)
+   - Add realistic shine/reflection
+   - Add shadow directly under ball
+
+2. Add motion polish:
+   - Smooth rolling animation
+   - Slight motion blur on fast shots
+   - Trail effect for strong hits (subtle, not distracting)
+
+----------------------------------------
+
+🧱 MATERIALS & SURFACES
+
+1. Different surfaces should LOOK different:
+   - Grass (soft, green texture)
+   - Sand (grainy, lighter color)
+   - Metal (shiny, reflective)
+   - Wood (warm tone with grain)
+
+2. Add bounce/impact feedback:
+   - Tiny particle effect when hitting walls
+   - Small sound-reactive visual feedback
+
+----------------------------------------
+
+🎮 UI + CAMERA POLISH
+
+1. Improve camera:
+   - Slight tilt for depth (not top-down flat)
+   - Smooth follow when ball moves
+   - Zoom slightly on shot
+
+2. Shot indicator:
+   - Clean aiming line with gradient
+   - Power bar with color shift (green → red)
+
+----------------------------------------
+
+✨ POLISH DETAILS (IMPORTANT)
+
+1. Add micro-animations:
+   - Grass slightly moving
+   - Water gently animating
+   - Hole flag moving
+
+2. Add sound-reactive visuals:
+   - Ball drop → small glow pulse
+   - Wall hit → quick flash
+
+3. Optimize for BOTH:
+   - Mobile (low lag, simplified effects if needed)
+   - Desktop (full quality enabled)
+
+----------------------------------------
+
+🚫 RULES
+
+- DO NOT break gameplay or physics
+- DO NOT remove existing features
+- Keep performance smooth (60fps target)
+- All improvements must be visually noticeable immediately
+
+----------------------------------------
+
+FINAL RESULT:
+The game should feel alive, immersive, and visually satisfying — not flat or basic.

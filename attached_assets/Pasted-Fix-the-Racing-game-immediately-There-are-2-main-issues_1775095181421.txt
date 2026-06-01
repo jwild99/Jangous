@@ -1,0 +1,174 @@
+Fix the Racing game immediately. There are 2 main issues:
+
+1. The lap / finish-line logic is broken
+2. The graphics are still too basic and need a real visual upgrade
+
+Do actual implementation in the repo. Do not give me a summary or plan first.
+
+================================
+PRIORITY 1 — FIX LAP / FINISH LINE BUG
+================================
+
+Current problem:
+- when the car comes back around for a lap, it has trouble getting past the finish line
+- lap progression is not working correctly
+- the finish/checkpoint logic is likely blocking the car or not validating lap completion correctly
+
+I need the lap system to work cleanly every time.
+
+Fix this properly:
+
+1. FINISH LINE / CHECKPOINT LOGIC
+- inspect how lap completion is currently detected
+- verify checkpoint order is correct
+- verify finish line collision / trigger area is correct
+- make sure the car can physically cross the finish line without getting stuck
+- make sure a lap only counts when checkpoints are completed in the right order
+- prevent false lap counts from driving backward or cutting the track
+- make sure the next lap starts correctly after crossing
+
+2. PHYSICAL MOVEMENT AROUND FINISH LINE
+- check whether the finish line area has bad collision geometry
+- check whether there is a wall, invisible blocker, or track overlap causing the car to snag
+- smooth out the road and turn near the finish line
+- ensure the car can drive across it naturally without clipping or sticking
+- verify collision on the corner near the finish line is not too aggressive
+
+3. LAP VALIDATION RULES
+Need a robust system:
+- checkpoints tracked in order
+- finish line only counts after all required checkpoints are hit
+- lap increments exactly once
+- no double-counting when sitting on finish line
+- no missed lap when crossing at speed
+- no soft-lock on lap transition
+- if final lap completed, race ends correctly
+
+4. TEST CASES
+Test:
+- full clean lap
+- multiple laps in a row
+- crossing finish line at slow speed
+- crossing finish line at high speed
+- crossing while turning tightly
+- trying to go backward across line
+- trying to skip checkpoints
+- race end on final lap
+
+Acceptance criteria:
+- car can cross finish line normally
+- laps count correctly
+- no invisible block at finish
+- no missed lap count
+- no double lap count
+- race ends correctly after final lap
+
+================================
+PRIORITY 2 — GRAPHICS UPGRADE
+================================
+
+The Racing game needs to look much better. Right now it still feels too basic.
+
+GOAL:
+Make the game feel more premium, fast, and polished.
+
+Upgrade these visuals:
+
+1. TRACK LOOK
+- improve road texture
+- better track edges
+- better neon/glow accents where appropriate
+- better corner visuals
+- clearer finish line
+- more polished checkpoint indicators
+- stronger contrast between track and background
+- make the road feel like a real arcade race track, not just simple lines
+
+2. ENVIRONMENT
+Add more going on around the track:
+- darker premium background
+- subtle animated grid / floor / glow
+- more depth around the course
+- barriers, rails, or edge lighting
+- background motion or atmosphere
+- subtle environmental styling that makes the race scene feel alive
+
+3. CAR VISUALS
+- improve car sprite/model look
+- stronger glow/reflection/highlight
+- better shadow under the car
+- better sense of speed
+- cleaner rotation visuals
+- tire/skid feeling if possible
+- optional boost trail / speed streaks
+
+4. FINISH LINE / CHECKPOINT VISUALS
+Make these much clearer:
+- visible finish line markings
+- checkpoint markers that look intentional
+- lap progression should be easy to understand visually
+- stronger race HUD around current lap and time
+
+5. SPEED / DOPAMINE
+Add more rewarding visual feedback:
+- subtle speed lines when moving fast
+- checkpoint flash
+- lap complete banner
+- finish line pulse
+- better countdown
+- win / finish feedback
+- better HUD reactions on lap completion
+
+6. UI / HUD
+Upgrade the race HUD:
+- clearer lap counter
+- better timer styling
+- current position
+- speed indicator
+- better minimap styling
+- stronger match/race status feedback
+
+================================
+PERFORMANCE / FEEL
+================================
+
+While improving graphics, do not make performance worse.
+
+Need:
+- smooth handling
+- stable FPS
+- no lag from visual effects
+- no stutter around finish line
+- clean steering feel
+- polished acceleration/braking response
+
+================================
+HOW TO WORK
+================================
+
+Do this in order:
+
+1. inspect the finish line and checkpoint system
+2. fix the bug where the car cannot cleanly get through / register the finish
+3. verify lap logic works end-to-end
+4. improve track and car visuals
+5. improve race HUD and lap-complete feedback
+6. test multiple full races
+7. report exactly what files were changed and what now works
+
+================================
+SUCCESS CRITERIA
+================================
+
+This task is only complete if:
+- the car can pass the finish line normally
+- laps count correctly every time
+- the race finishes correctly
+- the graphics look noticeably better
+- the track feels more premium
+- the car looks better
+- the HUD looks better
+- the game feels more polished overall
+
+Do actual implementation now.
+Do not just explain the issue back to me.

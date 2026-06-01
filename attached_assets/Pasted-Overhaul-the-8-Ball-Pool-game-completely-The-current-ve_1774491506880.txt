@@ -1,0 +1,335 @@
+Overhaul the 8-Ball Pool game completely. The current version still looks cheap, feels unfinished, and core gameplay is broken. I want this game to feel much closer to the mobile game 8 Ball Pool — modern, polished, responsive, visually clean, and satisfying to play. This is not a small tweak task. Rebuild the presentation, UX, controls, and gameplay feel.
+
+MAIN PROBLEMS TO FIX RIGHT NOW
+1. Pressing space does not actually shoot the cue ball consistently or at all.
+2. Ball collisions are not working correctly / hits do not register correctly.
+3. The current layout looks outdated and empty.
+4. The big shoot meter at the bottom needs to be removed.
+5. The overall art style does not feel premium or mobile-game quality.
+6. The game needs to feel intuitive, smooth, and skill-based like 8 Ball Pool on the phone.
+
+GOAL
+Make the game feel like a polished competitive arcade pool experience with:
+- modern UI
+- strong visual hierarchy
+- satisfying aiming
+- smooth cue pullback shot system
+- realistic but fun physics
+- premium table presentation
+- cleaner HUD
+- mobile-friendly controls
+- desktop-friendly controls
+- much better feedback and animations
+
+FULL OVERHAUL REQUIREMENTS
+
+1. VISUAL REDESIGN
+Redesign the entire game screen so it feels premium and game-like, not like a prototype.
+
+Update:
+- table art
+- felt texture
+- rails
+- pockets
+- balls
+- cue stick
+- shadows
+- lighting
+- background
+- player panels
+- turn indicators
+- status text
+- shot feedback
+
+Design direction:
+- dark app shell background
+- centered table with stronger presence
+- subtle glow / vignette around table
+- premium green or blue felt
+- cleaner wooden or modern rail finish
+- realistic pocket cutouts
+- more polished ball shading with highlights
+- cue stick should look sharp and intentional
+- table should feel larger and more immersive
+- spacing should be tighter and more balanced
+- remove dead empty space
+- remove the ugly lower power bar section
+
+Target feel:
+- sleek
+- competitive
+- modern
+- mobile-game inspired
+- clean enough for real money / ranked play
+- visually closer to 8 Ball Pool on mobile than to a simple browser demo
+
+2. REMOVE THE BOTTOM SHOOT METER
+Completely remove the large shot power slider/button UI from the bottom of the screen.
+
+Replace it with a more natural shot mechanic:
+Desktop:
+- click and drag backwards from the cue ball / cue direction to set shot power
+- release to shoot
+OR
+- click and hold to pull back the cue visually, then release to shoot
+
+Mobile:
+- touch drag backwards to set power
+- release to shoot
+
+Power should be shown through:
+- cue stick pullback distance
+- optional small power ring / small radial indicator near cue ball
+- subtle shot guide visuals
+NOT a giant bottom slider
+
+3. CONTROLS / GAME FEEL
+Rebuild controls so they feel smooth and obvious.
+
+Desktop controls:
+- mouse move = aim
+- click drag backward = set shot power
+- release = shoot
+- optional fine aim mode with right click or shift
+- space bar can optionally remain as alternate shoot trigger, but it must actually work
+
+Mobile controls:
+- drag to aim
+- drag back to set shot power
+- release to shoot
+- all controls must be touch-friendly
+- no tiny UI elements
+
+Make sure:
+- controls are responsive
+- aim line updates in real time
+- cue rotates smoothly
+- cue pullback animation is smooth
+- shot release is immediate and reliable
+
+4. FIX CORE GAMEPLAY BUGS
+The game is still broken. Fix the actual gameplay first before polish.
+
+Must fix:
+- pressing shoot actually launches the cue ball every time
+- space bar works if supported
+- mouse / touch shot release works every time
+- cue ball makes contact correctly
+- ball collisions register correctly
+- balls do not phase through each other
+- balls do not stick unnaturally
+- wall bounces feel believable
+- pockets actually pocket balls properly
+- turn system advances correctly
+- balls come fully to rest before next turn
+- no dead shots where input happens but physics does nothing
+- no invisible collision bugs
+- no duplicated turns
+- no frozen state after shot
+
+Add logging / debugging for:
+- shot triggered
+- shot velocity applied
+- collision detected
+- ball pocketed
+- turn ended
+- foul detected
+So the broken gameplay can be diagnosed fast if anything still fails
+
+5. PHYSICS REWORK
+Tune physics to feel closer to fun arcade realism, not full simulation and not floaty.
+
+Physics goals:
+- shots should feel powerful and readable
+- cue ball should accelerate cleanly
+- collisions should feel crisp
+- balls should roll naturally and slow down believably
+- rebounds should be consistent
+- no weird spinning in place
+- no jitter
+- no micro-bouncing
+- no unnatural energy loss on standard hits
+- no excessive sliding after contact
+
+Implement or improve:
+- stable collision resolution
+- fixed timestep or properly managed update loop
+- ball-to-ball collision reliability
+- rail collision reliability
+- friction / drag tuning
+- pocket detection zones
+- stop threshold so balls settle naturally
+- optional simple spin system only if it is stable
+If spin is not stable, leave it out for now and prioritize a clean core game
+
+6. AIMING SYSTEM
+The aiming system should feel modern and satisfying.
+
+Add:
+- a clear aiming guideline from cue ball
+- projected first-contact guide if possible
+- subtle dotted line, not ugly or overly bright
+- smooth cue rotation around cue ball
+- optional ghost ball / impact point preview if it looks clean
+- fine aim mode for more precision
+
+Do NOT make it cluttered.
+Keep it premium and readable.
+
+7. HUD / LAYOUT REDESIGN
+Redesign the layout around the table.
+
+Top area:
+- cleaner player cards
+- avatars / initials
+- names
+- active turn highlight
+- simple ball group indicators when relevant
+- match status / mode
+
+Optional side or top corner elements:
+- small menu
+- restart / rematch
+- rules/help
+- sound toggle
+
+Do not:
+- waste space
+- keep giant empty cards
+- leave oversized low-value UI
+- make the game look like a dashboard
+
+The table should be the hero.
+
+8. ANIMATIONS AND FEEDBACK
+Add satisfying feedback everywhere.
+
+Add:
+- cue pullback animation
+- shot release snap
+- subtle ball shadows
+- pocket drop animation feel
+- small hit spark / impact emphasis very subtly
+- active turn glow
+- polished hover / pressed UI states
+- smooth panel transitions
+- subtle camera/table emphasis if possible
+- satisfying sound hooks for:
+  - cue strike
+  - ball collision
+  - rail hit
+  - pocketed ball
+  - foul
+  - turn change
+  - win/lose
+
+Keep effects tasteful. No cheap flashy overload.
+
+9. GAME STATES / RULES
+Make the game actually playable and understandable.
+
+Support:
+- player vs bot
+- player vs player local if already supported
+- turn switching
+- solids/stripes assignment if implemented
+- win/loss state
+- foul handling
+- scratch handling
+- legal shot validation if possible
+
+At minimum:
+- break works
+- turns work
+- pockets work
+- win condition works
+- restart works
+
+10. BOT IMPROVEMENT
+If there is a bot, make it feel less dumb and more believable.
+
+Improve:
+- aiming logic
+- shot power selection
+- simple target selection
+- delay before shooting so it feels intentional
+- avoid obviously broken impossible shots
+- medium bot should feel decent, not random
+
+11. RESPONSIVE / MOBILE-FIRST QUALITY
+This must work well on phones too.
+
+Mobile requirements:
+- table scales correctly
+- no clipped UI
+- no bottom controls covering gameplay
+- drag shot mechanic works on touch
+- player panels remain readable
+- menus remain accessible
+- performance remains smooth
+
+Desktop requirements:
+- mouse aiming feels precise
+- layout uses screen space better
+- game remains centered and premium-looking on large monitors
+
+12. PERFORMANCE / CLEANUP
+Clean up the code structure while doing this overhaul.
+
+Do:
+- separate rendering, physics, and input logic cleanly
+- remove outdated UI elements
+- remove dead code tied to old power slider
+- make state transitions clear
+- make shot handling deterministic and debuggable
+- optimize re-renders if using React/canvas
+- avoid physics tied directly to inconsistent frame timing
+
+13. DELIVERABLES
+I do not want a half-finished visual tweak. I want a complete playable overhaul.
+
+Deliver:
+1. fully redesigned 8-ball pool screen
+2. new shot mechanic with no giant bottom meter
+3. fixed shooting so it always works
+4. fixed collisions and actual playable physics
+5. mobile-compatible controls
+6. better bot behavior
+7. premium UI and feedback pass
+8. cleaned-up code and removed outdated systems
+
+14. ACCEPTANCE CRITERIA
+This task is only complete if all of this is true:
+- I can aim and shoot reliably every time
+- the cue ball actually moves when I shoot
+- hits and collisions work correctly
+- the layout looks modern and polished
+- the ugly bottom shot meter is gone
+- the table is visually upgraded
+- the game feels closer to 8 Ball Pool on mobile
+- it works on both desktop and mobile
+- the game no longer feels like a prototype
+- there are no obvious broken gameplay states
+
+15. PRIORITY ORDER
+Work in this order:
+1. fix shooting and broken physics
+2. replace shot mechanic and remove bottom meter
+3. redesign table visuals and layout
+4. improve aiming, feedback, and polish
+5. improve bot and responsive behavior
+6. final polish pass
+
+Before finishing, test:
+- break shot
+- standard shot
+- wall bounce
+- ball-to-ball collision
+- pocketing
+- turn switch
+- restart
+- mobile drag shot
+- desktop mouse shot
+- alternate shoot input if space is kept
+
+Do not stop at “looks better.” The game must also actually work.

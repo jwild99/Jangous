@@ -1,0 +1,229 @@
+We need to stop polishing around broken core behavior and fix these gameplay issues immediately.
+
+There are 3 urgent problems right now:
+
+1. Mini Golf is not progressing to the next hole correctly
+2. Pool is resetting after the break when it should not
+3. Pool bot still is not actually working correctly
+
+This needs to be treated as a gameplay stability / state-management fix, not a visual task.
+
+================================
+PRIORITY 1 — MINI GOLF MUST ADVANCE TO THE NEXT HOLE
+================================
+
+The mini golf game is still not reliably moving to the next hole after a hole is completed. That is a core game flow bug and it needs to be fixed first.
+
+What needs to happen:
+- when the ball enters the cup and the hole is completed, the game must correctly finalize the current hole
+- scores/strokes for that hole must be saved correctly
+- the next hole must load automatically
+- the player and bot/opponent must both transition cleanly
+- the UI, game state, and camera/view must all update together
+- the match must continue until all holes are completed
+- after the final hole, the match must end correctly and show results
+
+Check for likely issues:
+- hole-complete event is firing but progression state is not updating
+- score saves but currentHole index is not incrementing
+- UI updates but gameplay state does not
+- client and server state are going out of sync
+- next-hole init logic is not resetting positions correctly
+- bot turn / opponent turn is blocking progression
+- match-complete logic is being triggered too early
+- async save/broadcast is happening but next-hole load is failing
+- one player is finishing the hole but the game is not waiting/handling both sides correctly
+- websocket/state broadcast is not updating the client properly
+
+Mini golf needs a full flow test:
+- player sinks ball -> next hole loads
+- bot/opponent sinks ball -> next hole loads
+- both players complete hole -> game advances cleanly
+- all 9 / all configured holes complete -> end screen works
+- rematch / replay works
+- no soft-lock between holes
+- no stuck scorecard state
+- no duplicate hole start
+- no reset to wrong hole
+
+Acceptance criteria for mini golf:
+- every completed hole advances to the next hole correctly
+- scores persist correctly
+- no freezing between holes
+- no manual refresh needed
+- full round plays start to finish
+
+================================
+PRIORITY 2 — POOL BREAK SHOULD NOT RESET THE BALL
+================================
+
+In pool, every time I break, it resets the ball. That is wrong.
+
+The break shot should:
+- launch the cue ball
+- collide with the rack
+- leave the table state exactly where the physics result ends
+- continue the game from that resulting table layout
+
+It should NOT:
+- reset the cue ball
+- rerack or partially rerack balls
+- restart the shot
+- wipe the table state unless there is an intentional rule-based reset
+- jump into some default placement flow after contact
+
+Fix this immediately.
+
+Investigate likely causes:
+- break state is incorrectly triggering a new rack init after first shot
+- turn transition after break is resetting game state
+- foul/shot resolution logic is incorrectly calling resetRack() or resetCueBall()
+- physics resolution after break is interpreted as invalid and forcing reset
+- server/client state mismatch causes table re-sync to default layout
+- “new turn” logic is rebuilding initial positions
+- scratch handling is firing incorrectly on break
+- break-complete logic is not separated from full game reset logic
+
+Pool behavior must be:
+- break happens once
+- resulting table layout remains
+- next turn continues from that exact layout
+- only real rule-based events should reposition cue ball or change state
+
+Run tests for:
+- legal break with no scratch
+- break where balls pocket
+- break with scratch
+- break with no pocket
+- break against bot
+- break against local/human
+- rematch after completed game
+
+Acceptance criteria for pool break:
+- breaking no longer resets the table
+- table remains in post-break state
+- cue ball only repositions when an actual rule requires it
+- no hidden rerack after break
+
+================================
+PRIORITY 3 — POOL BOT STILL MUST WORK
+================================
+
+The pool bot is still not functioning correctly. That means the bot system is still not truly fixed for pool.
+
+What must work:
+- selecting easy/medium/hard bot creates the correct bot opponent
+- the match actually starts
+- the bot recognizes when it is its turn
+- the bot aims, chooses a shot, and executes it
+- the bot continues playing through the match
+- the bot does not freeze after the break
+- the bot does not fail after turn changes
+- the bot works for the full game, not just initialization
+
+Likely issues to inspect:
+- bot is created but not subscribed to turn-state updates
+- bot logic never fires after break/turn transition
+- bot action is computed but shot execution never happens
+- bot shot executes visually but no real physics impulse is applied
+- bot is blocked by “balls still moving” flag that never clears
+- bot turn detection is using stale game state
+- server/client mismatch prevents bot action from being accepted
+- bot difficulty is selected in UI but not actually passed through gameplay logic
+- bot breaks, then game state resets and bot loses its state
+- turn handoff to bot is broken after player shot
+
+Pool bot must be tested end-to-end:
+- easy bot vs player
+- medium bot vs player
+- hard bot vs player
+- player breaks, then bot responds
+- bot breaks, then player responds if applicable
+- multiple turns in one match
+- ball pocketing and turn changes
+- bot after foul states
+- match completion
+
+Bot difficulty expectations:
+- Easy = weaker shot selection, lower accuracy
+- Medium = decent target/power selection
+- Hard = best available targeting and cleaner shot choices
+
+But first priority is simply:
+THE BOT MUST ACTUALLY WORK RELIABLY
+
+Acceptance criteria for pool bot:
+- bot loads correctly
+- bot takes turns correctly
+- bot keeps playing throughout the match
+- bot does not freeze after break
+- easy/medium/hard all work
+
+================================
+REQUIRED DEBUGGING / LOGGING
+================================
+
+Add temporary logging around these flows so the bugs are easy to isolate:
+
+MINI GOLF
+- hole completed
+- score saved
+- current hole index before/after update
+- next hole initialized
+- match completed
+
+POOL
+- break shot detected
+- post-break state saved
+- any reset function called
+- reason for cue ball reposition if repositioned
+- rack reset function calls
+- turn transition after break
+
+POOL BOT
+- bot initialized
+- bot difficulty selected
+- bot turn detected
+- bot shot selected
+- bot shot executed
+- bot blocked reason if no shot happens
+- turn end / next turn start
+
+If something resets or fails, I want the exact function and reason visible in logs.
+
+================================
+STRICT ORDER OF WORK
+================================
+
+Do this in order:
+
+1. Fix mini golf next-hole progression
+2. Test full mini golf round flow start to finish
+3. Fix pool break state so table does not reset
+4. Fix pool bot turn/action flow
+5. Verify easy/medium/hard bot all work in pool
+6. Final regression pass on both games
+
+================================
+FINAL ACCEPTANCE CRITERIA
+================================
+
+This task is complete only if all of the following are true:
+
+MINI GOLF
+- after a hole is completed, the game moves to the next hole correctly
+- scores save correctly
+- full rounds complete without getting stuck
+
+POOL
+- break shot no longer resets the table
+- table remains in the real post-break state
+- cue ball only resets when rules actually require it
+
+POOL BOT
+- easy, medium, and hard bots all actually work
+- bot takes turns reliably
+- bot does not freeze or fail after the break
+- full matches can be completed against the bot
+
+Do not call this fixed until all three flows have been tested in real gameplay, not just code-reviewed.

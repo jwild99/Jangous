@@ -1,0 +1,1134 @@
+PROJECT: JANGO FULL PLATFORM CLEANUP + POLISH + STABILITY UPGRADE
+VERSION: EXTREME DETAIL IMPLEMENTATION SPEC
+
+This is not just a list of ideas. This is a build plan.
+
+Goal:
+Upgrade the entire platform so it feels complete, premium, safe, polished, and production-ready.
+
+Main priorities:
+1. Fix broken core flows
+2. Remove unfinished features from user view
+3. Clean navigation
+4. Improve empty states
+5. Make lobby feel alive
+6. Add onboarding
+7. Add trust/compliance polish
+8. Upgrade admin usefulness
+9. Full QA pass across web + mobile
+
+==================================================
+SECTION 1: CORE FLOW STABILIZATION
+==================================================
+
+These are the most important tasks. Do these before any extra visual upgrades.
+
+--------------------------------------------------
+1.1 DEPOSIT / ADD FUNDS FLOW
+--------------------------------------------------
+
+Current problems:
+- Deposit flow has thrown runtime errors before
+- Some payment methods appear but are not active
+- Crypto deposit flow needs to be 100% secure
+- User should never be able to credit themselves manually
+- Deposit status needs to be clear
+
+Required behavior:
+
+When user clicks Scalps balance or Add Funds:
+1. Open Add Funds modal/drawer.
+2. Load available payment methods from backend.
+3. Only show payment methods that are actually enabled and working.
+4. Show loading state while methods are loading.
+5. If methods fail to load, show:
+   “Deposits are temporarily unavailable. Please try again soon.”
+
+Crypto deposit flow:
+
+Step 1:
+User selects crypto method:
+- Bitcoin
+- Ethereum
+- Solana
+- USDC if supported
+
+Step 2:
+User enters deposit amount.
+
+Validate:
+- amount is above minimum
+- amount is below maximum
+- user is authenticated
+- user email is verified if required
+- user is eligible to deposit
+
+If validation fails:
+- Do not continue
+- Show clean message
+
+Examples:
+- “Please verify your email before adding funds.”
+- “Minimum deposit is X Scalps.”
+- “Deposits are not available in your region.”
+
+Step 3:
+User clicks Generate Deposit Address.
+
+Frontend:
+- button enters loading state
+- text changes to “Generating address...”
+- disable repeated clicks
+
+Backend:
+- creates pending deposit record
+- requests deposit address from provider
+- returns deposit ID, address, network, amount, expiration time
+
+Frontend displays:
+- QR code
+- wallet address
+- copy button
+- network name
+- amount to send
+- warning:
+  “Only send this asset on the selected network. Sending the wrong asset may result in loss.”
+
+Important:
+Remove or disable any button that says:
+“I’ve sent funds”
+if it credits balance.
+
+Replace it with:
+“Track Deposit”
+
+Track Deposit button should:
+- refresh deposit status
+- never update balance by itself
+
+Deposit statuses:
+- pending
+- waiting_for_payment
+- confirming
+- confirmed
+- failed
+- expired
+
+UI status display:
+Pending:
+“Deposit created. Send funds to the address below.”
+
+Waiting:
+“Waiting for payment detection.”
+
+Confirming:
+“Payment detected. Waiting for blockchain confirmation.”
+
+Confirmed:
+“Deposit confirmed. Funds added.”
+
+Failed:
+“Deposit failed. No funds were added.”
+
+Expired:
+“This deposit expired. Please create a new one.”
+
+Balance update rule:
+Balance ONLY updates after backend receives verified payment confirmation from provider/webhook.
+
+Never:
+- update balance when address is generated
+- update balance when user clicks Track Deposit
+- update balance from frontend state only
+- trust client payment status
+
+Required backend protections:
+- verify webhook signature
+- store webhook event ID
+- prevent duplicate webhook processing
+- update balance inside database transaction
+- create transaction record
+- link transaction to deposit ID
+
+Required UI polish:
+- balance count-up animation only after confirmed backend update
+- blue/green glow on confirmed deposit
+- success message:
+  “Deposit confirmed. Your balance is ready.”
+- show transaction in history immediately after confirmation
+
+--------------------------------------------------
+1.2 CARD / PAYPAL / VENMO FLOW CLEANUP
+--------------------------------------------------
+
+Current problem:
+Payment methods may show even if not working.
+
+Required behavior:
+If Card / PayPal / Venmo are not fully implemented:
+- hide them completely
+OR
+- show disabled “Coming Soon” cards
+
+Do not show:
+“Card payments are not available yet. Platform administrator needs to confirm payment processing.”
+
+That message feels broken.
+
+Better disabled card:
+Title: “Card Payments”
+Badge: “Coming Soon”
+Subtext: “Card deposits are being finalized.”
+
+If implemented:
+Use real payment provider.
+Frontend creates payment session through backend.
+Backend creates payment intent/order.
+Payment provider handles checkout.
+Webhook confirms payment.
+Backend updates balance.
+
+Never allow manual success from frontend.
+
+--------------------------------------------------
+1.3 MATCH JOIN FLOW
+--------------------------------------------------
+
+Current problems:
+- Users see errors after they already click join
+- “Cannot join your own match” appears incorrectly
+- Device restrictions are caught too late
+- Some matches show 0 Scalps confusingly
+
+Required match join flow:
+
+When user views match cards, frontend should already know:
+- match ID
+- game
+- stake
+- pot
+- players joined
+- device restriction
+- status
+- creator type
+- whether current user can join
+
+Each match card must run eligibility display logic.
+
+Before user clicks:
+If device mismatch:
+- button disabled
+- text: “Mobile Only” or “Desktop Only”
+- badge visible on card
+- tooltip:
+  “This match can only be played on mobile.”
+
+If insufficient balance:
+- button text: “Add Funds”
+- clicking opens Add Funds
+- do not open wager modal
+
+If match full:
+- button disabled
+- text: “Full”
+
+If match expired:
+- hide or mark expired
+- do not allow join
+
+If match is available:
+- button text: “Join Match”
+
+When user clicks Join Match:
+Step 1:
+Frontend calls backend eligibility check:
+GET /matches/:id/eligibility
+
+Backend checks:
+- user authenticated
+- match exists
+- match status is waiting/open
+- match not full
+- user not already in match
+- user has enough balance
+- user device allowed
+- user is not improperly joining own private match
+
+Important own-match logic:
+Only block if:
+- match.creatorId === user.id
+AND
+- match.type === private/custom/player_created
+AND
+- match.status === waiting
+
+Do not block:
+- bot matches
+- free practice matches
+- system generated matches
+- queue matches
+- tournament matches
+
+Step 2:
+If eligible:
+Open wager confirmation modal.
+
+Wager modal must show:
+- game
+- opponent or waiting status
+- required stake
+- total pot
+- platform fee/rake
+- winner receives
+- user balance after joining
+- confirm button
+
+If stake is 0:
+Show clearly:
+“Free Practice Match”
+Do not show:
+Required Wager: 0 Scalps
+Total Pot: 0 Scalps
+unless styled as practice/free mode.
+
+Step 3:
+User confirms.
+Backend joins match inside database transaction.
+
+Backend:
+- re-checks eligibility
+- deducts stake if required
+- creates transaction record
+- adds user to match
+- updates match status if full
+- returns updated match
+
+Frontend:
+- shows success state
+- transitions to match lobby/game
+
+Error handling:
+Do not show raw 400/403.
+Map errors:
+
+DEVICE_NOT_SUPPORTED:
+“This match is not available on your device.”
+
+INSUFFICIENT_FUNDS:
+“You need X more Scalps to join.”
+
+MATCH_FULL:
+“This match just filled up.”
+
+OWN_MATCH:
+“You already created this private match.”
+
+MATCH_EXPIRED:
+“This match expired.”
+
+--------------------------------------------------
+1.4 TOURNAMENT ENTRY FLOW
+--------------------------------------------------
+
+Required tournament join behavior:
+
+When user clicks Join Tournament:
+
+Frontend before modal:
+- check visible eligibility if possible
+- show entry fee
+- show prize pool
+- show spots filled
+- show start time
+- show bracket size
+
+Tournament confirmation modal:
+Title:
+“Enter Tournament”
+
+Show:
+- Tournament name
+- Game
+- Entry fee
+- Current balance
+- Balance after entry
+- Current prize pool
+- Prize pool after entry
+- Spots filled
+- Start time
+- Rules button
+
+Confirm button:
+“Enter Tournament”
+
+Backend validation:
+- authenticated
+- enough balance
+- tournament open
+- tournament not full
+- user not already entered
+- user meets eligibility/rank/device requirements
+
+Backend transaction:
+Inside one atomic DB transaction:
+1. deduct entry fee from user balance
+2. create transaction record:
+   type = tournament_entry
+   amount = -entryFee
+3. create tournament entry
+4. increase tournament prize pool
+5. update player count
+6. generate/update bracket slot if needed
+
+Frontend success:
+- balance counts down
+- prize pool counts up
+- show:
+  “You’re In”
+- glow burst
+- redirect/open tournament lobby
+
+Tournament lobby must show:
+- visual bracket
+- entrants with usernames
+- current user highlighted
+- prize pool
+- countdown
+- bracket status
+
+Bracket UI:
+- not a list
+- actual visual bracket
+- rounds left to right
+- match cards connected with lines
+
+Each bracket match card:
+- player 1 username/avatar
+- player 2 username/avatar
+- status
+- winner highlight
+- current user badge
+
+Statuses:
+- waiting_for_player
+- ready
+- live
+- completed
+
+Realtime:
+When another player joins:
+- prize pool updates
+- bracket updates
+- player count updates
+
+Use websocket event:
+tournament_update
+
+--------------------------------------------------
+1.5 BALANCE SYSTEM
+--------------------------------------------------
+
+Balance is critical.
+
+Rules:
+- frontend never decides balance
+- backend is source of truth
+- every balance change creates transaction record
+- balance display must always match transaction history
+
+Balance change sources:
+- confirmed deposit
+- match stake deduction
+- match win payout
+- tournament entry
+- tournament payout
+- shop purchase
+- withdrawal
+
+Every balance mutation must:
+- happen server-side
+- use database transaction
+- log previous balance
+- log new balance
+- create transaction row
+- be idempotent if from external webhook
+
+Frontend:
+Listen for balance_update websocket.
+When received:
+- animate from old balance to new balance
+- show floating + or - amount
+- refresh transaction history silently
+
+==================================================
+SECTION 2: REMOVE / HIDE BROKEN FEATURES
+==================================================
+
+Rule:
+If a feature does not work end-to-end, hide it from normal users.
+
+Audit the platform and identify:
+- broken buttons
+- placeholder payment methods
+- fake stats
+- fake leaderboards
+- unfinished match modes
+- incomplete tournament types
+- dead tabs
+- settings sections that do nothing
+- admin buttons that do nothing
+
+For each feature:
+Option A:
+Make it fully functional.
+
+Option B:
+Hide it.
+
+Option C:
+Show “Coming Soon” only if it looks intentional and polished.
+
+Do not leave:
+- raw errors
+- disabled buttons with no explanation
+- console errors
+- broken modals
+- placeholder text
+- empty tables
+
+Specific fixes:
+- Hide PayPal/Venmo/Card unless working
+- Hide broken match types
+- Hide payment options not configured
+- Hide fake stats that always show 0
+- Hide tabs that have no content
+- Remove Party tab if not used
+
+==================================================
+SECTION 3: NAVIGATION CLEANUP
+==================================================
+
+Current issue:
+Navigation is too crowded.
+
+New structure:
+
+Main nav:
+1. Play
+2. Compete
+3. Social
+4. Shop
+
+Profile dropdown:
+- Dashboard
+- Stats
+- Friends
+- Settings
+- Admin, only if user is admin
+- Logout
+
+Compete dropdown or page:
+- Leaderboard
+- Tournaments
+- Seasons
+- Clans if active
+
+Play page:
+- Game selector
+- Live matches
+- Quick play
+- Practice
+
+Social page:
+- feed
+- messages
+- friends
+- clans if active
+
+Rules:
+- Admin should not be visible to normal users
+- Less important pages should not clutter top nav
+- Active tab should glow
+- Hover should feel premium
+- Mobile nav should collapse cleanly
+
+Mobile:
+- bottom nav with:
+  Play
+  Compete
+  Social
+  Shop
+  Profile
+
+==================================================
+SECTION 4: EMPTY STATE OVERHAUL
+==================================================
+
+No page should feel dead.
+
+Every empty state must include:
+- visual icon/illustration
+- short motivational headline
+- clear next action button
+- subtle animation/glow
+
+Leaderboard empty:
+Do not show:
+“No rankings yet”
+
+Show:
+Headline:
+“Claim the First Rank”
+
+Subtext:
+“Play 3 matches to get ranked and appear on the leaderboard.”
+
+Button:
+“Play Now”
+
+Visual:
+glowing trophy silhouette
+
+Tournament empty:
+Headline:
+“No tournaments live yet”
+
+Subtext:
+“Check back soon or start a match while you wait.”
+
+Button:
+“Play Match”
+
+Match history empty:
+Headline:
+“No battles yet”
+
+Subtext:
+“Your wins, losses, and rematches will appear here.”
+
+Button:
+“Start Playing”
+
+Transactions empty:
+Headline:
+“No transactions yet”
+
+Subtext:
+“Deposits, wins, losses, and purchases will show here.”
+
+Button:
+“Add Funds” or “Play Now”
+
+Friends empty:
+Headline:
+“Build your squad”
+
+Subtext:
+“Add friends, challenge players, and track rivals.”
+
+Button:
+“Find Players”
+
+Shop empty:
+Headline:
+“New items dropping soon”
+
+Subtext:
+“Cosmetics, effects, and profile upgrades will appear here.”
+
+==================================================
+SECTION 5: LOBBY / PLAY PAGE LIVE ENERGY
+==================================================
+
+Goal:
+The lobby should feel alive immediately.
+
+Add a live activity ticker:
+Placement:
+- top of lobby under hero
+OR
+- bottom sticky bar
+
+Ticker examples:
+- “PlayerX won 5 Scalps in Chess”
+- “Mini Golf match starting in 12s”
+- “3 players joined High Stakes”
+- “Tournament filling fast: 6/8 players”
+- “PlayerY ranked up to Gold”
+
+Ticker behavior:
+- auto-scroll
+- new items slide in
+- pause on hover
+- low opacity background glass
+- live pulsing dot
+
+Add live opportunity cards:
+- players waiting now
+- active matches
+- total active pot
+- tournaments starting soon
+
+Play hero should show:
+- selected game world
+- “Play Now” button
+- “Join Match”
+- “Practice”
+- active players count
+- live pot amount
+
+Example:
+“6 players waiting”
+“14 matches live”
+“42 Scalps in active pots”
+
+Match cards should show urgency:
+- Ready Now
+- Last Spot
+- Hot Match
+- High Stakes
+- Beginner Friendly
+
+==================================================
+SECTION 6: GAME TRANSITION POLISH
+==================================================
+
+When users switch games:
+Do not instantly swap flat content.
+
+Add transition sequence:
+1. current background fades down
+2. new game color glow fades in
+3. particles change
+4. game icon scales from 0.95 to 1
+5. title slides/fades in
+6. CTA glow changes to game accent color
+
+Each game needs:
+- unique background
+- unique accent color
+- unique particle style
+- unique loading animation
+
+Special priority:
+- Tron needs cyber grid, cyan light trails, electric particles
+- Block Blast needs colorful floating/falling blocks, puzzle particles
+- Chess needs dark royal gold board theme
+- Mini Golf needs neon green course feel
+- Racing needs speed lines and road depth
+
+Game selector cards:
+- hover lift
+- glow
+- animated icon
+- selected state clearly visible
+- live player count
+
+==================================================
+SECTION 7: ONBOARDING FLOW
+==================================================
+
+New users need to understand Jango quickly.
+
+Create 3-step onboarding modal after signup or first login.
+
+Step 1:
+Title:
+“Welcome to Jango”
+
+Message:
+“Compete in skill-based games, climb ranks, and win Scalps.”
+
+Visual:
+mini arena / game icons
+
+Step 2:
+Title:
+“Choose Your Game”
+
+Message:
+“Pick a game, select a stake, and enter a match.”
+
+Visual:
+game selector cards
+
+Step 3:
+Title:
+“Track Your Progress”
+
+Message:
+“Build your rank, unlock cosmetics, enter tournaments, and climb the leaderboard.”
+
+Visual:
+rank badge + leaderboard preview
+
+CTA:
+“Start Playing”
+
+Optional:
+Skip button:
+“Skip for now”
+
+Onboarding should:
+- be short
+- be visual
+- not feel like boring instructions
+- use the same premium dark neon design
+
+Also add contextual tooltips:
+- first time opening Add Funds
+- first time joining match
+- first time entering tournament
+- first time visiting Shop
+
+==================================================
+SECTION 8: TRUST / COMPLIANCE / CLARITY POLISH
+==================================================
+
+Because this involves money/Scalps, trust matters.
+
+Deposit page must show:
+- “Secure deposit”
+- “Funds credited after confirmation”
+- “Blockchain verified” for crypto
+- “Never send funds on the wrong network”
+
+Match confirmation must show:
+- stake
+- pot
+- platform fee/rake
+- winner receives
+- clear confirmation
+
+Tournament confirmation must show:
+- entry fee
+- prize pool
+- payout structure
+- rules
+- refund/cancellation rule if applicable
+
+Add Rules / Fair Play page:
+- how matches work
+- how deposits work
+- how withdrawals work
+- what Scalps are
+- how disputes work
+- fair play policy
+
+Fair play badges:
+- “Verified Match”
+- “Server Confirmed Result”
+- “Secure Payment Flow”
+
+Avoid vague money language.
+Be clear with:
+- fees
+- payouts
+- confirmation delays
+- eligibility
+
+==================================================
+SECTION 9: ADMIN PANEL FUNCTIONAL UPGRADE
+==================================================
+
+Admin should help run the platform.
+
+Admin dashboard should show:
+- active users
+- matches live
+- deposits today
+- withdrawals pending
+- failed payments
+- failed matches
+- tournament entries
+- system alerts
+
+Add alert panel:
+Critical:
+- payment webhook failed
+- deposit stuck
+- withdrawal pending over X hours
+- match result conflict
+- high error rate
+
+Warning:
+- match queue delay
+- tournament not filling
+- user flagged
+- repeated failed deposits
+
+User management:
+Each user detail should show:
+- balance
+- transactions
+- match history
+- deposits
+- withdrawals
+- flags
+- last active
+- account status
+
+Actions:
+- ban/restrict user
+- view logs
+- view payment history
+- view match history
+
+Critical actions need:
+- confirmation modal
+- admin password/2-step if possible
+- audit log
+
+Audit log:
+Track:
+- admin user
+- action
+- target user/entity
+- timestamp
+- before/after value
+
+Payment admin:
+Show:
+- deposits
+- withdrawals
+- status
+- provider ID
+- transaction hash
+- webhook status
+
+Match admin:
+Show:
+- match ID
+- players
+- stake
+- status
+- result
+- disputes/errors
+
+Tournament admin:
+Show:
+- entrants
+- bracket
+- prize pool
+- status
+- start/end controls
+
+==================================================
+SECTION 10: SETTINGS PAGE POLISH
+==================================================
+
+Settings still feels outdated.
+
+Upgrade:
+- dark glass cards
+- colored category icons
+- active tab glow
+- better spacing
+- animated tab transitions
+- modern inputs
+- focus glow
+- save button loading/success state
+
+Categories:
+- Account
+- Security
+- Notifications
+- Gameplay
+- Wallet
+- Privacy
+- Appearance
+- Sound/Haptics
+- Danger Zone
+
+Sound/Haptics settings:
+- sound on/off
+- haptics on/off
+- volume slider
+- reduce motion toggle
+
+Danger Zone:
+- visually separated
+- red accents
+- strong confirmation modals
+
+==================================================
+SECTION 11: SOUND + HAPTICS SYSTEM
+==================================================
+
+Add centralized feedback manager.
+
+Do not hardcode sounds randomly.
+
+Create:
+Feedback.play(eventName)
+Feedback.haptic(patternName)
+
+Events:
+- button_click
+- modal_open
+- modal_close
+- match_found
+- match_start
+- win
+- loss
+- tournament_join
+- deposit_confirmed
+- error
+- shop_purchase
+- rank_up
+
+Haptics:
+light tap:
+[10]
+
+success:
+[20, 40, 20]
+
+error:
+[50, 30, 50]
+
+big win:
+[40, 30, 40, 30, 80]
+
+Settings must allow disabling:
+- sound
+- haptics
+- motion effects
+
+==================================================
+SECTION 12: FULL QA PASS
+==================================================
+
+Perform a full QA pass.
+
+Test checklist:
+
+Authentication:
+- signup
+- login
+- logout
+- protected routes
+
+Navigation:
+- every nav item
+- dropdowns
+- mobile nav
+- admin visibility
+
+Deposits:
+- open deposit flow
+- generate address
+- copy address
+- expired deposit
+- failed deposit
+- confirmed deposit
+- unverified email
+
+Payments:
+- hide unsupported methods
+- no broken card/PayPal/Venmo UI
+
+Matches:
+- join valid match
+- insufficient funds
+- device mismatch
+- match full
+- match expired
+- own private match
+- bot/free/system matches
+
+Tournaments:
+- join tournament
+- duplicate join blocked
+- insufficient funds
+- tournament full
+- bracket appears
+- prize pool updates
+
+Games:
+- every game loads
+- mobile layout works
+- win/loss screen works
+- leave game works
+- rematch works
+
+Leaderboard:
+- empty state
+- ranked state
+- current user highlight
+- filters
+
+Stats:
+- live feed
+- empty states
+- charts if present
+
+Shop:
+- item cards
+- purchase flow
+- insufficient funds
+- equipped item state
+
+Settings:
+- save changes
+- invalid inputs
+- sound/haptics toggles
+- profile picture
+
+Admin:
+- dashboard loads
+- users panel
+- payments panel
+- matches panel
+- tournament panel
+- audit logs
+
+Mobile:
+- no clipped UI
+- buttons tappable
+- modals fit screen
+- haptics work where supported
+
+Console:
+- no runtime errors
+- no missing imports
+- no uncaught promises
+- no repeated websocket errors
+
+Performance:
+- no laggy animations
+- smooth scrolling
+- no massive layout shifts
+
+==================================================
+SECTION 13: FINAL STANDARD
+==================================================
+
+After this project:
+
+The site should feel:
+- clean
+- safe
+- premium
+- stable
+- alive
+- responsive
+- intentional
+
+No user should ever see:
+- raw backend errors
+- broken modals
+- fake payment states
+- confusing empty pages
+- placeholder content
+- half-working payment methods
+- buttons that do nothing
+- pages that feel unfinished
+
+Every user action should answer:
+1. What just happened?
+2. Why did it happen?
+3. What can I do next?
+
+This is the standard:
+Production-ready, polished, trustworthy, and on-brand.

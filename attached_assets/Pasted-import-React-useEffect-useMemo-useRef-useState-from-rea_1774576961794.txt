@@ -1,0 +1,839 @@
+import React, { useEffect, useMemo, useRef, useState } from "react";
+
+type Phase = "position" | "aim" | "power" | "effect" | "roll" | "resolve";
+type FeedbackType = "strike" | "spare" | "gutter" | "nice" | null;
+
+type Pin = {
+  id: number;
+  x: number;
+  y: number;
+  fallen: boolean;
+  vx: number;
+  vy: number;
+};
+
+type Ball = {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  radius: number;
+  spin: number;
+  rolling: boolean;
+};
+
+type FrameScore = {
+  rolls: number[];
+  marks: string[];
+};
+
+const CANVAS_WIDTH = 900;
+const CANVAS_HEIGHT = 620;
+
+const LANE_X = 180;
+const LANE_WIDTH = 540;
+const LANE_Y = 70;
+const LANE_HEIGHT = 470;
+
+const GUTTER_WIDTH = 42;
+const PLAY_LEFT = LANE_X + GUTTER_WIDTH;
+const PLAY_RIGHT = LANE_X + LANE_WIDTH - GUTTER_WIDTH;
+
+const PIN_DECK_Y = 135;
+const FOUL_LINE_Y = 500;
+const BALL_START_Y = 525;
+
+const METER_MIN = 0;
+const METER_MAX = 100;
+
+function clamp(n: number, min: number, max: number) {
+  return Math.max(min, Math.min(max, n));
+}
+
+function lerp(a: number, b: number, t: number) {
+  return a + (b - a) * t;
+}
+
+function makePins(): Pin[] {
+  const startX = CANVAS_WIDTH / 2;
+  const rowSpacing = 22;
+  const colSpacing = 24;
+
+  const layout = [
+    [0],
+    [-0.5, 0.5],
+    [-1, 0, 1],
+    [-1.5, -0.5, 0.5, 1.5],
+  ];
+
+  let id = 1;
+  const pins: Pin[] = [];
+
+  layout.forEach((row, rowIndex) => {
+    const y = PIN_DECK_Y + rowIndex * rowSpacing;
+    row.forEach((offset) => {
+      pins.push({
+        id: id++,
+        x: startX + offset * colSpacing,
+        y,
+        fallen: false,
+        vx: 0,
+        vy: 0,
+      });
+    });
+  });
+
+  return pins;
+}
+
+function getRemainingPins(pins: Pin[]) {
+  return pins.filter((p) => !p.fallen).length;
+}
+
+function isStrike(frame: FrameScore) {
+  return frame.rolls[0] === 10;
+}
+
+function isSpare(frame: FrameScore) {
+  return frame.rolls.length >= 2 && frame.rolls[0] + frame.rolls[1] === 10 && frame.rolls[0] !== 10;
+}
+
+function computeBowlingTotal(frames: FrameScore[]): number {
+  const rolls: number[] = [];
+  frames.forEach((f) => rolls.push(...f.rolls));
+
+  let score = 0;
+  let rollIndex = 0;
+
+  for (let frame = 0; frame < 10; frame++) {
+    const first = rolls[rollIndex] ?? 0;
+    const second = rolls[rollIndex + 1] ?? 0;
+
+    if (first === 10) {
+      score += 10 + (rolls[rollIndex + 1] ?? 0) + (rolls[rollIndex + 2] ?? 0);
+      rollIndex += 1;
+    } else if (first + second === 10) {
+      score += 10 + (rolls[rollIndex + 2] ?? 0);
+      rollIndex += 2;
+    } else {
+      score += first + second;
+      rollIndex += 2;
+    }
+  }
+
+  return score;
+}
+
+export default function BowlingGame() {
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const animationRef = useRef<number | null>(null);
+
+  const [phase, setPhase] = useState<Phase>("position");
+  const [playerX, setPlayerX] = useState(CANVAS_WIDTH / 2);
+  const [aim, setAim] = useState(0);
+  const [power, setPower] = useState(50);
+  const [effect, setEffect] = useState(50);
+
+  const [powerDir, setPowerDir] = useState(1);
+  const [effectDir, setEffectDir] = useState(1);
+
+  const [feedback, setFeedback] = useState<FeedbackType>(null);
+  const [feedbackTimer, setFeedbackTimer] = useState(0);
+
+  const [frameIndex, setFrameIndex] = useState(0);
+  const [rollInFrame, setRollInFrame] = useState(0);
+  const [frames, setFrames] = useState<FrameScore[]>(
+    Array.from({ length: 10 }, () => ({ rolls: [], marks: [] }))
+  );
+
+  const [pins, setPins] = useState<Pin[]>(makePins());
+  const [standingPinsStartOfRoll, setStandingPinsStartOfRoll] = useState(10);
+
+  const [ball, setBall] = useState<Ball>({
+    x: CANVAS_WIDTH / 2,
+    y: BALL_START_Y,
+    vx: 0,
+    vy: 0,
+    radius: 11,
+    spin: 0,
+    rolling: false,
+  });
+
+  const [message, setMessage] = useState("Position your bowler");
+  const [shotPendingReset, setShotPendingReset] = useState(false);
+
+  const totalScore = useMemo(() => computeBowlingTotal(frames), [frames]);
+
+  useEffect(() => {
+    if (phase === "power") {
+      setMessage("Lock power");
+    } else if (phase === "effect") {
+      setMessage("Lock effect");
+    } else if (phase === "aim") {
+      setMessage("Aim the shot");
+    } else if (phase === "position") {
+      setMessage("Move bowler left/right");
+    } else if (phase === "roll") {
+      setMessage("Ball is rolling...");
+    } else if (phase === "resolve") {
+      setMessage("Resolving frame...");
+    }
+  }, [phase]);
+
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (phase === "roll" || phase === "resolve") return;
+
+      if (phase === "position") {
+        if (e.key === "ArrowLeft") setPlayerX((x) => clamp(x - 18, PLAY_LEFT + 20, PLAY_RIGHT - 20));
+        if (e.key === "ArrowRight") setPlayerX((x) => clamp(x + 18, PLAY_LEFT + 20, PLAY_RIGHT - 20));
+      }
+
+      if (phase === "aim") {
+        if (e.key === "ArrowLeft" || e.key.toLowerCase() === "a") setAim((a) => clamp(a - 0.03, -0.5, 0.5));
+        if (e.key === "ArrowRight" || e.key.toLowerCase() === "d") setAim((a) => clamp(a + 0.03, -0.5, 0.5));
+      }
+
+      if (e.key === " " || e.key === "Enter") {
+        e.preventDefault();
+
+        if (phase === "position") {
+          setPhase("aim");
+          return;
+        }
+
+        if (phase === "aim") {
+          setPhase("power");
+          return;
+        }
+
+        if (phase === "power") {
+          setPhase("effect");
+          return;
+        }
+
+        if (phase === "effect") {
+          fireShot();
+        }
+      }
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [phase, aim, power, effect, playerX, pins, standingPinsStartOfRoll]);
+
+  useEffect(() => {
+    if (phase !== "power") return;
+    const id = window.setInterval(() => {
+      setPower((p) => {
+        const next = p + powerDir * 3;
+        if (next >= METER_MAX) {
+          setPowerDir(-1);
+          return METER_MAX;
+        }
+        if (next <= METER_MIN) {
+          setPowerDir(1);
+          return METER_MIN;
+        }
+        return next;
+      });
+    }, 16);
+    return () => clearInterval(id);
+  }, [phase, powerDir]);
+
+  useEffect(() => {
+    if (phase !== "effect") return;
+    const id = window.setInterval(() => {
+      setEffect((v) => {
+        const next = v + effectDir * 4;
+        if (next >= METER_MAX) {
+          setEffectDir(-1);
+          return METER_MAX;
+        }
+        if (next <= METER_MIN) {
+          setEffectDir(1);
+          return METER_MIN;
+        }
+        return next;
+      });
+    }, 16);
+    return () => clearInterval(id);
+  }, [phase, effectDir]);
+
+  useEffect(() => {
+    let last = performance.now();
+
+    const tick = (now: number) => {
+      const dt = Math.min((now - last) / 16.666, 2);
+      last = now;
+
+      update(dt);
+      draw();
+
+      animationRef.current = requestAnimationFrame(tick);
+    };
+
+    animationRef.current = requestAnimationFrame(tick);
+    return () => {
+      if (animationRef.current) cancelAnimationFrame(animationRef.current);
+    };
+  });
+
+  function playSound(name: "release" | "pins" | "strike" | "spare" | "gutter") {
+    // Replace with real audio asset playback in production
+    console.log("sound:", name);
+  }
+
+  function triggerFeedback(type: FeedbackType) {
+    setFeedback(type);
+    setFeedbackTimer(60);
+
+    if (type === "strike") playSound("strike");
+    else if (type === "spare") playSound("spare");
+    else if (type === "gutter") playSound("gutter");
+    else if (type === "nice") playSound("pins");
+  }
+
+  function resetBallForNextRoll() {
+    setBall({
+      x: playerX,
+      y: BALL_START_Y,
+      vx: 0,
+      vy: 0,
+      radius: 11,
+      spin: 0,
+      rolling: false,
+    });
+    setAim(0);
+    setPower(50);
+    setEffect(50);
+    setPhase("position");
+  }
+
+  function fullResetPins() {
+    setPins(makePins());
+  }
+
+  function fireShot() {
+    const speed = lerp(8, 22, power / 100);
+    const spin = lerp(-0.24, 0.24, effect / 100);
+    const vx = aim * 3.5;
+    const vy = -speed;
+
+    setStandingPinsStartOfRoll(getRemainingPins(pins));
+    setBall({
+      x: playerX,
+      y: BALL_START_Y,
+      vx,
+      vy,
+      radius: 11,
+      spin,
+      rolling: true,
+    });
+    setPhase("roll");
+    playSound("release");
+  }
+
+  function markPinsHit(nextPins: Pin[], bx: number, by: number, impactVx: number, impactVy: number) {
+    const ballR = ball.radius;
+
+    for (const pin of nextPins) {
+      if (pin.fallen) continue;
+
+      const dx = pin.x - bx;
+      const dy = pin.y - by;
+      const dist = Math.hypot(dx, dy);
+
+      if (dist < ballR + 10) {
+        pin.fallen = true;
+        pin.vx = impactVx * 0.45 + dx * 0.05;
+        pin.vy = impactVy * 0.45 + dy * 0.05;
+      }
+    }
+  }
+
+  function resolveRoll() {
+    const remaining = getRemainingPins(pins);
+    const knocked = standingPinsStartOfRoll - remaining;
+
+    setFrames((prev) => {
+      const next = [...prev];
+      const frame = { ...next[frameIndex] };
+      frame.rolls = [...frame.rolls, knocked];
+
+      if (frame.rolls[0] === 10) {
+        frame.marks = ["X"];
+      } else if (frame.rolls.length >= 2 && frame.rolls[0] + frame.rolls[1] === 10) {
+        frame.marks = [String(frame.rolls[0]), "/"];
+      } else {
+        frame.marks = frame.rolls.map((r) => String(r));
+      }
+
+      next[frameIndex] = frame;
+      return next;
+    });
+
+    const firstRollStrike = rollInFrame === 0 && knocked === 10;
+    const secondRollSpare =
+      rollInFrame === 1 && standingPinsStartOfRoll === 10 - (frames[frameIndex].rolls[0] ?? 0)
+        ? false
+        : false;
+
+    if (firstRollStrike) {
+      triggerFeedback("strike");
+      finishFrame(true);
+      return;
+    }
+
+    if (rollInFrame === 0) {
+      if (remaining === 0) {
+        triggerFeedback("strike");
+        finishFrame(true);
+      } else {
+        triggerFeedback(knocked > 0 ? "nice" : null);
+        setRollInFrame(1);
+        setShotPendingReset(true);
+      }
+      return;
+    }
+
+    const frameRolls = [...frames[frameIndex].rolls, knocked];
+    if ((frameRolls[0] ?? 0) + (frameRolls[1] ?? 0) === 10) {
+      triggerFeedback("spare");
+    } else if (knocked === 0 && getRemainingPins(pins) === standingPinsStartOfRoll) {
+      triggerFeedback("gutter");
+    } else {
+      triggerFeedback("nice");
+    }
+
+    finishFrame(false);
+  }
+
+  function finishFrame(wasStrike: boolean) {
+    setShotPendingReset(false);
+
+    if (frameIndex >= 9) {
+      setPhase("resolve");
+      setMessage("Game complete");
+      return;
+    }
+
+    setTimeout(() => {
+      setFrameIndex((f) => f + 1);
+      setRollInFrame(0);
+      fullResetPins();
+      resetBallForNextRoll();
+    }, 700);
+  }
+
+  function update(dt: number) {
+    if (feedbackTimer > 0) {
+      setFeedbackTimer((t) => t - 1);
+      if (feedbackTimer <= 1) setFeedback(null);
+    }
+
+    if (!ball.rolling) return;
+
+    let nextX = ball.x + ball.vx * dt;
+    let nextY = ball.y + ball.vy * dt;
+
+    let nextVx = ball.vx + ball.spin * dt * 0.18;
+    let nextVy = ball.vy * (1 - 0.0035 * dt);
+
+    if (nextX < PLAY_LEFT + ball.radius) {
+      nextX = PLAY_LEFT + ball.radius;
+      nextVx *= -0.65;
+    }
+    if (nextX > PLAY_RIGHT - ball.radius) {
+      nextX = PLAY_RIGHT - ball.radius;
+      nextVx *= -0.65;
+    }
+
+    const inGutter = nextX < PLAY_LEFT + 6 || nextX > PLAY_RIGHT - 6;
+    if (inGutter && nextY < FOUL_LINE_Y - 20) {
+      nextVy *= 0.985;
+      nextVx *= 0.98;
+    }
+
+    const nextPins = [...pins];
+    markPinsHit(nextPins, nextX, nextY, nextVx, nextVy);
+
+    for (const pin of nextPins) {
+      if (!pin.fallen) continue;
+      pin.x += pin.vx * dt;
+      pin.y += pin.vy * dt;
+      pin.vx *= 0.95;
+      pin.vy *= 0.95;
+    }
+
+    setPins(nextPins);
+    setBall({
+      ...ball,
+      x: nextX,
+      y: nextY,
+      vx: nextVx,
+      vy: nextVy,
+      rolling: true,
+    });
+
+    const slowEnough = Math.abs(nextVy) < 0.35 && Math.abs(nextVx) < 0.2;
+    const pastDeck = nextY < 70;
+    const offLaneBottom = nextY > CANVAS_HEIGHT + 50;
+
+    if (slowEnough || pastDeck || offLaneBottom) {
+      setBall((b) => ({ ...b, rolling: false, vx: 0, vy: 0 }));
+      setPhase("resolve");
+
+      setTimeout(() => {
+        resolveRoll();
+
+        if (shotPendingReset || rollInFrame === 0) {
+          setTimeout(() => {
+            if (getRemainingPins(pins) > 0 && rollInFrame === 0) {
+              setBall({
+                x: playerX,
+                y: BALL_START_Y,
+                vx: 0,
+                vy: 0,
+                radius: 11,
+                spin: 0,
+                rolling: false,
+              });
+              setPhase("position");
+            }
+          }, 500);
+        }
+      }, 250);
+    }
+  }
+
+  function drawLane(ctx: CanvasRenderingContext2D) {
+    ctx.fillStyle = "#05070a";
+    ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+
+    const bg = ctx.createRadialGradient(
+      CANVAS_WIDTH / 2,
+      CANVAS_HEIGHT / 2,
+      40,
+      CANVAS_WIDTH / 2,
+      CANVAS_HEIGHT / 2,
+      460
+    );
+    bg.addColorStop(0, "#1b2431");
+    bg.addColorStop(1, "#05070a");
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+
+    // gutters
+    ctx.fillStyle = "#20242b";
+    ctx.fillRect(LANE_X, LANE_Y, GUTTER_WIDTH, LANE_HEIGHT);
+    ctx.fillRect(LANE_X + LANE_WIDTH - GUTTER_WIDTH, LANE_Y, GUTTER_WIDTH, LANE_HEIGHT);
+
+    // lane wood
+    const laneGrad = ctx.createLinearGradient(0, LANE_Y, 0, LANE_Y + LANE_HEIGHT);
+    laneGrad.addColorStop(0, "#d9ae79");
+    laneGrad.addColorStop(0.5, "#efbf8f");
+    laneGrad.addColorStop(1, "#d8a26d");
+    ctx.fillStyle = laneGrad;
+    ctx.fillRect(PLAY_LEFT, LANE_Y, PLAY_RIGHT - PLAY_LEFT, LANE_HEIGHT);
+
+    // lane boards
+    for (let i = 0; i < 22; i++) {
+      const x = PLAY_LEFT + ((PLAY_RIGHT - PLAY_LEFT) / 22) * i;
+      ctx.fillStyle = i % 2 === 0 ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.035)";
+      ctx.fillRect(x, LANE_Y, 2, LANE_HEIGHT);
+    }
+
+    // red lane markings
+    ctx.fillStyle = "#c81919";
+    ctx.fillRect(PLAY_LEFT + 22, LANE_Y, 6, LANE_HEIGHT);
+    ctx.fillRect(PLAY_RIGHT - 28, LANE_Y, 6, LANE_HEIGHT);
+
+    // arrows
+    for (let i = 0; i < 7; i++) {
+      const x = lerp(PLAY_LEFT + 50, PLAY_RIGHT - 50, i / 6);
+      const y = 310;
+      ctx.fillStyle = "#222";
+      ctx.beginPath();
+      ctx.moveTo(x, y - 10);
+      ctx.lineTo(x - 5, y);
+      ctx.lineTo(x + 5, y);
+      ctx.closePath();
+      ctx.fill();
+    }
+
+    // pin deck
+    ctx.fillStyle = "rgba(255,255,255,0.12)";
+    ctx.fillRect(PLAY_LEFT, 95, PLAY_RIGHT - PLAY_LEFT, 48);
+
+    // top scoreboard bar
+    ctx.fillStyle = "#11151c";
+    ctx.fillRect(120, 15, 660, 42);
+  }
+
+  function drawBowler(ctx: CanvasRenderingContext2D) {
+    const x = playerX;
+    const y = 560;
+
+    ctx.save();
+
+    // legs
+    ctx.fillStyle = "#23262d";
+    ctx.fillRect(x - 14, y - 26, 10, 32);
+    ctx.fillRect(x + 4, y - 26, 10, 32);
+
+    // torso
+    ctx.fillStyle = "#8a1f1f";
+    ctx.beginPath();
+    ctx.roundRect(x - 24, y - 62, 48, 42, 8);
+    ctx.fill();
+
+    // head
+    ctx.fillStyle = "#b77c59";
+    ctx.beginPath();
+    ctx.arc(x, y - 76, 14, 0, Math.PI * 2);
+    ctx.fill();
+
+    // ball at side
+    ctx.fillStyle = "#1f2430";
+    ctx.beginPath();
+    ctx.arc(x + 22, y - 36, 10, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.restore();
+  }
+
+  function drawPins(ctx: CanvasRenderingContext2D) {
+    for (const pin of pins) {
+      if (pin.fallen && Math.abs(pin.vx) < 0.05 && Math.abs(pin.vy) < 0.05) continue;
+
+      ctx.save();
+      ctx.translate(pin.x, pin.y);
+
+      if (pin.fallen) {
+        ctx.rotate(0.9);
+      }
+
+      ctx.fillStyle = "#ffffff";
+      ctx.beginPath();
+      ctx.roundRect(-6, -13, 12, 26, 6);
+      ctx.fill();
+
+      ctx.fillStyle = "#d11d1d";
+      ctx.fillRect(-5, -5, 10, 3);
+
+      ctx.restore();
+    }
+  }
+
+  function drawBall(ctx: CanvasRenderingContext2D) {
+    ctx.save();
+    const grad = ctx.createRadialGradient(ball.x - 4, ball.y - 4, 2, ball.x, ball.y, ball.radius);
+    grad.addColorStop(0, "#4f5668");
+    grad.addColorStop(1, "#161b26");
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function drawAimingGuide(ctx: CanvasRenderingContext2D) {
+    if (phase === "roll" || phase === "resolve") return;
+
+    const startX = playerX;
+    const startY = BALL_START_Y;
+    const endX = startX + aim * 210;
+    const endY = 240;
+
+    ctx.strokeStyle = "rgba(255,255,255,0.35)";
+    ctx.setLineDash([8, 8]);
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(startX, startY);
+    ctx.lineTo(endX, endY);
+    ctx.stroke();
+    ctx.setLineDash([]);
+  }
+
+  function drawMeters(ctx: CanvasRenderingContext2D) {
+    // power left
+    ctx.fillStyle = "rgba(16,18,24,0.88)";
+    ctx.fillRect(55, 250, 28, 150);
+    ctx.fillStyle = "#1f71ff";
+    const powerH = (power / 100) * 146;
+    ctx.fillRect(57, 252 + (146 - powerH), 24, powerH);
+    ctx.fillStyle = "#fff";
+    ctx.font = "bold 24px sans-serif";
+    ctx.fillText("POWER", 30, 445);
+
+    // effect right
+    ctx.fillStyle = "rgba(16,18,24,0.88)";
+    ctx.fillRect(815, 250, 28, 150);
+    ctx.fillStyle = "#2d8cff";
+    const effectH = (effect / 100) * 146;
+    ctx.fillRect(817, 252 + (146 - effectH), 24, effectH);
+    ctx.fillStyle = "#fff";
+    ctx.fillText("EFFECT", 740, 445);
+
+    // effect arrows
+    ctx.fillStyle = "#2d8cff";
+    ctx.beginPath();
+    ctx.moveTo(790, 320);
+    ctx.lineTo(738, 298);
+    ctx.lineTo(738, 342);
+    ctx.closePath();
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.moveTo(110, 320);
+    ctx.lineTo(162, 298);
+    ctx.lineTo(162, 342);
+    ctx.closePath();
+    ctx.fill();
+  }
+
+  function drawScoreboard(ctx: CanvasRenderingContext2D) {
+    ctx.fillStyle = "#0e1320";
+    ctx.fillRect(165, 18, 570, 36);
+
+    ctx.strokeStyle = "rgba(255,255,255,0.1)";
+    for (let i = 0; i < 10; i++) {
+      const x = 165 + i * 57;
+      ctx.strokeRect(x, 18, 57, 36);
+
+      ctx.fillStyle = "#cfd6e6";
+      ctx.font = "bold 12px sans-serif";
+      ctx.fillText(String(i + 1), x + 24, 30);
+
+      const frame = frames[i];
+      ctx.font = "bold 14px sans-serif";
+      ctx.fillStyle = "#ffffff";
+      ctx.fillText(frame.marks[0] ?? "", x + 8, 48);
+      ctx.fillText(frame.marks[1] ?? "", x + 30, 48);
+    }
+
+    ctx.fillStyle = "#1f71ff";
+    ctx.fillRect(740, 18, 70, 36);
+    ctx.fillStyle = "#fff";
+    ctx.font = "bold 16px sans-serif";
+    ctx.fillText(String(totalScore), 763, 41);
+  }
+
+  function drawFeedback(ctx: CanvasRenderingContext2D) {
+    if (!feedback) return;
+
+    let text = "";
+    let color = "#ffffff";
+
+    if (feedback === "strike") {
+      text = "STRIKE!";
+      color = "#ffd24a";
+    } else if (feedback === "spare") {
+      text = "SPARE!";
+      color = "#7bc8ff";
+    } else if (feedback === "gutter") {
+      text = "GUTTER";
+      color = "#ff6a6a";
+    } else {
+      text = "NICE SHOT";
+      color = "#9cff9c";
+    }
+
+    ctx.save();
+    ctx.globalAlpha = Math.max(0.2, feedbackTimer / 60);
+    ctx.fillStyle = color;
+    ctx.font = "bold 56px sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillText(text, CANVAS_WIDTH / 2, 120);
+
+    if (feedback === "strike") {
+      ctx.strokeStyle = "rgba(255,210,74,0.6)";
+      ctx.lineWidth = 8;
+      ctx.beginPath();
+      ctx.arc(CANVAS_WIDTH / 2, 100, 70, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  function drawPhaseHint(ctx: CanvasRenderingContext2D) {
+    ctx.fillStyle = "rgba(10,12,16,0.75)";
+    ctx.fillRect(250, 575, 400, 28);
+    ctx.fillStyle = "#e8eefc";
+    ctx.font = "14px sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillText(message + "  •  Space/Enter to confirm", CANVAS_WIDTH / 2, 594);
+  }
+
+  function draw() {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    drawLane(ctx);
+    drawScoreboard(ctx);
+    drawAimingGuide(ctx);
+    drawPins(ctx);
+    drawBall(ctx);
+    drawBowler(ctx);
+    drawMeters(ctx);
+    drawFeedback(ctx);
+    drawPhaseHint(ctx);
+  }
+
+  return (
+    <div className="w-full min-h-screen bg-[#05070a] text-white flex flex-col items-center p-4">
+      <div className="w-full max-w-6xl flex items-center justify-between mb-3">
+        <div>
+          <h1 className="text-2xl font-bold">Bowling</h1>
+          <p className="text-sm text-white/60">Arcade bowling with power, effect, scoring, and strike feedback</p>
+        </div>
+        <div className="text-right">
+          <div className="text-sm text-white/60">Frame</div>
+          <div className="text-xl font-bold">{Math.min(frameIndex + 1, 10)}</div>
+        </div>
+      </div>
+
+      <div className="rounded-2xl overflow-hidden shadow-2xl border border-white/10 bg-black">
+        <canvas
+          ref={canvasRef}
+          width={CANVAS_WIDTH}
+          height={CANVAS_HEIGHT}
+          className="max-w-full h-auto block"
+        />
+      </div>
+
+      <div className="mt-4 flex flex-wrap gap-2 justify-center">
+        <button
+          className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/15"
+          onClick={() => setPlayerX((x) => clamp(x - 20, PLAY_LEFT + 20, PLAY_RIGHT - 20))}
+          disabled={phase === "roll" || phase === "resolve"}
+        >
+          Move Left
+        </button>
+        <button
+          className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/15"
+          onClick={() => setPlayerX((x) => clamp(x + 20, PLAY_LEFT + 20, PLAY_RIGHT - 20))}
+          disabled={phase === "roll" || phase === "resolve"}
+        >
+          Move Right
+        </button>
+        <button
+          className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500"
+          onClick={() => {
+            if (phase === "position") setPhase("aim");
+            else if (phase === "aim") setPhase("power");
+            else if (phase === "power") setPhase("effect");
+            else if (phase === "effect") fireShot();
+          }}
+          disabled={phase === "roll" || phase === "resolve"}
+        >
+          Confirm / Next Phase
+        </button>
+      </div>
+    </div>
+  );
+}

@@ -1,0 +1,390 @@
+PROJECT: JANGO MODAL + FORM UI OVERHAUL — TOURNAMENT CREATION + ALL SYSTEM SCREENS
+
+GOAL:
+Upgrade the tournament creation modal and every other modal/form screen so they match Jango’s current premium cyber/luxury UI standard.
+
+The current Create Tournament screen feels too plain, flat, and default. It looks more like a basic form than part of the Jango platform.
+
+==================================================
+1. APPLY THIS TO ALL MODALS / FORMS
+==================================================
+
+Update every modal/form screen, including:
+
+- Create Tournament
+- Join Tournament confirmation
+- Match confirmation
+- Add Funds / Deposit
+- Withdraw
+- Settings forms
+- Profile edit
+- Create Clan
+- Invite Friend
+- Shop purchase confirmation
+- Report / Dispute
+- Admin edit screens
+- Any confirmation modal
+
+No modal should look like a default form.
+
+Every modal must use:
+- dark glass background
+- neon border
+- soft glow
+- layered depth
+- backdrop blur
+- smooth entrance animation
+- polished inputs
+- premium buttons
+- clear hierarchy
+
+==================================================
+2. TOURNAMENT CREATION MODAL REDESIGN
+==================================================
+
+Current problem:
+The Create Tournament modal is too plain and small. It does not feel premium or exciting.
+
+Redesign it as a polished “Event Builder.”
+
+Title:
+“Create Tournament”
+
+Subtitle:
+“Build a live competitive event for Jango players.”
+
+Header style:
+- trophy or plus icon
+- gradient title
+- subtle glow
+- close button with hover animation
+
+Layout:
+Use a wider modal, around 640–760px on desktop.
+
+Break the form into clear sections:
+
+SECTION A: Tournament Identity
+Fields:
+- Tournament Name
+- Description
+- Featured toggle
+
+SECTION B: Game + Format
+Fields:
+- Game select
+- Bracket size
+- Format, default Single Elimination
+- Match type: Casual / Ranked / Tournament
+
+SECTION C: Entry + Prize Pool
+Fields:
+- Entry Fee
+- Prize Pool
+- Platform Fee/Rake preview
+- Winner Receives preview
+
+IMPORTANT:
+Prize pool should auto-preview:
+entry fee × player count minus rake if applicable.
+
+Example:
+Entry Fee: 10 Scalps
+Players: 16
+Projected Prize Pool: 160 Scalps
+Platform Fee: 3%
+Winner Receives: 155.20 Scalps
+
+SECTION D: Schedule
+Fields:
+- Starts At
+- Registration closes at
+- Timezone display
+- Countdown preview
+
+SECTION E: Rules
+Fields:
+- Rank requirement
+- Device requirement
+- Minimum players
+- Auto-start toggle
+- Refund if tournament does not fill toggle
+
+==================================================
+3. FIELD DESIGN
+==================================================
+
+Inputs should not look default.
+
+Each input/select should have:
+- dark glass background
+- subtle border
+- focus glow
+- icon if relevant
+- helper text below
+- validation message area
+
+Focus state:
+- blue/pink glow
+- border brightens
+- smooth transition
+
+Error state:
+- red border
+- small red helper text
+- subtle shake animation
+
+Success/valid state:
+- green check icon if useful
+
+Examples:
+Tournament Name:
+Placeholder:
+“Friday Night Chess Cup”
+
+Helper:
+“Keep it short and recognizable.”
+
+Entry Fee:
+Helper:
+“Players pay this amount to enter.”
+
+Prize Pool:
+Helper:
+“Prize pool updates based on entry fee and players.”
+
+==================================================
+4. LIVE PREVIEW PANEL
+==================================================
+
+Add a live tournament preview inside the modal.
+
+Right side or bottom panel:
+“Tournament Preview”
+
+Show:
+- tournament card preview
+- game icon
+- name
+- prize pool
+- entry fee
+- players
+- start time
+- status badge
+
+As fields change, preview updates live.
+
+This makes the modal feel polished and helps admins know what they are creating.
+
+==================================================
+5. BRACKET PREVIEW
+==================================================
+
+Add a small bracket preview based on bracket size.
+
+If bracket size = 8:
+Show small 8-player bracket skeleton.
+
+If 16:
+Show 16-player bracket preview.
+
+Visual:
+- dark glass mini bracket
+- glowing connector lines
+- empty player slots
+- final/champion slot highlighted
+
+This preview should not be huge, but it should make tournament creation feel like building a real event.
+
+==================================================
+6. BUTTONS / ACTIONS
+==================================================
+
+Footer buttons:
+
+Left:
+Cancel
+
+Right:
+Create Tournament
+
+Create button:
+- gradient blue/pink
+- disabled until required fields valid
+- loading state:
+  “Creating...”
+- success state:
+  “Tournament Created”
+- error state:
+  show clean message
+
+Do not allow create if:
+- tournament name empty
+- game missing
+- invalid bracket size
+- start time in past
+- entry/prize values invalid
+
+==================================================
+7. VALIDATION RULES
+==================================================
+
+Add frontend + backend validation.
+
+Tournament Name:
+- required
+- 3–50 characters
+
+Game:
+- required
+- must be valid game ID
+
+Bracket Size:
+- required
+- allowed: 4, 8, 16, 32
+
+Entry Fee:
+- must be >= 0
+- if 0, label as free tournament
+- if > 0, show balance/prize logic
+
+Prize Pool:
+- must be >= 0
+- should not be less than projected pool unless admin override is allowed
+
+Start Time:
+- cannot be in the past
+- must show timezone
+
+Minimum Players:
+- cannot exceed bracket size
+
+Backend must reject invalid data even if frontend misses it.
+
+==================================================
+8. SUCCESS FLOW
+==================================================
+
+After tournament is created:
+
+Show success animation:
+- glow burst
+- trophy icon
+- “Tournament Created”
+
+Then:
+- close modal
+- add tournament to list immediately
+- highlight new card with glow for 2 seconds
+- optionally open tournament detail page
+
+==================================================
+9. ERROR HANDLING
+==================================================
+
+Never show raw backend errors.
+
+Examples:
+
+Invalid start time:
+“Start time must be in the future.”
+
+Invalid prize pool:
+“Prize pool must be equal to or greater than 0.”
+
+Server failure:
+“Tournament could not be created. Please try again.”
+
+Use:
+- red glow
+- clear text
+- no JSON errors
+
+==================================================
+10. MODAL DEPTH + ANIMATION STANDARD
+==================================================
+
+All modals must use same animation standard.
+
+Open animation:
+- backdrop fades in
+- modal scales 0.96 → 1
+- modal opacity 0 → 1
+- duration 180–250ms
+
+Close animation:
+- fade + slight scale down
+
+Backdrop:
+- dark overlay
+- blur background
+- optional subtle vignette
+
+Modal depth:
+- strong shadow
+- neon border
+- inner highlight
+- category-colored glow
+
+==================================================
+11. RESPONSIVE DESIGN
+==================================================
+
+Desktop:
+- wide modal
+- two-column layout if space allows
+- preview panel visible
+
+Tablet:
+- single column with preview below
+
+Mobile:
+- full-screen drawer/modal
+- sticky footer buttons
+- large tap targets
+- selects easy to use
+- no clipped fields
+- no horizontal overflow
+
+==================================================
+12. CONSISTENCY ACROSS OTHER SCREENS
+==================================================
+
+Apply this design language to all screens that still feel outdated.
+
+Especially update:
+- Settings page
+- Admin forms
+- Deposit forms
+- Create Clan modal
+- Profile edit modal
+- Match confirmation modal
+- Tournament join modal
+- Shop purchase modal
+
+Every screen should feel like Jango:
+- premium
+- cyber/luxury
+- layered
+- colorful but clean
+- polished
+- not default
+
+==================================================
+13. FINAL EXPECTATION
+==================================================
+
+After this update:
+
+Create Tournament should feel like:
+- creating a live esports event
+- not filling out a boring admin form
+
+All modals/forms should feel:
+- premium
+- consistent
+- polished
+- trustworthy
+- visually aligned with the rest of Jango
+
+No form should feel flat, outdated, or like default UI.

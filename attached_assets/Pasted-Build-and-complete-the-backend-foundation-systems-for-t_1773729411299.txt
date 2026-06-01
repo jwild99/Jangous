@@ -1,0 +1,519 @@
+Build and complete the backend/foundation systems for the platform so all major features work reliably, securely, and scale correctly across desktop and mobile. Focus on architecture, logic, performance, and data integrity more than UI. This work should make the platform feel production-ready behind the scenes.
+
+CORE GOAL:
+Create the backend systems that power matches, wagers, wallets, rankings, messaging, tournaments, clans, challenges, anti-cheat, reputation, reconnect logic, logging, and analytics. Everything should be structured cleanly so future features can plug into it without rewriting the core.
+
+1. SERVER-AUTHORITATIVE MATCH ENGINE
+Build a centralized match engine that acts as the single source of truth for every game session.
+Requirements:
+- Server-authoritative state for all games
+- Never trust the client for outcomes, move validation, timers, or payouts
+- Each match should have:
+  - unique match ID
+  - game type
+  - player IDs
+  - match status (waiting, accepted, active, paused, reconnecting, completed, canceled, disputed)
+  - timestamps for created, started, ended
+- Real-time syncing through WebSockets or equivalent
+- Support multiple matches running at the same time without collisions
+- Match lifecycle management:
+  - create match
+  - invite/join
+  - accept wager
+  - lock funds
+  - start match
+  - track state updates
+  - determine winner
+  - finalize payout
+  - archive results
+- Add reconnect support so disconnected players can rejoin an active match
+- Add timeout/forfeit handling if a player fails to return
+- Ensure matches recover safely after temporary server or socket issues
+
+2. WALLET SYSTEM + TRANSACTION LEDGER
+Build a secure wallet system using Scalps as the platform currency.
+Requirements:
+- Every user has a wallet balance
+- Every balance change must create a ledger entry
+- Ledger must include:
+  - transaction ID
+  - user ID
+  - transaction type (deposit, conversion, wager lock, payout, refund, reward, item purchase, adjustment)
+  - amount
+  - balance before
+  - balance after
+  - timestamp
+  - related match ID or event ID if applicable
+  - status (pending, completed, failed, reversed)
+- Make all financial actions atomic and idempotent
+- Prevent double spending
+- Prevent duplicate payouts
+- Add rollback/reversal support for failed or interrupted financial flows
+- Make sure balance is always derived safely and consistently
+- Lock wallet funds when a wager is accepted and release or settle them correctly after result resolution
+- Keep all wallet logic server-side only
+
+3. WAGER ENGINE + PAYOUT LOGIC
+Create a wager engine that handles player-vs-player stakes safely.
+Requirements:
+- Both players must explicitly accept before a wagered match begins
+- Validate both players have enough balance
+- Lock wager funds before match start
+- Only start the match after both wager locks succeed
+- On completion:
+  - validate the official winner from the match engine
+  - settle payout automatically
+  - support house fee/rake as configurable if needed later
+- Handle edge cases:
+  - draw = refund both players
+  - disconnect with no return = auto-forfeit
+  - server interruption mid-match = safe recovery state
+  - canceled before start = unlock funds
+  - disputed result = hold payout until resolved
+- Create a clean service layer so this logic can be reused across all games
+
+4. RANKING SYSTEM (R6 STYLE HYBRID)
+Build a ranking/MMR system inspired by Rainbow Six Siege.
+Requirements:
+- Hidden MMR
+- Visible rank points
+- Rank tiers such as Bronze, Silver, Gold, Platinum, Diamond, Champion
+- Champion should show exact leaderboard placement
+- Rank #1 should receive a special GOAT status/title
+- MMR gain/loss should depend on:
+  - win/loss
+  - opponent strength
+  - possible streak tuning if desired
+- Store:
+  - current rank
+  - current MMR
+  - season stats
+  - rank history
+  - highest rank achieved
+- Build for seasonal resets later
+- Matchmaking should use hidden MMR, not just visible rank badge
+- Keep ranking updates secure and server-calculated only
+
+5. MATCHMAKING SYSTEM
+Build a robust matchmaking backend.
+Requirements:
+- Casual queue
+- Ranked queue
+- Tournament queue hooks
+- Match players using:
+  - game type
+  - region if available
+  - rank/MMR for ranked
+  - reputation/sportsmanship score
+  - connection quality if possible
+- Add queue time protection so users are not stuck forever
+- Gradually widen acceptable matchmaking criteria if queue time grows
+- Keep matchmaking extensible for future clan battles and private lobbies
+- Prevent abusive rematch farming in ranked if needed
+
+6. ANTI-RAGE QUIT / RECONNECT SYSTEM
+Build a reconnect and anti-rage quit system that protects match integrity.
+Requirements:
+- If a player disconnects during a live match:
+  - flag the match as reconnecting
+  - pause where appropriate depending on game type
+  - start a visible reconnect timer on backend, default 5 minutes
+- If player returns in time:
+  - restore them into the live match
+  - sync state safely
+- If they do not return:
+  - count as forfeit
+  - award win to the opponent
+  - settle wager automatically
+- Track repeated disconnect behavior
+- Add escalating penalties:
+  - warning
+  - temporary matchmaking cooldown
+  - increased rank loss
+  - reputation penalty
+- Make system smart enough to distinguish occasional connection problems from abuse when possible
+
+7. REPUTATION / SPORTSMANSHIP SYSTEM
+Build a reputation score for every player.
+Requirements:
+- Reputation is influenced by:
+  - completed matches
+  - disconnects
+  - confirmed reports
+  - rage quits
+  - abusive chat moderation events
+  - fair play streaks
+- Score should be numerical and easy to use in logic, for example 0–100
+- High-reputation users should get better matchmaking priority
+- Very low-reputation users can be grouped together or restricted
+- Keep an audit trail of why the score changed
+- Make the formula configurable for future tuning
+
+8. PLAYER REPORTING + MODERATION PIPELINE
+Create a backend reporting and moderation system.
+Requirements:
+- Users can report for:
+  - cheating
+  - griefing
+  - abusive chat
+  - stalling
+  - rage quitting
+  - inappropriate content
+- Reports should store:
+  - reporter ID
+  - reported user ID
+  - match ID if relevant
+  - reason
+  - notes
+  - evidence references if available
+  - timestamp
+  - status
+- Build moderator review states:
+  - open
+  - under review
+  - action taken
+  - dismissed
+- Connect report outcomes to reputation and punishment systems
+- Prevent spam reporting abuse
+
+9. ANTI-CHEAT BASELINE
+Implement backend anti-cheat rules for every game.
+Requirements:
+- Validate every game action server-side
+- Detect impossible actions, impossible timing, illegal moves, invalid state changes, duplicate actions, and client desync abuse
+- Log suspicious events with enough detail for review
+- Add severity levels:
+  - warning
+  - flag
+  - match invalidation
+  - temporary restriction
+  - ban candidate
+- Make anti-cheat rules modular by game type
+- Ensure the client cannot self-report a win or force payout
+- Keep all critical game outcomes verified on the server
+
+10. REAL-TIME MESSAGING SYSTEM
+Build a scalable messaging backend for the Social tab.
+Requirements:
+- 1v1 direct messages
+- Clan chat
+- Match chat if needed
+- Real-time delivery
+- Message persistence
+- Conversation history
+- Read receipts
+- delivered status
+- online/offline presence
+- basic rate limiting and spam protection
+- moderation hooks for filtered content and user reports
+- structure it so the Social and Messaging experience can live under one unified backend
+
+11. SOCIAL FEED BACKEND
+Build a social feed system like a competitive gaming social hub.
+Requirements:
+- Users can post:
+  - wins
+  - callouts
+  - match results
+  - challenge posts
+  - clan updates
+- Support:
+  - likes
+  - comments
+  - reposts
+  - basic notifications
+- Feed ranking logic should be flexible:
+  - recent posts
+  - trending posts
+  - boosted visibility for top players or big wins
+- Store interactions efficiently for fast loading
+- Add basic moderation/reporting compatibility
+- Make feed architecture ready for media attachments later
+
+12. CLAN SYSTEM BACKEND
+Create the clan backend systems.
+Requirements:
+- Clan creation
+- Clan invites
+- Clan roles (owner, admin, member)
+- Clan stats
+- Clan total winnings
+- Clan match history
+- Clan leaderboards
+- Clan vs clan challenge support
+- Shared clan chat
+- Ability to track which user actions count toward clan totals
+- Make architecture flexible for future clan seasons and clan rewards
+
+13. TOURNAMENT ENGINE
+Build a tournament backend system.
+Requirements:
+- Create tournaments
+- Join/leave flow
+- Entry validation
+- Bracket generation
+- Support at minimum:
+  - single elimination first
+- Future-proof for:
+  - double elimination
+  - round robin
+- Auto-seeding based on rank/MMR if desired
+- Auto-advance winners
+- Auto-create round matches
+- Tournament status states:
+  - upcoming
+  - open
+  - locked
+  - live
+  - completed
+  - canceled
+- Prize distribution at the end
+- Tournament match results must flow through the same authoritative match/wager/result system where applicable
+- Store complete tournament history
+
+14. PRIVATE MATCH + INVITE SYSTEM
+Build private match infrastructure.
+Requirements:
+- Private lobby creation
+- Invite codes or direct invites
+- Support wagered and non-wagered private matches
+- Optional spectator hooks later
+- Prevent abuse where private matches manipulate ranked systems
+- Clean permissions for who can join, invite, or watch
+
+15. CHALLENGES / QUESTS BACKEND
+Create a challenge and progression backend.
+Requirements:
+- Daily challenges
+- Weekly challenges
+- Milestone challenges
+- Automatic progress tracking
+- Claim reward flow
+- XP integration
+- Store:
+  - challenge definitions
+  - user challenge progress
+  - completion status
+  - claimed/unclaimed state
+- Make challenge definitions configurable without rewriting logic
+- Add support for future event-based challenges
+
+16. XP / LEVELING SYSTEM
+Build a platform-wide progression system.
+Requirements:
+- XP earned from matches, wins, challenge claims, streaks, and events
+- Track current XP, total XP, current level
+- Support level-up rewards later
+- Add server-side validation for all XP grants
+- Prevent duplicate claiming or farming exploits
+- Keep progression history auditable
+
+17. ITEM SHOP BACKEND SUPPORT
+Build backend support for cosmetic item shop systems.
+Requirements:
+- Catalog definitions
+- Item metadata
+- rarity
+- preview asset references
+- ownership tracking
+- purchase flow using Scalps
+- inventory system
+- equip/unequip system
+- transaction logging for purchases
+- Ensure cosmetic-only items cannot affect gameplay
+- Make structure ready for cues, paddles, avatars, profile cosmetics, banners, and emotes
+
+18. NOTIFICATION SYSTEM
+Build a notification backend.
+Requirements:
+- In-app notifications for:
+  - match invites
+  - wager accepted
+  - payout completed
+  - challenge completed
+  - rank up
+  - clan invite
+  - message received
+  - tournament updates
+- Notification states:
+  - unread
+  - read
+  - archived
+- Keep it reusable across all features
+- Support batch loading and fast unread counts
+
+19. AUDIT LOGGING + ADMIN VISIBILITY
+Build internal audit logging for important system actions.
+Requirements:
+- Log sensitive actions such as:
+  - wallet adjustments
+  - refunds
+  - bans
+  - moderation actions
+  - rank changes triggered manually
+  - dispute resolutions
+- Include actor, action, target, timestamp, and reason
+- Logs must be tamper-resistant and easy to review later
+- Prepare for future admin dashboard use
+
+20. ERROR LOGGING + HEALTH MONITORING
+Build full backend observability.
+Requirements:
+- Centralized error logging
+- Structured logs
+- Severity categories
+- Stack traces
+- request tracing if possible
+- health checks for critical services
+- alerts for critical failures
+- enough logging to debug payout issues, match state issues, socket failures, and transaction mismatches quickly
+- Add environment-aware logging so development and production are manageable
+
+21. PERFORMANCE + STATE SYNC OPTIMIZATION
+Optimize the platform’s real-time architecture.
+Requirements:
+- Use delta updates instead of sending full state every time where possible
+- Reduce payload size
+- Compress data where reasonable
+- Improve socket reliability
+- Minimize unnecessary rerenders or redundant events if backend is triggering them
+- Make mobile conditions a first-class consideration
+- Ensure high concurrency does not break live matches
+
+22. DATA MODELS + DATABASE CLEANUP
+Review and improve the data layer.
+Requirements:
+- Normalize where needed but avoid overcomplicating reads
+- Add indexes for common queries
+- Make tables/collections clean and consistent
+- Define relationships between:
+  - users
+  - wallets
+  - transactions
+  - matches
+  - rankings
+  - messages
+  - clans
+  - tournaments
+  - challenges
+  - reports
+  - items
+- Add migration safety
+- Make schema future-proof for scale
+
+23. API / SERVICE LAYER CLEANUP
+Refactor backend into clear services/modules.
+Requirements:
+- Separate concerns cleanly:
+  - auth
+  - users
+  - wallet
+  - wagers
+  - matches
+  - rankings
+  - social
+  - messages
+  - clans
+  - tournaments
+  - moderation
+  - items
+  - notifications
+- Remove duplicated business logic
+- Make endpoints and services consistent
+- Improve maintainability for future AI-assisted development
+
+24. DISPUTE RESOLUTION HOOKS
+Prepare backend support for disputed matches.
+Requirements:
+- Allow a match to enter disputed state
+- Freeze payout until resolved
+- Store dispute reason and evidence references
+- Use replay logs or match event logs for review
+- Allow manual admin resolution later without breaking ledger integrity
+
+25. REPLAY / MATCH EVENT RECORDING
+Build event recording for matches.
+Requirements:
+- Record important match events in sequence
+- Store enough data to reconstruct games later
+- Use for:
+  - replay system
+  - dispute review
+  - anti-cheat review
+  - highlight generation later
+- Keep storage efficient
+
+26. SECURITY HARDENING
+Improve backend security everywhere.
+Requirements:
+- Validate all incoming payloads
+- Add rate limiting where needed
+- Protect sensitive endpoints
+- Prevent trust in client-calculated values
+- Sanitize user-generated content
+- Add permission checks for all privileged actions
+- Protect against duplicate requests and replay attacks in key financial/game flows
+
+27. TESTING + FAILURE CASE COVERAGE
+Add strong automated coverage for the systems above.
+Requirements:
+- Unit tests for core services
+- Integration tests for:
+  - wager flow
+  - wallet flow
+  - matchmaking flow
+  - reconnect/forfeit flow
+  - rank updates
+  - challenge claims
+- Explicitly test edge cases:
+  - duplicate requests
+  - disconnect during payout
+  - draw refunds
+  - canceled matches
+  - failed wallet lock
+  - reconnect at final second
+  - cheating attempts
+- Prioritize reliability over shortcuts
+
+28. ADMIN/OPS READINESS
+Prepare backend for real operations.
+Requirements:
+- Make it easy for future admin tools to:
+  - inspect matches
+  - inspect wallets
+  - inspect disputes
+  - inspect reports
+  - inspect clan activity
+  - inspect tournaments
+- Add safe internal endpoints or service methods where needed
+- Keep permissions strict
+
+FINAL DELIVERABLE EXPECTATIONS:
+- Implement real backend logic, not placeholder code
+- Do not only scaffold files; connect the systems so they actually work together
+- Reuse shared services where possible
+- Keep architecture modular and scalable
+- Preserve existing working features
+- Do not break desktop or mobile gameplay
+- Add comments where complex logic needs explanation
+- Leave the codebase cleaner than it started
+- Prioritize production-safe flows for money, match results, rankings, and moderation
+- Where there are gaps in current architecture, design the best practical solution and integrate it
+
+PRIORITY ORDER:
+1. Match engine
+2. Wallet + ledger
+3. Wager/payout system
+4. Reconnect + anti-rage quit
+5. Ranking + matchmaking
+6. Anti-cheat baseline
+7. Reporting + reputation
+8. Messaging + social
+9. Clan system
+10. Tournament engine
+11. Challenges + XP
+12. Notifications
+13. Replay/dispute support
+14. Logging/monitoring/security/testing cleanup
+
+Work deeply and thoroughly. Focus on backend reliability, state integrity, security, and systems that make every feature on the platform actually function correctly behind the scenes.

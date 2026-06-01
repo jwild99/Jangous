@@ -1,0 +1,192 @@
+Update the player name / player card area in the match HUD immediately.
+
+Right now the section where the users’ names are shown looks outdated, flat, and old. It does not match the premium quality we are trying to build. It needs a full modern redesign.
+
+Do actual implementation in the repo now.
+
+================================
+PROBLEM
+================================
+
+The current player name bars / player cards look:
+- too plain
+- too stretched
+- too old
+- too dark and empty
+- not premium
+- not game-like
+- not modern
+
+They feel like placeholder bars instead of polished competitive match UI.
+
+================================
+GOAL
+================================
+
+Redesign the player identity / matchup area so it feels:
+- modern
+- premium
+- polished
+- competitive
+- alive
+- branded to the platform
+- much closer to a AAA arcade / betting / esports-style UI
+
+The top player matchup section should feel like an intentional featured HUD element, not a leftover rectangle.
+
+================================
+WHAT TO IMPROVE
+================================
+
+1. PLAYER CARDS / NAMEPLATES
+Completely redesign the player bars where the names appear.
+
+Instead of long plain bars, make them feel more like premium player cards or matchup panels.
+
+Each player card should have:
+- avatar / initial badge
+- username
+- optional subtitle / status text
+- optional rank / bot difficulty / mode label
+- active turn indicator if relevant
+- stronger spacing and hierarchy
+- cleaner panel shape
+- better borders / glow / depth
+
+2. VISUAL STYLE
+Use a more premium styling:
+- darker glass panels
+- neon edge glow
+- gradient accents
+- rounded corners
+- layered borders
+- subtle shadow depth
+- modern font hierarchy
+- more contrast between name and subtext
+- cleaner spacing/padding
+
+Do NOT make them look like giant empty rectangles anymore.
+
+3. MATCHUP FEEL
+The two player panels should feel like a real matchup:
+- Player 1 card on left
+- Player 2 / bot card on right
+- visually balanced
+- center area can have:
+  - VS
+  - game mode
+  - pot amount
+  - turn indicator
+  - match status
+depending on what fits cleanly
+
+The whole top matchup row should feel more alive and premium.
+
+4. STATUS / SUBTEXT
+Make the smaller text under the name look cleaner too.
+
+Examples of status text:
+- Break shot
+- Your turn
+- Waiting
+- Bot (Easy)
+- Solids / Stripes
+- Match Point
+- Ranked • 1 Scalp
+
+The subtext should not be tiny, washed out junk text.
+It should still be readable and styled intentionally.
+
+5. ACTIVE TURN INDICATOR
+If the player is active:
+- add a better glow
+- active border accent
+- dot pulse
+- subtle animated highlight
+- make it obvious whose turn it is
+
+6. AVATAR / ICON TREATMENT
+Improve the small avatar/initial area:
+- cleaner circle styling
+- glow ring
+- better contrast
+- more premium badge feel
+- can include a small rank ring or accent color if it fits
+
+7. RESPONSIVE / CLEAN LAYOUT
+Make sure it still works on:
+- desktop
+- smaller laptop widths
+- mobile if this layout appears there too
+
+No awkward stretching.
+No giant dead space.
+No ugly empty bars.
+
+================================
+DESIGN DIRECTION
+================================
+
+Think:
+- esports HUD
+- premium arcade match intro
+- sportsbook / competitive gaming platform
+- modern glass/neon UI
+- clean but high-end
+
+Avoid:
+- old generic dark rectangles
+- too much empty width
+- weak tiny text
+- outdated/plain bars
+- boring alignment
+
+================================
+SHARED COMPONENT APPROACH
+================================
+
+If these player bars are shared across games, update the shared component so all relevant games improve together.
+
+Apply at minimum to:
+- Pool
+- Air Hockey
+- Bowling
+- Racing
+- Tron
+and anywhere else this old player-name style is being reused.
+
+Suggested shared component names if needed:
+- MatchPlayerCard
+- MatchupHeader
+- PlayerIdentityPanel
+- TurnIndicatorBadge
+
+================================
+EXTRA POLISH
+================================
+
+If it fits well, add:
+- subtle entrance animation
+- tiny hover sheen / glow
+- small divider styling between the two players
+- center VS / pot / mode treatment
+- polished bot difficulty badge
+- rank badge or level chip if already available
+
+But keep it clean and premium.
+
+================================
+SUCCESS CRITERIA
+================================
+
+This task is only complete if:
+- the player name area no longer looks outdated
+- the player cards feel modern and premium
+- the matchup header feels like a real part of the game experience
+- active turn is clearer
+- names and status text are better styled
+- the layout looks more polished across the affected games
+
+Do actual implementation now.
+Do not summarize the prompt back to me.
+After coding, tell me exactly what files were changed and what the new player card system looks like.

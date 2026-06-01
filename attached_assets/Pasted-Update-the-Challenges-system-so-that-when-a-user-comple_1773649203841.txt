@@ -1,0 +1,177 @@
+Update the Challenges system so that when a user completes a challenge, they must manually press a “Claim” button to collect the reward instead of receiving it automatically.
+
+Main goal:
+Make challenge completion feel more fun, rewarding, and interactive by turning it into a small claim moment.
+
+When a challenge is completed, users should:
+- see that it is complete
+- press Claim
+- receive XP
+- see a satisfying animation
+- hear a reward sound effect
+
+==================================================
+1. CLAIMABLE CHALLENGE STATE
+==================================================
+
+When a challenge reaches 100% completion, do not auto-redeem it.
+
+Instead, change the challenge card into a completed but unclaimed state.
+
+Example state:
+- progress bar full
+- checkmark or completed badge
+- highlighted border/glow
+- Claim button becomes visible
+
+Challenge statuses should be:
+
+- In Progress
+- Complete — Ready to Claim
+- Claimed
+
+==================================================
+2. CLAIM BUTTON
+==================================================
+
+Add a clear Claim button to completed challenges.
+
+Examples:
+- Claim XP
+- Claim Reward
+- Claim +150 XP
+
+The button should feel exciting and rewarding, not like a normal boring button.
+
+Style ideas:
+- glowing button
+- subtle pulse
+- premium hover animation
+- small reward icon
+
+==================================================
+3. XP REWARD SYSTEM
+==================================================
+
+When the user clicks Claim:
+- award the XP for that challenge
+- update their XP total immediately
+- update any level/progression bar
+- mark the challenge as Claimed
+
+If the challenge also gives other rewards later, support that structure too, but for now at minimum:
+- XP reward is required
+
+Example:
+Daily Challenge Complete
+Reward: +150 XP
+
+==================================================
+4. CLAIM ANIMATION
+==================================================
+
+When a user claims a challenge reward, trigger a satisfying animation.
+
+Ideas:
+- XP number floats upward: +150 XP
+- challenge card flashes/glows briefly
+- progress bar pulses
+- reward burst or small particle effect
+- level bar animates forward
+- a checkmark or “Claimed” stamp appears
+
+Keep it polished and premium, not childish or messy.
+
+==================================================
+5. SOUND EFFECT
+==================================================
+
+Play a reward sound when the user clicks Claim.
+
+Sound direction:
+- satisfying reward/chime sound
+- light XP collect sound
+- subtle success sound
+- clean and polished, not loud or cheesy
+
+Possible feel:
+- soft “level up” style ping
+- reward collect sparkle sound
+- premium UI reward chime
+
+Do not use anything too cartoonish.
+Do not use a huge casino sound here.
+This should feel like claiming progress/rewards in a modern game.
+
+Also add a sound setting fallback:
+- if UI sounds are disabled, do not play the sound
+
+==================================================
+6. CLAIM FEEDBACK
+==================================================
+
+After a challenge is claimed:
+- button changes to Claimed
+- card becomes visually completed
+- reward can no longer be claimed again
+- card should feel resolved and satisfying
+
+Optional:
+- move claimed challenges into a “Completed” section
+or
+- gray them slightly while keeping them readable
+
+==================================================
+7. XP / LEVEL PROGRESSION FEEDBACK
+==================================================
+
+If the platform has XP levels, claiming should visibly move the XP bar.
+
+When XP is added:
+- animate the XP bar increase
+- show current XP and new XP
+- if a level-up happens, show a level-up animation/message
+
+Example:
+Level Up!
+You reached Level 12
+
+==================================================
+8. DASHBOARD CHALLENGE EXPERIENCE
+==================================================
+
+On the dashboard challenge area:
+- completed challenges waiting to be claimed should stand out
+- show a small badge or indicator for unclaimed rewards
+- if multiple challenges are ready, make that obvious
+
+Example:
+2 Rewards Ready to Claim
+
+==================================================
+9. NOTIFICATIONS
+==================================================
+
+Optional but recommended:
+When a challenge becomes complete, trigger a notification/toast:
+
+Challenge Complete
+Claim your XP reward
+
+This makes players more likely to interact with it.
+
+==================================================
+10. FINAL GOAL
+==================================================
+
+Challenge rewards should not feel passive.
+
+They should feel like a small fun reward moment where the player:
+- notices they completed something
+- clicks Claim
+- hears a satisfying sound
+- sees an animation
+- receives XP
+- feels progress immediately
+
+The system should make challenges more interactive, more rewarding, and more game-like.

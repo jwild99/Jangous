@@ -1,0 +1,85 @@
+The UI is improving, but the icons, trophies, rewards, and visual assets still feel too basic and too outline-based.
+
+Current problem:
+- Many icons look like simple line icons or placeholder symbols
+- Trophies, rewards, badges, and decorative visuals do not feel premium
+- The site still feels too much like a template dashboard instead of a rich branded gaming platform
+
+What I want:
+Upgrade the visual asset style across the site so icons and reward elements have much more detail, depth, and personality.
+
+Design direction:
+- Replace thin outline icons with richer, more detailed visual assets
+- Make icons feel more like mini illustrations, stylized game assets, or polished gaming UI symbols
+- Add depth, shading, glow, highlights, layering, and material feel
+- Make trophies and rewards feel collectible, premium, and exciting
+
+Apply this across:
+- Dashboard
+- Lobby
+- Leaderboard
+- Global Stats / Stats
+- Messages
+- Friends
+- Admin
+- reward areas
+- badges
+- achievements
+- game cards
+- featured cards
+- decorative UI icons
+- empty states
+- stat visuals
+
+Specifically improve:
+1. Trophies
+- Do not use simple trophy outlines
+- Use detailed trophy artwork with metallic material, shine, depth, reflections, glow, engraving, and prestige
+- Different trophy tiers should feel distinct
+
+2. Rewards / prizes
+- Rewards should feel more valuable and visual
+- Use chips, coins, gems, badges, medals, crates, or premium item-like graphics
+- Make them look dimensional and polished, not symbolic line icons
+
+3. Game icons
+- Replace generic outline icons for games with richer custom icons or mini illustrated tiles
+- Each game should have more personality and visual identity
+- Example: chess should feel strategic and premium, bowling should feel dynamic and physical, tron should feel futuristic and neon, cup pong should feel playful and competitive
+
+4. Navigation / section icons
+- Reduce reliance on generic outline icons
+- Use more refined filled, layered, or custom-styled icons where appropriate
+- Match the premium artistic direction of the brand
+
+5. Stats / achievements / leaderboard visuals
+- Add richer visual hierarchy
+- Use more polished medals, rank emblems, progress visuals, reward icons, and prestige symbols
+- Make rank and achievement areas feel important and exciting
+
+Visual style:
+- premium
+- detailed
+- immersive
+- polished
+- stylized
+- slightly artistic
+- gaming-brand quality
+- more “product identity” and less “default icon set”
+
+Important:
+- Do not just increase icon size
+- Do not only change colors
+- Do not keep using thin line icons for key visual elements
+- Replace or redesign them with more detailed and branded assets
+- Keep the design cohesive with the painterly cinematic dashboard direction
+
+Implementation ideas:
+- Use custom SVGs or more detailed icon components
+- Use gradient fills, layered shapes, highlights, inner shadows, glow, and subtle texture
+- Create custom reward/trophy/badge components
+- Give featured content and important status elements richer artwork
+- Keep usability and readability high
+
+Goal:
+Make the icons, trophies, rewards, and badges feel like part of a premium branded gaming world, not generic outline dashboard icons.

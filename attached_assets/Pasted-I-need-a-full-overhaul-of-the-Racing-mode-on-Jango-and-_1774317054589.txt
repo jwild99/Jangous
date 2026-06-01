@@ -1,0 +1,290 @@
+I need a full overhaul of the Racing mode on Jango, and I also need matchmaking updated so that when players queue into a race, the race track is randomly selected from a pool of 3 tracks.
+
+This needs to feel polished, competitive, smooth, and replayable.
+
+==================================================
+CORE GOALS
+==================================================
+
+1. Fix and improve the overall quality of Racing mode
+2. Make the driving feel better
+3. Improve visuals and polish
+4. Improve race flow and competitive feel
+5. Add random track selection from 3 different race tracks when a player queues
+
+The final result should feel like a real arcade top-down racing game, not a rough prototype.
+
+==================================================
+PART 1: FIX RACING MODE OVERALL
+==================================================
+
+Right now Racing mode needs work in multiple areas:
+- controls
+- responsiveness
+- handling
+- visuals
+- race flow
+- polish
+- track variety
+
+I want a serious pass on all of it.
+
+-----------------------------------
+DRIVING / HANDLING
+-----------------------------------
+
+Fix the car feel so it is:
+- responsive
+- smooth
+- skill-based
+- easy to learn but satisfying to master
+
+Improve:
+- steering responsiveness
+- acceleration feel
+- braking feel
+- turning feel
+- drift feel if included
+- collision feel
+- boost feel if included
+
+The car should not feel:
+- stiff
+- floaty
+- delayed
+- sloppy
+- too slippery
+- uncontrollable
+
+I want the handling to feel like a polished arcade racer.
+
+-----------------------------------
+MOVEMENT QUALITY
+-----------------------------------
+
+Improve:
+- car rotation smoothness
+- cornering
+- traction feel
+- recovery after hitting walls
+- speed consistency
+- momentum
+
+The car should feel grounded and stable, but still fast and fun.
+
+-----------------------------------
+RACE FLOW
+-----------------------------------
+
+Make races feel more exciting and polished.
+
+Add or improve:
+- countdown before race starts
+- clean transition into race
+- lap tracking
+- position indicator
+- finish sequence
+- winner screen
+- rematch / play again flow
+
+The race should feel like an event, not just dropping players onto a track.
+
+-----------------------------------
+VISUAL QUALITY
+-----------------------------------
+
+Upgrade the racing visuals.
+
+Improve:
+- track art
+- road clarity
+- edge contrast
+- boost pad visuals if used
+- lighting
+- depth
+- environment details
+
+Add:
+- better sense of speed
+- tire marks or motion streaks if appropriate
+- stronger readability so players can clearly see turns and hazards
+
+The game should look more premium and less flat/basic.
+
+-----------------------------------
+FEEDBACK / GAME FEEL
+-----------------------------------
+
+Add better feedback for:
+- acceleration
+- collisions
+- drifting
+- boost use
+- lap completion
+- finishing the race
+
+Use:
+- sound effects
+- subtle screen shake if appropriate
+- glow / speed streak effects
+- finish celebration feedback
+
+==================================================
+PART 2: RANDOM TRACK SELECTION SYSTEM
+==================================================
+
+I want matchmaking changed so that when players queue into Racing mode, the race track is randomly selected from 3 available tracks.
+
+This should happen automatically as part of the race matchmaking flow.
+
+-----------------------------------
+TRACK POOL
+-----------------------------------
+
+Create or use 3 distinct race tracks.
+
+The 3 tracks should feel different in layout and difficulty.
+
+Example structure:
+- Track 1: Beginner / balanced track
+- Track 2: Medium / more turns
+- Track 3: Technical / tighter corners and more skill required
+
+The tracks must not feel like tiny variations of the same map.
+They should feel meaningfully different.
+
+-----------------------------------
+QUEUE / MATCH FLOW
+-----------------------------------
+
+When players queue for Racing mode:
+
+1. Match is created
+2. System randomly selects 1 of the 3 tracks
+3. Selected track is used for that race
+4. Both players load into that track
+
+This should work for:
+- casual race
+- ranked race
+- tournament race if applicable later
+
+-----------------------------------
+RANDOMIZATION RULES
+-----------------------------------
+
+- Random selection should be fair
+- Each of the 3 tracks should have a chance to appear
+- It should not always pick the same one repeatedly unless truly random
+- If needed, use weighted randomness only if balanced properly
+- Preferably no obvious repetition patterns
+
+If possible, make sure consecutive races do not constantly repeat the exact same track too often.
+
+-----------------------------------
+PRE-RACE TRACK REVEAL
+-----------------------------------
+
+Before the race starts, show a short pre-race reveal:
+
+Example:
+- “Track Selected”
+- show track name
+- show small track preview/minimap
+- short 1–2 second intro before countdown
+
+This makes the race feel more polished and exciting.
+
+==================================================
+PART 3: TRACK DESIGN QUALITY
+==================================================
+
+All 3 tracks need to be polished and readable.
+
+Each track should have:
+- clear road boundaries
+- clear turns
+- good visual contrast
+- no confusing layout sections
+- no unfair obstacles
+- fair competitive lines
+
+I want players to feel like:
+- they can learn the tracks
+- improve over time
+- get rewarded for driving skill
+
+Good tracks are critical.
+
+==================================================
+PART 4: MOBILE + DESKTOP SUPPORT
+==================================================
+
+Racing mode must work well on both mobile and desktop.
+
+Desktop:
+- clean keyboard controls or chosen input system
+- no awkward steering feel
+- smooth performance
+
+Mobile:
+- touch controls must be simple
+- no tiny buttons
+- no messy layout
+- controls must feel responsive and playable
+
+Do not let one platform feel much worse than the other.
+
+==================================================
+PART 5: TECHNICAL / PERFORMANCE
+==================================================
+
+Make sure Racing mode runs smoothly.
+
+Fix:
+- lag
+- stutter
+- frame drops
+- input delay
+- inconsistent physics feel
+
+The race should feel smooth and reliable.
+
+==================================================
+PART 6: AAA / PREMIUM FEEL
+==================================================
+
+I want Racing mode to feel like a premium arcade game.
+
+That means:
+- clean visuals
+- better handling
+- better feedback
+- exciting pre-race flow
+- polished finish sequence
+- track variety
+- replay value
+
+==================================================
+PART 7: FINAL DELIVERABLE
+==================================================
+
+After making changes, provide a real summary of:
+1. What was fixed in Racing mode
+2. What was improved about handling and visuals
+3. What the 3 tracks are
+4. How random track selection works
+5. How the race flow was improved
+
+==================================================
+FINAL GOAL
+==================================================
+
+Racing mode should feel dramatically better:
+- smoother
+- more fun
+- more polished
+- more competitive
+- more replayable
+
+And every time players queue into a race, the match should randomly load 1 of 3 polished race tracks so the mode feels fresh and less repetitive.

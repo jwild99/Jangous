@@ -1,0 +1,93 @@
+FEATURE: SETTINGS PAGE VISUAL UPGRADE
+
+The Settings page still feels outdated compared to the rest of Jango. Upgrade it so it matches the premium dark-neon platform style.
+
+GOAL:
+Make Settings feel modern, colorful, polished, and consistent with the rest of the app.
+
+REQUIRED CHANGES:
+
+1. Add more visual depth
+- Use layered dark cards
+- Add subtle gradients
+- Add neon borders
+- Add soft shadows
+- Add backdrop blur
+- Avoid flat gray boxes
+
+2. Improve the left settings menu
+- Add colored icons for each category
+- Active tab should glow
+- Active tab should have a gradient background
+- Hover state should lift/glow slightly
+- Danger Zone should stay red but look cleaner
+
+3. Upgrade section cards
+Each settings section should feel like a premium panel:
+- Account
+- Security
+- Notifications
+- Gameplay
+- Wallet
+- Privacy
+- Social
+- Appearance
+- Game Modes
+
+Each card should have:
+- colored icon
+- title
+- short description
+- subtle glow based on category
+
+4. Add category accent colors
+Suggested:
+- Account = blue
+- Security = green
+- Notifications = yellow
+- Gameplay = purple
+- Wallet = gold
+- Privacy = teal
+- Social = pink
+- Appearance = violet
+- Danger Zone = red
+
+5. Upgrade inputs and buttons
+Inputs should:
+- have darker glass background
+- glow on focus
+- smoother borders
+- better placeholder text
+
+Buttons should:
+- have gradient styling
+- hover glow
+- click animation
+- loading/success states
+
+6. Add better profile picture area
+- Larger avatar card
+- Glow ring around avatar
+- “Choose Image” button should look more premium
+- Add subtle hover animation
+
+7. Add micro-animations
+- Settings tab switch fade/slide
+- Inputs glow on focus
+- Save button pulse on changes
+- Success toast when saved
+- Error shake if invalid
+
+8. Improve spacing/layout
+- More breathing room
+- Better alignment
+- Consistent card widths
+- Less empty-looking gray space
+
+9. Mobile
+- Sidebar should collapse into tabs/dropdown
+- Cards should stack cleanly
+- Buttons should be easy to tap
+
+FINAL RESULT:
+The Settings page should no longer feel like a basic form page. It should feel like a polished Jango control center with color, depth, smooth animations, and the same premium cyber/luxury feel as the rest of the platform.

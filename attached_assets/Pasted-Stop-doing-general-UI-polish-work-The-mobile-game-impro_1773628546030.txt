@@ -1,0 +1,153 @@
+Stop doing general UI polish work.
+
+The mobile game improvements did not actually make the games playable. The games still do not work.
+
+Your job now is to do a strict **root-cause debugging and repair pass** on every game in Jango.us until the games are actually playable on mobile and still work on desktop.
+
+This is not a design task.
+This is not a planning task.
+This is not a “make things look better” task.
+
+This is a real debugging and implementation task.
+
+--------------------------------------------------
+PRIMARY GOAL
+
+Fix the actual reasons the games are not working.
+
+Do not just update layouts, buttons, or containers.
+Do not just change CSS.
+Do not just make the game screen responsive.
+
+You must identify the real technical cause of failure in each game and repair it.
+
+The final result must be:
+- games load correctly
+- games start correctly
+- controls work correctly
+- match state updates correctly
+- win/loss logic works correctly
+- wager flow works correctly
+- mobile players can actually play
+- desktop players can still play
+
+--------------------------------------------------
+FIRST: RUN A REAL AUDIT ON EACH GAME
+
+For every game on the platform, inspect and test the entire gameplay flow.
+
+For each game, check all of the following:
+
+1. Does the game load on desktop?
+2. Does the game load on mobile?
+3. Does the game canvas mount correctly?
+4. Does the input system initialize correctly?
+5. Do controls respond correctly on desktop?
+6. Do controls respond correctly on mobile touch devices?
+7. Does matchmaking or match start connect players properly?
+8. Does the game state sync correctly during play?
+9. Does score update correctly?
+10. Does timer update correctly?
+11. Does win/loss detection work?
+12. Does match completion work?
+13. Does payout logic work?
+14. Does reconnect logic work?
+15. Are there any runtime errors, console errors, websocket errors, or state errors?
+
+Do not guess.
+Actually inspect the code path for each of these.
+
+--------------------------------------------------
+FOR EACH GAME, FIND THE ROOT CAUSE
+
+For every broken game, identify the exact failure category.
+
+Possible root causes include:
+- game canvas not mounting
+- wrong viewport sizing
+- touch events not connected
+- mouse-only controls
+- pointer events blocked by overlay
+- z-index issues blocking interaction
+- game loop not starting
+- animation frame failing
+- state manager not updating
+- websocket sync failure
+- match session not initializing
+- lobby not passing correct game config
+- mobile orientation breaking canvas logic
+- event listeners not cleaned up or not attached
+- React re-render breaking gameplay state
+- server-side validation blocking match start
+- wager lock failing and preventing gameplay
+- reconnect state corrupting active match
+- touch gestures conflicting with browser scrolling
+- passive event listener issues
+- incorrect coordinate conversion on mobile
+- game resolution scaling breaking hit detection
+- HUD overlay intercepting taps
+- game over logic not firing
+- payout callback not firing
+- missing mobile-specific controls
+- desktop-only assumptions in game logic
+
+For each game, determine the actual root cause before changing code.
+
+--------------------------------------------------
+DO NOT APPLY GENERIC FIXES BLINDLY
+
+Do not just:
+- add more CSS
+- wrap things in containers
+- resize components
+- rename props randomly
+- add fallback code without understanding the issue
+
+Every fix should directly correspond to a real identified cause.
+
+--------------------------------------------------
+MOBILE INPUT DEBUGGING
+
+For mobile specifically, verify the following in each game:
+
+- touchstart, touchmove, touchend, or pointer events are properly wired
+- taps are converted into game actions correctly
+- swipes and drags calculate positions correctly
+- browser scrolling is not hijacking gameplay gestures
+- touch input is not blocked by overlays or containers
+- hitboxes are correct after screen scaling
+- canvas coordinate mapping is correct on different phone sizes
+- gameplay does not require hover, right click, or keyboard-only input
+- controls remain usable in portrait or landscape as intended
+
+If a game still depends on desktop-style input, rebuild the controls properly for mobile.
+
+--------------------------------------------------
+DESKTOP MUST STILL WORK
+
+Do not break desktop while fixing mobile.
+
+For each game:
+- preserve mouse support
+- preserve keyboard support where relevant
+- preserve desktop HUD layout where appropriate
+- preserve desktop gameplay feel
+- preserve desktop wager and match flow
+
+Use platform-specific input handling if needed.
+Desktop and mobile do not need identical controls, but they must support the same gameplay and same match results.
+
+--------------------------------------------------
+CHECK FOR OVERLAY / INTERACTION BUGS
+
+In many cases mobile games fail because interaction layers are blocked.
+
+Inspect for:
+- invisible divs over the game
+- modals not fully closing
+- HUD layers intercepting touch events
+- z-index issues
+- pointer-events CSS problems
+- fixed headers/footers covering part of the game
+- canvas present but not interactive
+- safe-area

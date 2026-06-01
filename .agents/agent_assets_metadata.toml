@@ -1,0 +1,44 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "jcHjZf390UbNO4c5OwWlu"
+uri = "file://project.tar.gz"
+type = "unspecified"
+title = "Jango.us — Full Project Source (project.tar.gz)"
+
+[[outputs]]
+id = "28RvajHDSXn1EC4ZwkukY"
+uri = "file://exports/jango-us.zip"
+type = "unspecified"
+title = "Jango.us — full source"
+
+[[outputs]]
+id = "Zqqj3cWafDQUasXH12G1v"
+uri = "file://exports/arena-origins.tar.gz"
+type = "unspecified"
+title = "arena-origins.tsx (archive)"
+
+[[outputs]]
+id = "IExGFXfo0zBN0jc-py7x9"
+uri = "file://exports/rank-progression.tar.gz"
+type = "unspecified"
+title = "rank-progression.tsx (archive)"
+
+[[outputs]]
+id = "kf6PHTVW-G5cpisl5PqHj"
+uri = "file://exports/tutorial-hub.tar.gz"
+type = "unspecified"
+title = "tutorial-hub.tsx (archive)"
+
+[[outputs]]
+id = "sd58O5R03pwWiOLM7Zhuh"
+uri = "file://exports/shared-missing.tar.gz"
+type = "unspecified"
+title = "shared-missing.tar.gz"
+
+[[outputs]]
+id = "ZHlF6jB41kABvYNU8V-w7"
+uri = "file://exports/jango-images.tar.gz"
+type = "unspecified"
+title = "jango-images.tar.gz"

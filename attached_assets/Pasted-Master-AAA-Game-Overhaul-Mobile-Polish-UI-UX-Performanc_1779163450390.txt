@@ -1,0 +1,632 @@
+Master AAA Game Overhaul, Mobile Polish, UI/UX, Performance, and Production Build File
+Prepared for AI Developer / Full Stack Game Engineering Implementation
+Goal: turn Jango.US into a polished, premium, high-retention competitive gaming platform where every game, menu, transition, mobile screen, and reward moment feels intentional, fast, addictive, and investor-ready.
+This file is written as a direct development brief. Treat it as a master implementation plan, QA checklist, and product direction document. Build in phases, but the end state must feel like a premium gaming product, not a prototype.
+Design standard: dark, cinematic, high-contrast, neon-accented, smooth, responsive, dopamine-rich, mobile-first, and consistent across every screen.
+P0: Must fix before investor/demo build
+
+P1: High-impact polish and retention
+
+P2: Next-pass improvements
+
+P3: Nice-to-have future upgrades
+
+ 
+1. Executive Implementation Summary
+The current direction for Jango.US should be treated as a full product overhaul, not a small UI clean-up. The games need to feel more polished, the site needs to feel premium on mobile, and the entire user journey needs to support competitive play, fast entry, clear stakes, satisfying wins, and repeat play.
+• Every game must be rebuilt or upgraded around feel first: input response, camera, physics clarity, hit feedback, sound, animations, UI, and end-of-match reward moments.
+• Mobile must be first-class. No desktop-only layouts, tiny buttons, cramped menus, or screens that feel like they were squeezed down after the fact.
+• The home page, profile, wallet, lobby, tournament creation, match result, leaderboard, and game screens must share one design system.
+• Every game must have clear loading, pre-match, in-match, post-match, rematch, and cash-out flows.
+• Performance must be treated like a feature. Lag, stutter, bad collisions, slow transitions, or delayed controls destroy trust when money or competitive value is involved.
+• Do not send players to external windows for the core Tron game or any core first-party game. Games need to feel native to Jango.US.
+Area
+
+Current Problem to Avoid
+
+Target Standard
+
+Priority
+
+Games
+
+Prototype feel, simple HUD, uneven graphics, lag, unclear feedback
+
+AAA-inspired arcade feel with fast response, cinematic UI, polished VFX/SFX, and strong game loops
+
+P0
+
+Mobile
+
+Crowded screens, old-looking tables, inconsistent spacing
+
+Native-app-level mobile layouts with thumb-friendly controls and polished transitions
+
+P0
+
+Tournament Creation
+
+Basic form UI, not exciting, not brand-level
+
+Premium step-by-step creation flow with clear stakes, visuals, previews, and validation
+
+P0
+
+Profile Menu
+
+Needs Backstory/Story Mode between Streamer Mode and Settings
+
+Add branded story tab with lore, visuals, roadmap, and Jango.US universe content
+
+P1
+
+Tron Game
+
+External window / lag / weak visuals
+
+Fully embedded game with upgraded graphics, powerups, performance optimization, and polished HUD
+
+P0
+
+Match Pot / Stakes
+
+Not cinematic enough
+
+Animated wager/scalp/pot ceremony before match and satisfying payout reveal after match
+
+P1
+
+ 
+2. Global Product Standard
+2.1 Brand Feel
+• Jango.US should feel like a dark competitive arcade, casino-quality lobby, and esports platform combined.
+• The user should feel like every screen is part of one universe: black/charcoal base, electric accents, neon glow, subtle smoke/energy particles, glass panels, clean typography, and motion that feels expensive.
+• Avoid generic Bootstrap-looking cards, default form controls, plain white modals, unstyled tables, and old web-app layouts.
+• Use consistent iconography, corner radius, button hierarchy, loading states, hover states, disabled states, empty states, and error states.
+2.2 Core Design Tokens
+Token
+
+Direction
+
+Background
+
+Deep black / charcoal gradient with optional subtle grid, particles, scan lines, or soft radial glow.
+
+Primary Accent
+
+Electric cyan, neon blue, or cyber green. Use consistently for CTAs and active states.
+
+Secondary Accent
+
+Gold, purple, or red for wager moments, danger, rare rewards, and tournament finals.
+
+Cards
+
+Glassmorphism or dark elevated panels with subtle border glow, not flat grey boxes.
+
+Buttons
+
+Large, tactile, high-contrast, animated press state, clear disabled state, loading spinner inside button.
+
+Typography
+
+Bold display font for titles, clean readable UI font for body and data. No tiny unreadable text on mobile.
+
+Motion
+
+Quick 120-250ms UI transitions, 300-700ms cinematic moments, never slow or annoying.
+
+Audio
+
+Small UI clicks, match countdown, wager-pot sound, win/loss sting, reward reveal. Must have mute settings.
+
+ 
+3. Master Navigation and User Flow
+3.1 Main Flow
+1. User lands on Jango.US and instantly understands: play skill games, enter matches/tournaments, compete, win, withdraw, rank up.
+2. User can browse games from a polished game hub with game cards, animated previews, player count, entry range, skill level, and estimated match time.
+3. User selects a game, enters a lobby, chooses match type, confirms entry, sees pot/stakes animation, loads into game, plays, sees result, and can rematch or go back to lobby.
+4. User profile includes balance, stats, rank, achievements, match history, story/backstory mode, streamer mode, settings, security, wallet, and support.
+3.2 Required Screens
+Screen
+
+Required Upgrade
+
+Home / Landing
+
+Cinematic hero, featured games, live activity, trust indicators, mobile-first CTAs.
+
+Game Hub
+
+Filter by game, stakes, match type, popularity, time, and skill. Animated game cards.
+
+Game Detail
+
+Rules, practice mode, entry options, prize/pot preview, game controls, performance requirements.
+
+Match Lobby
+
+Opponent info, stake amount, countdown, connection status, server region, rules confirmation.
+
+Tournament Creation
+
+Premium multi-step wizard, preview bracket, entry fee, prize split, rules, schedule, privacy, max players.
+
+Profile
+
+Modern stats dashboard, avatar, badges, balance, rank, achievements, Backstory/Story Mode tab.
+
+Wallet
+
+Deposit, withdraw, transaction history, pending items, clear fees, security prompts.
+
+Leaderboard
+
+Modern ranked table, filters, seasonal rank, glowing top positions, mobile card view.
+
+Support / Dispute
+
+Match report, replay ID, issue category, screenshot upload, status tracking.
+
+ 
+4. Mobile-First Requirements
+4.1 Mobile Layout Rules
+• Minimum tappable target: 44px height. Primary game controls should be 56px+ when possible.
+• Do not use desktop tables on mobile. Convert leaderboards, match history, tournaments, and transaction lists into stacked cards.
+• Keep the main CTA sticky on important flows: Join Match, Create Tournament, Confirm Entry, Start Game, Rematch.
+• Avoid tiny close icons. Use large bottom sheets, clear back buttons, swipe-friendly menus, and reachable controls.
+• Use safe-area padding for iPhone notches and bottom home indicators.
+• Game canvases must adapt to portrait and landscape where appropriate. If a game requires landscape, show a polished rotate-device screen, not a broken layout.
+• All modals should become bottom sheets on mobile unless full-screen is needed.
+4.2 Mobile Game Controls
+• Controls must be configurable where possible: left/right hand layout, opacity slider, size slider, haptic toggle, sound toggle.
+• Virtual joystick must feel responsive, have dead-zone tuning, and not block important game visuals.
+• Buttons need press animations, cooldown indicators, and clear disabled states.
+• Prevent browser scrolling, pull-to-refresh, accidental zoom, and address bar jumps while in active game mode.
+• Add reconnect overlay and pause/forfeit logic when app backgrounding or network drops.
+5. AAA Game Feel Standards
+5.1 Every Game Must Include
+Feature
+
+Implementation Requirement
+
+Priority
+
+Polished Loading
+
+Animated branded loading screen, game tips, connection check, asset preload progress
+
+P0
+
+Countdown
+
+3-2-1-Go with sound, camera punch, and input lock until start
+
+P0
+
+Juice / Feedback
+
+Hit sparks, trails, particles, screen shake, controller/haptic feedback on mobile
+
+P1
+
+Responsive Input
+
+Immediate input response, no floaty delay, touch controls tuned separately from keyboard
+
+P0
+
+HUD
+
+Modern overlay with score, timer, player cards, stake/pot, powerup status, ping, and match state
+
+P0
+
+Camera
+
+Smooth follow, subtle zooms, no jitter, no confusing clipping
+
+P0
+
+Audio
+
+SFX for actions, UI clicks, countdown, win/loss, ambient loop, mute controls
+
+P1
+
+End Screen
+
+Cinematic result reveal, pot payout, XP/rank progress, stats, rematch CTA
+
+P0
+
+Practice Mode
+
+Allow users to learn without money/stakes and test controls
+
+P1
+
+Replay/Proof Data
+
+Match ID, timestamp, final score, basic event log for disputes
+
+P0
+
+ 
+5.2 Universal Match Ceremony
+Before every paid or competitive match, create a short ceremonial animation that shows the stakes entering the pot. This is important for dopamine, trust, and competitive tension.
+• Show both players locked in with avatars/usernames.
+• Animate entry fees, tokens, coins, or “scalps” flying into a center pot.
+• Show total pot with glow, pulse, and sound effect.
+• Show rules reminder: game, stake, win condition, time limit, disconnect policy.
+• Keep it short. Target 2-4 seconds with a skip option after the first few times.
+6. Game-Specific Overhaul Requirements
+6.x Tron / Lightcycle
+• Embed fully inside Jango.US. No external window for core play. The player should never feel like they left the platform.
+• Fix lag by optimizing render loop, using requestAnimationFrame correctly, reducing expensive DOM operations, pooling particles, and separating simulation tick from render tick.
+• Upgrade visuals with glowing trails, bloom-like effects, grid floor, animated arena walls, boost sparks, crash explosion, and cinematic round intro.
+• Add powerups: speed boost, shield, ghost phase, trail bomb, trail cut, EMP pulse, reverse controls trap, mini-map reveal, and slow-time pickup. Balance for fairness.
+• Add polished HUD: player panels, score, timer, powerup slots, cooldown rings, connection/ping, stake/pot, and round number.
+• Fix collision consistency. Player should clearly understand why they crashed. Add crash marker and instant replay micro-camera if possible.
+• Add mobile controls: swipe steering, virtual directional pad, or tap-left/tap-right mode. Let users choose.
+• Add arena variants: classic grid, neon city, lava core, ice wireframe, tournament arena.
+6.x Pool / Billiards
+• Improve physics consistency: accurate ball collision, spin, friction, cushion bounce, pocket detection, and foul logic.
+• Add premium aiming UI: cue line, ghost ball preview, power meter, spin control, and subtle assist based on game mode.
+• Mobile must support drag-to-aim, pull-back power, tap fine-tune, and visible cue angle without fingers blocking the target.
+• Add camera polish: smooth table zoom, follow cue ball after shot, cinematic pocket cam on big shots, no jitter.
+• Add match overlays: turn indicator, remaining balls, foul warning, timer, score, stake/pot, player cards.
+• Add satisfying ball sounds, felt friction, pocket drop, cue strike, crowd/room ambience optional.
+• Add practice drills and skill challenges for retention.
+6.x Bowling
+• Create a polished lane environment with reflective lane, animated pins, crowd/arcade ambience, neon signage, and branded lane screens.
+• Add throw mechanics with power, angle, curve/spin, and timing. On mobile, use swipe velocity and curve gesture.
+• Pin physics must feel believable. Avoid pins sliding strangely or falling late in a broken way.
+• Add camera sequence: approach, release, lane follow, pin impact, slow-motion strike/spare highlight.
+• HUD should show frame, pins left, scorecard, current player, stake/pot, timer, and throw feedback.
+• Add dopamine moments: strike explosion, spare sparkle, turkey animation, perfect game celebration.
+6.x Racing
+• Fix finish-line/lap detection so cars cannot miss lap registration. Use checkpoint gates and ordered checkpoint validation, not only a finish-line collision.
+• Improve graphics: better road material, lighting, motion blur feel, tire marks, sparks, speed lines, dynamic camera shake, polished car models or sprites.
+• Add mobile controls: tilt steering optional, left/right buttons, brake/boost buttons, configurable layout.
+• Add race HUD: speed, lap, position, mini-map, boost, damage/status, countdown, stake/pot.
+• Add collision and respawn rules that feel fair. Prevent exploit loops around the finish line.
+• Add track variants and hazards: boost pads, oil slicks, shortcuts, jumps, gates, and moving obstacles.
+6.x Arcade / Future Games
+• Every new game must pass the same Game Feel Checklist before release.
+• Each game needs practice mode, paid match mode, tournament mode, replay/proof data, mobile controls, and end-screen stats.
+• Prototype games are allowed internally, but never ship raw prototypes to users or investors.
+7. Tournament Creation Screen Overhaul
+The tournament creation screen needs to match the site standard and feel premium, not like a raw admin form. It should guide the user step by step and create excitement around hosting or joining a tournament.
+Step
+
+Fields / UI
+
+Polish Requirements
+
+1. Select Game
+
+Game cards with preview animation, player count, difficulty, match length
+
+Cards glow on selection, show game rules preview
+
+2. Tournament Format
+
+Single elimination, double elimination, round robin, best of series
+
+Visual bracket preview updates live
+
+3. Entry / Prize
+
+Entry fee, max players, prize split, platform fee disclosure
+
+Animated prize pool preview and clear fee transparency
+
+4. Rules
+
+Time limit, disconnect rules, rematch rules, tie-breakers, banned exploits
+
+Use toggles and presets, not giant text forms
+
+5. Schedule
+
+Start now, scheduled, private invite, public tournament
+
+Countdown preview and timezone clarity
+
+6. Review
+
+Full summary card with game, prize, rules, bracket, fee, schedule
+
+Big Confirm button, validation, error handling, loading state
+
+ 
+• Add template presets: Quick 1v1, 8-player fast bracket, high-stakes private, streamer tournament, free practice event.
+• Add smart warnings: prize split does not equal 100%, too few players, entry fee too high for current wallet, schedule conflict, unsupported mobile controls.
+• Mobile version should be a vertical wizard with a sticky bottom Continue button and progress indicator.
+8. Profile Menu Upgrade: Backstory / Story Mode
+Add a new profile menu item between Streamer Mode and Settings. Recommended label: “Story Mode” because it feels more interactive and brandable than “Backstory,” while still making the lore clear.
+Placement
+
+Label
+
+Purpose
+
+Priority
+
+Profile dropdown / side menu
+
+Story Mode
+
+Shows Jango.US universe, lore, visuals, roadmap, character/arena themes, and brand mythology
+
+P1
+
+ 
+• Story Mode should include the Jango.US origin, visual world-building, game universe direction, future arenas, player ranks, and “where we are going” with the brand.
+• Use uploaded brand images/assets as visual inspiration where available. Do not create a random style that fights the existing Jango.US direction.
+• Make it feel like a premium lore tab inside a game, not a plain About page.
+• Add sections: Origin, The Arena, The Players, The Stakes, The Roadmap, Unlockable Worlds, Coming Soon.
+• Use animated cards, parallax background, subtle particles, and a cinematic header image.
+9. HUD and UI Components
+9.1 Universal HUD Elements
+HUD Item
+
+Purpose
+
+Mobile Behavior
+
+Player Cards
+
+Avatar, username, rank, status, score
+
+Compact top cards or collapsible overlay
+
+Pot / Stake
+
+Shows value at risk and total prize
+
+Small glowing pill; expands on tap
+
+Timer
+
+Match urgency
+
+Large enough to see, color shifts near end
+
+Score / Objective
+
+Clear win condition
+
+Always visible but not blocking play
+
+Powerups
+
+Slots, cooldown, active state
+
+Thumb-accessible controls
+
+Network Status
+
+Ping, reconnect, desync warning
+
+Tiny indicator with warning overlay only when needed
+
+Pause / Settings
+
+Sound, controls, forfeit, help
+
+Top corner, requires confirmation for forfeit
+
+ 
+9.2 Modern Table Replacement
+• Replace old-looking username lists and tables with modern player cards.
+• For match lists, show avatar, username, rank badge, win rate, current streak, stake, and Join button.
+• On mobile, one card per row with clear hierarchy and large CTAs.
+• Top 3 leaderboard positions should feel premium with glow, medal/rank visuals, and animated background accents.
+10. Performance and Technical Standards
+Area
+
+Requirement
+
+Priority
+
+Rendering
+
+Use a stable game loop, avoid layout thrashing, minimize DOM changes during gameplay
+
+P0
+
+Assets
+
+Preload game assets, compress textures/audio, lazy-load non-critical UI
+
+P0
+
+Mobile FPS
+
+Target stable 60 FPS where possible; gracefully lower effects on weaker devices
+
+P0
+
+Network
+
+Clear reconnect logic, heartbeat, server validation where needed, anti-desync safeguards
+
+P0
+
+Input
+
+Debounce UI, never debounce core movement controls incorrectly, tune touch separately
+
+P0
+
+Memory
+
+Pool particles/projectiles/effects, clean listeners when leaving game
+
+P1
+
+Accessibility
+
+Readable contrast, scalable text, captions for important audio cues where possible
+
+P2
+
+ 
+10.1 Game Engine / Architecture Direction
+• Create a shared GameShell component used by every game: loading, countdown, HUD, pause menu, result screen, reconnect overlay, and analytics hooks.
+• Create shared UI components: Button, Modal/BottomSheet, GameCard, PlayerCard, StakePot, LeaderboardCard, TournamentWizard, Toast, Tooltip, EmptyState, ErrorState.
+• Separate game simulation from React UI where possible. React should not re-render constantly during gameplay.
+• Use canvas/WebGL or a game framework where appropriate for smoother graphics. Avoid building high-action games with too many moving DOM elements.
+• Add feature flags for effects quality: Low, Medium, High, Ultra. Auto-detect device performance and allow manual override.
+11. Wallet, Stakes, Fees, and Trust
+Because Jango.US includes competitive value and payments, the UX needs to be transparent, secure, and trustworthy. Every fee, stake, payout, and result must be clear before and after a match.
+• Before entry, show entry amount, total pot, platform fee if applicable, expected prize/payout, and refund/disconnect rules.
+• After match, show result, prize won/lost, updated balance, transaction ID, and match ID.
+• Never hide fees in small text. Make it clean and professional.
+• Add pending state for withdrawals/deposits and clear support route if something is delayed.
+• Add security states: verify email, 2FA prompt, suspicious login alert, wallet confirmation.
+12. Retention, Dopamine, and Progression
+System
+
+What to Build
+
+Reason
+
+Ranks
+
+Bronze to elite tier system with seasonal reset
+
+Gives players long-term goals
+
+XP
+
+Award XP for matches, wins, streaks, tournaments, practice milestones
+
+Keeps non-winners engaged
+
+Badges
+
+First win, 10 wins, streaks, tournament finalist, game-specific mastery
+
+Social proof and profile flex
+
+Daily Missions
+
+Play 3 matches, win 1 Tron round, practice 5 minutes
+
+Creates habit
+
+Streaks
+
+Win streak, login streak, rematch streak
+
+Adds urgency and dopamine
+
+Cosmetics
+
+Profile frames, trail colors, arena skins, bowling balls, car skins
+
+Monetization and identity
+
+Post-Match Stats
+
+Accuracy, reaction time, close calls, clutch moments
+
+Makes losses feel informative
+
+ 
+13. Quality Assurance Checklist
+13.1 P0 Demo Build Checklist
+• No core game opens in an external window unless explicitly designed as a temporary development-only fallback.
+• Every main screen works on iPhone-sized mobile screens without horizontal scrolling.
+• Tournament creation looks polished and matches site branding.
+• Tron is embedded, performant, visually upgraded, and has mobile controls.
+• Racing lap detection is fixed with checkpoints and finish validation.
+• Profile menu includes Story Mode between Streamer Mode and Settings.
+• All CTAs have loading states and disabled states.
+• All paid/competitive matches show stake, pot, rules, and result clearly.
+• No old default tables remain on user-facing mobile pages.
+• No unstyled browser alerts, default confirm boxes, or raw error dumps are visible to users.
+13.2 Mobile QA Devices
+• Test on iPhone Safari, iPhone Chrome, Android Chrome, small screen width around 360px, medium width around 390-430px, tablet width, and desktop.
+• Test slow network and reconnect behavior.
+• Test portrait and landscape behavior for every game.
+• Test touch controls with one hand and two hands.
+• Test browser back button behavior during match, lobby, and tournament creation.
+14. Implementation Phases
+Phase
+
+Focus
+
+Deliverables
+
+Phase 1
+
+Design system + mobile foundation
+
+Tokens, components, navigation, profile menu, mobile layouts, game shell
+
+Phase 2
+
+Core game upgrades
+
+Tron embedded overhaul, racing lap fix, pool/bowling polish, shared HUD
+
+Phase 3
+
+Tournament + wallet trust
+
+Tournament wizard, match ceremony, pot animation, result screen, fee clarity
+
+Phase 4
+
+Retention systems
+
+Ranks, XP, badges, missions, cosmetics, improved leaderboards
+
+Phase 5
+
+Production hardening
+
+Performance optimization, QA, anti-exploit logging, dispute flow, monitoring
+
+ 
+15. Developer Copy-Paste Master Prompt
+Use the following as the direct build instruction for the AI developer or coding agent.
+You are rebuilding Jango.US into a premium competitive gaming platform. Treat the current build as a prototype and perform a full AAA-inspired overhaul. Do not only change colors. Upgrade the product structure, mobile UX, game feel, HUDs, transitions, performance, and match flows.
+
+Main goals:
+1. Make every user-facing screen look modern, polished, dark, cinematic, and consistent with Jango.US branding.
+2. Make the mobile version feel native-app quality. No cramped desktop layouts, tiny buttons, broken tables, or awkward game controls.
+3. Embed the Tron/lightcycle game directly inside Jango.US instead of opening an external window. Upgrade graphics, performance, powerups, HUD, mobile controls, and match flow.
+4. Fix racing lap detection using ordered checkpoints and reliable finish-line validation. Improve racing graphics, HUD, controls, and effects.
+5. Upgrade pool, bowling, and all games with responsive controls, polished physics, cinematic camera, high-quality SFX/VFX, countdowns, end screens, and shared GameShell.
+6. Add a universal pre-match pot/stakes animation showing both players locking in and their entry value moving into the pot.
+7. Add a premium tournament creation wizard matching the site standard with game selection, format, entry/prize, rules, schedule, and review steps.
+8. Add a new Profile menu item between Streamer Mode and Settings called Story Mode. This tab should show the Jango.US backstory, lore, visual direction, roadmap, arenas, and brand universe.
+9. Replace outdated username tables/lists with modern player cards, mobile cards, glowing leaderboard components, and polished match rows.
+10. Add shared UI components and a design system so every page looks like the same product.
+
+Build standards:
+- Mobile-first responsive design.
+- Stable 60 FPS target where possible.
+- Clear loading states, disabled states, error states, empty states, reconnect states, and success states.
+- No raw browser alerts or default-looking UI.
+- No external game windows for core first-party games.
+- Every paid or competitive flow must show stake, pot, fees, rules, result, and match ID clearly.
+- Every game must include practice mode, match mode, countdown, HUD, pause/settings, end result, rematch CTA, and basic proof/replay metadata.
+- Optimize render loops, assets, event listeners, and mobile input.
+- Use feature flags or quality settings for low-end devices.
+
+Deliver this in phases, but make the demo/investor build look polished immediately. Prioritize P0 items first: mobile layout, Tron embed/performance, racing lap fix, tournament creation redesign, shared game HUD, match/result flow, and profile Story Mode tab.
+16. Acceptance Criteria
+• A new user can open Jango.US on mobile, understand what to do, join or practice a game, and complete a match without confusion.
+• The visual quality is strong enough to show investors without saying “this is just a rough prototype.”
+• Core games feel fast, responsive, and satisfying, not laggy or unfinished.
+• Tournament creation feels like part of a premium platform, not a plain form.
+• The site has one consistent design language across homepage, profile, wallet, tournaments, leaderboards, and games.
+• The developer can use this document as a checklist and implementation roadmap.
+17. Final Notes for Developer
+The priority is polish, trust, and retention. Jango.US should not feel like a collection of separate mini-games. It should feel like one competitive gaming ecosystem where games, stakes, profiles, leaderboards, tournaments, and story all connect. Every interaction should look intentional. Every match should feel exciting. Every mobile screen should feel designed, not squeezed. Every game should feel fair, fast, and rewarding.

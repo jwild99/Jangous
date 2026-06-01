@@ -1,0 +1,214 @@
+I need a COMPLETE AAA overhaul of the Battle Pass system on Jango.
+
+This is NOT a basic system anymore. This must feel like a real premium game progression system.
+
+-----------------------------------
+CORE REQUIREMENTS
+-----------------------------------
+
+- 100 TIERS total
+- Every single tier must have a UNIQUE reward
+- No repeated rewards, no filler, no duplicates
+- Battle Pass must be purchasable in Item Shop
+- Progression + claiming must be inside Player Dashboard
+
+-----------------------------------
+PRICING
+-----------------------------------
+
+Set Battle Pass price:
+10 SCALPS
+
+Goal:
+- High adoption
+- Build addiction first, monetize later
+
+-----------------------------------
+ITEM SHOP INTEGRATION
+-----------------------------------
+
+Add to Shop:
+
+“Season 1 Battle Pass”
+- Price: 10 Scalps
+- Preview rewards
+- Show:
+  “Total Value: 500+ Scalps”
+
+On purchase:
+- Unlock Premium track
+- Save to user account
+- Show “Battle Pass Active”
+
+-----------------------------------
+PLAYER DASHBOARD INTEGRATION
+-----------------------------------
+
+Create:
+
+Dashboard → Battle Pass
+
+Include:
+
+- Current Tier (ex: 37)
+- XP progress bar
+- XP needed for next tier
+- Season countdown
+- Scrollable 100-tier reward track
+- Free vs Premium lanes
+- Claim buttons
+
+-----------------------------------
+CRITICAL RULE: UNIQUE REWARDS ONLY
+-----------------------------------
+
+EVERY tier must have a different reward.
+
+NO:
+- repeated items
+- reused badges
+- duplicate cosmetics
+
+EVERY reward must feel new.
+
+-----------------------------------
+REWARD TYPES (EXPAND VARIETY)
+-----------------------------------
+
+Use a mix of:
+
+- Avatar Frames (different styles/colors/animations)
+- Profile Badges
+- Titles (ex: “Clutch King”, “Underdog”, “GOAT Runner”)
+- Game Cosmetics:
+  - Pool cues
+  - Golf balls
+  - Paddles
+  - Table skins
+- Emotes (future-ready)
+- Profile effects (glow, aura, particles)
+- UI themes (future)
+- Scalps (currency)
+
+-----------------------------------
+SCALP REWARD RULE
+-----------------------------------
+
+Even Scalp rewards must feel different:
+- Different amounts
+- Different placement
+- Different tier significance
+
+-----------------------------------
+REWARD PROGRESSION DESIGN
+-----------------------------------
+
+TIERS 1–20:
+- Simple cosmetics
+- Small currency
+- Basic frames
+
+TIERS 21–50:
+- More creative cosmetics
+- Better titles
+- More noticeable visuals
+
+TIERS 51–80:
+- Rare cosmetics
+- Unique animated items
+- Strong visual identity
+
+TIERS 81–99:
+- Premium-level cosmetics
+- High-value rewards
+- Flex items
+
+TIER 100:
+MUST BE ELITE:
+- Exclusive animated avatar frame
+- “Season 1 Champion” badge
+- Large Scalp payout
+- Prestige title
+
+-----------------------------------
+UI REQUIREMENTS
+-----------------------------------
+
+- Dense, filled layout (no empty space)
+- Scrollable track
+- Each tier shows:
+  - Icon
+  - Name
+  - State (locked/unlocked/claimed)
+
+Highlight:
+- Current tier
+- Next reward
+- Premium items
+
+-----------------------------------
+PROGRESSION FEEL
+-----------------------------------
+
+- XP bar must animate smoothly
+- Show:
+  “Tier 37 → Tier 38”
+- Show XP gained after matches
+
+-----------------------------------
+CLAIM EXPERIENCE (AAA)
+-----------------------------------
+
+When claiming:
+
+- Sound plays
+- Reward glows
+- “UNLOCKED” animation
+- Button changes to “Claimed”
+
+-----------------------------------
+VALUE FEEL
+-----------------------------------
+
+User must feel:
+
+“I paid 10 Scalps and I’m getting WAY more”
+
+Show:
+“Total Rewards Value: 500+ Scalps”
+
+-----------------------------------
+INTEGRATION
+-----------------------------------
+
+Ensure:
+
+- Challenge XP → Battle Pass XP
+- Daily streak multiplier applies
+- Real-time updates everywhere
+
+-----------------------------------
+FINAL GOAL
+-----------------------------------
+
+This system must feel:
+
+- Addictive
+- Rewarding
+- Unique
+- Worth grinding
+- Worth buying
+
+Users should think:
+
+“I need to keep playing”
+“I want that next reward”
+“I don’t want to miss this season”
+
+-----------------------------------
+IMPORTANT
+-----------------------------------
+
+NO duplicate rewards.
+EVERY tier must feel unique.
+This is what makes the system powerful.

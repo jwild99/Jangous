@@ -1,0 +1,258 @@
+SYSTEM TASK: FULL MOBILE OPTIMIZATION + MOBILE GAME MODE
+
+Your task is to upgrade the entire website so that it works flawlessly on mobile devices while keeping the desktop experience unchanged. The final result should feel like a polished mobile gaming app.
+
+========================
+1. GLOBAL MOBILE RESPONSIVENESS
+========================
+
+Make the entire platform fully responsive for devices between 320px and 768px.
+
+Requirements:
+
+• No horizontal scrolling anywhere  
+• All UI elements scale properly  
+• Text resizes automatically for readability  
+• Buttons must be touch friendly (minimum 44px height)  
+• All pages must adapt fluidly to small screens  
+
+Use responsive CSS techniques such as:
+
+- Flexbox
+- CSS Grid
+- Media Queries
+- Dynamic scaling units (vw, vh, rem)
+
+Important UI sections to optimize:
+
+Home page  
+Game pages  
+Game lobby  
+Leaderboards  
+Profile page  
+Add funds page  
+Challenges page  
+Matchmaking screens  
+
+========================
+2. MOBILE NAVIGATION SYSTEM
+========================
+
+Implement a mobile-first navigation system.
+
+Top Navigation:
+
+Add a hamburger menu in the top-left corner that opens a slide-out navigation panel.
+
+Menu items:
+
+Home  
+Games  
+Leaderboards  
+Challenges  
+Profile  
+Add Funds  
+Settings  
+
+Bottom Mobile Navigation Bar:
+
+Add a persistent bottom navigation bar with these four actions:
+
+Play  
+Games  
+Challenges  
+Profile  
+
+Each button should include an icon and label.
+
+========================
+3. MOBILE GAME MODE
+========================
+
+All games must automatically detect when the user is on a mobile device and activate Mobile Mode.
+
+Use device detection to switch UI modes.
+
+Mobile Mode requirements:
+
+• Touch-based controls  
+• Large tap areas  
+• Simplified UI  
+• Optimized layouts for small screens  
+• No keyboard dependencies  
+
+Games must support:
+
+Tap  
+Swipe  
+Hold  
+Drag  
+Virtual joystick (for movement games)
+
+Screen orientation rules:
+
+Portrait mode for simple games  
+Landscape mode for competitive or action games
+
+========================
+4. MOBILE GAME INTERFACE
+========================
+
+Create a universal mobile game interface overlay for all games.
+
+The overlay must include:
+
+Score display  
+Timer  
+Pause button  
+Exit button  
+Match status  
+
+The UI should be minimal and not block gameplay.
+
+========================
+5. MOBILE PERFORMANCE OPTIMIZATION
+========================
+
+Optimize the platform for mobile performance.
+
+Implement:
+
+Image compression  
+Lazy loading  
+Asset bundling  
+Reduced animation load  
+Script optimization  
+
+Target performance:
+
+Page load under 2 seconds on mobile networks.
+
+========================
+6. MOBILE GAME LOBBY
+========================
+
+Redesign the game lobby for mobile users.
+
+Game listings should appear as large tappable cards.
+
+Each card should include:
+
+Game icon  
+Game title  
+Player count  
+Play Now button  
+
+Allow users to swipe horizontally to browse games.
+
+========================
+7. MOBILE ADD FUNDS EXPERIENCE
+========================
+
+Completely redesign the Add Funds page for mobile.
+
+Payment options must include:
+
+Apple Pay  
+Venmo  
+Visa  
+Mastercard  
+Bitcoin  
+Ethereum  
+Solana  
+
+Mobile payment UI requirements:
+
+Large input fields  
+Simple card entry system  
+One tap payment options  
+
+Gamified deposit experience:
+
+Play a “Cha-Ching” cash register sound when funds are added.
+
+Display celebration animations:
+
+Coin burst animation  
+Confetti animation  
+“Funds Added Successfully” success screen
+
+========================
+8. MOBILE NOTIFICATION SYSTEM
+========================
+
+Add mobile friendly notification popups.
+
+Trigger notifications for:
+
+Match found  
+Challenge completed  
+Rewards earned  
+Friend invites  
+
+Notifications should slide in smoothly and be dismissible.
+
+========================
+9. MOBILE USER PROFILE PAGE
+========================
+
+Create a vertically stacked mobile layout for user profiles.
+
+Display:
+
+Player avatar  
+Rank  
+Skill rating  
+Win/loss record  
+Achievements  
+Recent matches  
+
+Ensure smooth scrolling and clear visual hierarchy.
+
+========================
+10. MOBILE UX POLISH
+========================
+
+Perform final mobile experience improvements.
+
+Verify:
+
+All buttons are tap friendly  
+No overlapping UI elements  
+No text overflow  
+Games run smoothly  
+Navigation works one-handed  
+
+Animations should be smooth and modern but lightweight.
+
+========================
+11. AUTOMATIC MOBILE SUPPORT FOR NEW GAMES
+========================
+
+Implement a system so that every new game added to the platform automatically includes Mobile Mode.
+
+New games must automatically inherit:
+
+Touch control system  
+Mobile UI overlay  
+Responsive layout rules  
+Mobile performance optimizations  
+
+This prevents future games from requiring manual mobile optimization.
+
+========================
+FINAL GOAL
+========================
+
+The mobile version of the website should feel like a premium mobile gaming platform similar to modern mobile game apps.
+
+Users must be able to:
+
+Browse games  
+Play games  
+Join matches  
+Deposit funds  
+View profiles  
+Receive notifications  
+
+All seamlessly from their phones with zero usability issues.

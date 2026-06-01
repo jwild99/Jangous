@@ -1,0 +1,279 @@
+// PhysicsEngine.ts — realistic mini-golf ball physics (top-down 2D)
+
+type Vec2 = { x: number; y: number };
+const V = {
+  add: (a: Vec2, b: Vec2): Vec2 => ({ x: a.x + b.x, y: a.y + b.y }),
+  sub: (a: Vec2, b: Vec2): Vec2 => ({ x: a.x - b.x, y: a.y - b.y }),
+  mul: (a: Vec2, k: number): Vec2 => ({ x: a.x * k, y: a.y * k }),
+  dot: (a: Vec2, b: Vec2): number => a.x * b.x + a.y * b.y,
+  len: (a: Vec2): number => Math.hypot(a.x, a.y),
+  norm: (a: Vec2): Vec2 => {
+    const l = Math.hypot(a.x, a.y) || 1; return { x: a.x / l, y: a.y / l };
+  },
+  proj: (a: Vec2, n: Vec2): Vec2 => V.mul(n, V.dot(a, n)),
+};
+
+export type SurfaceId = "fairway" | "rough" | "sand" | "concrete" | "slope" | "water";
+
+export interface Material {
+  muRoll: number;      // rolling resistance coefficient (dominant slow-down)
+  restitution: number; // bounciness on walls/edges [0..1]
+  kDrag: number;       // quadratic air drag factor
+}
+
+export const MATERIALS: Record<SurfaceId, Material> = {
+  fairway:  { muRoll: 0.022, restitution: 0.30, kDrag: 0.0018 },
+  rough:    { muRoll: 0.040, restitution: 0.18, kDrag: 0.0026 },
+  sand:     { muRoll: 0.090, restitution: 0.00, kDrag: 0.0038 },
+  concrete: { muRoll: 0.010, restitution: 0.55, kDrag: 0.0012 },
+  slope:    { muRoll: 0.022, restitution: 0.30, kDrag: 0.0018 },
+  water:    { muRoll: 1.000, restitution: 0.00, kDrag: 0.5000 }, // instant stop/reset
+};
+
+export interface PhysicsConfig {
+  g: number;                 // gravity constant scaled to pixels (px/s^2)
+  dtFixed: number;           // fixed timestep (s); use 1/60
+  deadSpeed: number;         // below this speed (px/s) we snap velocity to 0
+  maxShotSpeed: number;      // clamp initial shot speed
+  wallDamping: number;       // extra loss on rebounds (energy bleed)
+  restitutionWallDefault: number; // base wall restitution if wall has no material
+  slopeStrength: number;     // multiplier for slope acceleration
+  ccd: boolean;              // enable swept collision to avoid tunneling
+  captureRadius: number;     // hole snap radius (px)
+  captureSpeed: number;      // max speed to capture (px/s)
+  microSpin: number;         // tangential damping on wall hit (0..0.1)
+}
+
+export const DEFAULTS: PhysicsConfig = {
+  g: 9.81 * 80,          // scale gravity to pixels (≈ 785 px/s^2 feels good)
+  dtFixed: 1 / 60,
+  deadSpeed: 8,
+  maxShotSpeed: 1400,
+  wallDamping: 0.98,
+  restitutionWallDefault: 0.45,
+  slopeStrength: 0.25,
+  ccd: true,
+  captureRadius: 12,
+  captureSpeed: 40,
+  microSpin: 0.04,
+};
+
+export interface Wall {
+  // Infinite thin wall segment with outward normal n (unit) and endpoints p1→p2
+  p1: Vec2; p2: Vec2; n: Vec2; restitution?: number;
+}
+
+export interface Hole {
+  center: Vec2; radius: number; // visual radius; capture uses config.captureRadius
+}
+
+export interface SurfaceSampler {
+  // Returns surface ID at a world position and an optional slope vector (unit)
+  sampleSurface(p: Vec2): { id: SurfaceId; slope?: Vec2 };
+}
+
+export class PhysicsEngine {
+  cfg: PhysicsConfig;
+  sampler: SurfaceSampler;
+  walls: Wall[] = [];
+  holes: Hole[] = [];
+
+  pos: Vec2 = { x: 0, y: 0 };
+  vel: Vec2 = { x: 0, y: 0 };
+  lastSafePos: Vec2 = { x: 0, y: 0 };
+
+  constructor(sampler: SurfaceSampler, cfg: Partial<PhysicsConfig> = {}) {
+    this.cfg = { ...DEFAULTS, ...cfg };
+    this.sampler = sampler;
+  }
+
+  setBall(pos: Vec2, vel: Vec2 = { x: 0, y: 0 }) {
+    this.pos = { ...pos };
+    this.vel = { ...vel };
+    this.lastSafePos = { ...pos };
+  }
+
+  setWalls(walls: Wall[]) { this.walls = walls; }
+  setHoles(holes: Hole[]) { this.holes = holes; }
+
+  shoot(dir: Vec2, strength: number) {
+    const v0 = Math.min(strength, this.cfg.maxShotSpeed);
+    const d = V.norm(dir);
+    this.vel = V.mul(d, v0);
+  }
+
+  // Run one fixed-timestep step
+  step(): { holed: boolean } {
+    const dt = this.cfg.dtFixed;
+
+    // 1) Sample surface & slope
+    const surf = this.sampler.sampleSurface(this.pos);
+    const mat = MATERIALS[surf.id];
+
+    // 2) Forces/accelerations
+    // Rolling resistance ~ constant opposing accel proportional to g
+    let acc = { x: 0, y: 0 };
+    const speed = V.len(this.vel);
+    if (speed > 0) {
+      const resist = this.cfg.g * mat.muRoll;
+      acc = V.add(acc, V.mul(V.norm(this.vel), -resist));
+      // Quadratic air drag (small but helps high-speed realism)
+      const k = mat.kDrag;
+      const drag = V.mul(this.vel, -k * speed);
+      acc = V.add(acc, drag);
+    }
+
+    // Add slope acceleration (if on slope tiles)
+    if (surf.slope && (surf.id === "slope" || true)) {
+      // slope is a unit vector pointing downhill; scale with g & slopeStrength
+      const aSlope = V.mul(V.norm(surf.slope), this.cfg.g * this.cfg.slopeStrength);
+      acc = V.add(acc, aSlope);
+    }
+
+    // 3) Integrate (semi-implicit Euler / symplectic)
+    this.vel = V.add(this.vel, V.mul(acc, dt));
+    let newPos = V.add(this.pos, V.mul(this.vel, dt));
+
+    // 4) Continuous collision detection (simple sweep vs. walls)
+    if (this.cfg.ccd) {
+      const hit = this.sweepWalls(this.pos, newPos);
+      if (hit) {
+        // Move to impact point
+        newPos = hit.point;
+
+        // Reflect velocity with restitution and micro spin (tangential damping)
+        const n = hit.wall.n;
+        const vn = V.proj(this.vel, n);
+        const vt = V.sub(this.vel, vn);
+
+        const e = hit.wall.restitution ?? this.cfg.restitutionWallDefault ?? MATERIALS.fairway.restitution;
+        const bounced = V.add(V.mul(vn, -(1 + e)), V.mul(vt, (1 - this.cfg.microSpin)));
+
+        this.vel = V.mul(bounced, this.cfg.wallDamping);
+
+        // Resolve small penetration nudging outward
+        newPos = V.add(newPos, V.mul(n, 0.5));
+      }
+    } else {
+      // Discrete collision (less robust)
+      const hit = this.findPenetration(newPos);
+      if (hit) {
+        newPos = V.add(newPos, V.mul(hit.wall.n, hit.depth));
+        const n = hit.wall.n;
+        const e = hit.wall.restitution ?? this.cfg.restitutionWallDefault;
+        const vn = V.proj(this.vel, n);
+        const vt = V.sub(this.vel, vn);
+        this.vel = V.mul(V.add(V.mul(vn, -(1 + e)), V.mul(vt, (1 - this.cfg.microSpin))), this.cfg.wallDamping);
+      }
+    }
+
+    // 5) Apply dead zone to stop jitter
+    if (V.len(this.vel) < this.cfg.deadSpeed) this.vel = { x: 0, y: 0 };
+
+    // 6) Update position
+    this.pos = newPos;
+
+    // 7) Hole capture
+    const holed = this.checkHoleCapture();
+    if (!holed && surf.id !== "water") this.lastSafePos = { ...this.pos };
+    if (surf.id === "water") {
+      // Simple penalty: reset to last safe position and stop
+      this.pos = { ...this.lastSafePos };
+      this.vel = { x: 0, y: 0 };
+    }
+
+    return { holed };
+  }
+
+  private checkHoleCapture(): boolean {
+    for (const h of this.holes) {
+      const d = V.sub(this.pos, h.center);
+      const dist = V.len(d);
+      if (dist <= Math.max(this.cfg.captureRadius, h.radius)) {
+        // Only capture if moving slow enough (lip-outs at high speed)
+        if (V.len(this.vel) <= this.cfg.captureSpeed) {
+          this.pos = { ...h.center };
+          this.vel = { x: 0, y: 0 };
+          return true;
+        } else {
+          // Simulate lipping out: reflect on inner rim
+          const n = V.norm(d);
+          const vn = V.proj(this.vel, n);
+          const vt = V.sub(this.vel, vn);
+          const e = 0.25; // soft inner rim
+          this.vel = V.add(V.mul(vn, -(1 + e)), vt);
+        }
+      }
+    }
+    return false;
+  }
+
+  // Sweep segment against walls, return earliest hit
+  private sweepWalls(p0: Vec2, p1: Vec2): null | { t: number; point: Vec2; wall: Wall } {
+    let bestT = Infinity;
+    let best: { t: number; point: Vec2; wall: Wall } | null = null;
+
+    for (const w of this.walls) {
+      // Treat wall as infinite line; then clamp to segment p1→p2 (basic approach)
+      // Ray test: if movement crosses the wall plane from front to back, register.
+      const m = V.sub(p1, p0);
+      const denom = V.dot(m, w.n);
+      const dist0 = V.dot(V.sub(p0, w.p1), w.n);
+      if (denom < -1e-6 && dist0 > 0) {
+        const t = dist0 / -denom; // 0..1 if hit within step
+        if (t >= 0 && t <= 1) {
+          // Find impact point and ensure it lies within wall segment extents
+          const hitPoint = V.add(p0, V.mul(m, t));
+          if (this.pointOnSegment(hitPoint, w.p1, w.p2)) {
+            if (t < bestT) { bestT = t; best = { t, point: hitPoint, wall: w }; }
+          }
+        }
+      }
+    }
+    return best;
+  }
+
+  private pointOnSegment(p: Vec2, a: Vec2, b: Vec2): boolean {
+    // Allow small epsilon; check collinearity & projection bounds
+    const ab = V.sub(b, a);
+    const ap = V.sub(p, a);
+    const cross = Math.abs(ab.x * ap.y - ab.y * ap.x);
+    if (cross > 1e-1) return false;
+    const dot = V.dot(ap, ab);
+    if (dot < -1e-3) return false;
+    if (dot > V.dot(ab, ab) + 1e-3) return false;
+    return true;
+  }
+
+  private findPenetration(newPos: Vec2): null | { wall: Wall; depth: number } {
+    // Simple: if newPos is behind a wall plane, push out (best-effort).
+    let best: { wall: Wall; depth: number } | null = null;
+    for (const w of this.walls) {
+      const d = V.dot(V.sub(newPos, w.p1), w.n);
+      if (d > 0) continue; // not penetrating (front side is negative with our convention)
+      // project onto segment bounds for robustness omitted for brevity
+      const depth = -d;
+      if (!best || depth > best.depth) best = { wall: w, depth };
+    }
+    return best;
+  }
+
+  // Get current state for serialization
+  getState(): { pos: Vec2; vel: Vec2; lastSafePos: Vec2 } {
+    return {
+      pos: { ...this.pos },
+      vel: { ...this.vel },
+      lastSafePos: { ...this.lastSafePos },
+    };
+  }
+
+  // Restore state from serialization
+  setState(state: { pos: Vec2; vel: Vec2; lastSafePos: Vec2 }) {
+    this.pos = { ...state.pos };
+    this.vel = { ...state.vel };
+    this.lastSafePos = { ...state.lastSafePos };
+  }
+}
+
+// Export vector utilities for convenience
+export const VectorMath = V;

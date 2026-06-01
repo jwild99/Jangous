@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tron Light-Cycle Game</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="grid-background"></div>
+  <div class="horizon-glow"></div>
+  <div class="noise-overlay"></div>
+  <div class="scanlines"></div>
+  <div class="vignette"></div>
+  <div class="crt-curve"></div>
+  <div class="chromatic-aberration"></div>
+  <div class="crt-flicker"></div>
+  
+  <div id="startScreen" class="screen">
+    <h1 class="title">TRON</h1>
+    <h2 class="subtitle">LIGHT-CYCLE</h2>
+    <p class="instructions">
+      Use WASD or Arrow Keys to control your cycle<br>
+      Collect power-ups to gain advantages<br>
+      Avoid walls and trails to survive
+    </p>
+    <button id="startBtn" class="neon-btn" data-testid="button-start-game">ENTER THE GRID</button>
+    <div class="score-display">
+      <p>User Victories: <span id="playerScore">0</span></p>
+      <p>Program Victories: <span id="aiScore">0</span></p>
+    </div>
+  </div>
+
+  <div id="gameScreen" class="screen hidden">
+    <div class="game-header">
+      <div class="player-info">
+        <span class="player-label blue-glow">USER</span>
+        <span class="score blue-glow" id="playerScoreLive">0</span>
+      </div>
+      <div class="player-info">
+        <span class="player-label red-glow">PROGRAM</span>
+        <span class="score red-glow" id="aiScoreLive">0</span>
+      </div>
+    </div>
+    
+    <div class="canvas-container">
+      <canvas id="gameCanvas"></canvas>
+      <div class="canvas-reflection"></div>
+    </div>
+    
+    <div class="powerup-status">
+      <div class="powerup-indicator speed" id="speedIndicator">
+        <span>&#9889;</span>
+        <span>TURBO</span>
+      </div>
+      <div class="powerup-indicator trail" id="trailIndicator">
+        <span>&#9632;</span>
+        <span>WIDE BEAM</span>
+      </div>
+    </div>
+    
+    <div id="mobileControls" class="mobile-controls">
+      <div class="control-row">
+        <button class="control-btn" data-key="up" data-testid="button-control-up">&#9650;</button>
+      </div>
+      <div class="control-row">
+        <button class="control-btn" data-key="left" data-testid="button-control-left">&#9664;</button>
+        <button class="control-btn" data-key="down" data-testid="button-control-down">&#9660;</button>
+        <button class="control-btn" data-key="right" data-testid="button-control-right">&#9654;</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="gameOverScreen" class="screen hidden">
+    <h1 class="title game-over-title" id="winnerText">END OF LINE</h1>
+    <p class="game-over-message" id="gameOverMessage"></p>
+    <button id="restartBtn" class="neon-btn" data-testid="button-play-again">RE-ENTER GRID</button>
+    <button id="menuBtn" class="neon-btn secondary" data-testid="button-main-menu">EXIT TO MENU</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

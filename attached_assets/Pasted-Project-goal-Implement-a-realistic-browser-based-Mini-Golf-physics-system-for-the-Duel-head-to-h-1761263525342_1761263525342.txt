@@ -1,0 +1,108 @@
+Project goal:
+Implement a realistic, browser-based Mini Golf physics system for the “Duel” head-to-head game. The ball should feel like the iOS iMessage GamePigeon mini-golf (natural roll, believable deceleration, clean rebounds), but do NOT reuse any proprietary assets. Recreate the *feel* only.
+
+Tech constraints:
+• Frontend: TypeScript + Canvas or Pixi.js (top-down 2D).
+• Engine: Write a small custom PhysicsEngine (no Box2D).
+• Realtime ready: Keep logic deterministic with a fixed timestep (dt = 1/60s).
+• All physics constants must be easy to tune via a config object.
+
+Core requirements (ball motion):
+1) Use semi-implicit (symplectic) Euler integration for stability:
+   v += a * dt
+   x += v * dt
+2) Model rolling resistance + surface friction:
+   a_resist = −(μ_roll * g) * normalize(v)
+   where g = 9.81 (scaled), μ_roll depends on surface (see below).
+3) Add quadratic air drag dampening at higher speeds:
+   a_drag = −k_drag * |v| * v
+4) Clamp very low speed to zero (deadzone) so the ball eventually stops.
+5) Optionally simulate “micro-spin”: on wall impact, apply a small tangential impulse to reduce perfect bounces.
+
+Surfaces (tile system):
+Implement a course grid with material IDs. Each material defines (μ_roll, restitution, drag, color).
+Default presets:
+• Fairway/grass: μ_roll=0.020, restitution=0.30, k_drag=0.002
+• Rough: μ_roll=0.040, restitution=0.15, k_drag=0.003
+• Sand: μ_roll=0.090, restitution=0.00, k_drag=0.004
+• Concrete/board: μ_roll=0.010, restitution=0.55, k_drag=0.001
+• Slope up/down: same as fairway but also adds gravity component along gradient (see slopes)
+• Water: on enter → stroke penalty + place ball at last safe spot
+Expose a MaterialRegistry so designers can add/edit materials via JSON.
+
+Slopes:
+Support slope tiles with a 2D gradient vector g_slope (unitless).
+Acceleration from slope:
+a_slope = g_effective * slope_strength * normalize(gradient)
+Use g_effective = 9.81 * scale, slope_strength default 0.25 (tunable).
+Apply only while on slope tiles; blend when crossing edges so there’s no step jerk.
+
+Boundaries & walls:
+• Represent walls as line segments and arcs (for rounded corners).
+• On collision, resolve penetration by projecting ball out along collision normal.
+• Reflect velocity: v' = v − (1 + e) * (v · n) * n, where e = restitution from current surface or wall material.
+• Apply small normal and tangential damping to avoid infinite bouncing: multiply v' by 0.98 after reflection.
+
+Holes (cup logic):
+• Hole is a circle with radius r_hole (default 12 px).
+• When distance(ball, hole_center) < r_capture and speed < v_capture (e.g., v < 40 px/s), snap into cup and end hole.
+• If speed is high, let the ball “lip out” using collision with inner rim (smaller circle) for realism.
+
+Shot mechanics:
+• Click/touch and drag to set shot vector; power is proportional to drag length (clamped).
+• Convert to initial velocity: v0 = power_scale * shot_vector; power_scale default 11.5 (tune).
+• Show an aiming guide with predicted travel envelope (use a short-time approximation, not full sim).
+• Enforce min/max power; apply a tiny random jitter ≤1% to mimic human imperfection (toggleable).
+
+Determinism & timestep:
+• Use fixed dt loop (1/60 sec). Accumulate frame time and step multiple times if needed.
+• During collisions, iterate resolution up to 4 substeps to prevent tunneling.
+• Optionally enable continuous collision detection (CCD) against walls: sweep test from prev_x→new_x.
+
+Course definition:
+• Load a JSON course file: tiles (material IDs), walls (segments and arcs), holes (position/radius), spawns.
+• Include at least one demo hole with: straight fairway, two walls, one gentle downslope, one rough patch, one sand trap, and a cup.
+• Provide a second hole with a 90° dogleg and rounded corner walls to test glancing rebounds.
+
+Config constants (export in a single object so we can tune):
+const PHYS = {
+  g: 9.81,
+  pixelScale: 1.0,          // world units → pixels
+  deadSpeed: 8,             // px/s below which set v=0
+  kDrag: 0.0015,            // base air drag (per-surface overrides exist)
+  slopeStrength: 0.25,      // scales g into slope accel
+  powerScale: 11.5,         // shot velocity multiplier
+  restitutionWall: 0.45,    // default wall bounciness
+  wallDamping: 0.98,        // energy loss on rebounds
+  captureRadius: 12,        // cup snap radius in px
+  captureSpeed: 40,         // max speed to allow capture
+  maxShotSpeed: 1400,       // clamp to avoid teleport shots
+  ccdEnabled: true
+};
+
+Rendering & UX:
+• 60 FPS target; motion smooth with no visible jitter.
+• Draw subtle motion blur/trail proportional to speed.
+• Sound hooks: “hit”, “rolling loop” (volume scales with |v|), “wall tap”, “cup”.
+• Mobile: drag-to-aim with power meter; haptics on strike if available.
+
+API & structure:
+• Create PhysicsEngine with methods:
+  - step(dt), setSurfaceAt(x,y), resolveCollisions(), applySlope(), applyFriction()
+• Ball has state {pos, vel, lastSafePos}.
+• Expose a MiniGolfGame component that:
+  - loads JSON course
+  - handles input → sets initial velocity
+  - runs fixed-timestep loop
+  - signals “ballRest” and “holeComplete” events with stroke count and time
+
+Testing & acceptance:
+• Provide a debug overlay: current speed (px/s), surface μ_roll, restitution, slope vector, collisions/sec.
+• Add a test that starts the ball at speed 1000 px/s on concrete and verifies it comes to rest within 6–9 seconds.
+• Add a wall-glancing test where the exit angle ≈ entry angle for shallow impacts (within ±10% error after damping).
+• Add a slope test: ball at rest on 5° equivalent slope should accelerate, reach a terminal rolling speed, and stop on flat.
+
+Deliverables:
+• TypeScript source with clear comments explaining each physics term.
+• A demo page with two holes demonstrating surfaces, slopes, walls, and cup capture.
+• A single config file exposing all tunables so designers can match the GamePigeon-like feel without code edits.

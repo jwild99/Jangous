@@ -1,0 +1,221 @@
+Rebuild and improve the main dashboard (Lobby page) so it feels like a polished competitive gaming platform instead of a basic template dashboard.
+
+The current dashboard structure is good but it feels empty, static, and uses placeholder data. The goal is to make the page feel more alive, data-driven, and focused around starting matches.
+
+Follow these changes carefully.
+
+---
+
+1. ADD A PRIMARY ACTION PANEL (CENTER FOCUS)
+
+The dashboard currently lacks a clear focal point.
+
+Add a large center card above or between sections called:
+
+"Start a Match"
+
+This card should include:
+
+Primary Button:
+Start Match
+
+Secondary Buttons:
+Quick Match
+Create Private Match
+Join Match
+
+Display a quick wager selector:
+
+5 SCALPS
+10 SCALPS
+25 SCALPS
+50 SCALPS
+
+Also allow selecting a game from the card.
+
+This card should be visually emphasized with:
+
+* larger card size
+* subtle glow border
+* slight background gradient
+* hover lift animation
+
+The goal is to make starting a match the most obvious action on the page.
+
+---
+
+2. FIX LIVE MATCHES PLACEHOLDER DATA
+
+Currently every match shows the same username which makes the system look fake.
+
+Update the Live Matches section so it shows realistic match data.
+
+Each row should show:
+
+Player 1 name
+VS
+Player 2 name
+Game being played
+Wager amount
+Device icon (mobile/desktop)
+Join button
+
+Example layout:
+
+Alex vs Jordan
+Game: Chess
+Wager: 25 SCALPS
+
+If there are no matches, show:
+
+"No live matches right now — start one."
+
+---
+
+3. IMPROVE THE LEADERBOARD PANEL
+
+The leaderboard currently shows placeholder names like "Player".
+
+Replace this with a richer leaderboard card.
+
+Each row should include:
+
+Rank
+Username
+Win rate
+Total Scalps won
+Games played
+
+Example:
+
+#1 Alex – 1,240 SCALPS
+#2 Jordan – 1,010 SCALPS
+#3 Maya – 920 SCALPS
+
+Add a "View Full Leaderboard" button.
+
+---
+
+4. UPGRADE THE TOURNAMENT CARDS
+
+Make tournaments feel more important.
+
+Improve tournament cards to include:
+
+Tournament name
+Game type
+Prize pool
+Players joined / capacity
+Join button
+
+Example:
+
+Mini Golf Masters
+Prize Pool: 150 SCALPS
+Players: 8 / 16
+
+Visually emphasize the prize pool number with larger text and glow.
+
+---
+
+5. IMPROVE THE WALLET PANEL
+
+The "Add Scalps" box currently looks like an advertisement.
+
+Convert it into a full wallet card.
+
+Display:
+
+Wallet Balance: 4 SCALPS
+
+Buttons:
+
+Add Scalps
+Withdraw
+Transaction History
+
+This panel should feel like part of the platform, not a banner.
+
+---
+
+6. ADD A PLAYER PROFILE CARD
+
+Add a small user profile panel showing player identity and stats.
+
+Display:
+
+Username
+Level
+Win rate
+Total wins
+Total Scalps won
+
+Example:
+
+Beau
+Level 12
+Win Rate: 57%
+Wins: 84
+Scalps Won: 420
+
+This makes the dashboard feel more personalized.
+
+---
+
+7. ADD ICONS TO TOP STATS
+
+Improve the stat bar by adding icons.
+
+Active Players → user icon
+Live Matches → lightning icon
+Scalps Wagered → coin icon
+Biggest Win → trophy icon
+
+Use subtle glow accents to highlight the numbers.
+
+---
+
+8. ADD LIVE ACTIVITY FEED
+
+Add a small activity feed panel showing recent platform events.
+
+Examples:
+
+Alex won 25 SCALPS in Chess
+Jordan joined a Mini Golf match
+Maya won the Chess Grand Prix
+Clan BBC reached Level 5
+
+Update this feed periodically.
+
+This helps make the platform feel alive.
+
+---
+
+9. ADD SMALL ANIMATIONS
+
+Add subtle UI motion:
+
+* counters animate upward when loading
+* hover animations on cards
+* join buttons glow slightly
+* live match rows pulse lightly when new matches appear
+
+Avoid excessive motion; keep it premium.
+
+---
+
+10. FINAL GOAL
+
+The dashboard should feel like a real competitive gaming hub.
+
+Users should immediately see:
+
+Start a Match
+Live Matches
+Leaderboard
+Tournaments
+Wallet
+Personal Stats
+
+The page should feel active, data-driven, and focused around playing games rather than looking like a static interface.

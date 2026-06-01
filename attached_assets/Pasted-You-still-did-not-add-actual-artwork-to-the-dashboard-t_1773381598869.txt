@@ -1,0 +1,58 @@
+You still did not add actual artwork to the dashboard tab.
+
+I need a real illustrated hero/art section on the main dashboard page, not just gradients, glows, or cleaner cards.
+
+Target page:
+The logged-in dashboard/home page that shows:
+- Welcome back, Beau
+- Featured Games
+- All Games
+
+What I want on that dashboard:
+1. Add a large hero artwork section at the top of the dashboard.
+2. The hero must contain visible illustrated scene art behind the content.
+3. The artwork should be custom and inspired by these games:
+   - Chess
+   - Mini Golf
+   - Connect 4
+   - Air Hockey
+   - Rock Paper Scissors
+   - Dots & Boxes
+   - 8-Ball Pool
+   - Bowling
+   - Cup Pong
+   - Tron
+   - Tower Stack
+
+Important:
+- Do NOT use only gradients.
+- Do NOT use only abstract blurred shapes.
+- Do NOT leave the dashboard background plain.
+- I want actual visual artwork/illustration on the dashboard, similar to how duel.com has a large illustrated world scene.
+
+Artwork direction:
+- A single connected illustrated world
+- Futuristic arcade / skill-game arena
+- Chess monuments, mini golf ramps, connect-4 structures, glowing air hockey trails, pool balls, bowling lanes, neon tron lines, cup pong tables, tower stack skyline elements
+- Dark, cinematic, premium, immersive
+- Should feel like the games exist inside one world
+
+Layout instructions:
+1. Put the illustrated hero section directly below the navbar.
+2. Put the “Welcome back, Beau” content layered over or directly above the hero artwork.
+3. Keep Featured Games below the hero, or partially overlapping the hero section.
+4. The game cards should feel like they float in front of the artwork.
+5. Add a dark overlay on the artwork so text remains readable.
+6. Keep the glassmorphism style for cards and navbar.
+
+Implementation requirement:
+- Add an actual image or illustrated background asset to the dashboard hero section.
+- If needed, create a new hero component specifically for the dashboard.
+- Use a background-image, image component, or generated illustration asset in the dashboard layout.
+- The dashboard must visibly include artwork when I load the page.
+
+Do not redesign the login page.
+Do not only update shared colors.
+Do not stop at gradients.
+
+I want an obvious illustrated dashboard hero section with real scene artwork.

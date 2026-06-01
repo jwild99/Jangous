@@ -1,0 +1,295 @@
+Redesign and upgrade the “Add Funds” tab to create a premium, modern, and gamified deposit experience that feels exciting, smooth, and trustworthy.
+
+The goal is to make depositing money feel rewarding and interactive while still maintaining a clean and professional payment interface.
+
+==================================================
+SUPPORTED PAYMENT METHODS
+==================================================
+
+The Add Funds page must support only these methods:
+
+CRYPTO
+• Bitcoin (BTC)
+• Ethereum (ETH)
+• Solana (SOL)
+
+PAYMENT APPS / CARDS
+• Apple Pay
+• Venmo
+• Visa
+
+Remove all other payment methods.
+
+==================================================
+PAGE STRUCTURE
+==================================================
+
+Design the page with a clear hierarchy.
+
+1. Page Header
+Title: “Add Funds”
+
+Subtitle example:
+“Add funds to your account to start playing and competing.”
+
+2. Payment Method Sections
+
+Create two sections:
+
+CRYPTO DEPOSITS
+CARD / APP PAYMENTS
+
+Each section should display large clickable cards.
+
+==================================================
+CRYPTO DEPOSIT CARDS
+==================================================
+
+Create three crypto cards:
+
+• Bitcoin (BTC)
+• Ethereum (ETH)
+• Solana (SOL)
+
+Each card should include:
+
+• crypto logo
+• name
+• ticker symbol
+• glass-style card design
+• hover lift animation
+• glow accent
+
+Color accents:
+
+Bitcoin → orange glow  
+Ethereum → blue/purple glow  
+Solana → neon purple/green glow  
+
+When clicked, open the deposit interface.
+
+Deposit interface should include:
+
+• wallet address
+• QR code
+• copy address button
+• network label
+• short instructions
+
+Example instructions:
+
+“Send BTC to the address below. Funds will appear after network confirmations.”
+
+Security notice:
+
+“Only send the selected cryptocurrency to this address.”
+
+==================================================
+CARD / APP PAYMENTS
+==================================================
+
+Create payment cards for:
+
+• Apple Pay
+• Venmo
+• Visa
+
+Each card should show:
+
+• official logo
+• name
+• hover animation
+• glass card styling
+• glow on selection
+
+When selected, open a payment panel.
+
+Payment panel should include:
+
+• deposit amount field
+• quick amount buttons ($10 $25 $50 $100)
+• payment summary
+• confirm button
+
+Example:
+
+“You are adding: $50  
+Balance after deposit: $X”
+
+==================================================
+GAMIFIED DEPOSIT EXPERIENCE
+==================================================
+
+Make depositing money feel rewarding and interactive.
+
+When a deposit succeeds:
+
+• trigger a success animation
+• animate the wallet balance increasing
+• show a congratulatory confirmation message
+• add subtle celebratory visual effects
+
+Examples of success visuals:
+
+• balance number counts upward
+• glow pulse around balance pill
+• floating “+ $amount” animation
+• small light burst or particles
+• success checkmark animation
+
+Keep the effects subtle and premium.
+
+==================================================
+SUCCESS MESSAGE
+==================================================
+
+Show a confirmation card after deposit.
+
+Example messages:
+
+“Funds Added Successfully”
+“Your balance has been updated”
+“You’re ready to play”
+
+Optional branded message:
+
+“You’re funded and ready to compete.”
+
+Include buttons:
+
+• Play Now
+• Go to Lobby
+
+==================================================
+CASH REGISTER SUCCESS SOUND
+==================================================
+
+Add a satisfying deposit confirmation sound.
+
+When a deposit completes successfully:
+
+Play a short sound similar to:
+
+• cash register “cha-ching”
+• coin drop
+• digital wallet confirmation tone
+
+Sound requirements:
+
+• under 1 second
+• crisp and satisfying
+• not overly loud
+• plays once per deposit
+
+Trigger sound when:
+
+• crypto deposit is confirmed
+• Apple Pay payment succeeds
+• Venmo payment succeeds
+• Visa payment succeeds
+• wallet balance updates
+
+The sound should play exactly when the success animation appears.
+
+==================================================
+BALANCE UPDATE ANIMATION
+==================================================
+
+When funds are added:
+
+• animate the balance increasing
+• briefly glow the balance pill in the navbar
+• show floating “+ $amount”
+• optional coin/chip icon animation
+
+This reinforces the successful deposit moment.
+
+==================================================
+MICROINTERACTIONS
+==================================================
+
+Improve interaction across the page.
+
+Add:
+
+• hover lift on payment cards
+• glow when selecting payment method
+• click animation on buttons
+• copy address confirmation animation
+• QR code expand on click
+• smooth loading animation during payment processing
+
+==================================================
+DEPOSIT FLOW STATES
+==================================================
+
+The deposit flow should feel guided.
+
+Steps:
+
+1. Choose payment method
+2. Enter amount or crypto details
+3. Confirm deposit
+4. Processing
+5. Success animation
+
+Visually show progress between steps.
+
+==================================================
+VISUAL DESIGN
+==================================================
+
+The Add Funds page must match the platform design system.
+
+Use:
+
+• dark premium theme
+• glassmorphism panels
+• subtle neon accent lighting
+• soft gradients
+• smooth hover animations
+• clean typography
+• balanced spacing
+
+Avoid clutter or overly flashy effects.
+
+==================================================
+SECURITY AND TRUST
+==================================================
+
+Add trust indicators:
+
+• secure payment icon
+• encrypted transaction notice
+• confirmation message when funds arrive
+• minimum deposit notice if applicable
+
+Example message:
+
+“All payments are securely processed.”
+
+==================================================
+MOBILE SUPPORT
+==================================================
+
+Ensure the Add Funds page works well on mobile.
+
+• cards stack vertically
+• QR codes resize properly
+• buttons remain easy to tap
+• payment flow stays simple
+
+==================================================
+FINAL GOAL
+==================================================
+
+The Add Funds tab should feel like a professional payment experience that is:
+
+• simple
+• secure
+• gamified
+• visually polished
+• satisfying to use
+• consistent with the JANGO design system
+
+Depositing funds should feel like a rewarding moment, reinforced with animations, balance updates, and a satisfying “cha-ching” confirmation sound.

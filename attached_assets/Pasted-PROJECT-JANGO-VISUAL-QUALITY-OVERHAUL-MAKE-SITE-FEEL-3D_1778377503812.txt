@@ -1,0 +1,489 @@
+PROJECT: JANGO VISUAL QUALITY OVERHAUL — MAKE SITE FEEL 3D, PREMIUM, AND LESS FLAT
+
+GOAL:
+Upgrade the entire Jango UI from a flat 2D dashboard into a layered, cinematic, high-quality digital arena.
+
+The site should feel:
+- deeper
+- more premium
+- more alive
+- more interactive
+- more like a game world, not a flat website
+
+==================================================
+1. GLOBAL DEPTH SYSTEM
+==================================================
+
+Create a consistent z-axis layer system:
+
+Layer 0: Far background
+Layer 1: Ambient motion effects
+Layer 2: Main cards and panels
+Layer 3: Hovered / active objects
+Layer 4: Modals and overlays
+Layer 5: Cinematic win / tournament effects
+
+Every component should clearly belong to a depth layer.
+
+Do not let everything sit on the same flat plane.
+
+==================================================
+2. BACKGROUND DEPTH
+==================================================
+
+Replace plain dark gradients with layered backgrounds.
+
+Each page should have:
+
+1. Base gradient
+- very dark navy / black / purple tones
+
+2. Noise texture
+- subtle grain so background does not feel empty
+
+3. Ambient particles
+- slow moving, low opacity
+- no lag
+
+4. Radial glow zones
+- behind important sections like Play button, leaderboard podium, rank card, deposit card
+
+5. Optional faint grid / hologram lines
+- especially on game pages
+
+Background should feel like an environment, not a flat color.
+
+==================================================
+3. CARD DEPTH SYSTEM
+==================================================
+
+Upgrade all cards from flat rectangles to layered premium panels.
+
+Each card should include:
+- dark glass base
+- subtle inner gradient
+- soft outer shadow
+- inner shadow
+- thin neon border
+- highlight line on top edge
+- very subtle backdrop blur
+
+Default card:
+- slightly raised
+
+Hover card:
+- translateY(-4px)
+- scale(1.01)
+- stronger glow
+- brighter border
+
+Active card:
+- pressed-in effect
+- slight scale down
+
+Important cards:
+- stronger ambient glow behind them
+
+Cards should feel physical, like floating glass panels.
+
+==================================================
+4. BUTTON QUALITY UPGRADE
+==================================================
+
+All buttons need more depth and feedback.
+
+Primary buttons:
+- strong gradient
+- thick glow
+- inner highlight
+- outer shadow
+- hover lift
+- click press animation
+
+Example:
+PLAY button should feel like the most important object on screen.
+
+Button states:
+- idle
+- hover
+- active/pressed
+- loading
+- success
+- error
+
+Hover:
+- glow grows
+- button lifts slightly
+
+Click:
+- scale down to 0.96
+- quick flash
+
+Loading:
+- spinner or shimmer
+
+Success:
+- checkmark flash
+
+Error:
+- red glow + small shake
+
+==================================================
+5. MAGNETIC / 3D HOVER EFFECTS
+==================================================
+
+Add cursor-reactive hover effects to important cards and buttons.
+
+For key cards:
+- slight rotateX / rotateY based on mouse position
+- light gradient follows cursor
+- border glow moves subtly
+
+Keep it subtle:
+- max rotation: 3–6 degrees
+- no extreme tilting
+
+Use this on:
+- game cards
+- item shop cards
+- leaderboard podium cards
+- tournament cards
+- rank cards
+- Play button container
+
+This will make the UI feel more expensive and alive.
+
+==================================================
+6. HERO SECTION DEPTH
+==================================================
+
+The homepage hero needs to feel cinematic.
+
+Add:
+- floating game icon
+- rotating glow ring behind icon
+- layered radial lighting
+- particles around selected game
+- subtle background motion
+- game-specific scene depth
+
+The selected game should feel like it exists in a world.
+
+When switching games:
+- background crossfades
+- glow color changes
+- particles change
+- game icon floats in
+- title animates in
+
+==================================================
+7. GAME WORLD QUALITY
+==================================================
+
+Each game should have a unique background world.
+
+Game worlds should not just be static gradients.
+
+Each game needs:
+- themed background
+- themed particles
+- themed glow color
+- themed motion pattern
+
+Examples:
+
+Tron:
+- neon grid floor
+- cyan light trails
+- electric particles
+- dark cyber arena
+
+Block Blast:
+- floating colored blocks
+- falling puzzle pieces
+- pink/purple/blue glow
+- soft block burst particles
+
+Chess:
+- dark royal arena
+- gold lighting
+- chessboard perspective floor
+- floating chess piece shadows
+
+Mini Golf:
+- neon green turf
+- glowing ball trail
+- curved course lines
+- flag silhouette
+
+Air Hockey:
+- blue neon table
+- puck trail
+- glowing rails
+
+Racing:
+- speed lines
+- road perspective
+- headlight streaks
+
+The background should make users want to switch games just to see the world.
+
+==================================================
+8. LIGHTING SYSTEM
+==================================================
+
+Lighting needs to feel intentional.
+
+Add visual light sources:
+- Play button emits orange/pink light
+- GOAT rank card emits pink/gold light
+- Top leaderboard player emits gold light
+- Deposit confirmation emits green/blue light
+- Tournament cards emit gold/purple light
+
+Do not randomly add glow.
+Every glow should come from something important.
+
+==================================================
+9. MODALS / OVERLAYS
+==================================================
+
+Modals currently need more premium depth.
+
+Upgrade modals with:
+- strong backdrop blur
+- darker overlay
+- scale/fade entrance
+- thick shadow
+- glowing border
+- inner highlight
+- close button hover effect
+
+Modal entrance:
+- opacity 0 → 1
+- scale 0.96 → 1
+- duration 180–250ms
+
+Important modals:
+- match confirmation
+- deposit confirmation
+- tournament join
+- win/loss screen
+
+==================================================
+10. PROGRESS BARS
+==================================================
+
+Progress bars should feel alive.
+
+Add:
+- animated fill
+- glow on filled portion
+- small shine sweep
+- rounded ends
+- color based on context
+
+Examples:
+XP bar = blue/purple glow
+Battle pass = orange/pink glow
+Rank progress = gold/pink glow
+Challenge progress = purple glow
+
+==================================================
+11. LEADERBOARD DEPTH
+==================================================
+
+Leaderboard should feel like a ranked arena.
+
+Add:
+- top 3 podium with true depth
+- spotlight behind #1
+- glow aura around top players
+- current user row highlight
+- row hover lift
+- rank movement animations
+
+Empty leaderboard should not feel dead:
+- animated trophy
+- glowing CTA
+- “Play 3 matches to get ranked”
+
+==================================================
+12. GLOBAL STATS DEPTH
+==================================================
+
+Global stats should feel like a live control room.
+
+Add:
+- animated stat cards
+- number count-up
+- live feed panel
+- glowing verification badges
+- activity chart with animated line
+- platform activity meter
+
+The fair play log should not look like a spreadsheet.
+Turn rows into richer cards or add depth, icons, and expandable states.
+
+==================================================
+13. ITEM SHOP DEPTH
+==================================================
+
+Item shop should be the most visually exciting area.
+
+Upgrade item cards:
+- rarity-based lighting
+- animated borders
+- item preview motion
+- hover zoom
+- “try preview” state
+
+Rarity styles:
+- Common: subtle gray glow
+- Uncommon: green glow
+- Rare: blue glow
+- Epic: purple animated glow
+- Legendary: gold animated glow + particles
+
+Legendary items should feel valuable instantly.
+
+==================================================
+14. TRANSACTIONS / MATCH HISTORY
+==================================================
+
+These areas currently feel like lists.
+
+Upgrade each row/card:
+- icon
+- color-coded glow
+- expandable details
+- hover state
+- animated amount
+
+Win:
+- green glow
+
+Loss:
+- red dim glow
+
+Deposit:
+- blue glow
+
+Tournament:
+- gold glow
+
+==================================================
+15. MICRO-INTERACTIONS
+==================================================
+
+Add micro-interactions everywhere.
+
+Examples:
+- tabs slide underline
+- nav item glow on active
+- icons slightly bounce on click
+- cards lift on hover
+- numbers count up
+- success states flash
+- error states shake
+- tooltips fade/slide in
+
+Every clickable thing should feel responsive.
+
+==================================================
+16. SOUND + HAPTIC SYNC
+==================================================
+
+Use visual effects with sounds/haptics.
+
+Examples:
+- button click = small haptic + click sound
+- win animation = glow + sound + haptic
+- deposit confirmed = balance glow + sound
+- error = shake + warning haptic
+
+Do not overdo it.
+Make it premium and controlled.
+
+==================================================
+17. MOBILE QUALITY
+==================================================
+
+Mobile should not feel like a squeezed desktop.
+
+Mobile rules:
+- larger tap targets
+- reduced clutter
+- fewer columns
+- sticky Play button if needed
+- strong hierarchy
+- haptics enabled where supported
+
+Do not use heavy hover-only effects on mobile.
+Replace with tap feedback.
+
+==================================================
+18. PERFORMANCE RULES
+==================================================
+
+Visual upgrades cannot make the app laggy.
+
+Use:
+- transform
+- opacity
+- GPU-friendly animations
+- CSS variables
+- lightweight particles
+- requestAnimationFrame when needed
+
+Avoid:
+- too many DOM particles
+- huge blur effects everywhere
+- constant layout recalculation
+- heavy canvas if unnecessary
+
+Target:
+- smooth 60fps
+- fast load
+- no janky scrolling
+
+==================================================
+19. STYLE DIRECTION
+==================================================
+
+Overall style should be:
+
+Cyber Arena + Luxury Casino hybrid
+
+Meaning:
+- dark premium base
+- neon energy
+- gold accents for high status
+- clean typography
+- strong lighting
+- cinematic depth
+- not childish
+- not cluttered
+
+Think:
+- competitive esports arena
+- premium casino interface
+- futuristic game lobby
+
+==================================================
+FINAL EXPECTATION
+==================================================
+
+After this overhaul, Jango should no longer feel like flat cards on a page.
+
+It should feel like:
+- a living game arena
+- a premium digital casino environment
+- a high-stakes competition platform
+- a place where every click has weight
+
+The main improvement should be:
+DEPTH + MOTION + LIGHTING + FEEDBACK.
+
+Do not only add more colors.
+Make the interface feel physically layered, alive, and premium.

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Duel — Air Hockey (Working)</title>
+<style>
+  html,body{margin:0;background:#0b0f14;color:#e5e7eb;font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+  #wrap{padding:12px;display:flex;flex-direction:column;align-items:center;gap:8px}
+  canvas{background:radial-gradient(ellipse at center,#0f172a 0%,#0b0f14 70%);border:1px solid #1f2937;border-radius:16px;touch-action:none}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:center}
+  .tag{background:#111827;border:1px solid #374151;padding:.35rem .6rem;border-radius:8px}
+  .btn{cursor:pointer;background:#111827;border:1px solid #374151;color:#e5e7eb;padding:.45rem .8rem;border-radius:8px}
+  .btn:hover{background:#0f172a}
+  .accent{color:#22d3ee}
+</style>
+</head>
+<body>
+<div id="wrap">
+  <div class="row">
+    <span class="tag">Controls: Left = W/S or drag | Right = ↑/↓ or drag</span>
+    <span class="tag">Pause = P</span>
+    <button id="reset" class="btn">Reset</button>
+    <label class="tag"><input id="aiToggle" type="checkbox" /> Right Paddle AI</label>
+    <span id="msg" class="tag">First to 7 wins</span>
+  </div>
+  <canvas id="game" width="900" height="520"></canvas>
+</div>
+
+<script>
+/* ===========
+   Air Hockey
+   =========== */
+
+const cvs = document.getElementById('game');
+const ctx = cvs.getContext('2d');
+const W = cvs.width, H = cvs.height;
+
+const state = { running:true, target:7, left:0, right:0 };
+const uiMsg = document.getElementById('msg');
+document.getElementById('reset').onclick = () => reset();
+const aiToggle = document.getElementById('aiToggle');
+
+const padL = { x:120, y:H/2, r:28, color:'#22d3ee', speed:560, vy:0, mass:2 };
+const padR = { x:W-120, y:H/2, r:28, color:'#a78bfa', speed:560, vy:0, mass:2 };
+const puck  = { x:W/2, y:H/2, r:13, color:'#f59e0b', vx:0, vy:0, mass:1, mu:0.996, max:1000 };
+
+const table = { m:22, goal:150, wallRest:0.96 };
+
+const keys = new Set();
+addEventListener('keydown', e=>{
+  if(e.code==='KeyP'){ state.running=!state.running; return; }
+  keys.add(e.code);
+});
+addEventListener('keyup', e=> keys.delete(e.code));
+
+/* Mouse/touch drag for paddles (drag inside each half) */
+let dragL=false, dragR=false;
+function canvasPos(evt){
+  const r=cvs.getBoundingClientRect();
+  return { x:(evt.clientX-r.left)*cvs.width/r.width, y:(evt.clientY-r.top)*cvs.height/r.height };
+}
+cvs.addEventListener('mousedown',e=>{
+  const p=canvasPos(e);
+  if(p.x<W/2) dragL=true; else dragR=true;
+});
+addEventListener('mouseup',()=>{dragL=false;dragR=false;});
+cvs.addEventListener('mousemove',e=>{
+  if(!dragL && !dragR) return;
+  const p=canvasPos(e);
+  if(dragL){ padL.y = clamp(p.y, table.m+padL.r, H-table.m-padL.r); }
+  if(dragR){ padR.y = clamp(p.y, table.m+padR.r, H-table.m-padR.r); }
+});
+/* Touch */
+cvs.addEventListener('touchstart',e=>{
+  for(const t of e.changedTouches){
+    const p=canvasPos(t);
+    if(p.x<W/2) dragL=true; else dragR=true;
+  }
+},{passive:true});
+cvs.addEventListener('touchend',()=>{dragL=false;dragR=false;});
+cvs.addEventListener('touchmove',e=>{
+  e.preventDefault();
+  const t=e.changedTouches[0]; if(!t) return;
+  const p=canvasPos(t);
+  if(dragL){ padL.y = clamp(p.y, table.m+padL.r, H-table.m-padL.r); }
+  if(dragR){ padR.y = clamp(p.y, table.m+padR.r, H-table.m-padR.r); }
+},{passive:false});
+
+/* Helpers */
+function clamp(v,a,b){ return Math.max(a,Math.min(b,v)); }
+function len(x,y){ return Math.hypot(x,y); }
+
+/* Reset / serve */
+function reset(){
+  state.left = state.right = 0;
+  state.running = true;
+  uiMsg.textContent = 'First to 7 wins';
+  serve(Math.random()<.5?-1:1);
+}
+function serve(dir){
+  puck.x=W/2; puck.y=H/2;
+  const a = (Math.random()*Math.PI/3 - Math.PI/6);
+  const s = 420 + Math.random()*120;
+  puck.vx = dir * s * Math.cos(a);
+  puck.vy = s * Math.sin(a);
+}
+
+/* Draw */
+function drawTable(){
+  const m = table.m;
+  ctx.strokeStyle = 'rgba(34,211,238,.8)';
+  ctx.lineWidth = 2;
+  roundRect(m,m,W-2*m,H-2*m,16); ctx.stroke();
+
+  // center line + dot
+  ctx.beginPath(); ctx.moveTo(W/2,m); ctx.lineTo(W/2,H-m); ctx.stroke();
+  ctx.beginPath(); ctx.arc(W/2,H/2,60,0,Math.PI*2); ctx.stroke();
+
+  // goals indicator
+  ctx.save(); ctx.globalAlpha=.22; ctx.fillStyle='#10b981';
+  ctx.fillRect(m-2,H/2-table.goal/2,6,table.goal);
+  ctx.fillRect(W-m-4,H/2-table.goal/2,6,table.goal);
+  ctx.restore();
+}
+function roundRect(x,y,w,h,r){
+  const rr=Math.min(r,w/2,h/2);
+  ctx.beginPath();
+  ctx.moveTo(x+rr,y);
+  ctx.arcTo(x+w,y,x+w,y+h,rr);
+  ctx.arcTo(x+w,y+h,x,y+h,rr);
+  ctx.arcTo(x,y+h,x,y,rr);
+  ctx.arcTo(x,y,x+w,y,rr);
+  ctx.closePath();
+}
+function drawScores(){
+  ctx.fillStyle='#e5e7eb'; ctx.font='700 24px system-ui'; ctx.textAlign='center';
+  ctx.fillText(state.left, W/2-80, 42);
+  ctx.fillText('—', W/2, 42);
+  ctx.fillText(state.right, W/2+80, 42);
+}
+function drawPaddle(p){
+  ctx.beginPath(); ctx.fillStyle=p.color;
+  ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.strokeStyle='rgba(255,255,255,.08)'; ctx.lineWidth=5;
+  ctx.arc(p.x,p.y,p.r-8,0,Math.PI*2); ctx.stroke();
+}
+function drawPuck(){
+  const g=ctx.createRadialGradient(puck.x-4,puck.y-4,4,puck.x,puck.y,puck.r+6);
+  g.addColorStop(0,'#fde68a'); g.addColorStop(1,puck.color);
+  ctx.fillStyle=g; ctx.beginPath();
+  ctx.arc(puck.x,puck.y,puck.r,0,Math.PI*2); ctx.fill();
+}
+
+/* Update */
+function updatePaddles(dt){
+  // keyboard
+  padL.vy = 0; padR.vy = 0;
+  if(keys.has('KeyW')) padL.vy -= padL.speed;
+  if(keys.has('KeyS')) padL.vy += padL.speed;
+  if(!aiToggle.checked){
+    if(keys.has('ArrowUp')) padR.vy -= padR.speed;
+    if(keys.has('ArrowDown')) padR.vy += padR.speed;
+  } else {
+    // simple AI: ease toward puck y when puck on right half
+    const target = (puck.x > W/2) ? puck.y : H/2;
+    const dy = target - padR.y;
+    padR.vy = clamp(dy*5, -padR.speed, padR.speed);
+  }
+
+  padL.y = clamp(padL.y + padL.vy*dt, table.m+padL.r, H-table.m-padL.r);
+  padR.y = clamp(padR.y + padR.vy*dt, table.m+padR.r, H-table.m-padR.r);
+}
+
+function updatePuck(dt){
+  puck.x += puck.vx*dt; puck.y += puck.vy*dt;
+
+  // friction
+  puck.vx *= puck.mu; puck.vy *= puck.mu;
+
+  // speed clamps
+  const s=len(puck.vx,puck.vy);
+  if(s>puck.max){ const k=puck.max/s; puck.vx*=k; puck.vy*=k; }
+  if(s<8){ puck.vx=0; puck.vy=0; }
+
+  const m=table.m, top=m, bot=H-m;
+  const goalTop = H/2 - table.goal/2;
+  const goalBot = H/2 + table.goal/2;
+
+  // Left/Right with goal gaps
+  if(puck.x - puck.r <= m){
+    if(puck.y>goalTop && puck.y<goalBot){
+      score('RIGHT'); return;
+    } else {
+      puck.x = m + puck.r;
+      puck.vx = -puck.vx*table.wallRest;
+    }
+  }
+  if(puck.x + puck.r >= W-m){
+    if(puck.y>goalTop && puck.y<goalBot){
+      score('LEFT'); return;
+    } else {
+      puck.x = W-m - puck.r;
+      puck.vx = -puck.vx*table.wallRest;
+    }
+  }
+  // top/bottom
+  if(puck.y - puck.r <= top){ puck.y = top + puck.r; puck.vy = -puck.vy*table.wallRest; }
+  if(puck.y + puck.r >= bot){ puck.y = bot - puck.r; puck.vy = -puck.vy*table.wallRest; }
+
+  // collisions with paddles
+  paddleHit(padL);
+  paddleHit(padR);
+}
+
+function paddleHit(p){
+  const dx=puck.x-p.x, dy=puck.y-p.y, dist=Math.hypot(dx,dy), min= puck.r + p.r;
+  if(dist===0 || dist>=min) return;
+
+  // push out of overlap
+  const nx=dx/dist, ny=dy/dist, overlap=(min-dist);
+  puck.x += nx*overlap; puck.y += ny*overlap;
+
+  // relative velocity along normal
+  const rvx = puck.vx - 0; // paddles have only vy
+  const rvy = puck.vy - p.vy;
+  const relN = rvx*nx + rvy*ny;
+  if(relN > 0) return;
+
+  const e=0.9; // lively hit
+  const invMass = 1/puck.mass + 1/p.mass;
+  const j = -(1+e)*relN / invMass;
+
+  puck.vx += (j*nx)/puck.mass + nx*24;   // extra push feels good
+  puck.vy += (j*ny)/puck.mass + p.vy*0.05;
+
+  // small tangential tweak
+  const tx = -ny, ty = nx;
+  const relT = rvx*tx + rvy*ty;
+  const jt = -relT / invMass;
+  puck.vx += (jt*tx)/puck.mass * 0.02;
+  puck.vy += (jt*ty)/puck.mass * 0.02;
+}
+
+function score(side){
+  if(side==='LEFT') state.left++; else state.right++;
+  if(state.left>=state.target || state.right>=state.target){
+    state.running=false;
+    uiMsg.innerHTML = `Match Over — <span class="accent">${state.left>state.right?'Left':'Right'}</span> wins`;
+  }else{
+    uiMsg.textContent = `Goal for ${side}! Press P to pause/resume`;
+    serve(side==='LEFT'?1:-1);
+  }
+}
+
+/* Main loop — fixed timestep for stable physics */
+let last=performance.now(), acc=0, step=1/60;
+function loop(t=performance.now()){
+  const dt=(t-last)/1000; last=t; acc+=dt;
+  while(acc>=step){
+    if(state.running){ updatePaddles(step); updatePuck(step); }
+    acc-=step;
+  }
+
+  // render
+  ctx.clearRect(0,0,W,H);
+  drawTable(); drawScores(); drawPaddle(padL); drawPaddle(padR); drawPuck();
+
+  requestAnimationFrame(loop);
+}
+
+/* Start */
+reset();
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>

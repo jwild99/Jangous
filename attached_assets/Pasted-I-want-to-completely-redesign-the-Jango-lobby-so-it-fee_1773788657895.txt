@@ -1,0 +1,173 @@
+I want to completely redesign the Jango lobby so it feels like a AAA game lobby, not a crowded dashboard.
+
+Right now there is too much going on. I want a clean, immersive, premium experience similar to Fortnite, Call of Duty, or Valorant.
+
+-----------------------------------
+CORE DESIGN PHILOSOPHY
+-----------------------------------
+- One primary focus at a time
+- Minimal clutter
+- Strong visual hierarchy
+- Cinematic feel
+- Smooth transitions and animations
+- Everything should feel intentional and premium
+
+The lobby should feel like a GAME, not a website.
+
+-----------------------------------
+MAIN LOBBY STRUCTURE
+-----------------------------------
+
+1. HERO SECTION (FULL WIDTH)
+This is the main focus of the entire page.
+
+Include:
+- Large PLAY button (center or slightly right)
+- Current selected game (with large visual or animation)
+- Player avatar + level
+- Current rank (if ranked mode selected)
+- Balance (Scalps)
+
+Optional:
+- Subtle animated background (particles, glow, motion)
+- Rotating featured game highlight
+
+IMPORTANT:
+This section should dominate the screen.
+Nothing else should compete with it.
+
+-----------------------------------
+2. PLAY FLOW (LIKE AAA GAMES)
+-----------------------------------
+
+Clicking PLAY should open a smooth step-by-step flow:
+
+Step 1: Select Mode
+- Casual
+- Ranked
+- Tournament
+- Private Match
+
+Step 2: Select Game
+- Clean, large cards (NOT cramped grid)
+- Fewer items per row
+- Smooth hover animations
+
+Step 3: Match Setup
+- Wager amount
+- Public / Private toggle
+- Join code if needed
+
+Final Step:
+- Big button: START MATCH / QUEUE
+
+Make this flow feel like a guided experience, not a form.
+
+-----------------------------------
+3. RIGHT SIDE PANEL (SECONDARY INFO)
+-----------------------------------
+
+Move ALL secondary info into a clean side panel.
+
+Include:
+- Friends list (who’s online)
+- Party system (invite friends)
+- Quick messages / social activity
+
+This should be collapsible.
+
+-----------------------------------
+4. LOWER CONTENT (CLEAN SECTIONS)
+-----------------------------------
+
+Below the hero, organize content into clean horizontal sections:
+
+ONLY show 1–2 at a time, not everything stacked.
+
+Sections:
+- Continue Playing (if user has active match)
+- Challenges (collapsed by default)
+- Tournaments (preview only)
+- Leaderboards (preview only)
+
+Each section:
+- Minimal
+- Clean cards
+- “View All” button instead of full lists
+
+-----------------------------------
+REMOVE CURRENT PROBLEMS
+-----------------------------------
+
+- Remove stacked cards everywhere
+- Remove too many equally important sections
+- Do NOT show everything at once
+- Do NOT overwhelm the user with choices immediately
+
+-----------------------------------
+ANIMATIONS (VERY IMPORTANT)
+-----------------------------------
+
+Add:
+- Smooth fade/slide transitions between states
+- Button hover animations
+- Glow effects on selection
+- Subtle motion in background
+- Clean loading transitions
+
+No janky or instant changes.
+
+-----------------------------------
+VISUAL STYLE
+-----------------------------------
+
+Keep Jango identity:
+- Dark UI
+- Neon accents (pink/orange/blue)
+
+But improve:
+- Spacing
+- Consistency
+- Typography hierarchy
+- Card alignment
+
+Everything should feel polished and consistent.
+
+-----------------------------------
+USER EXPERIENCE GOALS
+-----------------------------------
+
+When a user opens the lobby:
+- They instantly see PLAY
+- They understand what to do within 2 seconds
+- They are not overwhelmed
+
+When they want to play:
+- 3–4 clicks max to start a match
+
+When they explore:
+- Content is organized, not chaotic
+
+-----------------------------------
+MOBILE VERSION
+-----------------------------------
+
+- Hero + PLAY stays at top
+- Side panel becomes slide-out menu
+- Sections become swipeable
+- No long cluttered scrolling
+
+-----------------------------------
+FINAL RESULT I WANT
+-----------------------------------
+
+The lobby should feel like:
+- A real gaming platform
+- Premium and modern
+- Clean and focused
+- Addictive and easy to use
+
+Not like a dashboard full of widgets.
+
+It should feel like:
+“I open this → I click PLAY → I’m in a game in seconds”

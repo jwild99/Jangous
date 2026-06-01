@@ -1,0 +1,123 @@
+Reorganize the lobby dashboard to make the page cleaner and easier to scan.
+
+The current UI components are good, but there is too much information shown at the same time. The page needs clearer structure and grouping.
+
+The goal is to make the dashboard feel organized, premium, and easy to understand.
+
+---
+
+SECTION STRUCTURE
+
+Divide the dashboard into three main zones:
+
+1. PLAY ZONE (top)
+2. COMPETITIVE ZONE (middle)
+3. DISCOVER ZONE (bottom)
+
+Each zone should have clear spacing between them.
+
+---
+
+PLAY ZONE (TOP)
+
+The top of the page should focus on the **primary action: starting a match**.
+
+This zone should contain:
+
+Start Match card
+Quick Match button
+Private Match button
+Wager selection
+
+Make this the largest card on the page.
+
+Ranked Arena should sit directly under Start Match.
+
+These two features are the core gameplay actions.
+
+---
+
+COMPETITIVE ZONE (MIDDLE)
+
+This zone is about competition and activity.
+
+Move these sections here:
+
+Live Matches
+Tournaments
+
+Live Matches should show a maximum of 4 matches.
+
+Add a “View More” button if there are more matches.
+
+Tournaments should appear as a row of 3 cards.
+
+---
+
+DISCOVER ZONE (BOTTOM)
+
+Move the game catalog (Quick Play) to the bottom of the page.
+
+This section is not the primary action, so it should not sit near the top.
+
+Users who want to browse games can scroll down.
+
+---
+
+SIDEBAR STRUCTURE
+
+The right sidebar currently has too many stacked modules.
+
+Reorder them like this:
+
+User Profile
+Wallet
+Current GOAT
+Top Players
+Live Activity
+
+Keep each card similar size and evenly spaced.
+
+---
+
+VISUAL CLEANUP
+
+Reduce visual clutter across the page.
+
+Rules:
+
+Limit Live Matches to 4
+Limit Tournaments to 3
+Limit Leaderboard to Top 5
+Keep card padding consistent
+Increase spacing between sections
+
+Avoid stacking too many cards without spacing.
+
+---
+
+SCROLL EXPERIENCE
+
+The page should now scroll naturally like this:
+
+Start Match
+Ranked Arena
+
+Live Matches
+Tournaments
+
+Quick Play Game Catalog
+
+---
+
+FINAL GOAL
+
+When a player opens the lobby they should immediately understand:
+
+Where to start a match
+Where ranked play is
+What matches are live
+What tournaments are active
+Where to browse games
+
+The page should feel structured, not crowded.

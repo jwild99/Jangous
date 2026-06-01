@@ -1,0 +1,160 @@
+Make this change to the ranked system immediately:
+
+RANKED WAGER RULE — LOCKED
+Ranked games must always cost exactly 1 Scalp per match.
+This is a locked rule.
+Users cannot raise it, lower it, edit it, or negotiate it.
+No custom wager input is allowed in ranked.
+No slider, no plus/minus, no editable amount, no alternate stake options.
+If a user enters ranked, the stake is automatically and permanently set to 1 Scalp.
+
+RANKED MODE RULES
+- Every ranked game = 1 Scalp
+- Locked amount only
+- Match players against others in the same ELO / rank range
+- Ranked is for competitive ladder progression
+- Wager amount is not customizable
+- Show the locked amount clearly in the ranked UI
+
+CASUAL MODE RULES
+- Casual matches can have flexible wagers
+- Users can choose how much they want to bet in casual
+- Casual is for freer play, friend matches, or less structured competition
+- Casual does not use the same locked 1 Scalp rule as ranked
+
+TOURNAMENT MODE RULES
+- Tournaments should have a fixed entry fee set by the format
+- Example: 5 Scalp entry for a bigger prize pool
+- Tournament UI should clearly show entry fee, prize pool, bracket format, and payout structure
+- Tournament fees are fixed by the event, not freely edited by the player unless admin-created tournament settings allow it
+
+FEATURE CHANGES TO BUILD
+
+1. LOCK RANKED TO 1 SCALP
+Update all ranked flows so the wager is always 1 Scalp:
+- ranked lobby
+- ranked queue
+- ranked confirmation modal
+- ranked match creation
+- ranked rematch flow
+- ranked mobile view
+- ranked backend validation
+- ranked wallet deduction
+- ranked results / settlement flow
+
+Important:
+Even if someone manipulates the frontend, backend validation must still force ranked matches to exactly 1 Scalp.
+
+Backend enforcement:
+- if mode = ranked, wager must equal 1
+- reject any ranked match creation attempt with wager != 1
+- do not trust frontend only
+- settlement logic should assume ranked wager is always 1 Scalp
+
+2. REMOVE CUSTOM WAGER UI FROM RANKED
+In ranked mode:
+- hide wager slider
+- hide amount input
+- hide increment/decrement controls
+- hide “choose your wager” language
+- replace with locked text like:
+  - “Ranked stake: 1 Scalp”
+  - “Locked competitive entry”
+  - “Each ranked match costs 1 Scalp”
+
+This should feel intentional, not like disabled leftover UI.
+
+3. ADD MODE EXPLANATION / ABOUT SECTION
+We need an About / Game Modes section, probably inside Settings or Help, that explains what each mode means clearly.
+
+Add a section called something like:
+- Game Modes
+- About Match Types
+- How Jango Modes Work
+
+This section should explain:
+
+CASUAL
+- Play for fun or flexible competition
+- Challenge friends or other players
+- Choose your own wager amount
+- Less structured than ranked
+- Good for practice, side bets, and open play
+
+RANKED
+- Competitive matchmaking
+- Always locked to 1 Scalp per game
+- Match against players near your ELO / rank
+- Designed for leaderboard climbing and fairer competition
+- Standardized stake keeps ranked fair and consistent
+
+TOURNAMENTS
+- Fixed entry fee events
+- Example: 5 Scalp buy-in for larger prize pools
+- Bracket-based or event-based competition
+- Bigger risk, bigger reward
+- Best for players who want higher-stakes structured competition
+
+4. ADD THIS INFO TO THE UI IN SMART PLACES
+Put this information in places users will actually see it:
+- Settings > About / Game Modes
+- ranked queue card
+- casual queue card
+- tournament card
+- tooltips or info icons near each mode
+- onboarding / help modal if needed
+
+Examples of short in-UI descriptions:
+
+Casual:
+“Choose your own wager and play freely.”
+
+Ranked:
+“Competitive matchmaking. Locked at 1 Scalp per game.”
+
+Tournaments:
+“Fixed buy-in events with bigger prize pools.”
+
+5. IMPROVE RANKED PRESENTATION
+Ranked should feel more official and competitive.
+
+In ranked UI, clearly show:
+- 1 Scalp locked stake
+- ELO-based matchmaking
+- leaderboard/rank progression focus
+- fair standardized competitive format
+
+Possible ranked card text:
+- “Ranked — 1 Scalp Entry”
+- “Locked stake competitive mode”
+- “Matched by skill rating”
+
+6. ADD SAFETY / VALIDATION
+Make sure there are no loopholes.
+
+Validation rules:
+- ranked wager always equals 1
+- casual wager can vary within allowed wallet/risk limits
+- tournament entry fee is determined by tournament configuration
+- rematch in ranked still stays 1 Scalp
+- private ranked matches, if allowed, still stay 1 Scalp
+- mobile and desktop must behave the same
+- API should reject invalid ranked stake requests
+
+7. OPTIONAL UX IMPROVEMENTS
+If it fits cleanly, also add:
+- small info icon next to each mode
+- short explainer modal
+- “Why is ranked locked?” tooltip:
+  “Ranked uses a standardized 1 Scalp entry to keep competition fair and skill-based.”
+
+ACCEPTANCE CRITERIA
+This is complete only if:
+- ranked is always exactly 1 Scalp
+- users cannot change ranked wager at all
+- backend enforces the rule, not just frontend
+- casual still allows flexible wagers
+- tournaments show fixed buy-ins clearly
+- there is an About / Game Modes section explaining casual, ranked, and tournaments
+- the mode descriptions are visible and easy to understand
+- ranked now feels standardized and intentional

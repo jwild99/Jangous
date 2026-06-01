@@ -1,0 +1,155 @@
+FEATURE: JANGO SOUND + HAPTICS SYSTEM
+
+Add a full sound and haptic feedback system across the site to make Jango feel more alive, responsive, and dopamine-heavy.
+
+GOAL:
+Every important interaction should give satisfying feedback without becoming annoying.
+
+========================
+1. GLOBAL SETTINGS
+========================
+
+Add settings for:
+- Sound effects ON/OFF
+- Haptics ON/OFF
+- Sound volume slider
+- Reduce motion / reduced effects support
+
+Default:
+- Sounds ON
+- Haptics ON for mobile
+- Volume around 40–60%
+
+Save preferences to user settings/localStorage.
+
+========================
+2. BUTTON / UI SOUNDS
+========================
+
+Add subtle sounds for:
+- Button hover
+- Button click
+- Tab switch
+- Modal open
+- Modal close
+- Successful action
+- Error action
+- Shop item hover
+- Shop item purchase
+- Game select
+- Match join
+- Tournament join
+
+Sound style:
+- clean
+- quick
+- futuristic
+- neon arcade / premium casino feel
+- not cartoonish
+
+========================
+3. MATCH SOUNDS
+========================
+
+Add sounds for:
+- Match found
+- Countdown tick
+- Game start
+- Win
+- Loss
+- Draw
+- Rank increase
+- XP gained
+- Streak increased
+- Balance increase
+- Balance decrease
+
+Win sound:
+- satisfying, bright, bigger than normal clicks
+
+Loss sound:
+- soft, not harsh or annoying
+
+Tournament win:
+- cinematic victory sound
+
+========================
+4. DEPOSIT / MONEY SOUNDS
+========================
+
+Add sound feedback for:
+- Deposit address generated
+- Deposit pending
+- Deposit confirmed
+- Balance updated
+- Withdrawal requested
+- Transaction failed
+
+Deposit confirmed should feel rewarding:
+- soft cash/coin-style sound
+- balance count-up sound
+- glow animation synced with sound
+
+========================
+5. HAPTICS
+========================
+
+Use mobile haptics where supported.
+
+Add haptic feedback for:
+- Button tap = light
+- Confirm action = medium
+- Error = warning pattern
+- Win = success pattern
+- Tournament win = stronger celebration pattern
+- Balance increase = light pulse
+- Shop purchase = medium pulse
+
+Use browser-safe support:
+- navigator.vibrate() where available
+- gracefully do nothing if unsupported
+
+Example patterns:
+- light tap: [10]
+- success: [20, 40, 20]
+- error: [50, 30, 50]
+- tournament win: [40, 30, 40, 30, 80]
+
+========================
+6. SOUND/HAPTIC EVENT SYSTEM
+========================
+
+Create a centralized feedback manager.
+
+Example:
+Feedback.play("button_click")
+Feedback.play("match_found")
+Feedback.play("win")
+Feedback.haptic("success")
+
+Do NOT hardcode random audio calls everywhere.
+
+All sounds/haptics should route through one system so they can be disabled globally.
+
+========================
+7. PERFORMANCE
+========================
+
+- Preload important sounds
+- Keep files small
+- Avoid overlapping spam
+- Add cooldowns so repeated clicks do not stack loud sounds
+- Do not block UI rendering
+
+========================
+8. FINAL EXPECTATION
+========================
+
+The site should feel more responsive and alive:
+- clicking feels satisfying
+- wins feel exciting
+- errors feel clear
+- deposits feel rewarding
+- tournaments feel cinematic
+
+Keep it premium, not childish or annoying.

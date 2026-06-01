@@ -1,0 +1,316 @@
+This is a major priority task and needs a real system-wide pass.
+
+We need to focus on 2 big areas right now:
+
+1. ALL BOT MODES MUST WORK ACROSS ALL GAMES
+2. POOL STILL NEEDS A STRONGER VISUAL OVERHAUL
+
+This is not optional polish. This is core product quality. If a user picks Easy, Medium, or Hard bot on any game, that bot mode needs to actually work and feel intentional. And for pool specifically, the visuals still are not hitting the standard. The pockets still do not look right, and the environment around the table still feels too empty and bland.
+
+================================
+PRIORITY 1 — ALL BOT DIFFICULTIES MUST WORK ON ALL GAMES
+================================
+
+We need a full bot system pass across the entire platform.
+
+Goal:
+Every game that supports bot play must support:
+- Easy bot
+- Medium bot
+- Hard bot
+
+And each difficulty must:
+- actually function
+- actually load into the game
+- actually make moves
+- feel different from the other difficulties
+- be stable on desktop and mobile
+- not freeze, fail to act, or break the match
+
+This has been inconsistent and unreliable in the past. We need to fix it properly now.
+
+REQUIREMENT:
+If a player chooses a bot difficulty for any game, the game must:
+- create the correct bot opponent
+- assign the correct difficulty level
+- load the match successfully
+- allow the bot to take turns / act correctly
+- finish the game without breaking
+
+Games needing bot support should include every applicable game on the platform.
+For each game, verify Easy / Medium / Hard works end-to-end.
+
+For example:
+- Pool: easy, medium, hard bots all work
+- Chess: easy, medium, hard bots all work
+- Connect Four: easy, medium, hard bots all work
+- Air Hockey: easy, medium, hard bots all work
+- Rock Paper Scissors: easy, medium, hard bots all work if bot mode exists
+- Dots and Boxes: easy, medium, hard bots all work if bot mode exists
+- Mini Golf: easy, medium, hard bots all work if bot mode exists
+- Any other bot-supported game on the site must follow the same structure
+
+If a game does not yet properly support bots, build the missing support.
+
+================================
+BOT SYSTEM REQUIREMENTS
+================================
+
+Standardize bot architecture across games.
+
+Need:
+- one clean bot difficulty model across the platform
+- difficulty selection passed correctly into each game
+- no fake difficulty labels where all 3 play the same
+- no broken matchmaking / setup logic
+- no bot spawn failures
+- no “bot selected but nothing happens”
+
+Each difficulty should feel different:
+
+EASY
+- slower decisions
+- more mistakes
+- more forgiving
+- weaker accuracy / weaker strategy
+- beginner-friendly
+
+MEDIUM
+- balanced
+- competent
+- fewer mistakes
+- decent challenge for average players
+
+HARD
+- strongest available bot behavior
+- smarter decisions
+- fewer wasted moves
+- harder reaction / planning / aim depending on the game
+- should feel competitive, not broken-cheating
+
+Do NOT make hard just unfair input reading or fake cheating.
+Make it feel stronger because it plays better.
+
+================================
+PER-GAME BOT EXPECTATIONS
+================================
+
+Each game should express difficulty in the correct way.
+
+POOL
+- Easy bot: weak shot selection, less accurate aim, basic target logic
+- Medium bot: decent shot selection, moderate accuracy, smarter power usage
+- Hard bot: strong target choice, better angle selection, cleaner power control, fewer bad shots
+
+CHESS
+- Easy: simpler shallow move selection
+- Medium: stronger tactics
+- Hard: strongest search/evaluation available within performance limits
+
+CONNECT FOUR
+- Easy: mistakes and shallow lookahead
+- Medium: decent blocking and setup
+- Hard: strong lookahead and punishes mistakes
+
+AIR HOCKEY
+- Easy: slower reaction, less accurate defense/offense
+- Medium: balanced
+- Hard: quick positioning, smarter rebounds, better defense
+
+MINI GOLF
+- Easy: less precise angles/power
+- Medium: decent shot planning
+- Hard: more accurate line and power choice
+
+DOTS AND BOXES
+- Easy: random/suboptimal line choices
+- Medium: basic strategy
+- Hard: stronger chain control and trap avoidance
+
+ROCK PAPER SCISSORS or simple games
+- If bot exists, difficulty can be implemented through pattern reading / reaction logic / adaptive behavior
+- Hard should feel smarter, not just random every time
+
+If any game needs custom difficulty logic, build it.
+
+================================
+BOT QA / TESTING REQUIREMENTS
+================================
+
+Do a full test matrix for every game with bots:
+
+For each game:
+- Easy bot launches correctly
+- Medium bot launches correctly
+- Hard bot launches correctly
+- Bot actually takes turns/actions
+- Bot does not freeze
+- Bot does not soft-lock the match
+- Match can finish
+- Win/loss handling works
+- Rematch works
+- Mobile works
+- Desktop works
+
+Test:
+- fresh match
+- rematch
+- private match vs bot if applicable
+- ranked/casual restrictions if applicable
+- reconnect / reload behavior if relevant
+
+Add logging around:
+- selected game
+- selected bot difficulty
+- bot initialization success
+- bot turn/action start
+- bot action result
+- bot failure reason if any
+
+If a game fails bot setup, it should fail clearly in logs and not silently.
+
+================================
+PRIORITY 2 — POOL VISUALS STILL NEED A REAL PASS
+================================
+
+Pool still is not visually up to standard.
+
+Main issues:
+- corner pockets still do not look right
+- table still does not look premium enough
+- background around the table still feels empty
+- the overall vibe still needs more atmosphere and polish
+
+================================
+POOL TABLE SHAPE / POCKET REQUIREMENTS
+================================
+
+The corner pockets should not look like little quarter-circle cutouts.
+They need to read more like real pool-table openings.
+
+What I want:
+- fuller, cleaner, more believable pocket shapes
+- corner pockets that feel like actual pocket mouths
+- better side pockets too
+- better transition between cushion and pocket opening
+- more realistic pocket depth/interior
+- overall table silhouette should look more like a real pool table
+
+Important:
+The pockets should visually feel more like true openings in the table.
+They should not feel like tiny corner bites or awkward rounded cutouts.
+
+Make them look more premium, more natural, and more like a proper bar/pool-hall table.
+
+================================
+POOL ENVIRONMENT / BACKGROUND PASS
+================================
+
+The game still feels too empty outside the table.
+
+I want a stronger environment around the table, with a more premium vibe.
+
+Visual direction:
+- bar / lounge / arcade pool-hall inspiration
+- wood-toned environment
+- darker premium atmosphere
+- table still stays the center of attention
+- more stuff going on in the scene without cluttering gameplay
+
+Ideas:
+- wood floor beneath / around the table
+- subtle bar-floor or wood-plank background treatment
+- ambient lighting
+- spotlight or glow around the table
+- subtle depth/shadow around the table edges
+- richer layered background instead of flat emptiness
+- maybe faint blurred environment detail so it feels like a real place
+
+Think:
+- polished sports bar
+- premium pool lounge
+- modern arcade atmosphere
+
+Do NOT make it cheesy.
+Do NOT distract from gameplay.
+Do make it feel alive and designed.
+
+================================
+POOL VISUAL POLISH REQUIREMENTS
+================================
+
+Also improve:
+- felt texture
+- rail materials
+- pocket trim
+- cue stick polish
+- ball shading/highlights
+- shadows under balls
+- lighting contrast
+- table presence on screen
+
+The pool scene should feel:
+- premium
+- immersive
+- high-effort
+- visually satisfying
+- much less bland
+
+================================
+UI / GAME MODE IMPROVEMENT FOR BOTS
+================================
+
+Make bot selection feel standardized too.
+
+For every game where bot mode exists:
+- clearly show Easy / Medium / Hard
+- make it obvious what the player is selecting
+- avoid confusing setup flow
+- show selected difficulty in match UI if helpful
+- keep desktop and mobile consistent
+
+Optional:
+- short helper text:
+  - Easy = beginner friendly
+  - Medium = balanced challenge
+  - Hard = toughest bot
+
+================================
+STRICT ORDER OF WORK
+================================
+
+Do this in order:
+
+1. Audit every game for bot support
+2. Fix bot initialization and action flow for every game
+3. Make Easy / Medium / Hard work for every bot-supported game
+4. Verify all difficulties actually feel different
+5. Run full QA across desktop/mobile
+6. Then do the next pool visual pass
+7. Improve pool pocket shapes
+8. Add wood/bar-style background and environment polish
+9. Final visual polish pass
+
+================================
+FINAL ACCEPTANCE CRITERIA
+================================
+
+This task is only complete if:
+
+BOTS:
+- every bot-supported game has working Easy / Medium / Hard
+- selecting a difficulty actually works
+- bots actually take actions and finish matches
+- difficulties feel meaningfully different
+- no freezing, no silent failure, no broken setup
+- desktop and mobile both work
+
+POOL:
+- corner pockets look more like real pool-table openings
+- side pockets look better too
+- table looks more premium
+- environment/background has more life
+- wood/bar-floor style inspiration is visible
+- the game no longer feels bland and empty
+
+Do not treat this as light polish. This is a major systems-and-visuals pass that needs to be done right.

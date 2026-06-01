@@ -1,0 +1,634 @@
+PROJECT: FIX + REBUILD BOT AI FOR 8-BALL POOL AND AIR HOCKEY
+
+GOAL:
+The bots currently do not work properly in 8-Ball Pool and Air Hockey. Fix them fully so users can play smooth, fair, polished matches against bots without broken behavior, frozen gameplay, impossible shots, or dumb/random movement.
+
+This needs to be treated as a real gameplay systems fix, not just a quick UI patch.
+
+Games affected:
+1. 8-Ball Pool
+2. Air Hockey
+
+==================================================
+GLOBAL BOT REQUIREMENTS
+==================================================
+
+Bots must work in:
+- Practice mode
+- VS Bot mode
+- Match preview/testing
+- Non-wagered bot matches
+- Wagered bot matches ONLY if the platform rules allow bots in wagered matches
+
+IMPORTANT:
+If bots are not allowed in wagered/ranked games, the UI must clearly label bot games as:
+“Practice / VS Bot”
+and not let users confuse bot matches with real-player wagered matches.
+
+--------------------------------------------------
+BOT DIFFICULTIES
+--------------------------------------------------
+
+Create 3 bot difficulty levels for both games:
+
+1. Easy
+2. Medium
+3. Hard
+
+Each difficulty should change:
+- reaction time
+- accuracy
+- decision quality
+- mistake rate
+- aggression
+- consistency
+
+Do not make bots perfect.
+Even hard bots should be beatable.
+
+--------------------------------------------------
+BOT STATE MACHINE
+--------------------------------------------------
+
+Each bot should use a clear state machine:
+
+idle
+thinking
+aiming / positioning
+executing
+recovering
+waiting_for_turn
+error_recovery
+
+The bot should never get stuck in one state forever.
+
+Add timeout failsafes:
+- if bot is “thinking” longer than X seconds, force fallback action
+- if bot is “aiming” longer than X seconds, force fallback action
+- if bot has no valid move, perform safe default move
+
+==================================================
+SECTION 1: 8-BALL POOL BOT FIX
+==================================================
+
+CURRENT ISSUE:
+8-Ball bot does not work properly. It may not shoot, may aim incorrectly, may freeze, may make impossible decisions, or may not follow pool rules.
+
+GOAL:
+Build a playable 8-Ball bot that can:
+- detect legal balls
+- aim at a target ball
+- choose a pocket
+- calculate shot direction
+- apply power
+- take turns correctly
+- respect solids/stripes/8-ball rules
+- make human-like mistakes based on difficulty
+
+--------------------------------------------------
+1.1 8-BALL RULE LOGIC
+--------------------------------------------------
+
+Bot must understand current game state:
+
+Game state includes:
+- table balls
+- cue ball position
+- ball positions
+- pocket positions
+- player assignment:
+  - solids
+  - stripes
+  - unassigned
+- whose turn
+- fouls
+- whether 8-ball is legal target
+- whether cue ball is scratched
+- whether table is open
+
+Rules:
+- If table is open, bot can target any solid/stripe except 8-ball
+- If assigned solids, bot targets solids
+- If assigned stripes, bot targets stripes
+- Bot should only target 8-ball when all assigned balls are cleared
+- Bot must avoid illegal 8-ball shots early
+- Bot should handle scratches/fouls if game supports them
+
+--------------------------------------------------
+1.2 SHOT SELECTION SYSTEM
+--------------------------------------------------
+
+Bot should evaluate possible shots.
+
+For each legal target ball:
+1. Check each pocket
+2. Calculate ghost ball position
+3. Calculate cue-to-ghost direction
+4. Calculate target-to-pocket direction
+5. Estimate angle difficulty
+6. Estimate collision/path obstruction
+7. Estimate shot score
+
+Shot score should consider:
+- distance from cue ball to target
+- distance from target to pocket
+- angle difficulty
+- blocked path
+- likelihood of scratch
+- power required
+- difficulty setting
+
+Bot selects best shot based on difficulty.
+
+Easy:
+- picks decent but not always best shot
+- higher random error
+- lower accuracy
+- may choose suboptimal pocket
+
+Medium:
+- usually picks reasonable shot
+- moderate error
+- understands simple positioning
+
+Hard:
+- picks high probability shot
+- lower error
+- avoids obvious scratches
+- better pocket selection
+
+--------------------------------------------------
+1.3 AIMING + ERROR
+--------------------------------------------------
+
+Bot should not aim perfectly every time.
+
+Add aim error:
+
+Easy:
+- larger angle error
+- inconsistent power
+- slower decision
+
+Medium:
+- moderate angle error
+- decent power
+
+Hard:
+- small angle error
+- better power control
+- still not perfect
+
+Example:
+Easy aim error: ±6–10 degrees
+Medium: ±3–5 degrees
+Hard: ±1–2 degrees
+
+Power error:
+Easy: ±20%
+Medium: ±10%
+Hard: ±5%
+
+--------------------------------------------------
+1.4 SHOT EXECUTION
+--------------------------------------------------
+
+When bot takes shot:
+
+Sequence:
+1. bot enters thinking state
+2. show subtle “Bot thinking...” indicator
+3. bot chooses shot
+4. cue rotates toward target
+5. power meter animates
+6. bot shoots
+7. wait until balls stop moving
+8. evaluate result
+9. switch turn if needed
+
+The bot should not instantly snap-shoot.
+It should feel human.
+
+Timing:
+Easy thinking: 1.2–2.5 sec
+Medium: 0.8–1.5 sec
+Hard: 0.4–1.0 sec
+
+--------------------------------------------------
+1.5 FAILSAFE SHOT
+--------------------------------------------------
+
+If bot cannot find a valid shot:
+
+Fallback:
+- aim at nearest legal ball
+- use medium-low power
+- avoid direct scratch if possible
+
+Do NOT freeze.
+Do NOT skip forever.
+
+--------------------------------------------------
+1.6 8-BALL BOT DEBUGGING
+--------------------------------------------------
+
+Add optional dev debug overlay:
+
+Show:
+- selected target ball
+- selected pocket
+- aim line
+- ghost ball position
+- calculated shot score
+- bot state
+
+Only visible in dev mode.
+
+--------------------------------------------------
+1.7 8-BALL ACCEPTANCE TESTS
+--------------------------------------------------
+
+Bot must pass:
+
+- Bot takes a shot within 3 seconds of its turn
+- Bot never freezes
+- Bot targets legal balls
+- Bot does not shoot 8-ball early unless legal
+- Bot can pocket balls sometimes
+- Easy bot is beatable
+- Medium bot is fair
+- Hard bot is challenging but not perfect
+- Turn switches correctly
+- Bot handles open table
+- Bot handles solids/stripes
+- Bot handles only 8-ball remaining
+- Bot handles blocked shots with fallback
+- No console errors
+
+==================================================
+SECTION 2: AIR HOCKEY BOT FIX
+==================================================
+
+CURRENT ISSUE:
+Air Hockey bot does not work properly. It may not move, may move randomly, may fail to defend, may ignore puck, may freeze, or may be impossible/too easy.
+
+GOAL:
+Build a responsive Air Hockey bot that:
+- tracks puck
+- defends its goal
+- attacks when appropriate
+- returns to defensive position
+- reacts based on difficulty
+- does not jitter
+- does not teleport
+- feels fair and playable
+
+--------------------------------------------------
+2.1 AIR HOCKEY BOT STATE MACHINE
+--------------------------------------------------
+
+Bot states:
+
+defending
+tracking
+intercepting
+attacking
+recovering
+returning_home
+
+Behavior:
+
+DEFENDING:
+- bot stays near its goal zone
+- watches puck trajectory
+
+TRACKING:
+- bot follows puck movement direction
+- predicts where puck will cross bot side
+
+INTERCEPTING:
+- bot moves to predicted intercept point
+
+ATTACKING:
+- if puck is reachable, bot strikes toward player goal
+
+RECOVERING:
+- after hit, bot slows/returns
+
+RETURNING_HOME:
+- bot returns to defensive center when puck is far away
+
+--------------------------------------------------
+2.2 PUCK TRACKING
+--------------------------------------------------
+
+Bot must know:
+- puck position
+- puck velocity
+- puck speed
+- puck direction
+- puck predicted future position
+
+Prediction:
+- calculate where puck will be in short future window
+- account for wall bounces if possible
+- clamp target to bot allowed zone
+
+Do not simply chase current puck position.
+That causes bad jitter.
+
+--------------------------------------------------
+2.3 BOT MOVEMENT
+--------------------------------------------------
+
+Bot movement should be smooth.
+
+Rules:
+- no teleporting
+- no instant snapping
+- use acceleration/deceleration
+- clamp max speed by difficulty
+- stay inside bot half of table unless rules allow crossing
+
+Difficulty speeds:
+Easy:
+- slower max speed
+- slower reaction
+- worse prediction
+
+Medium:
+- balanced speed
+- decent reaction
+
+Hard:
+- faster movement
+- better prediction
+- stronger attacks
+
+--------------------------------------------------
+2.4 DEFENSE LOGIC
+--------------------------------------------------
+
+If puck is moving toward bot goal:
+- predict intercept point
+- move paddle to block path
+- prioritize protecting center of goal
+
+If puck is slow or near bot:
+- bot can attack
+
+If puck is far away:
+- return to home defensive position
+
+Home position:
+- center of bot half
+- slightly in front of goal
+
+--------------------------------------------------
+2.5 ATTACK LOGIC
+--------------------------------------------------
+
+When bot has opportunity to hit:
+
+Choose target:
+- aim toward player goal
+- sometimes aim toward corners
+- avoid perfectly straight repetitive hits
+
+Easy:
+- weak, inaccurate hits
+
+Medium:
+- moderate aimed hits
+
+Hard:
+- better angles
+- more aggressive
+
+Add randomness:
+- slight aim variance
+- power variance
+
+--------------------------------------------------
+2.6 ANTI-JITTER SYSTEM
+--------------------------------------------------
+
+Prevent bot from shaking or rapidly flipping decisions.
+
+Add:
+- smoothing
+- minimum state duration
+- target lerping
+- dead zone around target position
+
+Example:
+If bot target changes by tiny amount, ignore it.
+Only recalculate target every X ms.
+
+--------------------------------------------------
+2.7 BOT REACTION TIMING
+--------------------------------------------------
+
+Bot should feel human.
+
+Easy:
+- reaction delay 300–600ms
+
+Medium:
+- reaction delay 150–300ms
+
+Hard:
+- reaction delay 50–150ms
+
+Do not make hard bot instant/perfect.
+
+--------------------------------------------------
+2.8 COLLISION / HIT FEEL
+--------------------------------------------------
+
+When bot hits puck:
+- apply realistic impulse
+- add small spark effect
+- play hit sound
+- puck should not clip through paddle
+- paddle should not overlap walls
+
+Ensure physics are stable.
+
+--------------------------------------------------
+2.9 AIR HOCKEY DEBUGGING
+--------------------------------------------------
+
+Add optional dev debug overlay:
+
+Show:
+- bot state
+- target position
+- puck velocity
+- predicted intercept point
+- reaction delay
+- difficulty
+
+Only in dev mode.
+
+--------------------------------------------------
+2.10 AIR HOCKEY ACCEPTANCE TESTS
+--------------------------------------------------
+
+Bot must pass:
+
+- Bot moves every round
+- Bot defends goal
+- Bot attacks when puck is reachable
+- Bot returns home
+- Bot does not jitter
+- Bot does not teleport
+- Bot stays in allowed area
+- Bot difficulty changes behavior
+- Easy is beatable
+- Medium is fair
+- Hard is challenging but not impossible
+- No console errors
+- Game ends correctly
+- Result screen triggers correctly
+
+==================================================
+SECTION 3: UI/UX FOR BOT MATCHES
+==================================================
+
+Bot matches must clearly show the user they are playing a bot.
+
+Add badges:
+- VS BOT
+- Bot · Easy
+- Bot · Medium
+- Bot · Hard
+
+Before match:
+- show bot difficulty selector
+- show game rules
+- show whether match is practice or wagered
+
+During match:
+- opponent panel should show:
+  Bot name
+  difficulty
+  bot avatar
+  “AI Opponent” badge
+
+Suggested bot names:
+- Bot · Easy
+- Bot · Medium
+- Bot · Hard
+
+Or themed names:
+8-Ball:
+- Chalk Rookie
+- Rail Shark
+- Midnight Cue
+
+Air Hockey:
+- Puck Rookie
+- Neon Guard
+- Rail Demon
+
+Post-match:
+Show:
+- opponent was bot
+- difficulty
+- result
+- score
+- run it back button
+- increase difficulty button
+
+==================================================
+SECTION 4: BOT MATCH FAIRNESS / MONEY RULES
+==================================================
+
+Important:
+Decide whether bots are allowed in wagered matches.
+
+If bots are NOT allowed in wagered matches:
+- bot matches must be practice/free only
+- clearly show:
+  “Practice Match — No Wager”
+- no pot
+- no payout
+
+If bots ARE allowed in wagered matches:
+- odds/difficulty must be transparent
+- user must know they are playing AI
+- backend must control result handling
+- no frontend balance updates
+
+Recommended:
+Keep bots as practice/free until real-player matchmaking is strong.
+
+==================================================
+SECTION 5: BACKEND / GAME RESULT INTEGRATION
+==================================================
+
+Bot games must integrate with normal match result flow.
+
+On match start:
+- create match record
+- gameId
+- mode = vs_bot
+- botDifficulty
+- status = active
+
+On match end:
+- send result to backend
+- backend records result
+- backend updates stats
+- backend updates XP/rank if allowed
+- backend updates balance only if wagered and allowed
+
+Do not let frontend directly award balance.
+
+==================================================
+SECTION 6: ERROR HANDLING
+==================================================
+
+If bot crashes or fails:
+- do not freeze game
+- show clean error:
+  “Bot opponent failed to respond. Restart match?”
+- buttons:
+  Restart
+  Return to Lobby
+
+Log:
+- bot state
+- game state
+- error
+- timestamp
+
+==================================================
+FINAL EXPECTATION
+==================================================
+
+After this fix:
+
+8-Ball Pool:
+- bot aims
+- bot shoots
+- bot follows rules
+- bot does not freeze
+- bot feels playable
+
+Air Hockey:
+- bot moves
+- bot defends
+- bot attacks
+- bot reacts smoothly
+- bot does not jitter or teleport
+
+Both:
+- difficulty matters
+- UI clearly shows VS Bot
+- result screens work
+- no console errors
+- no broken states
+
+This needs to be a full bot systems repair, not a cosmetic patch.

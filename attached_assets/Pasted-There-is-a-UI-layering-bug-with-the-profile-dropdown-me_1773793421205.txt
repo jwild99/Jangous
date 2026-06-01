@@ -1,0 +1,115 @@
+There is a UI layering bug with the profile dropdown menu.
+
+ISSUE:
+When I open the app in another tab and click the profile/avatar dropdown, the dropdown appears but is NOT visible or is partially hidden.
+
+This is a layering / z-index / overflow issue.
+
+-----------------------------------
+ROOT CAUSE (LIKELY)
+-----------------------------------
+
+One of the following is happening:
+
+1. A parent container has:
+   overflow: hidden / auto / scroll
+   → clipping the dropdown
+
+2. A canvas / background / game container is sitting above the dropdown
+
+3. z-index values are not properly set, so the dropdown is rendering UNDER other elements
+
+4. A stacking context issue (position + transform + z-index combination)
+
+-----------------------------------
+FIX REQUIREMENTS
+-----------------------------------
+
+1. FORCE DROPDOWN ABOVE EVERYTHING
+
+The dropdown menu must ALWAYS appear on top of the entire UI.
+
+Apply:
+- position: fixed OR absolute (anchored correctly)
+- z-index: 9999 (or highest layer in app)
+
+-----------------------------------
+2. REMOVE CLIPPING ISSUES
+
+Check all parent containers of the dropdown trigger:
+
+- Remove or adjust:
+  overflow: hidden
+  overflow: auto
+
+If overflow is required:
+- Move dropdown OUTSIDE that container (portal approach)
+
+-----------------------------------
+3. USE PORTAL (BEST PRACTICE)
+
+Render the dropdown using a portal (React Portal or equivalent):
+
+- Mount dropdown at root level (e.g. document.body)
+- This avoids stacking context issues entirely
+
+-----------------------------------
+4. CHECK TRANSFORM / FILTER BUGS
+
+Any parent with:
+- transform
+- filter
+- backdrop-filter
+
+creates a new stacking context
+
+Fix by:
+- moving dropdown outside that hierarchy
+OR
+- ensuring z-index still dominates
+
+-----------------------------------
+5. ENSURE CLICKABLE
+
+- Dropdown must be clickable
+- No invisible overlay blocking it
+- pointer-events must not be disabled
+
+-----------------------------------
+6. RESPONSIVE / MULTI-TAB SAFE
+
+Ensure it works:
+- On new tabs
+- On refresh
+- On different screen sizes
+- On mobile
+
+-----------------------------------
+7. VISUAL CHECK
+-----------------------------------
+
+After fix:
+- Dropdown should fully appear
+- Not cut off
+- Not hidden behind anything
+- Smooth open/close animation still works
+
+-----------------------------------
+DEBUG STEPS
+-----------------------------------
+
+Use dev tools:
+- Inspect dropdown element
+- Check computed z-index
+- Check parent overflow
+- Toggle layers to find what is covering it
+
+-----------------------------------
+FINAL RESULT
+-----------------------------------
+
+Dropdown should behave like a proper AAA UI element:
+- Always visible
+- Always on top
+- Never clipped
+- Fully clickable

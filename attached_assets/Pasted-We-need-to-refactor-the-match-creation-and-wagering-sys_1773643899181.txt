@@ -1,0 +1,135 @@
+We need to refactor the match creation and wagering system so that all gameplay wagers use SCALPS only.
+
+Currently the Create Match modal shows multiple currencies ($, BTC, ETH, SOL). This is incorrect.
+
+Crypto, Apple Pay, Venmo, and cards are only deposit methods. Once money enters a user account it should automatically convert into SCALPS.
+
+Inside the platform the only usable currency should be SCALPS.
+
+--------------------------------------------------
+
+CORE RULE
+
+Deposits → convert to SCALPS  
+Matches → wager SCALPS only
+
+Players should never select USD or crypto inside gameplay.
+
+--------------------------------------------------
+
+1. REMOVE CURRENCY SELECTOR
+
+In the Create Match modal remove the entire “Wager Currency” selector.
+
+Delete options:
+
+$  
+BTC  
+ETH  
+SOL
+
+The wager system should only use SCALPS.
+
+--------------------------------------------------
+
+2. UPDATE WAGER INPUT
+
+Replace the current input:
+
+“Enter amount in USD”
+
+with:
+
+“Enter wager in Scalps”
+
+Example placeholder:
+
+Enter wager in Scalps
+
+Quick buttons should become:
+
+5 SCALPS  
+10 SCALPS  
+25 SCALPS  
+50 SCALPS  
+100 SCALPS
+
+--------------------------------------------------
+
+3. DISPLAY USER BALANCE IN SCALPS
+
+Instead of:
+
+Your Balance: $114.00
+
+Show:
+
+Your Balance: 114 SCALPS
+
+Use the SCALP icon if available.
+
+--------------------------------------------------
+
+4. SHOW CONVERSION ONLY IN WALLET
+
+Conversion between USD/crypto and SCALPS should only happen in the wallet deposit system.
+
+Example logic:
+
+$10 deposit → 10 SCALPS  
+0.001 BTC → converted to USD → converted to SCALPS
+
+But inside gameplay everything stays SCALPS.
+
+--------------------------------------------------
+
+5. UPDATE MATCH SUMMARY
+
+Match info should show:
+
+Wager: 10 SCALPS  
+Winner receives: 19.4 SCALPS  
+Platform fee: 3%
+
+Never display USD inside gameplay UI.
+
+--------------------------------------------------
+
+6. UI IMPROVEMENT
+
+Make the wager section clearer and more competitive looking.
+
+Layout:
+
+WAGER  
+10 SCALPS
+
+Balance: 114 SCALPS
+
+Use clean typography and slightly larger numbers so the wager amount feels important.
+
+--------------------------------------------------
+
+7. FUTURE PROOF
+
+Create a single platform currency constant:
+
+platformCurrency = SCALPS
+
+All matches, tournaments, wagers, rewards, and winnings should reference this currency.
+
+--------------------------------------------------
+
+GOAL
+
+Players deposit using:
+• Bitcoin
+• Ethereum
+• Solana
+• Apple Pay
+• Venmo
+• Visa
+
+But once the money enters their account it becomes SCALPS.
+
+Every game wager uses SCALPS only.

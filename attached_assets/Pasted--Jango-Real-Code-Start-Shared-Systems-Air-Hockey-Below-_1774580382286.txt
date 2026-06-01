@@ -1,0 +1,694 @@
+# Jango Real Code Start — Shared Systems + Air Hockey
+
+Below is actual code your dev can drop into the repo. I’m starting with a real shared foundation and a real Air Hockey implementation because shipping all 15 games as finished production code in one turn would be dishonest. This is usable code, not a blueprint.
+
+---
+
+## `src/games/shared/difficulty.ts`
+
+```ts
+export type BotDifficulty = "easy" | "medium" | "hard";
+
+export interface DifficultyProfile {
+  label: string;
+  reactionMs: number;
+  trackingLerp: number;
+  maxSpeed: number;
+  mistakeRadius: number;
+  attackBias: number;
+}
+
+export const DIFFICULTY_PROFILES: Record<BotDifficulty, DifficultyProfile> = {
+  easy: {
+    label: "Easy",
+    reactionMs: 700,
+    trackingLerp: 0.05,
+    maxSpeed: 8,
+    mistakeRadius: 48,
+    attackBias: 0.25,
+  },
+  medium: {
+    label: "Medium",
+    reactionMs: 350,
+    trackingLerp: 0.085,
+    maxSpeed: 11,
+    mistakeRadius: 22,
+    attackBias: 0.5,
+  },
+  hard: {
+    label: "Hard",
+    reactionMs: 140,
+    trackingLerp: 0.12,
+    maxSpeed: 14,
+    mistakeRadius: 8,
+    attackBias: 0.78,
+  },
+};
+```
+
+---
+
+## `src/games/shared/audio.ts`
+
+```ts
+export type SfxName =
+  | "ui"
+  | "goal"
+  | "goalHorn"
+  | "wall"
+  | "hit"
+  | "win"
+  | "lose";
+
+export class AudioManager {
+  private ctx: AudioContext | null = null;
+  private muted = false;
+  private volume = 0.4;
+
+  private ensure() {
+    if (!this.ctx) this.ctx = new AudioContext();
+    return this.ctx;
+  }
+
+  setMuted(value: boolean) {
+    this.muted = value;
+  }
+
+  setVolume(value: number) {
+    this.volume = Math.max(0, Math.min(1, value));
+  }
+
+  play(name: SfxName) {
+    if (this.muted) return;
+    const ctx = this.ensure();
+    const now = ctx.currentTime;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.type = name === "goalHorn" ? "square" : name === "hit" ? "triangle" : "sine";
+
+    const freqMap: Record<SfxName, number> = {
+      ui: 540,
+      goal: 700,
+      goalHorn: 220,
+      wall: 360,
+      hit: 470,
+      win: 820,
+      lose: 180,
+    };
+
+    osc.frequency.setValueAtTime(freqMap[name], now);
+    gain.gain.setValueAtTime(this.volume * 0.0001, now);
+    gain.gain.exponentialRampToValueAtTime(this.volume * 0.18, now + 0.01);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + (name === "goalHorn" ? 0.35 : 0.12));
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(now);
+    osc.stop(now + (name === "goalHorn" ? 0.36 : 0.14));
+  }
+}
+
+export const audio = new AudioManager();
+```
+
+---
+
+## `src/games/shared/fx.ts`
+
+```ts
+export type BannerTone = "info" | "success" | "danger" | "warning";
+
+export interface BannerState {
+  text: string;
+  tone: BannerTone;
+  visible: boolean;
+}
+
+export const toneClassMap: Record<BannerTone, string> = {
+  info: "from-cyan-500/80 to-blue-500/80",
+  success: "from-emerald-500/80 to-lime-500/80",
+  danger: "from-rose-500/80 to-orange-500/80",
+  warning: "from-amber-500/80 to-yellow-500/80",
+};
+```
+
+---
+
+## `src/games/shared/EventBanner.tsx`
+
+```tsx
+import React from "react";
+import { BannerState, toneClassMap } from "./fx";
+
+export function EventBanner({ banner }: { banner: BannerState }) {
+  return (
+    <div
+      className={[
+        "pointer-events-none absolute left-1/2 top-5 -translate-x-1/2 rounded-full border border-white/20 px-6 py-3 text-lg font-bold tracking-wide text-white shadow-2xl transition-all duration-300",
+        banner.visible ? "translate-y-0 opacity-100 scale-100" : "-translate-y-3 opacity-0 scale-95",
+        `bg-gradient-to-r ${toneClassMap[banner.tone]}`,
+      ].join(" ")}
+    >
+      {banner.text}
+    </div>
+  );
+}
+```
+
+---
+
+## `src/games/airHockey/types.ts`
+
+```ts
+import type { BotDifficulty } from "../shared/difficulty";
+
+export interface Vec2 {
+  x: number;
+  y: number;
+}
+
+export interface Puck {
+  position: Vec2;
+  velocity: Vec2;
+  radius: number;
+}
+
+export interface Mallet {
+  position: Vec2;
+  velocity: Vec2;
+  radius: number;
+  target: Vec2;
+}
+
+export interface AirHockeyConfig {
+  width: number;
+  height: number;
+  centerLineX: number;
+  goalWidth: number;
+  goalDepth: number;
+  matchPoint: number;
+}
+
+export interface AirHockeyState {
+  config: AirHockeyConfig;
+  player: Mallet;
+  opponent: Mallet;
+  puck: Puck;
+  playerScore: number;
+  opponentScore: number;
+  running: boolean;
+  winner: "player" | "opponent" | null;
+  mode: "pvp" | "bot";
+  botDifficulty?: BotDifficulty;
+  justScored: "player" | "opponent" | null;
+}
+```
+
+---
+
+## `src/games/airHockey/config.ts`
+
+```ts
+import type { AirHockeyConfig } from "./types";
+
+export const AIR_HOCKEY_CONFIG: AirHockeyConfig = {
+  width: 1100,
+  height: 620,
+  centerLineX: 550,
+  goalWidth: 170,
+  goalDepth: 18,
+  matchPoint: 7,
+};
+```
+
+---
+
+## `src/games/airHockey/engine.ts`
+
+```ts
+import { AIR_HOCKEY_CONFIG } from "./config";
+import type { AirHockeyState, Vec2, Mallet } from "./types";
+
+function clamp(n: number, min: number, max: number) {
+  return Math.max(min, Math.min(max, n));
+}
+
+function len(v: Vec2) {
+  return Math.hypot(v.x, v.y);
+}
+
+function sub(a: Vec2, b: Vec2): Vec2 {
+  return { x: a.x - b.x, y: a.y - b.y };
+}
+
+function add(a: Vec2, b: Vec2): Vec2 {
+  return { x: a.x + b.x, y: a.y + b.y };
+}
+
+function mul(v: Vec2, s: number): Vec2 {
+  return { x: v.x * s, y: v.y * s };
+}
+
+function normalize(v: Vec2): Vec2 {
+  const l = len(v) || 1;
+  return { x: v.x / l, y: v.y / l };
+}
+
+function resolveMalletPuck(mallet: Mallet, puck: AirHockeyState["puck"]) {
+  const delta = sub(puck.position, mallet.position);
+  const dist = len(delta);
+  const minDist = mallet.radius + puck.radius;
+  if (dist >= minDist || dist === 0) return;
+
+  const n = normalize(delta);
+  const overlap = minDist - dist;
+  puck.position = add(puck.position, mul(n, overlap + 0.5));
+
+  const malletImpact = mul(mallet.velocity, 1.18);
+  puck.velocity = add(mul(puck.velocity, 0.52), add(malletImpact, mul(n, 7.5)));
+}
+
+export function createAirHockeyState(mode: "pvp" | "bot" = "bot", botDifficulty?: AirHockeyState["botDifficulty"]): AirHockeyState {
+  return {
+    config: AIR_HOCKEY_CONFIG,
+    player: {
+      position: { x: 220, y: AIR_HOCKEY_CONFIG.height / 2 },
+      velocity: { x: 0, y: 0 },
+      radius: 34,
+      target: { x: 220, y: AIR_HOCKEY_CONFIG.height / 2 },
+    },
+    opponent: {
+      position: { x: AIR_HOCKEY_CONFIG.width - 220, y: AIR_HOCKEY_CONFIG.height / 2 },
+      velocity: { x: 0, y: 0 },
+      radius: 34,
+      target: { x: AIR_HOCKEY_CONFIG.width - 220, y: AIR_HOCKEY_CONFIG.height / 2 },
+    },
+    puck: {
+      position: { x: AIR_HOCKEY_CONFIG.width / 2, y: AIR_HOCKEY_CONFIG.height / 2 },
+      velocity: { x: 0, y: 0 },
+      radius: 18,
+    },
+    playerScore: 0,
+    opponentScore: 0,
+    running: true,
+    winner: null,
+    mode,
+    botDifficulty,
+    justScored: null,
+  };
+}
+
+export function resetRound(state: AirHockeyState, scoredBy: "player" | "opponent" | null = null): AirHockeyState {
+  return {
+    ...state,
+    player: {
+      ...state.player,
+      position: { x: 220, y: state.config.height / 2 },
+      velocity: { x: 0, y: 0 },
+      target: { x: 220, y: state.config.height / 2 },
+    },
+    opponent: {
+      ...state.opponent,
+      position: { x: state.config.width - 220, y: state.config.height / 2 },
+      velocity: { x: 0, y: 0 },
+      target: { x: state.config.width - 220, y: state.config.height / 2 },
+    },
+    puck: {
+      ...state.puck,
+      position: { x: state.config.width / 2, y: state.config.height / 2 },
+      velocity: { x: scoredBy === "player" ? 3.5 : scoredBy === "opponent" ? -3.5 : 0, y: 0 },
+    },
+    justScored: scoredBy,
+    running: !state.winner,
+  };
+}
+
+function clampMalletToHalf(mallet: Mallet, isPlayer: boolean, config = AIR_HOCKEY_CONFIG) {
+  const padding = mallet.radius + 14;
+  const minX = isPlayer ? padding : config.centerLineX + padding;
+  const maxX = isPlayer ? config.centerLineX - padding : config.width - padding;
+
+  mallet.position.x = clamp(mallet.position.x, minX, maxX);
+  mallet.position.y = clamp(mallet.position.y, padding, config.height - padding);
+}
+
+export function stepAirHockey(state: AirHockeyState, dt: number): AirHockeyState {
+  if (!state.running || state.winner) return state;
+
+  const next = structuredClone(state);
+  const { config } = next;
+
+  next.player.position.x += next.player.velocity.x * dt;
+  next.player.position.y += next.player.velocity.y * dt;
+  next.opponent.position.x += next.opponent.velocity.x * dt;
+  next.opponent.position.y += next.opponent.velocity.y * dt;
+
+  clampMalletToHalf(next.player, true, config);
+  clampMalletToHalf(next.opponent, false, config);
+
+  next.puck.position.x += next.puck.velocity.x * dt;
+  next.puck.position.y += next.puck.velocity.y * dt;
+  next.puck.velocity.x *= 0.995;
+  next.puck.velocity.y *= 0.995;
+
+  resolveMalletPuck(next.player, next.puck);
+  resolveMalletPuck(next.opponent, next.puck);
+
+  const top = next.puck.radius + 14;
+  const bottom = config.height - next.puck.radius - 14;
+  const goalTop = config.height / 2 - config.goalWidth / 2;
+  const goalBottom = config.height / 2 + config.goalWidth / 2;
+  const inGoalChannel = next.puck.position.y > goalTop && next.puck.position.y < goalBottom;
+
+  if (next.puck.position.y <= top) {
+    next.puck.position.y = top;
+    next.puck.velocity.y *= -0.95;
+  }
+
+  if (next.puck.position.y >= bottom) {
+    next.puck.position.y = bottom;
+    next.puck.velocity.y *= -0.95;
+  }
+
+  if (!inGoalChannel) {
+    const left = next.puck.radius + 14;
+    const right = config.width - next.puck.radius - 14;
+
+    if (next.puck.position.x <= left) {
+      next.puck.position.x = left;
+      next.puck.velocity.x *= -0.96;
+    }
+
+    if (next.puck.position.x >= right) {
+      next.puck.position.x = right;
+      next.puck.velocity.x *= -0.96;
+    }
+  }
+
+  if (next.puck.position.x < 0 && inGoalChannel) {
+    next.opponentScore += 1;
+    if (next.opponentScore >= config.matchPoint) {
+      next.winner = "opponent";
+      next.running = false;
+    }
+    return resetRound(next, "opponent");
+  }
+
+  if (next.puck.position.x > config.width && inGoalChannel) {
+    next.playerScore += 1;
+    if (next.playerScore >= config.matchPoint) {
+      next.winner = "player";
+      next.running = false;
+    }
+    return resetRound(next, "player");
+  }
+
+  if (Math.abs(next.puck.velocity.x) < 0.02) next.puck.velocity.x = 0;
+  if (Math.abs(next.puck.velocity.y) < 0.02) next.puck.velocity.y = 0;
+
+  return next;
+}
+```
+
+---
+
+## `src/games/airHockey/bot.ts`
+
+```ts
+import { DIFFICULTY_PROFILES } from "../shared/difficulty";
+import type { BotDifficulty } from "../shared/difficulty";
+import type { AirHockeyState, Vec2 } from "./types";
+
+function clamp(n: number, min: number, max: number) {
+  return Math.max(min, Math.min(max, n));
+}
+
+export function computeBotTarget(state: AirHockeyState, difficulty: BotDifficulty): Vec2 {
+  const profile = DIFFICULTY_PROFILES[difficulty];
+  const { puck, config } = state;
+
+  const defending = puck.velocity.x > 0 || puck.position.x > config.centerLineX - 80;
+  const anchorX = config.width - 200;
+
+  if (defending) {
+    return {
+      x: anchorX,
+      y: clamp(puck.position.y + (Math.random() - 0.5) * profile.mistakeRadius, 80, config.height - 80),
+    };
+  }
+
+  return {
+    x: clamp(config.width - 320 + profile.attackBias * 90, config.centerLineX + 60, config.width - 90),
+    y: clamp(puck.position.y + (Math.random() - 0.5) * profile.mistakeRadius, 80, config.height - 80),
+  };
+}
+```
+
+---
+
+## `src/games/airHockey/AirHockeyScene.tsx`
+
+```tsx
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { GameShell } from "../shared/gameShell";
+import { audio } from "../shared/audio";
+import { EventBanner } from "../shared/EventBanner";
+import type { BannerState } from "../shared/fx";
+import type { BotDifficulty } from "../shared/difficulty";
+import { DIFFICULTY_PROFILES } from "../shared/difficulty";
+import { computeBotTarget } from "./bot";
+import { createAirHockeyState, stepAirHockey } from "./engine";
+import type { AirHockeyState } from "./types";
+
+const INITIAL_BANNER: BannerState = {
+  text: "Faceoff",
+  tone: "info",
+  visible: true,
+};
+
+function clamp(n: number, min: number, max: number) {
+  return Math.max(min, Math.min(max, n));
+}
+
+export function AirHockeyScene({ botDifficulty = "medium" }: { botDifficulty?: BotDifficulty }) {
+  const [state, setState] = useState<AirHockeyState>(() => createAirHockeyState("bot", botDifficulty));
+  const [banner, setBanner] = useState<BannerState>(INITIAL_BANNER);
+  const arenaRef = useRef<HTMLDivElement | null>(null);
+  const rafRef = useRef<number | null>(null);
+  const lastRef = useRef<number>(0);
+
+  const difficultyLabel = DIFFICULTY_PROFILES[botDifficulty].label;
+
+  useEffect(() => {
+    const hide = setTimeout(() => setBanner((b) => ({ ...b, visible: false })), 1100);
+    return () => clearTimeout(hide);
+  }, []);
+
+  useEffect(() => {
+    const tick = (ts: number) => {
+      if (!lastRef.current) lastRef.current = ts;
+      const dt = Math.min((ts - lastRef.current) / 16.6667, 1.5);
+      lastRef.current = ts;
+
+      setState((prev) => {
+        const next = structuredClone(prev);
+
+        if (next.mode === "bot" && next.running && !next.winner && next.botDifficulty) {
+          const target = computeBotTarget(next, next.botDifficulty);
+          const profile = DIFFICULTY_PROFILES[next.botDifficulty];
+          const dx = target.x - next.opponent.position.x;
+          const dy = target.y - next.opponent.position.y;
+          next.opponent.velocity.x = clamp(dx * profile.trackingLerp, -profile.maxSpeed, profile.maxSpeed);
+          next.opponent.velocity.y = clamp(dy * profile.trackingLerp, -profile.maxSpeed, profile.maxSpeed);
+        }
+
+        next.player.velocity.x *= 0.86;
+        next.player.velocity.y *= 0.86;
+
+        const stepped = stepAirHockey(next, dt);
+        return stepped;
+      });
+
+      rafRef.current = requestAnimationFrame(tick);
+    };
+
+    rafRef.current = requestAnimationFrame(tick);
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (state.justScored === "player") {
+      audio.play("goal");
+      setBanner({ text: "GOAL", tone: "success", visible: true });
+      const t = setTimeout(() => setBanner((b) => ({ ...b, visible: false })), 1000);
+      return () => clearTimeout(t);
+    }
+
+    if (state.justScored === "opponent") {
+      audio.play("goalHorn");
+      setBanner({ text: "OPPONENT SCORES", tone: "danger", visible: true });
+      const t = setTimeout(() => setBanner((b) => ({ ...b, visible: false })), 1000);
+      return () => clearTimeout(t);
+    }
+  }, [state.justScored]);
+
+  useEffect(() => {
+    if (state.winner === "player") {
+      audio.play("win");
+      setBanner({ text: "YOU WIN", tone: "success", visible: true });
+    } else if (state.winner === "opponent") {
+      audio.play("lose");
+      setBanner({ text: "YOU LOSE", tone: "danger", visible: true });
+    }
+  }, [state.winner]);
+
+  const onPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    const rect = arenaRef.current?.getBoundingClientRect();
+    if (!rect) return;
+
+    const x = ((e.clientX - rect.left) / rect.width) * state.config.width;
+    const y = ((e.clientY - rect.top) / rect.height) * state.config.height;
+
+    setState((prev) => {
+      const next = structuredClone(prev);
+      const dx = x - next.player.position.x;
+      const dy = y - next.player.position.y;
+      next.player.velocity.x = clamp(dx * 0.2, -16, 16);
+      next.player.velocity.y = clamp(dy * 0.2, -16, 16);
+      next.player.position.x = clamp(x, 40, next.config.centerLineX - 40);
+      next.player.position.y = clamp(y, 40, next.config.height - 40);
+      return next;
+    });
+  };
+
+  const resetMatch = () => {
+    audio.play("ui");
+    setState(createAirHockeyState("bot", botDifficulty));
+    setBanner({ text: "Faceoff", tone: "info", visible: true });
+    setTimeout(() => setBanner((b) => ({ ...b, visible: false })), 900);
+  };
+
+  const goalGlowClass = state.justScored === "player"
+    ? "shadow-[0_0_80px_rgba(16,255,154,0.55)]"
+    : state.justScored === "opponent"
+    ? "shadow-[0_0_80px_rgba(255,72,72,0.5)]"
+    : "";
+
+  return (
+    <GameShell
+      title="Air Hockey"
+      subtitle={`Premium arcade table • First to ${state.config.matchPoint} wins • Bot ${difficultyLabel}`}
+      topRight={
+        <button
+          onClick={resetMatch}
+          className="rounded-xl border border-white/15 bg-white/5 px-4 py-2 text-sm font-semibold text-white hover:bg-white/10"
+        >
+          Restart Match
+        </button>
+      }
+    >
+      <div className="p-4">
+        <div className="mb-4 flex items-center justify-between gap-4 rounded-2xl border border-cyan-400/15 bg-[#07111d] px-4 py-3">
+          <div>
+            <div className="text-xs uppercase tracking-[0.2em] text-cyan-300/70">You</div>
+            <div className="text-3xl font-black text-cyan-200">{state.playerScore}</div>
+          </div>
+          <div className="text-center">
+            <div className="text-xs uppercase tracking-[0.2em] text-white/45">Mode</div>
+            <div className="text-sm font-bold text-white/80">VS Bot • {difficultyLabel}</div>
+          </div>
+          <div className="text-right">
+            <div className="text-xs uppercase tracking-[0.2em] text-fuchsia-300/70">Opponent</div>
+            <div className="text-3xl font-black text-fuchsia-200">{state.opponentScore}</div>
+          </div>
+        </div>
+
+        <div
+          ref={arenaRef}
+          onPointerMove={onPointerMove}
+          className={[
+            "relative mx-auto aspect-[16/9] w-full max-w-6xl overflow-hidden rounded-[32px] border border-cyan-400/25 bg-[radial-gradient(circle_at_center,_rgba(20,112,255,0.18),_rgba(2,8,20,0.94)_70%)]",
+            goalGlowClass,
+          ].join(" ")}
+          style={{ touchAction: "none" }}
+        >
+          <EventBanner banner={banner} />
+
+          <div className="absolute inset-0 bg-[linear-gradient(rgba(0,255,255,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(0,255,255,0.04)_1px,transparent_1px)] bg-[size:36px_36px] opacity-40" />
+          <div className="absolute inset-[14px] rounded-[26px] border border-cyan-300/35 shadow-[inset_0_0_60px_rgba(0,170,255,0.15)]" />
+          <div className="absolute left-1/2 top-[14px] h-[calc(100%-28px)] w-px -translate-x-1/2 bg-cyan-300/30" />
+          <div className="absolute left-1/2 top-1/2 h-32 w-32 -translate-x-1/2 -translate-y-1/2 rounded-full border border-cyan-300/35 shadow-[0_0_40px_rgba(0,255,255,0.2)]" />
+
+          <div className="absolute left-0 top-1/2 h-44 w-5 -translate-y-1/2 rounded-r-xl border-y border-r border-cyan-300/35 bg-cyan-400/10" />
+          <div className="absolute right-0 top-1/2 h-44 w-5 -translate-y-1/2 rounded-l-xl border-y border-l border-fuchsia-300/35 bg-fuchsia-400/10" />
+
+          <div
+            className="absolute h-16 w-16 -translate-x-1/2 -translate-y-1/2 rounded-full border border-cyan-200/40 bg-[radial-gradient(circle_at_35%_35%,rgba(255,255,255,0.6),rgba(0,255,255,0.15)_35%,rgba(0,25,45,0.95)_80%)] shadow-[0_0_40px_rgba(0,255,255,0.22)]"
+            style={{
+              left: `${(state.player.position.x / state.config.width) * 100}%`,
+              top: `${(state.player.position.y / state.config.height) * 100}%`,
+            }}
+          />
+
+          <div
+            className="absolute h-16 w-16 -translate-x-1/2 -translate-y-1/2 rounded-full border border-fuchsia-200/40 bg-[radial-gradient(circle_at_35%_35%,rgba(255,255,255,0.6),rgba(255,0,180,0.15)_35%,rgba(35,0,30,0.95)_80%)] shadow-[0_0_40px_rgba(255,0,200,0.22)]"
+            style={{
+              left: `${(state.opponent.position.x / state.config.width) * 100}%`,
+              top: `${(state.opponent.position.y / state.config.height) * 100}%`,
+            }}
+          />
+
+          <div
+            className="absolute h-9 w-9 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/30 bg-[radial-gradient(circle_at_35%_35%,rgba(255,255,255,0.95),rgba(180,245,255,0.7)_30%,rgba(0,160,255,0.25)_55%,rgba(2,15,25,0.98)_90%)] shadow-[0_0_24px_rgba(135,227,255,0.55)]"
+            style={{
+              left: `${(state.puck.position.x / state.config.width) * 100}%`,
+              top: `${(state.puck.position.y / state.config.height) * 100}%`,
+            }}
+          />
+
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full border border-white/10 bg-black/25 px-4 py-2 text-xs font-semibold tracking-wide text-white/70 backdrop-blur">
+            Move your mouse or finger to control the mallet
+          </div>
+        </div>
+      </div>
+    </GameShell>
+  );
+}
+```
+
+---
+
+## What this already gives you
+
+* real Air Hockey game state
+* real puck physics loop
+* real goals and scoring
+* real restart flow
+* real easy/medium/hard bot structure
+* mouse/touch mallet control
+* premium neon arcade table UI
+* event banners
+* basic synthesized sounds
+
+## What your dev should do next
+
+1. wire this into your router / lobby game launch flow
+2. replace synthesized audio with real sound assets
+3. add true collision sound triggers on mallet/puck and wall/puck contacts
+4. add matchmaking wrapper for pvp mode
+5. add ranked/casual/tournament settlement hooks
+6. add bot paddle attack patterns for harder finishing behavior
+
+## Next real code pack
+
+After this, the right order is:
+
+1. Pool
+2. Bowling
+3. Mini Golf
+4. Racing
+
+That’s the honest way to get you real production code instead of fake “all done” text.

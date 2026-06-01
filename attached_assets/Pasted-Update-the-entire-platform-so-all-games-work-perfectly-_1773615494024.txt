@@ -1,0 +1,84 @@
+Update the entire platform so all games work perfectly on both desktop and mobile devices, and replace the current icons with a modern, clean design system.
+
+Main goals:
+1. Every game must run smoothly and correctly on both desktop and mobile.
+2. Replace all outdated or childish icons with modern, professional icons that match a competitive gaming platform.
+
+PART 1 — Desktop + Mobile Optimization
+
+1. Responsive Layout
+- All games and UI components must automatically adapt to different screen sizes.
+- Support phones, tablets, laptops, and large desktop monitors.
+- Prevent UI overlap, cut-off elements, or tiny unreadable text.
+- Game boards, score areas, timers, and buttons must scale properly.
+
+2. Mobile Gameplay
+- Every game must have a true mobile experience, not just a scaled-down desktop version.
+- Implement proper touch controls (tap, swipe, drag).
+- Remove hover interactions and replace them with tap behavior.
+- Increase button and control sizes for touch accuracy.
+- Make sure users never need to zoom in to play.
+
+3. Desktop Gameplay
+- Ensure mouse and keyboard interactions work correctly.
+- Use available screen space intelligently without stretching the interface.
+- Menus, lobbies, and game controls should feel clean and easy to navigate.
+
+4. Gameplay Testing
+- Test every game individually.
+- Fix broken controls, laggy movement, frozen screens, and misaligned UI.
+- Ensure users can start, play, pause, restart, and finish games on all devices.
+
+5. Performance
+- Optimize games for fast load times.
+- Reduce unnecessary scripts or heavy animations.
+- Ensure smooth gameplay on lower-powered phones.
+- Avoid frame drops and lag.
+
+PART 2 — Modern Icon System
+
+The current icons look outdated and childish. Replace them with a modern gaming platform style.
+
+Requirements:
+- Icons should feel modern, sleek, and slightly competitive/gaming oriented.
+- Avoid cartoonish, childish, or emoji-style icons.
+- Use a consistent icon style across the entire platform.
+- Icons should be clean, minimal, and recognizable at small sizes.
+- Use thin or medium line icons or modern filled icons.
+
+Design style references:
+- Similar to modern fintech apps or competitive gaming platforms.
+- Clean and minimal like Stripe, Discord, or modern dashboard interfaces.
+
+Icon guidelines:
+- Consistent stroke width
+- Rounded corners where appropriate
+- Simple shapes with minimal detail
+- Easily readable on both dark and light backgrounds
+- Optimized for small UI sizes
+
+Areas that need updated icons:
+- Navigation tabs
+- Wallet / add funds
+- Leaderboards
+- Challenges
+- Item shop
+- Notifications
+- Profile
+- Settings
+- Games library
+- Tournament tab
+- Ranking system
+
+PART 3 — Visual Consistency
+
+- All icons must match the overall design of the platform.
+- Ensure spacing, padding, and sizing are consistent.
+- Icons should align correctly with text and buttons.
+- Maintain the platform's color palette and design language.
+
+Final expectation:
+The platform should feel modern, polished, and professional.  
+No outdated visuals, childish icons, broken layouts, or mobile usability problems should remain.
+
+Every game and UI component must work smoothly and look clean on both desktop and mobile.

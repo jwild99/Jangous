@@ -1,0 +1,137 @@
+We need to upgrade parts of the Jango UI/UX to make the platform more engaging, visually exciting, and aligned with the item shop’s “dopamine” feel.
+
+========================
+LEADERBOARD UPGRADE (HIGH PRIORITY)
+========================
+
+The leaderboard currently feels too plain and boring. It needs to match the energy and visual quality of the item shop.
+
+Update the leaderboard with:
+
+- More color, glow, and visual hierarchy
+- Neon accents similar to the item shop
+- Gradient backgrounds for top players
+- Animated highlights for top ranks (#1, #2, #3)
+
+Top 3 styling:
+- #1 → Gold glow, subtle pulsing animation, crown icon
+- #2 → Silver glow
+- #3 → Bronze glow
+
+Add:
+- Smooth hover effects on rows
+- Subtle animated transitions when leaderboard updates
+- Rank change indicators (↑ ↓ arrows)
+- Player avatars with glow rings based on rank/tier
+- Optional streak indicator (win streak flame or icon)
+
+Make it feel competitive, premium, and addictive—not flat.
+
+========================
+NAVIGATION UPDATE
+========================
+
+Remove the “Party” tab completely from the navigation.
+
+Ensure spacing and alignment of the navbar stays clean after removal.
+
+========================
+TOURNAMENT WIN ANIMATION (FINALE MOMENT)
+========================
+
+When a user wins a tournament, create a high-impact, rewarding animation.
+
+Requirements:
+- Full-screen or centered overlay
+- Smooth entrance animation (fade + scale)
+- Confetti or particle burst effect
+- Glow effects matching Jango theme
+- Animated text:
+  “VICTORY” or “TOURNAMENT WON”
+- Show:
+  - Username
+  - Prize amount (Scalps)
+- Animate balance increasing (count-up effect)
+
+Optional polish:
+- Subtle sound effect (if sound system exists)
+- Slow-motion feel for a split second before animation hits
+
+This should feel like a big dopamine moment, similar to winning in a polished game/casino.
+
+========================
+ITEM SHOP EXPANSION + PRICING SYSTEM
+========================
+
+The item shop is already strong—expand it further and formalize pricing tiers.
+
+RARITY TIERS + PRICING:
+
+- Legendary → 25 Scalps
+- Epic → 20 Scalps
+- Rare → 15 Scalps
+- Uncommon → 10 Scalps
+- Common → 5 Scalps
+
+Ensure:
+- Each item clearly shows rarity tier
+- Each rarity has distinct visual styling (color + glow)
+
+Suggested color system:
+- Legendary → Gold / animated glow
+- Epic → Purple glow
+- Rare → Blue glow
+- Uncommon → Green glow
+- Common → Gray / minimal glow
+
+========================
+ADD MORE ITEMS TO SHOP
+========================
+
+Add a variety of cosmetic and UI-based items such as:
+
+Profile / Identity:
+- Avatars
+- Animated profile borders
+- Username glow effects
+- Custom badges
+
+Gameplay Visuals:
+- Win effects (particle bursts, glow effects)
+- Custom victory screens
+- Entry animations into matches
+
+UI Customization:
+- Themes (dark variants, neon variants)
+- Button styles
+- HUD accents
+
+Flex / Status Items:
+- Exclusive badges (e.g. “High Roller”, “OG”, “Top 100”)
+- Animated icons next to username
+- Rank-based cosmetics
+
+Make sure:
+- Items feel valuable and collectible
+- Higher tiers (Legendary/Epic) feel rare and premium
+- Add subtle hover animations for items
+- Add preview functionality (see item before buying)
+
+========================
+UX POLISH
+========================
+
+- Keep everything consistent with current Jango design (dark + neon + premium)
+- Maintain smooth animations (no laggy or janky motion)
+- Ensure mobile responsiveness
+- Keep UI clean—don’t clutter, but increase excitement
+
+========================
+FINAL GOAL
+========================
+
+- Leaderboard feels exciting, competitive, and visually engaging
+- Tournament wins feel like a big rewarding moment
+- Item shop feels deep, collectible, and worth spending on
+- Navigation is cleaner (Party tab removed)
+- Overall platform feels more “AAA game” and less static

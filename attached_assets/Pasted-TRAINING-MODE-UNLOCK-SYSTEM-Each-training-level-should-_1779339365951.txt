@@ -1,0 +1,80 @@
+TRAINING MODE UNLOCK SYSTEM
+
+Each training level should unlock only after the user completes the training level before it.
+
+Example:
+1. Rock Paper Scissors = unlocked by default
+2. Connect 4 = locked until Rock Paper Scissors training is completed
+3. Air Hockey = locked until Connect 4 training is completed
+4. Mini Golf = locked until Air Hockey training is completed
+5. Dots & Boxes = locked until Mini Golf training is completed
+6. 8-Ball Pool = locked until Dots & Boxes training is completed
+7. Bowling = locked until 8-Ball Pool training is completed
+8. Chess = locked until Bowling training is completed
+9. Cup King = locked until Chess training is completed
+10. Stack Tower = locked until Cup King training is completed
+11. Block Blast = locked until Stack Tower training is completed
+12. Tron = locked until Block Blast training is completed
+
+RULES:
+- First training level is always unlocked.
+- All other training levels start locked.
+- When a user completes a training level, unlock the next one.
+- Completed levels should show a completed/checkmark state.
+- Locked levels should show a lock icon and say “Complete previous training first.”
+- The next available level should have a strong glowing button that says “Start Training.”
+- Users should not be able to skip ahead.
+- Progress must save to the user account, not just local browser state.
+- If the user refreshes the page, their unlocked/completed training progress should stay saved.
+
+UI STATES:
+Completed:
+- Show green checkmark or gold completion badge
+- Button says “Replay”
+- Card should feel completed and rewarding
+
+Current Unlocked Level:
+- Button says “Start Training”
+- Add glow/pulse effect
+- Make it clear this is the next step
+
+Locked:
+- Button disabled
+- Button says “Locked”
+- Show small text: “Complete previous training first”
+
+BACKEND DATA NEEDED:
+Each user should have training progress saved like this:
+
+trainingProgress: {
+  completed: [
+    "rock-paper-scissors"
+  ],
+  unlocked: [
+    "rock-paper-scissors",
+    "connect-4"
+  ],
+  currentTraining: "connect-4"
+}
+
+COMPLETION LOGIC:
+When a user completes training:
+
+1. Mark current training as completed.
+2. Unlock the next training level.
+3. Save progress to backend/database.
+4. Show reward screen.
+5. Give the user their rookie badge.
+6. Show button: “Continue to Next Training.”
+
+IMPORTANT:
+Do not make every training card say “Coming soon.”
+Only levels that are actually not built yet should say “Coming soon.”
+
+If the training exists:
+- Show Start Training if unlocked.
+- Show Replay if completed.
+- Show Locked if not unlocked yet.
+
+Main goal:
+Training mode should feel like a progression path where users unlock one game tutorial at a time, earn badges, and always know what to do next.

@@ -1,0 +1,209 @@
+Build and fully implement the following platform systems for Jango.us in a polished, modern, production-ready way. Everything should work smoothly on both desktop and mobile, match the current design style of the platform, and feel like a real competitive gaming product — not a basic placeholder demo.
+
+The goal is to improve user retention, competitive depth, social engagement, trust, and platform quality.
+
+====================================
+1. USER PROFILE SYSTEM
+====================================
+
+Create a full player profile system with the following features:
+
+- Custom profile pages
+  - Each user should have a clean, modern profile page.
+  - Profile should show username, avatar, rank, XP level, reputation, badges, favorite game, and recent activity.
+  - Layout should be polished and responsive on desktop and mobile.
+
+- Player stats dashboard
+  - Show total games played, wins, losses, win rate, current streak, best streak, total earnings, favorite game, and leaderboard standing.
+  - Make the stats easy to understand and visually attractive.
+
+- Match history
+  - Show a list of recent matches with date, opponent, game type, result, score, wager amount, and payout if applicable.
+  - Allow users to quickly review past performance.
+
+- Achievements
+  - Add an achievement system with unlockable milestones.
+  - Examples: first win, 10 wins, 5 win streak, tournament winner, daily login streak, etc.
+
+- Badge showcase
+  - Let users display earned badges on their profile.
+  - Badges should feel rewarding and well-designed.
+
+- Favorite game display
+  - Automatically detect or allow the user to choose their favorite game and display it on their profile.
+
+- Friend list
+  - Add a friend system section inside the profile.
+  - Users should be able to view, add, remove, and manage friends.
+
+- Player reputation system
+  - Add a reputation or sportsmanship score based on reports, completed games, disconnect behavior, and good standing.
+  - Reputation should be visible in a clean, non-confusing way.
+
+====================================
+2. ENGAGEMENT + RETENTION SYSTEMS
+====================================
+
+Build features that make users come back daily and weekly.
+
+- Daily challenges
+  - Add daily objectives users can complete for rewards.
+  - Examples: play 3 games, win 1 match, invite a friend, complete a challenge.
+
+- Weekly challenges
+  - Add larger weekly missions with better rewards.
+
+- Achievement system
+  - Make achievements visible and rewarding.
+  - Connect them to profile progress and badges.
+
+- Streak rewards
+  - Reward players for daily logins, consecutive wins, or challenge completion streaks.
+  - Make this feel exciting and motivating.
+
+- Push notifications
+  - Add notifications for challenge completion, friend invites, match invites, reward unlocks, rank changes, and important wallet activity.
+  - Notifications should feel useful, not spammy.
+
+- Friend invites
+  - Let users invite friends to join the platform or challenge them directly to games.
+
+- XP leveling system
+  - Add an overall player progression system with XP earned from matches, activity, achievements, and challenge completion.
+  - Users should level up over time and feel progression.
+
+- Battle pass style progression
+  - Create a progression track where users unlock rewards over time through activity.
+  - Keep it cosmetic/reward based and visually appealing.
+
+====================================
+3. MONEY / WALLET IMPROVEMENTS
+====================================
+
+Build a polished wallet and transaction experience that feels secure, modern, and easy to understand.
+
+- Transaction history
+  - Show deposits, wagers, wins, losses, purchases, and adjustments.
+  - Include timestamps, amounts, and status.
+
+- Withdrawal history
+  - Create a separate section for withdrawals with status updates like pending, completed, failed, etc.
+
+- Deposit animations
+  - Make deposits feel satisfying with smooth animations, confirmation states, and polished feedback.
+  - Keep it clean and premium, not childish.
+
+- Fraud detection
+  - Add systems to flag suspicious activity such as abnormal deposits, suspicious match behavior, abuse patterns, or multi-account behavior.
+  - Build admin-facing logic where needed.
+
+- Wallet dashboard
+  - Create a wallet home screen showing current balance, Scalp balance, available funds, recent activity, and quick actions.
+
+- Instant payouts
+  - Improve the payout flow so it feels fast, trustworthy, and transparent.
+  - Clearly show payout progress and status.
+
+- Crypto price auto updates
+  - Auto-update supported crypto values based on live USD value so balances and conversions stay accurate.
+
+- Scalp balance analytics
+  - Add balance charts, spending summaries, wager trends, and earnings/loss insights in a clean dashboard format.
+
+====================================
+4. SMART PLATFORM FEATURES
+====================================
+
+Build backend and frontend systems that improve fairness, quality, and platform stability.
+
+- Anti-cheat detection
+  - Add systems to detect unfair gameplay, exploit patterns, impossible actions, or suspicious input behavior.
+
+- Smurf detection
+  - Add logic to detect likely alternate accounts abusing lower-skill matchmaking.
+
+- Bot detection
+  - Detect automated or scripted behavior that does not look human.
+
+- Skill balancing
+  - Improve matchmaking fairness by using player performance, win rate, skill rating, and behavior signals.
+
+- Game analytics
+  - Track useful game metrics such as quit rate, match duration, win rate by mode, user retention, and most-played games.
+
+- Auto bug detection
+  - Add logging and monitoring to help identify crashes, UI failures, failed game actions, and broken flows.
+
+- Performance monitoring
+  - Track page speed, game load time, lag spikes, errors, disconnects, and device-specific issues.
+
+====================================
+5. SOCIAL FEATURES
+====================================
+
+Build a full social layer that makes the platform more interactive and competitive.
+
+- Friend system
+  - Allow players to send, accept, decline, and remove friend requests.
+
+- Private matches
+  - Let users create private game rooms and invite specific players.
+
+- Chat in games
+  - Add in-game chat or quick chat in a clean and moderated way.
+
+- Player reporting
+  - Add easy reporting for cheating, abuse, stalling, and inappropriate behavior.
+  - Reports should feed into moderation/reputation systems.
+
+- Emotes / reactions
+  - Let players use quick reactions or emotes during games where appropriate.
+
+- Clans or teams
+  - Add a system for users to create or join groups, teams, or clans.
+
+- Activity feed
+  - Create a feed showing things like friend wins, badge unlocks, rank ups, and challenge completions.
+
+- Invite links
+  - Add shareable invite links for private matches, friend invites, or platform referrals.
+
+====================================
+6. DESIGN + UX EXPECTATIONS
+====================================
+
+Everything must:
+- Work on desktop and mobile
+- Feel modern, polished, and premium
+- Match the overall Jango.us brand and design system
+- Use responsive layouts
+- Have clean spacing, strong visual hierarchy, and smooth interactions
+- Avoid outdated, childish, or placeholder-looking design
+- Feel like a real competitive gaming platform
+
+Do not build these as empty mockups.
+Build them as real usable features with proper UI, logic, and clean user flows.
+
+====================================
+7. PRIORITIES
+====================================
+
+Prioritize:
+1. Profile system
+2. Match history
+3. Wallet dashboard
+4. Transaction + withdrawal history
+5. Daily / weekly challenges
+6. XP leveling + progression
+7. Friend system
+8. Private matches
+9. Reporting + reputation
+10. Anti-cheat / fraud monitoring
+
+====================================
+8. FINAL EXPECTATION
+====================================
+
+I want these systems built in a way that increases retention, improves trust, and makes the platform feel significantly more advanced and complete.
+
+Review the current platform, implement these features properly, improve weak areas, and make the final result feel cohesive, smooth, and production-ready across the entire site.

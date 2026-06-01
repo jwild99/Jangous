@@ -1,0 +1,401 @@
+PROJECT: JANGO FULL SYSTEM ARCHITECTURE + IMPLEMENTATION (EXTREME DETAIL)
+
+This section defines EXACTLY how the system should be built:
+- frontend architecture (React)
+- backend API structure
+- database schema
+- real-time updates
+- animation system
+- state management
+
+==================================================
+SECTION 12: FRONTEND ARCHITECTURE (REACT)
+==================================================
+
+TECH STACK:
+- React (Next.js recommended)
+- Zustand or Redux (Zustand preferred for simplicity)
+- Tailwind CSS (or equivalent utility system)
+- Framer Motion (for animations)
+- WebSocket client (for live updates)
+
+--------------------------------------------------
+CORE COMPONENT STRUCTURE
+--------------------------------------------------
+
+/components
+  /core
+    Navbar.tsx
+    BalanceDisplay.tsx
+    LiveTicker.tsx
+    NotificationSystem.tsx
+
+  /dashboard
+    PlayHub.tsx
+    SessionPanel.tsx
+    ChallengesPanel.tsx
+    BattlePass.tsx
+    AchievementsGrid.tsx
+
+  /match
+    MatchCard.tsx
+    MatchQueue.tsx
+    WagerModal.tsx
+    MatchFoundModal.tsx
+    PostMatchScreen.tsx
+
+  /tournament
+    TournamentCard.tsx
+    TournamentLobby.tsx
+    TournamentBracket.tsx
+
+  /leaderboard
+    LeaderboardTable.tsx
+    RankProgress.tsx
+    TopPodium.tsx
+
+  /economy
+    TransactionHistory.tsx
+    PnLDisplay.tsx
+
+  /game
+    GameWorld.tsx
+    GameBackgrounds.ts
+    GameSelector.tsx
+
+--------------------------------------------------
+STATE MANAGEMENT (ZUSTAND)
+--------------------------------------------------
+
+Create stores:
+
+useUserStore:
+- user
+- balance
+- rank
+- xp
+- level
+
+useMatchStore:
+- currentMatch
+- matchState
+- queueState
+
+useUIStore:
+- modals
+- notifications
+- loading states
+
+useLiveStore:
+- liveFeed
+- tickerData
+
+RULE:
+Never mutate balance locally.
+Balance only updates from API or websocket.
+
+--------------------------------------------------
+UI STATE HANDLING
+--------------------------------------------------
+
+Each interactive component must support:
+
+- idle
+- hover
+- active
+- loading
+- success
+- error
+
+Example (button):
+- idle → normal
+- hover → glow
+- active → scale down
+- loading → spinner
+- success → checkmark flash
+- error → shake + red glow
+
+==================================================
+SECTION 13: BACKEND ARCHITECTURE
+==================================================
+
+TECH STACK:
+- Node.js (Express or NestJS)
+- PostgreSQL
+- Redis (for queues + caching)
+- WebSockets (Socket.io or native)
+- Stripe / Crypto provider integration
+
+--------------------------------------------------
+CORE API ENDPOINTS
+--------------------------------------------------
+
+AUTH:
+POST /auth/login
+POST /auth/register
+
+USER:
+GET /user
+GET /user/stats
+GET /user/transactions
+
+MATCHMAKING:
+POST /match/queue
+POST /match/cancel
+GET /match/status
+POST /match/confirm
+
+MATCH RESULT:
+POST /match/result (internal only)
+→ updates balance
+→ records transaction
+
+TOURNAMENT:
+GET /tournaments
+POST /tournament/join
+GET /tournament/:id
+
+LEADERBOARD:
+GET /leaderboard
+GET /leaderboard/season
+
+PROGRESSION:
+POST /xp/add (internal)
+GET /progress
+
+PAYMENTS:
+POST /deposit/create
+POST /deposit/webhook
+POST /withdraw
+
+--------------------------------------------------
+CRITICAL RULE:
+ALL MONEY LOGIC IS SERVER-SIDE ONLY
+--------------------------------------------------
+
+NEVER:
+- trust frontend values
+- accept client balance changes
+
+ALWAYS:
+- verify match result server-side
+- verify payment via webhook
+- store immutable transaction records
+
+==================================================
+SECTION 14: DATABASE SCHEMA
+==================================================
+
+USERS:
+- id
+- email
+- balance
+- rank
+- xp
+- level
+- created_at
+
+TRANSACTIONS:
+- id
+- user_id
+- type
+- amount
+- game
+- opponent
+- status
+- created_at
+
+MATCHES:
+- id
+- game
+- stake
+- players
+- winner_id
+- status
+- created_at
+
+TOURNAMENTS:
+- id
+- name
+- game
+- prize_pool
+- entry_fee
+- status
+- start_time
+
+TOURNAMENT_ENTRIES:
+- id
+- tournament_id
+- user_id
+
+SEASONS:
+- id
+- start_date
+- end_date
+
+LEADERBOARD:
+- user_id
+- rank
+- rating
+
+==================================================
+SECTION 15: REAL-TIME SYSTEM (CRITICAL)
+==================================================
+
+USE WEBSOCKETS
+
+EVENTS:
+
+balance_update:
+- updates UI instantly
+
+match_found:
+- triggers match modal
+
+match_result:
+- triggers win/loss screen
+
+live_feed_update:
+- pushes ticker events
+
+leaderboard_update:
+- updates ranks
+
+--------------------------------------------------
+FRONTEND HANDLING:
+--------------------------------------------------
+
+on balance_update:
+- animate number change
+
+on match_found:
+- show match found modal
+
+on match_result:
+- trigger post-match screen
+
+on live_feed_update:
+- push into ticker
+
+==================================================
+SECTION 16: ANIMATION SYSTEM
+==================================================
+
+USE FRAMER MOTION
+
+RULES:
+- use transform (scale, translate)
+- avoid layout thrashing
+- animations < 600ms
+
+--------------------------------------------------
+KEY ANIMATIONS:
+--------------------------------------------------
+
+Balance Change:
+- animate number
+- glow pulse
+
+Win Screen:
+- scale in
+- confetti particles
+
+Loss Screen:
+- fade + slight shake
+
+Buttons:
+- hover scale 1.05
+- active scale 0.95
+
+Ticker:
+- slide left continuously
+
+Game Switch:
+- background crossfade
+- particle swap
+
+==================================================
+SECTION 17: GAME WORLD IMPLEMENTATION
+==================================================
+
+GameWorld.tsx:
+
+switch(gameId):
+  case "tron":
+    render TronWorld
+  case "block_blast":
+    render BlockBlastWorld
+  etc
+
+Each world defines:
+- background gradient
+- particle system
+- motion
+
+Particles:
+- use canvas or lightweight div animations
+- limit count for performance
+
+==================================================
+SECTION 18: MATCHMAKING ENGINE (REDIS)
+==================================================
+
+Use Redis queues:
+
+Queue key:
+match:{game}:{stake}
+
+Flow:
+- user enters queue
+- system matches 2 players
+- create match record
+- emit websocket event
+
+Timeout:
+- remove user after X seconds
+
+==================================================
+SECTION 19: PAYMENT + SECURITY
+==================================================
+
+CRYPTO:
+- generate address server-side
+- confirm via webhook
+
+STRIPE:
+- use payment intents
+- confirm via webhook
+
+RULE:
+- NEVER trust “user clicked paid”
+
+==================================================
+SECTION 20: ERROR HANDLING SYSTEM
+==================================================
+
+All errors must map to UI states.
+
+Example:
+
+DEVICE_NOT_SUPPORTED:
+→ show modal
+
+INSUFFICIENT_FUNDS:
+→ show deposit prompt
+
+MATCH_FULL:
+→ refresh list
+
+==================================================
+FINAL EXPECTATION
+==================================================
+
+After implementation:
+
+- System is scalable
+- No security holes
+- UI feels instant
+- Everything is connected
+- No confusion for user
+
+This is a full production-ready architecture.

@@ -1,0 +1,145 @@
+I want you to completely fix and upgrade the Rock Paper Scissors (RPS) game on Jango so it feels polished, responsive, and competitive — not basic or cheap.
+
+Right now it feels too simple and lacks feedback, flow, and engagement. I want this to feel like a real game people would actually want to play for wagers.
+
+-----------------------------------
+CORE GOALS
+-----------------------------------
+- Smooth gameplay (no lag, no weird delays)
+- Clear visual feedback on every action
+- More engaging and competitive feel
+- Works perfectly on both desktop and mobile
+- Feels fast, clean, and satisfying
+
+-----------------------------------
+GAME FLOW (IMPORTANT)
+-----------------------------------
+Rebuild the flow so it feels intentional:
+
+1. Player enters match
+2. Countdown appears (3…2…1…)
+3. Both players choose Rock / Paper / Scissors
+4. Reveal animation happens simultaneously
+5. Result is shown clearly (Win / Lose / Draw)
+6. Score updates instantly
+7. Next round starts automatically or with a quick button
+
+DO NOT instantly show results with no animation — it feels cheap.
+
+-----------------------------------
+UI / VISUAL IMPROVEMENTS
+-----------------------------------
+- Make Rock, Paper, Scissors buttons large and clean
+- Add hover + click animations
+- Add glow/outline when selected
+- Add countdown animation before reveal
+- Add a “VS” layout (Player vs Opponent)
+
+When results show:
+- Winner side glows green
+- Loser side glows red
+- Draw shows neutral animation
+
+-----------------------------------
+ANIMATIONS (VERY IMPORTANT)
+-----------------------------------
+Add smooth animations:
+- Hand icons slide or pop into place
+- Reveal animation (don’t instantly show picks)
+- Subtle screen shake or pulse on win
+- Smooth transitions between rounds
+
+Make it feel alive, not static.
+
+-----------------------------------
+SCORE SYSTEM
+-----------------------------------
+Add a proper match structure:
+
+Options:
+- Best of 3
+- Best of 5
+- First to X wins
+
+Show:
+- Current score (ex: 2–1)
+- Round number
+- Match progress
+
+-----------------------------------
+MATCH TYPES
+-----------------------------------
+Support:
+- Casual
+- Ranked
+- Wager matches (using Scalps)
+
+For wager matches:
+- Clearly show amount at top
+- Highlight stakes visually
+
+-----------------------------------
+MULTIPLAYER SYNC (IMPORTANT)
+-----------------------------------
+Fix any desync issues:
+- Both players must see results at the same time
+- No mismatched outcomes
+- Handle slow connections gracefully
+
+If opponent hasn’t chosen yet:
+Show:
+“Waiting for opponent…”
+
+-----------------------------------
+MOBILE OPTIMIZATION
+-----------------------------------
+- Buttons must be large and thumb-friendly
+- No tiny click targets
+- Animations should still feel smooth on mobile
+- Layout should stack vertically if needed
+
+-----------------------------------
+SOUND DESIGN (ADD THIS)
+-----------------------------------
+Add subtle but satisfying sounds:
+- Click/select sound
+- Countdown ticks
+- Reveal sound
+- Win / lose sound effect
+
+Keep it clean, not annoying.
+
+-----------------------------------
+ANTI-CHEESE / FAIRNESS
+-----------------------------------
+- Lock in player choice before reveal
+- Prevent spam clicking or changing selection last second
+- Ensure both players submit before showing results
+
+-----------------------------------
+POLISH DETAILS
+-----------------------------------
+- Add player avatars
+- Show usernames clearly
+- Add small reaction/emote option (optional but good)
+- Add quick rematch button after match ends
+
+-----------------------------------
+ERROR HANDLING
+-----------------------------------
+- If opponent disconnects → auto win or refund depending on mode
+- Show clear status messages (not silent failures)
+
+-----------------------------------
+FINAL RESULT I WANT
+-----------------------------------
+RPS should feel:
+- Fast
+- Competitive
+- Clean
+- Satisfying
+- Worth betting on
+
+It should not feel like a basic mini-game — it should feel like a polished head-to-head experience similar to GamePigeon quality, but better.
+
+Make the experience smooth, modern, and visually satisfying.

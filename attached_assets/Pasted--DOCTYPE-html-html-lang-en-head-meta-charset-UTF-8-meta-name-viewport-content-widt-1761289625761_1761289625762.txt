@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Duel — Air Hockey</title>
+<style>
+  html, body { margin:0; background:#0b0f14; color:#e5e7eb; font-family:system-ui, sans-serif; }
+  #wrap { display:flex; flex-direction:column; align-items:center; gap:.5rem; padding:1rem; }
+  canvas { background:radial-gradient(ellipse at center, #0f172a 0%, #0b0f14 70%); border:1px solid #1f2937; border-radius:16px; touch-action:none; }
+  .hud { display:flex; gap:1.25rem; align-items:center; flex-wrap:wrap; justify-content:center; }
+  .tag { background:#111827; border:1px solid #374151; padding:.4rem .7rem; border-radius:.6rem; font-size:.95rem; }
+  .btn { background:#111827; color:#e5e7eb; border:1px solid #374151; padding:.45rem .8rem; border-radius:.6rem; cursor:pointer; }
+  .btn:hover { background:#0f172a; }
+  .accent { color:#22d3ee; }
+</style>
+</head>
+<body>
+<div id="wrap">
+  <div class="hud">
+    <div class="tag">Left (W/S)</div>
+    <div class="tag">Right (↑/↓)</div>
+    <div class="tag">Pause (P)</div>
+    <button id="resetBtn" class="btn">Reset Match</button>
+    <span id="status" class="tag">First to 7 wins</span>
+  </div>
+  <canvas id="game" width="900" height="500"></canvas>
+</div>
+
+<script>
+/* =========================
+   Duel — Air Hockey (Canvas)
+   =========================
+   - Keyboard: W/S (left), ↑/↓ (right)
+   - Physics: friction, elastic collisions, goal detection
+   - Hooks marked "MULTIPLAYER HOOK" for Socket.IO integration
+*/
+
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
+const W = canvas.width, H = canvas.height;
+
+const state = {
+  running: true,
+  leftScore: 0,
+  rightScore: 0,
+  targetScore: 7,
+};
+
+const table = {
+  margin: 20,
+  lineColor: "rgba(34,211,238,.8)",
+  goalWidth: 140,
+  wallRestitution: 0.95
+};
+
+const puck = {
+  x: W/2, y: H/2, r: 12,
+  vx: 0, vy: 0,
+  mass: 1.0,
+  color: "#f59e0b",
+  mu: 0.995,          // friction per frame
+  maxSpeed: 900,      // px/s cap (sanity)
+};
+
+const left = {
+  x: 120, y: H/2, r: 26,
+  vy: 0,
+  speed: 520,         // px/s
+  mass: 2.0,
+  color: "#22d3ee",
+  upKey: "KeyW", downKey: "KeyS"
+};
+
+const right = {
+  x: W-120, y: H/2, r: 26,
+  vy: 0,
+  speed: 520,
+  mass: 2.0,
+  color: "#a78bfa",
+  upKey: "ArrowUp", downKey: "ArrowDown"
+};
+
+const keys = new Set();
+const statusEl = document.getElementById("status");
+document.getElementById("resetBtn").addEventListener("click", resetMatch);
+
+function resetMatch() {
+  state.leftScore = 0;
+  state.rightScore = 0;
+  state.running = true;
+  statusEl.textContent = "First to 7 wins";
+  centerServe(Math.random() < 0.5 ? -1 : 1);
+}
+
+// Physics helpers
+function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+function len(x,y){ return Math.hypot(x,y); }
+
+function centerServe(dir = 1) {
+  puck.x = W/2; puck.y = H/2;
+  const angle = (Math.random()*Math.PI/3 - Math.PI/6); // slight random
+  const speed = 420 + Math.random()*120;
+  puck.vx = dir * speed * Math.cos(angle);
+  puck.vy = speed * Math.sin(angle);
+}
+
+function drawTable() {
+  const m = table.margin;
+  // outer rounded rect
+  ctx.strokeStyle = table.lineColor;
+  ctx.lineWidth = 2;
+  roundRect(ctx, m, m, W-2*m, H-2*m, 14);
+  ctx.stroke();
+
+  // center line & circle
+  ctx.beginPath();
+  ctx.moveTo(W/2, m); ctx.lineTo(W/2, H-m);
+  ctx.stroke();
+
+  ctx.beginPath();
+  ctx.arc(W/2, H/2, 60, 0, Math.PI*2);
+  ctx.stroke();
+
+  // goals (left & right gaps in wall)
+  ctx.save();
+  ctx.globalAlpha = .25;
+  ctx.fillStyle = "#10b981";
+  ctx.fillRect(m-2, H/2 - table.goalWidth/2, 6, table.goalWidth); // left goal area indicator
+  ctx.fillRect(W-m-4, H/2 - table.goalWidth/2, 6, table.goalWidth); // right goal area indicator
+  ctx.restore();
+}
+
+function roundRect(ctx, x, y, w, h, r) {
+  const rr = Math.min(r, w/2, h/2);
+  ctx.beginPath();
+  ctx.moveTo(x+rr, y);
+  ctx.arcTo(x+w, y, x+w, y+h, rr);
+  ctx.arcTo(x+w, y+h, x, y+h, rr);
+  ctx.arcTo(x, y+h, x, y, rr);
+  ctx.arcTo(x, y, x+w, y, rr);
+  ctx.closePath();
+}
+
+function drawScores() {
+  ctx.fillStyle = "#e5e7eb";
+  ctx.font = "700 22px system-ui";
+  ctx.textAlign = "center";
+  ctx.fillText(`${state.leftScore}`, W/2 - 80, 40);
+  ctx.fillText("—", W/2, 40);
+  ctx.fillText(`${state.rightScore}`, W/2 + 80, 40);
+}
+
+function drawPaddle(p) {
+  ctx.beginPath(); ctx.fillStyle = p.color;
+  ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+  ctx.fill();
+  // handle
+  ctx.beginPath(); ctx.strokeStyle = "rgba(255,255,255,.08)"; ctx.lineWidth = 6;
+  ctx.arc(p.x, p.y, p.r-8, 0, Math.PI*2);
+  ctx.stroke();
+}
+
+function drawPuck() {
+  const grad = ctx.createRadialGradient(puck.x-4, puck.y-4, 4, puck.x, puck.y, puck.r+6);
+  grad.addColorStop(0, "#fde68a");
+  grad.addColorStop(1, puck.color);
+  ctx.fillStyle = grad;
+  ctx.beginPath();
+  ctx.arc(puck.x, puck.y, puck.r, 0, Math.PI*2);
+  ctx.fill();
+}
+
+// Input
+addEventListener("keydown", e => {
+  if (e.code === "KeyP") { state.running = !state.running; return; }
+  keys.add(e.code);
+});
+addEventListener("keyup", e => keys.delete(e.code));
+
+// Mobile touch (drag paddles vertically on their half)
+let touchIdL = null, touchIdR = null;
+canvas.addEventListener("touchstart", e => {
+  for (const t of e.changedTouches) {
+    if (t.clientX < W/2 && touchIdL === null) touchIdL = t.identifier;
+    else if (t.clientX >= W/2 && touchIdR === null) touchIdR = t.identifier;
+  }
+});
+canvas.addEventListener("touchmove", e => {
+  e.preventDefault();
+  for (const t of e.changedTouches) {
+    const rect = canvas.getBoundingClientRect();
+    const y = clamp(t.clientY - rect.top, table.margin + left.r, H - table.margin - left.r);
+    if (t.identifier === touchIdL) left.y = y;
+    if (t.identifier === touchIdR) right.y = y;
+  }
+}, {passive:false});
+canvas.addEventListener("touchend", e => {
+  for (const t of e.changedTouches) {
+    if (t.identifier === touchIdL) touchIdL = null;
+    if (t.identifier === touchIdR) touchIdR = null;
+  }
+});
+
+// Update paddles from keys
+function updatePaddles(dt) {
+  left.vy = 0; right.vy = 0;
+  if (keys.has(left.upKey))  left.vy -= left.speed;
+  if (keys.has(left.downKey)) left.vy += left.speed;
+  if (keys.has(right.upKey))  right.vy -= right.speed;
+  if (keys.has(right.downKey)) right.vy += right.speed;
+
+  left.y  = clamp(left.y  + left.vy * dt,  table.margin + left.r,  H - table.margin - left.r);
+  right.y = clamp(right.y + right.vy * dt, table.margin + right.r, H - table.margin - right.r);
+}
+
+// Puck-wall and goal logic
+function updatePuck(dt) {
+  // integrate
+  puck.x += puck.vx * dt;
+  puck.y += puck.vy * dt;
+
+  // friction
+  puck.vx *= puck.mu;
+  puck.vy *= puck.mu;
+
+  // clamp speed
+  const speed = len(puck.vx, puck.vy);
+  if (speed > puck.maxSpeed) {
+    const k = puck.maxSpeed / speed;
+    puck.vx *= k; puck.vy *= k;
+  }
+  if (speed < 10) { puck.vx = 0; puck.vy = 0; }
+
+  const m = table.margin;
+  const goalTop = H/2 - table.goalWidth/2;
+  const goalBot = H/2 + table.goalWidth/2;
+
+  // Left/Right walls with goal gaps
+  if (puck.x - puck.r <= m) {
+    if (puck.y > goalTop && puck.y < goalBot) {
+      // RIGHT scores
+      state.rightScore++;
+      onScore("RIGHT");
+      return;
+    } else {
+      puck.x = m + puck.r;
+      puck.vx = -puck.vx * table.wallRestitution;
+    }
+  }
+  if (puck.x + puck.r >= W - m) {
+    if (puck.y > goalTop && puck.y < goalBot) {
+      // LEFT scores
+      state.leftScore++;
+      onScore("LEFT");
+      return;
+    } else {
+      puck.x = W - m - puck.r;
+      puck.vx = -puck.vx * table.wallRestitution;
+    }
+  }
+
+  // Top/Bottom walls
+  if (puck.y - puck.r <= m) {
+    puck.y = m + puck.r;
+    puck.vy = -puck.vy * table.wallRestitution;
+  }
+  if (puck.y + puck.r >= H - m) {
+    puck.y = H - m - puck.r;
+    puck.vy = -puck.vy * table.wallRestitution;
+  }
+}
+
+// Paddle–puck collision (circle-circle impulse)
+function handlePaddleCollision(pad) {
+  const dx = puck.x - pad.x;
+  const dy = puck.y - pad.y;
+  const dist = Math.hypot(dx, dy);
+  const minDist = puck.r + pad.r;
+  if (dist >= minDist || dist === 0) return;
+
+  // push puck out of overlap
+  const nx = dx / dist, ny = dy / dist;
+  const overlap = (minDist - dist);
+  puck.x += nx * overlap;
+  puck.y += ny * overlap;
+
+  // relative velocity along normal
+  const rvx = puck.vx - 0; // paddles are kinematic; could use pad.vx if horizontal control
+  const rvy = puck.vy - pad.vy;
+
+  const relNormal = rvx*nx + rvy*ny;
+  // if moving apart, skip
+  if (relNormal > 0) return;
+
+  // restitution for lively hits
+  const e = 0.9;
+
+  // impulse scalar
+  const invMassSum = (1/puck.mass) + (1/pad.mass);
+  const j = -(1 + e) * relNormal / invMassSum;
+
+  // apply impulse to puck only (kinematic paddle)
+  puck.vx += (j * nx) / puck.mass + nx * 20; // extra "push" to feel snappy
+  puck.vy += (j * ny) / puck.mass + pad.vy * 0.05;
+
+  // slight tangent damp to reduce endless glancing
+  const tangentX = -ny, tangentY = nx;
+  const relTan = rvx*tangentX + rvy*tangentY;
+  const jt = -relTan / invMassSum;
+  const frictionScale = 0.02;
+  puck.vx += (jt * tangentX) / puck.mass * frictionScale;
+  puck.vy += (jt * tangentY) / puck.mass * frictionScale;
+}
+
+function onScore(side) {
+  // MULTIPLAYER HOOK: emit score event to server here
+  if (state.leftScore >= state.targetScore || state.rightScore >= state.targetScore) {
+    state.running = false;
+    statusEl.innerHTML = `Match Over — <span class="accent">${state.leftScore>state.rightScore?"Left":"Right"}</span> wins`;
+    // MULTIPLAYER HOOK: emit match_end + winner to server
+  } else {
+    statusEl.innerHTML = `Goal for ${side}! Press P to pause/resume`;
+    centerServe(side === "LEFT" ? 1 : -1);
+  }
+}
+
+// Main loop (fixed dt)
+let last = performance.now();
+let acc = 0;
+const fixed = 1/60;
+
+function loop(now = performance.now()) {
+  const dt = (now - last) / 1000;
+  last = now;
+  acc += dt;
+
+  while (acc >= fixed) {
+    if (state.running) {
+      updatePaddles(fixed);
+      updatePuck(fixed);
+      handlePaddleCollision(left);
+      handlePaddleCollision(right);
+    }
+    acc -= fixed;
+  }
+
+  // render
+  ctx.clearRect(0,0,W,H);
+  drawTable();
+  drawScores();
+  drawPaddle(left);
+  drawPaddle(right);
+  drawPuck();
+
+  requestAnimationFrame(loop);
+}
+
+centerServe(Math.random() < 0.5 ? -1 : 1);
+loop();
+</script>
+</body>
+</html>

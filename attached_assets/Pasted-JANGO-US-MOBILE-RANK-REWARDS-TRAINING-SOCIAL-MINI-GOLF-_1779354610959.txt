@@ -1,0 +1,717 @@
+JANGO.US MOBILE + RANK REWARDS + TRAINING + SOCIAL + MINI GOLF FIX FILE
+
+Send this entire file to the developer.
+
+PROJECT GOAL
+Jango.us needs a mobile-first polish pass and bug-fix pass across ranks, training, social, play mode selection, and mini golf. The desktop version has more complete functionality, but the mobile version is missing modes, has layouts that are blown up or clipped, and has several flows that cannot be used properly on a phone. The goal is to make the mobile experience feel fully built, not like a desktop layout squeezed into a phone screen.
+
+This update must fix the following major issues:
+
+1. Users need to preview future rank rewards before they unlock them.
+2. Training mode still does not work correctly and needs to be repaired.
+3. Every mode available on desktop must also be available on mobile.
+4. Every mode and screen must be reshaped properly for phone screens.
+5. The Social tab needs a full mobile layout fix because messages cannot be accessed properly.
+6. The Play mode selection screen is blown up on mobile and does not fit the phone screen.
+7. Mini Golf is broken because after the user finishes a hole, the bot keeps taking unlimited turns and the match never moves to the next hole.
+
+SCREENSHOT ISSUES OBSERVED
+
+From the current mobile build screenshots:
+
+- More/Profile page looks mostly polished, but this same level of polish must carry into all screens.
+- Rank reward track exists, but the user needs a better way to preview future rank rewards, locked rewards, and upcoming rank items.
+- Social feed fits better than messages, but the Messages tab is not usable on mobile because the channel list takes up the screen and the message panel is empty/cut off.
+- Play mode selection screen is too large and does not fit the phone viewport. Cards are blown up, clipped, and the user has to scroll awkwardly.
+- Mini Golf gets stuck on the bot turn. The bot can keep adding strokes forever and the game does not advance to the next hole.
+
+SECTION 1: RANK REWARD PREVIEW SYSTEM
+
+Current issue:
+Users can see some rank rewards, but they need to be able to preview future items clearly. If a user is Bronze and is close to Silver, they should be able to open the reward track and see what they will unlock in Silver, Gold, Platinum, Diamond, Champion, Legend, etc. They should not have to wait until they unlock the item to know what it is.
+
+Required changes:
+
+1. Add a full rank reward preview screen.
+   - Users must be able to scroll through all ranks and future rewards.
+   - Rewards must show as locked, unlocked, or upcoming.
+   - Locked rewards should still be visible, but cannot be equipped until unlocked.
+   - Users must be able to tap each reward and preview it.
+
+2. Add preview states for each reward item.
+   Each item card must show:
+   - Rank required
+   - Item name
+   - Item type
+   - Rarity
+   - Unlock condition
+   - Locked or unlocked status
+   - Preview button
+   - Equip button only if unlocked
+
+3. Add reward item preview modal.
+   When the user taps a reward, open a clean preview modal that shows:
+   - Large item preview
+   - Item name
+   - Rank requirement
+   - Rarity
+   - Description
+   - How to unlock
+   - Locked message if unavailable
+   - Equip button if unlocked
+   - Close button
+
+4. Future items should still feel exciting.
+   Use locked visuals, glow outlines, shadows, rarity tags, and blur overlays. Do not hide future rewards. The user should be motivated to keep playing.
+
+5. Add progress to next rank.
+   On the reward track page, show:
+   - Current rank
+   - Current XP or ELO
+   - Progress bar to next rank
+   - Next rank name
+   - Next reward preview
+   - Estimated requirement remaining
+
+Example:
+Current Rank: Bronze I
+Next Rank: Silver III
+Progress: 720 / 1000 RP
+Next Unlock: Silver III Avatar Frame
+280 RP needed
+
+6. Add filter tabs.
+   The reward page should support tabs like:
+   - All
+   - Badges
+   - Avatar Frames
+   - Banners
+   - Emotes
+   - Trails
+   - Victory Effects
+   - Table Effects
+   - Profile Cosmetics
+
+7. Locked item behavior.
+   Locked items can be previewed but not equipped.
+   If a user taps equip on a locked item, show:
+   âReach Silver III to unlock this item.â
+
+8. Mobile layout for reward track.
+   On mobile, reward cards should be single-column and fit inside the screen with proper padding.
+   No horizontal overflow.
+   Cards should be easy to tap with thumb-sized buttons.
+   Sticky bottom nav should not cover reward buttons.
+
+9. Desktop layout should remain polished.
+   On desktop, reward cards can use grid or timeline layout.
+   On mobile, use single-column stacked cards.
+
+10. Data structure needed.
+   Each reward should use a consistent structure like:
+
+   {
+     id: string,
+     rank: string,
+     rankTier: number,
+     itemName: string,
+     itemType: 'badge' | 'avatar_frame' | 'banner' | 'emote' | 'trail' | 'victory_effect' | 'table_effect' | 'profile_cosmetic',
+     rarity: 'common' | 'uncommon' | 'rare' | 'epic' | 'legendary' | 'mythic',
+     description: string,
+     previewAsset: string,
+     unlockRequirement: string,
+     isUnlocked: boolean,
+     isEquipped: boolean
+   }
+
+Acceptance criteria:
+- Bronze users can preview Silver, Gold, and higher rank rewards.
+- Locked rewards are visible.
+- Future reward previews work on mobile.
+- The preview modal fits the phone screen.
+- Equip button only works on unlocked items.
+- No reward card is hidden behind the bottom nav.
+
+SECTION 2: TRAINING MODE FIXES
+
+Current issue:
+Training still is not working correctly. Training levels also need to unlock in order. Each training level should unlock only after the user completes the training level before it.
+
+Required changes:
+
+1. Fix training flow.
+   Training needs to properly start, track progress, complete, and unlock the next lesson.
+
+2. Add training level lock logic.
+   - Training Level 1 is unlocked by default.
+   - Level 2 unlocks only after Level 1 is completed.
+   - Level 3 unlocks only after Level 2 is completed.
+   - Continue this pattern for every training level.
+
+3. Add clear states for each training level.
+   Each level must show one of these states:
+   - Locked
+   - Available
+   - In Progress
+   - Completed
+
+4. Add completion detection.
+   The system must know when the player successfully completes the training objective.
+   Examples:
+   - Took the required shot
+   - Finished the tutorial mini-game
+   - Completed movement instructions
+   - Completed first match instructions
+   - Completed betting/scalps explanation
+   - Completed rank explanation
+
+5. Add reward/completion feedback.
+   After training completion, show a completion screen:
+   âTraining Completeâ
+   âYou unlocked the next lessonâ
+   âReward earnedâ if applicable
+   Button: âNext Trainingâ
+   Button: âBack to Training Hubâ
+
+6. Add a Training Hub screen.
+   The Training Hub should include:
+   - Beginner path
+   - Game-specific tutorials
+   - Jango system tutorials
+   - Rewards for completing training
+   - Progress percentage
+
+7. Training categories.
+   Include training for:
+   - How Jango works
+   - How scalps work
+   - How ranks work
+   - How tournaments work
+   - How casual works
+   - How ranked works
+   - How private matches work
+   - How vs bot works
+   - How each game works
+   - Mobile controls
+   - Desktop controls
+
+8. Mobile-specific training.
+   Mobile must have its own control instructions.
+   Do not show desktop-only instructions on mobile unless there is also a mobile version.
+
+Example:
+Desktop: Click and drag to aim, release to shoot.
+Mobile: Touch and drag to aim, lift finger to shoot.
+
+9. Training bug testing.
+   Developer must test:
+   - Starting each training level
+   - Completing each level
+   - Unlocking the next level
+   - Refreshing the page and keeping progress saved
+   - Mobile layout
+   - Desktop layout
+   - Returning to the hub after completion
+
+10. Persistence.
+   Training progress must be saved to the user profile/database.
+   Refreshing the browser should not reset training progress.
+
+Acceptance criteria:
+- Training Level 1 starts correctly.
+- Completing a level unlocks the next level.
+- Locked levels cannot be started.
+- Training progress persists after refresh.
+- Mobile training layout works.
+- Training does not freeze, soft-lock, or fail to complete.
+
+SECTION 3: DESKTOP MODES MUST EXIST ON MOBILE
+
+Current issue:
+The desktop version has modes that are not properly available or usable on mobile. Mobile must not be missing core gameplay features.
+
+Required changes:
+
+1. Audit desktop modes.
+   Make a list of every game mode available on desktop.
+   Then check that every one exists on mobile.
+
+2. Mobile must include:
+   - Casual
+   - Ranked
+   - VS Bot
+   - Tournament
+   - Private
+   - Practice
+   - Any other mode currently available on desktop
+
+3. If a mode cannot use the exact same layout on mobile, build a mobile-specific layout.
+   Do not remove the mode.
+   Do not hide the mode.
+   Do not leave it broken.
+
+4. All mode buttons must fit mobile.
+   Each card must be readable, clickable, and spaced correctly.
+
+5. All mode flows must work.
+   Tapping a mode must move the user to the next correct step.
+   The flow should not get stuck, overflow, or require desktop-sized space.
+
+6. Add responsive rules.
+   Use breakpoints:
+   - Mobile: 320px to 480px
+   - Large phone: 481px to 767px
+   - Tablet: 768px to 1024px
+   - Desktop: 1025px and above
+
+7. Mobile mode menu behavior.
+   On phone screens, use a single-column or compact two-column layout depending on available width.
+   The menu must not be zoomed in or clipped.
+
+Acceptance criteria:
+- Every desktop mode appears on mobile.
+- Every mobile mode is usable.
+- No mode card is cut off.
+- No mode requires horizontal scrolling.
+- Play flow works from mobile start to match load.
+
+SECTION 4: PLAY MODE SELECTION MOBILE LAYOUT FIX
+
+Current issue:
+When the user presses Play and gets the mode selection screen, the layout is blown up and does not fit the phone screen. The cards are too large and the modal/page is not properly shaped for mobile.
+
+Required changes:
+
+1. Rebuild the Play mode selection screen for mobile.
+   On mobile, the screen should fit inside the viewport and use proper spacing.
+
+2. Layout should be:
+   - Header: âHow do you want to play?â
+   - Step indicator if needed
+   - Mode cards in mobile-friendly grid
+   - Continue/back behavior
+   - Close button visible at all times
+
+3. Mobile card sizing.
+   Cards should not be huge.
+   Recommended mobile card size:
+   - Width: 100% in single-column or 48% in two-column
+   - Min height: 120px to 150px
+   - Padding: 16px
+   - Border radius: 18px
+   - Icon size: 36px to 44px
+   - Title: readable but not oversized
+   - Description: max 2 lines if needed
+
+4. The current screenshot shows a two-column layout that is too big. Fix by using either:
+   Option A: single-column mobile list for small screens
+   Option B: smaller two-column grid with less padding and smaller icons
+
+5. Prevent viewport overflow.
+   CSS requirements:
+   - max-width: 100vw
+   - overflow-x: hidden
+   - modal width: min(100%, 430px)
+   - body should not horizontally scroll
+   - card container should use box-sizing: border-box
+
+6. Bottom content must not be hidden behind Safari/Replit browser controls or the Jango bottom nav.
+   Add safe-area padding:
+   padding-bottom: calc(80px + env(safe-area-inset-bottom));
+
+7. Step indicator should fit.
+   The top step numbers 1, 2, 3 and close button must fit inside the header on mobile.
+
+8. Touch targets.
+   All cards and buttons must have at least 44px tap target height.
+
+Acceptance criteria:
+- Play mode screen fits iPhone screen.
+- Cards are not cut off.
+- Close button is visible.
+- User can select Casual, Ranked, VS Bot, Tournament, Private, Practice, etc.
+- No horizontal scrolling.
+- Bottom nav does not cover options.
+
+SECTION 5: SOCIAL TAB MOBILE FIX
+
+Current issue:
+The Social tab needs to be fixed for mobile. The feed is visible, but the Messages area is not usable. The channels panel takes up too much space and the actual messages area cannot be accessed properly.
+
+Required changes:
+
+1. Rebuild Social for mobile with separate views.
+   On mobile, do not show channel list and chat panel side-by-side. That works on desktop, not mobile.
+
+2. Mobile Social tabs should be:
+   - Feed
+   - Messages
+   - Friends
+
+3. Messages mobile behavior:
+   When user taps Messages:
+   - Show channel list first.
+   - User taps a channel.
+   - Then open the chat screen full-width.
+   - Add back button to return to channel list.
+
+4. Chat screen must include:
+   - Channel name at top
+   - Back button
+   - Message list
+   - Message input
+   - Send button
+   - Online/connected status if needed
+
+5. Direct messages must be accessible.
+   Direct Messages section should not be hidden or cut off.
+   If there are no conversations, show:
+   âNo conversations yetâ
+   Button: âStart a DMâ or âFind Friendsâ
+
+6. Game rooms must be accessible.
+   If Game Rooms is collapsed, it should expand properly on mobile.
+
+7. Feed composer must fit.
+   In the screenshot, the post composer is partly covered by the bottom nav. Fix spacing and safe-area padding.
+
+8. Social content should not be hidden behind bottom nav.
+   Add enough padding at the bottom of Feed, Messages, and Friends.
+
+9. Message input should stay visible.
+   On mobile, the input box must be above the bottom nav and above the keyboard when typing.
+
+10. Use mobile routing/state.
+   Example states:
+   - socialView = 'feed'
+   - socialView = 'messages-channel-list'
+   - socialView = 'messages-chat'
+   - selectedChannelId = channel.id
+
+11. Desktop behavior can stay split-panel.
+   On desktop, channels on left and chat on right is fine.
+   On mobile, it must become stacked/navigation-based.
+
+Acceptance criteria:
+- User can open Social on mobile.
+- User can tap Messages.
+- User can pick General, Lobby, Strategy, Bets, Wins, Off Topic, Game Rooms, or Direct Messages.
+- User can enter a chat screen.
+- User can type and send a message.
+- User can go back to channel list.
+- No panel is cut off.
+- Bottom nav does not block the message input.
+
+SECTION 6: MINI GOLF BOT TURN BUG
+
+Current issue:
+In Mini Golf, after the user finishes a hole, the bot keeps going and adding unlimited numbers/strokes. It does not move to the next hole. The game gets stuck on the bot turn.
+
+Required changes:
+
+1. Fix bot turn loop.
+   The bot must stop taking shots after either:
+   - The bot sinks the ball
+   - The bot reaches the stroke limit
+   - The bot finishes its turn
+   - The hole is complete
+
+2. Add max stroke limit per hole.
+   Every hole should have a max stroke cap.
+   Recommended:
+   - Par 2 hole: max 6 strokes
+   - Par 3 hole: max 7 strokes
+   - Par 4 hole: max 8 strokes
+   Or use a universal max of 8 strokes.
+
+3. If the bot reaches max strokes, mark bot as finished for that hole.
+   Do not let bot continue forever.
+
+4. Add clear hole-complete logic.
+   A hole should complete when:
+   - User finished or maxed out
+   AND
+   - Bot finished or maxed out
+
+5. Once both players are finished, show hole summary.
+   Display:
+   - User strokes
+   - Bot strokes
+   - Hole winner
+   - Current match score
+   - Button or auto-timer: âNext Holeâ
+
+6. Auto-advance to next hole.
+   After summary, move to next hole after 2 to 3 seconds or when user taps Next Hole.
+
+7. Prevent duplicate bot timers.
+   Make sure bot action timers are cleaned up.
+   If using setInterval or setTimeout, clear it when:
+   - Bot turn ends
+   - Hole ends
+   - Component unmounts
+   - User exits match
+   - Next hole loads
+
+8. Bot state needed.
+   Track:
+   - botStrokeCount
+   - botBallPosition
+   - botHasFinishedHole
+   - botIsTakingTurn
+   - botReachedStrokeLimit
+
+9. User state needed.
+   Track:
+   - userStrokeCount
+   - userBallPosition
+   - userHasFinishedHole
+   - userReachedStrokeLimit
+
+10. Example pseudo logic:
+
+   function finishBotTurn() {
+     if (botBallInHole || botStrokeCount >= maxStrokes) {
+       setBotHasFinishedHole(true);
+       setBotIsTakingTurn(false);
+       checkHoleComplete();
+       return;
+     }
+
+     if (!userHasFinishedHole) {
+       setCurrentTurn('user');
+     } else {
+       runBotShot();
+     }
+   }
+
+   function checkHoleComplete() {
+     const userDone = userHasFinishedHole || userStrokeCount >= maxStrokes;
+     const botDone = botHasFinishedHole || botStrokeCount >= maxStrokes;
+
+     if (userDone && botDone) {
+       clearBotTimers();
+       setHoleComplete(true);
+       showHoleSummary();
+     }
+   }
+
+11. Important bot rule.
+   If the user already finished the hole, the bot can continue only until it finishes or hits max strokes. It cannot go forever.
+
+12. Reset state between holes.
+   On next hole, reset:
+   - userStrokeCount for hole
+   - botStrokeCount for hole
+   - userHasFinishedHole
+   - botHasFinishedHole
+   - botIsTakingTurn
+   - ball positions
+   - currentTurn
+   - timers
+
+13. End match after final hole.
+   If Mini Golf is 3 holes, after Hole 3 show match results instead of going to Hole 4.
+
+14. Bot score display.
+   The bot score should show realistic stroke count and stop updating after bot is done.
+
+Acceptance criteria:
+- Bot does not take infinite strokes.
+- Bot stops at max stroke cap.
+- Hole advances after both user and bot are done.
+- Hole 1 moves to Hole 2.
+- Hole 2 moves to Hole 3.
+- Hole 3 moves to match results.
+- Refreshing or leaving the match does not leave a bot timer running.
+
+SECTION 7: MOBILE GAME SCREEN POLISH
+
+Mini Golf screenshot also shows the actual game screen is usable but needs better mobile polish.
+
+Required changes:
+
+1. Mobile game HUD must fit.
+   The top HUD should show:
+   - Game name
+   - Back button
+   - Hole number
+   - Course name
+   - User score
+   - Opponent score
+   But it must not feel cramped.
+
+2. Player cards should stack cleanly.
+   The player card and bot card should be readable and not too wide.
+
+3. Game board must fit inside the phone.
+   The mini golf board should resize based on screen width.
+   Do not hard-code desktop board size.
+
+4. Control instructions must be mobile-specific.
+   On mobile, show:
+   âTouch + drag to aim, lift to shoot.â
+   Desktop instructions should not be the main mobile instruction.
+
+5. Bottom nav issue.
+   During gameplay, consider hiding the bottom nav or reducing it so it does not block the game.
+   If bottom nav stays visible, add enough padding so it does not cover gameplay controls.
+
+6. Opponent turn state.
+   If it is the botâs turn, show a short animated indicator:
+   âBot is aiming...â
+   âBot shot 2â
+   âBot finished holeâ
+
+7. Hole transition.
+   Add smooth transition between holes:
+   - Fade out current hole
+   - Show score summary
+   - Load next hole
+   - Fade in next hole
+
+Acceptance criteria:
+- Game board fits phone width.
+- HUD is readable.
+- Controls work with touch.
+- Bottom nav does not block gameplay.
+- Bot turn status is understandable.
+
+SECTION 8: GLOBAL MOBILE RESPONSIVE REQUIREMENTS
+
+This entire update should include a global mobile QA pass.
+
+Required changes:
+
+1. Add global mobile CSS rules.
+   - box-sizing: border-box everywhere
+   - overflow-x: hidden on body/root
+   - max-width: 100vw for main containers
+   - use safe-area inset padding
+   - avoid fixed desktop widths
+
+2. Avoid desktop-only sizes on mobile.
+   Do not use fixed widths like 600px, 900px, or 1200px inside mobile screens.
+   Use width: 100%, max-width, clamp, minmax, or responsive grid.
+
+3. Bottom nav safety.
+   Every scrollable screen with bottom nav must include bottom padding:
+   padding-bottom: calc(90px + env(safe-area-inset-bottom));
+
+4. Touch targets.
+   Buttons, tabs, cards, and close icons must be easy to tap.
+   Minimum recommended touch target: 44px.
+
+5. Font scaling.
+   Use responsive font sizes so text does not explode on mobile.
+   Example:
+   font-size: clamp(14px, 3.5vw, 18px);
+
+6. Mobile testing devices.
+   Test on:
+   - iPhone SE width
+   - iPhone 13/14/15 width
+   - iPhone Pro Max width
+   - Android small phone width
+   - Desktop browser responsive mode
+
+7. No horizontal scroll.
+   There should be zero horizontal scrolling on any mobile page.
+
+8. Modals must fit mobile.
+   All modals should use:
+   width: min(100vw - 24px, 430px)
+   max-height: calc(100vh - 40px)
+   overflow-y: auto
+
+9. Keyboard handling.
+   Inputs in Social, messages, profile, and forms must stay visible when keyboard opens.
+
+Acceptance criteria:
+- Mobile app feels intentionally designed.
+- No clipped cards.
+- No blown-up modal screens.
+- No inaccessible buttons.
+- No hidden input fields.
+
+SECTION 9: QA CHECKLIST FOR DEV
+
+Before marking this complete, test every item below.
+
+Ranks and rewards:
+- Can open reward track on mobile.
+- Can preview locked future rewards.
+- Can preview unlocked rewards.
+- Can equip unlocked rewards.
+- Cannot equip locked rewards.
+- Progress to next rank displays correctly.
+- Reward modal fits screen.
+
+Training:
+- Training Level 1 starts.
+- Training Level 1 completes.
+- Training Level 2 unlocks after Level 1.
+- Locked levels cannot be accessed early.
+- Training progress saves after refresh.
+- Training works on mobile.
+- Training works on desktop.
+
+Mobile modes:
+- Casual exists and works.
+- Ranked exists and works.
+- VS Bot exists and works.
+- Tournament exists and works.
+- Private exists and works.
+- Practice exists and works.
+- Any desktop-only mode has been added to mobile.
+
+Play screen:
+- Press Play on mobile.
+- Mode selection fits screen.
+- Cards are not cut off.
+- Close button works.
+- Step indicator fits.
+- No horizontal scroll.
+
+Social:
+- Feed loads.
+- Feed post composer is not blocked.
+- Messages opens channel list.
+- Tapping a channel opens full chat screen.
+- Back button returns to channel list.
+- Message input is visible.
+- Send button works.
+- Friends tab fits mobile.
+
+Mini Golf:
+- User can play hole.
+- Bot takes turn.
+- Bot stops after sinking or max strokes.
+- Bot does not go infinite.
+- Hole advances to next hole.
+- Final hole ends match.
+- Timers clear when leaving match.
+
+Global mobile:
+- No horizontal scrolling.
+- Bottom nav does not cover content.
+- All buttons are tappable.
+- All modals fit.
+- Safari mobile view works.
+- Replit mobile preview works.
+
+SECTION 10: PRIORITY ORDER
+
+Please complete in this order:
+
+Priority 1: Fix mobile Play mode selection screen because users cannot properly choose modes.
+Priority 2: Fix Mini Golf bot infinite turn bug because it breaks gameplay.
+Priority 3: Fix Training mode progression and unlock logic.
+Priority 4: Fix Social mobile messages layout.
+Priority 5: Add future rank reward preview system.
+Priority 6: Audit all desktop modes and make sure every mode exists on mobile.
+Priority 7: Global mobile polish and QA.
+
+FINAL EXPECTATION
+
+This should not be a tiny patch. This needs to be treated as a full mobile usability and gameplay stability pass. The mobile version should feel like Jango.us was built for the phone, not like a desktop site forced into a phone screen. Users should be able to play, train, message, view ranks, preview rewards, and move through every game mode smoothly on mobile.

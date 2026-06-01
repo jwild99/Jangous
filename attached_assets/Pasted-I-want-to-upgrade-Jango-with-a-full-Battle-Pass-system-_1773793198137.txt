@@ -1,0 +1,216 @@
+I want to upgrade Jango with a full Battle Pass system + Daily Streak system, fully integrated into the Item Shop and User Dashboard.
+
+This needs to feel like a real AAA game system (Fortnite / COD level polish).
+
+-----------------------------------
+PART 1: BATTLE PASS (PURCHASABLE)
+-----------------------------------
+
+BATTLE PASS MUST BE PURCHASED IN ITEM SHOP:
+
+- Add Battle Pass as a product in the Item Shop
+- Price example: 500 Scalps (configurable)
+- When purchased:
+  - Unlock Premium Battle Pass
+  - Persist purchase in user account
+  - Show “Battle Pass Active” state
+
+-----------------------------------
+FREE VS PREMIUM TRACK
+-----------------------------------
+
+- All users have FREE track
+- Premium users unlock PREMIUM track
+
+Each level has:
+- Free reward
+- Premium reward
+
+UI should clearly show:
+- Locked vs unlocked rewards
+- Premium-only rewards visually distinct
+
+-----------------------------------
+PROGRESSION SYSTEM
+-----------------------------------
+
+- Battle Pass has levels (ex: 1 → 100)
+- XP comes from:
+  - Matches
+  - Wins
+  - Challenges
+  - Daily streak multiplier
+
+XP should:
+- Progress Battle Pass
+- Progress user level (can share XP system)
+
+-----------------------------------
+REWARD TYPES
+-----------------------------------
+
+- Avatar frames
+- Profile badges
+- Titles
+- Cosmetic items (pool cue, paddle, etc.)
+- Scalps (currency)
+
+-----------------------------------
+WHERE USERS VIEW PROGRESSION
+-----------------------------------
+
+Battle Pass progression MUST be in USER DASHBOARD:
+
+Create a new section:
+Dashboard → “Battle Pass”
+
+Include:
+- Current level
+- XP progress bar
+- Scrollable reward track
+- Free vs Premium lanes
+- Claim buttons for unlocked rewards
+
+-----------------------------------
+REWARD CLAIM FLOW (IMPORTANT)
+-----------------------------------
+
+When user claims a reward:
+
+- Button → loading state
+- Reward granted
+- Sound plays
+- Animation plays
+- Reward becomes “Claimed”
+
+Add:
++XP animation (if XP reward)
+OR
+Item unlock animation
+
+-----------------------------------
+PART 2: DAILY STREAK SYSTEM (WAGER-BASED)
+-----------------------------------
+
+STREAK REQUIREMENT:
+
+User must:
+- Play at least 1 game per day
+- AND wager at least 1 Scalp
+
+If both conditions are met → streak continues
+
+If not → streak resets
+
+-----------------------------------
+STREAK MULTIPLIER
+-----------------------------------
+
+Example system:
+
+Day 1 → +10% XP  
+Day 2 → +20% XP  
+Day 3 → +30% XP  
+Day 4 → +40% XP  
+Day 5 → +50% XP  
+Day 6 → +60% XP  
+Day 7 → BIG reward + reset or loop
+
+-----------------------------------
+XP MULTIPLIER LOGIC
+-----------------------------------
+
+Apply multiplier to:
+- Match XP
+- Win XP
+- Challenge XP
+
+Example:
+Base XP = 100  
+Day 5 streak = +50%  
+User gets 150 XP
+
+-----------------------------------
+STREAK UI
+-----------------------------------
+
+Add a “Daily Streak” module:
+
+Show:
+- Current day (ex: Day 4)
+- XP multiplier (ex: +40%)
+- Requirement reminder:
+  “Play 1 match + wager 1 Scalp to maintain streak”
+- Next reward preview
+
+Design:
+- Flame/fire icon
+- Glow increases with streak
+
+-----------------------------------
+STREAK FEEDBACK
+-----------------------------------
+
+When streak increases:
+
+- Show animation:
+  “STREAK CONTINUES”
+  “Day 5”
+- Play sound
+- Add glow/pulse effect
+
+When streak resets:
+
+- Show message:
+  “Streak Lost”
+- Subtle, not harsh
+
+-----------------------------------
+PART 3: INTEGRATION (VERY IMPORTANT)
+-----------------------------------
+
+Ensure all systems connect:
+
+- Challenge XP → Battle Pass XP
+- Streak multiplier → affects ALL XP
+- Claim rewards → use same animation system
+- XP updates → instant everywhere (dashboard, lobby, profile)
+
+-----------------------------------
+PART 4: AAA POLISH REQUIREMENTS
+-----------------------------------
+
+Everything must feel:
+- Smooth
+- Responsive
+- Rewarding
+- Clean
+
+Add:
+- Animations (XP, unlocks, progress)
+- Sound effects (claim, level up, streak)
+- No lag or broken states
+- No duplicate claims
+- No incorrect UI states
+
+-----------------------------------
+FINAL EXPERIENCE
+-----------------------------------
+
+User journey should feel like:
+
+- “I need to log in today to keep my streak”
+- “I want to play to level up my Battle Pass”
+- “I want to unlock my next reward”
+
+Flow:
+Play → Earn XP → Streak Boost → Level Up → Claim Rewards → Repeat
+
+-----------------------------------
+IMPORTANT
+-----------------------------------
+
+- Battle Pass must be purchasable ONLY through Item Shop
+- Progress + reward claiming must be inside Dashboard
+- Streak requires BOTH playing AND wagering at least 1 Scalp
+- Everything must update in real time

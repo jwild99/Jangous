@@ -1,0 +1,1577 @@
+// Jango multi-game starter architecture
+// Foundation code intended for an AI dev to implement into the website.
+// This file provides:
+// 1) shared interfaces and utilities
+// 2) concrete game-state implementations for Connect Four and Block Blast
+// 3) strong starter logic/scaffolds for 8-Ball, Air Hockey, Mini Golf, Bowling, Racing
+// 4) integration notes for React/canvas based rendering
+
+export type PlayerID = 'P1' | 'P2';
+
+export interface Vec2 {
+  x: number;
+  y: number;
+}
+
+export const vec = {
+  add: (a: Vec2, b: Vec2): Vec2 => ({ x: a.x + b.x, y: a.y + b.y }),
+  sub: (a: Vec2, b: Vec2): Vec2 => ({ x: a.x - b.x, y: a.y - b.y }),
+  scale: (a: Vec2, s: number): Vec2 => ({ x: a.x * s, y: a.y * s }),
+  dot: (a: Vec2, b: Vec2): number => a.x * b.x + a.y * b.y,
+  len: (a: Vec2): number => Math.hypot(a.x, a.y),
+  norm: (a: Vec2): Vec2 => {
+    const l = Math.hypot(a.x, a.y) || 1;
+    return { x: a.x / l, y: a.y / l };
+  },
+  clampLen: (a: Vec2, max: number): Vec2 => {
+    const l = Math.hypot(a.x, a.y);
+    if (l <= max) return a;
+    const n = max / (l || 1);
+    return { x: a.x * n, y: a.y * n };
+  },
+};
+
+export interface GameSnapshot<TState> {
+  id: string;
+  state: TState;
+  winner?: PlayerID | 'DRAW';
+  isComplete: boolean;
+  updatedAt: number;
+}
+
+export interface BaseGame<TState, TInput> {
+  readonly gameId: string;
+  createInitialState(seed?: number): TState;
+  reduce(state: TState, input: TInput): TState;
+  tick?(state: TState, dtMs: number): TState;
+  getWinner(state: TState): PlayerID | 'DRAW' | undefined;
+}
+
+export function mulberry32(seed: number) {
+  return function rand() {
+    let t = (seed += 0x6d2b79f5);
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+// ------------------------------------------------------------
+// CONNECT FOUR
+// ------------------------------------------------------------
+
+export type ConnectFourCell = 0 | 1 | 2;
+export interface ConnectFourState {
+  rows: number;
+  cols: number;
+  board: ConnectFourCell[][];
+  current: PlayerID;
+  winner?: PlayerID | 'DRAW';
+  winningCells?: Array<[number, number]>;
+}
+
+export interface ConnectFourMove {
+  column: number;
+}
+
+export class ConnectFourGame implements BaseGame<ConnectFourState, ConnectFourMove> {
+  readonly gameId = 'connect-four';
+
+  createInitialState(): ConnectFourState {
+    const rows = 6;
+    const cols = 7;
+    return {
+      rows,
+      cols,
+      board: Array.from({ length: rows }, () => Array.from({ length: cols }, () => 0 as ConnectFourCell)),
+      current: 'P1',
+    };
+  }
+
+  reduce(state: ConnectFourState, input: ConnectFourMove): ConnectFourState {
+    if (state.winner) return state;
+    if (input.column < 0 || input.column >= state.cols) return state;
+
+    const board = state.board.map((r) => [...r]);
+    for (let row = state.rows - 1; row >= 0; row--) {
+      if (board[row][input.column] === 0) {
+        board[row][input.column] = state.current === 'P1' ? 1 : 2;
+        const next: ConnectFourState = {
+          ...state,
+          board,
+          current: state.current === 'P1' ? 'P2' : 'P1',
+        };
+        const { winner, winningCells } = this.checkWinner(next);
+        if (winner) {
+          next.winner = winner;
+          next.winningCells = winningCells;
+        } else if (board.every((r) => r.every((c) => c !== 0))) {
+          next.winner = 'DRAW';
+        }
+        return next;
+      }
+    }
+    return state;
+  }
+
+  getWinner(state: ConnectFourState) {
+    return state.winner;
+  }
+
+  private checkWinner(state: ConnectFourState): { winner?: PlayerID; winningCells?: Array<[number, number]> } {
+    const dirs: Array<[number, number]> = [
+      [0, 1],
+      [1, 0],
+      [1, 1],
+      [1, -1],
+    ];
+    for (let r = 0; r < state.rows; r++) {
+      for (let c = 0; c < state.cols; c++) {
+        const v = state.board[r][c];
+        if (v === 0) continue;
+        for (const [dr, dc] of dirs) {
+          const cells: Array<[number, number]> = [[r, c]];
+          for (let k = 1; k < 4; k++) {
+            const nr = r + dr * k;
+            const nc = c + dc * k;
+            if (nr < 0 || nr >= state.rows || nc < 0 || nc >= state.cols) break;
+            if (state.board[nr][nc] !== v) break;
+            cells.push([nr, nc]);
+          }
+          if (cells.length === 4) {
+            return { winner: v === 1 ? 'P1' : 'P2', winningCells: cells };
+          }
+        }
+      }
+    }
+    return {};
+  }
+}
+
+// ------------------------------------------------------------
+// BLOCK BLAST (single-player score attack starter)
+// ------------------------------------------------------------
+
+export type BlockColor = 'A' | 'B' | 'C' | 'D' | 'E';
+export interface BlockShape {
+  id: string;
+  cells: Vec2[]; // integer grid offsets
+  color: BlockColor;
+}
+
+export interface BlockBlastState {
+  boardSize: number;
+  board: (BlockColor | null)[][];
+  hand: BlockShape[];
+  score: number;
+  combo: number;
+  isGameOver: boolean;
+  seed: number;
+}
+
+export interface BlockBlastMove {
+  shapeId: string;
+  x: number;
+  y: number;
+}
+
+const SHAPES: Array<Omit<BlockShape, 'id' | 'color'>> = [
+  { cells: [{ x: 0, y: 0 }] },
+  { cells: [{ x: 0, y: 0 }, { x: 1, y: 0 }] },
+  { cells: [{ x: 0, y: 0 }, { x: 0, y: 1 }] },
+  { cells: [{ x: 0, y: 0 }, { x: 1, y: 0 }, { x: 2, y: 0 }] },
+  { cells: [{ x: 0, y: 0 }, { x: 0, y: 1 }, { x: 0, y: 2 }] },
+  { cells: [{ x: 0, y: 0 }, { x: 1, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 1 }] },
+  { cells: [{ x: 0, y: 0 }, { x: 1, y: 0 }, { x: 2, y: 0 }, { x: 1, y: 1 }] },
+  { cells: [{ x: 0, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 1 }] },
+  { cells: [{ x: 1, y: 0 }, { x: 0, y: 1 }, { x: 1, y: 1 }] },
+];
+
+const COLORS: BlockColor[] = ['A', 'B', 'C', 'D', 'E'];
+
+export class BlockBlastGame implements BaseGame<BlockBlastState, BlockBlastMove> {
+  readonly gameId = 'block-blast';
+
+  createInitialState(seed = Date.now()): BlockBlastState {
+    const state: BlockBlastState = {
+      boardSize: 8,
+      board: Array.from({ length: 8 }, () => Array.from({ length: 8 }, () => null)),
+      hand: [],
+      score: 0,
+      combo: 0,
+      isGameOver: false,
+      seed,
+    };
+    return { ...state, hand: this.drawHand(seed) };
+  }
+
+  reduce(state: BlockBlastState, input: BlockBlastMove): BlockBlastState {
+    if (state.isGameOver) return state;
+    const shape = state.hand.find((s) => s.id === input.shapeId);
+    if (!shape) return state;
+    if (!this.canPlace(state, shape, input.x, input.y)) return state;
+
+    const board = state.board.map((r) => [...r]);
+    for (const cell of shape.cells) {
+      board[input.y + cell.y][input.x + cell.x] = shape.color;
+    }
+
+    const fullRows: number[] = [];
+    const fullCols: number[] = [];
+    for (let y = 0; y < state.boardSize; y++) {
+      if (board[y].every(Boolean)) fullRows.push(y);
+    }
+    for (let x = 0; x < state.boardSize; x++) {
+      let full = true;
+      for (let y = 0; y < state.boardSize; y++) {
+        if (!board[y][x]) full = false;
+      }
+      if (full) fullCols.push(x);
+    }
+
+    let cleared = 0;
+    for (const y of fullRows) {
+      for (let x = 0; x < state.boardSize; x++) {
+        if (board[y][x]) {
+          board[y][x] = null;
+          cleared++;
+        }
+      }
+    }
+    for (const x of fullCols) {
+      for (let y = 0; y < state.boardSize; y++) {
+        if (board[y][x]) {
+          board[y][x] = null;
+          cleared++;
+        }
+      }
+    }
+
+    const usedShapeIndex = state.hand.findIndex((s) => s.id === input.shapeId);
+    const hand = [...state.hand];
+    hand.splice(usedShapeIndex, 1);
+
+    let nextSeed = state.seed + 1;
+    const nextHand = hand.length === 0 ? this.drawHand(nextSeed) : hand;
+
+    const combo = cleared > 0 ? state.combo + 1 : 0;
+    const score = state.score + shape.cells.length * 10 + cleared * 20 + combo * 15;
+
+    const nextState: BlockBlastState = {
+      ...state,
+      board,
+      hand: nextHand,
+      combo,
+      score,
+      seed: nextSeed,
+    };
+
+    nextState.isGameOver = !nextState.hand.some((h) => this.hasAnyPlacement(nextState, h));
+    return nextState;
+  }
+
+  getWinner(state: BlockBlastState) {
+    return state.isGameOver ? 'DRAW' : undefined;
+  }
+
+  private drawHand(seed: number): BlockShape[] {
+    const rand = mulberry32(seed);
+    return Array.from({ length: 3 }, (_, i) => {
+      const base = SHAPES[Math.floor(rand() * SHAPES.length)];
+      const color = COLORS[Math.floor(rand() * COLORS.length)];
+      return {
+        id: `${seed}-${i}`,
+        color,
+        cells: base.cells.map((c) => ({ ...c })),
+      };
+    });
+  }
+
+  private canPlace(state: BlockBlastState, shape: BlockShape, x: number, y: number): boolean {
+    for (const cell of shape.cells) {
+      const bx = x + cell.x;
+      const by = y + cell.y;
+      if (bx < 0 || by < 0 || bx >= state.boardSize || by >= state.boardSize) return false;
+      if (state.board[by][bx] !== null) return false;
+    }
+    return true;
+  }
+
+  private hasAnyPlacement(state: BlockBlastState, shape: BlockShape): boolean {
+    for (let y = 0; y < state.boardSize; y++) {
+      for (let x = 0; x < state.boardSize; x++) {
+        if (this.canPlace(state, shape, x, y)) return true;
+      }
+    }
+    return false;
+  }
+}
+
+// ------------------------------------------------------------
+// 8-BALL / AIR HOCKEY / MINI GOLF shared circle physics starter
+// ------------------------------------------------------------
+
+export interface CircleBody {
+  id: string;
+  pos: Vec2;
+  vel: Vec2;
+  radius: number;
+  mass: number;
+  restitution: number;
+  friction: number;
+  linearDamping: number;
+  isStatic?: boolean;
+  meta?: Record<string, unknown>;
+}
+
+export interface TableBounds {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+export function integrateCircle(body: CircleBody, dt: number): CircleBody {
+  if (body.isStatic) return body;
+  const damping = Math.max(0, 1 - body.linearDamping * dt);
+  const vel = vec.scale(body.vel, damping);
+  return {
+    ...body,
+    vel,
+    pos: vec.add(body.pos, vec.scale(vel, dt)),
+  };
+}
+
+export function resolveCircleCollision(a: CircleBody, b: CircleBody): [CircleBody, CircleBody] {
+  const delta = vec.sub(b.pos, a.pos);
+  const dist = vec.len(delta) || 0.0001;
+  const minDist = a.radius + b.radius;
+  if (dist >= minDist) return [a, b];
+
+  const normal = vec.scale(delta, 1 / dist);
+  const penetration = minDist - dist;
+
+  const totalMass = a.mass + b.mass;
+  const aMove = b.isStatic ? 0 : penetration * (b.mass / totalMass);
+  const bMove = a.isStatic ? 0 : penetration * (a.mass / totalMass);
+
+  let aPos = a.pos;
+  let bPos = b.pos;
+  if (!a.isStatic) aPos = vec.sub(aPos, vec.scale(normal, aMove));
+  if (!b.isStatic) bPos = vec.add(bPos, vec.scale(normal, bMove));
+
+  const relVel = vec.sub(b.vel, a.vel);
+  const velAlongNormal = vec.dot(relVel, normal);
+  if (velAlongNormal > 0) return [{ ...a, pos: aPos }, { ...b, pos: bPos }];
+
+  const restitution = Math.min(a.restitution, b.restitution);
+  const invMassA = a.isStatic ? 0 : 1 / a.mass;
+  const invMassB = b.isStatic ? 0 : 1 / b.mass;
+  const j = -(1 + restitution) * velAlongNormal / (invMassA + invMassB || 1);
+  const impulse = vec.scale(normal, j);
+
+  const nextA: CircleBody = {
+    ...a,
+    pos: aPos,
+    vel: a.isStatic ? a.vel : vec.sub(a.vel, vec.scale(impulse, invMassA)),
+  };
+  const nextB: CircleBody = {
+    ...b,
+    pos: bPos,
+    vel: b.isStatic ? b.vel : vec.add(b.vel, vec.scale(impulse, invMassB)),
+  };
+
+  return [nextA, nextB];
+}
+
+export function resolveBounds(body: CircleBody, bounds: TableBounds): CircleBody {
+  if (body.isStatic) return body;
+  let { x, y } = body.pos;
+  let { x: vx, y: vy } = body.vel;
+  const left = bounds.x + body.radius;
+  const right = bounds.x + bounds.width - body.radius;
+  const top = bounds.y + body.radius;
+  const bottom = bounds.y + bounds.height - body.radius;
+
+  if (x < left) {
+    x = left;
+    vx = Math.abs(vx) * body.restitution;
+  }
+  if (x > right) {
+    x = right;
+    vx = -Math.abs(vx) * body.restitution;
+  }
+  if (y < top) {
+    y = top;
+    vy = Math.abs(vy) * body.restitution;
+  }
+  if (y > bottom) {
+    y = bottom;
+    vy = -Math.abs(vy) * body.restitution;
+  }
+
+  return { ...body, pos: { x, y }, vel: { x: vx, y: vy } };
+}
+
+// ------------------------------------------------------------
+// 8-BALL POOL STARTER
+// ------------------------------------------------------------
+
+export interface PoolBall extends CircleBody {
+  number: number;
+  pocketed: boolean;
+}
+
+export interface PoolPocket {
+  id: string;
+  pos: Vec2;
+  radius: number;
+}
+
+export interface PoolState {
+  bounds: TableBounds;
+  balls: PoolBall[];
+  pockets: PoolPocket[];
+  current: PlayerID;
+  aiming: boolean;
+  winner?: PlayerID;
+}
+
+export interface PoolInput {
+  type: 'shoot';
+  angleRad: number;
+  power: number; // 0..1
+}
+
+export class EightBallStarter implements BaseGame<PoolState, PoolInput> {
+  readonly gameId = 'eight-ball';
+
+  createInitialState(): PoolState {
+    const cue: PoolBall = {
+      id: 'cue',
+      number: 0,
+      pos: { x: 180, y: 220 },
+      vel: { x: 0, y: 0 },
+      radius: 10,
+      mass: 1,
+      restitution: 0.93,
+      friction: 0.015,
+      linearDamping: 0.6,
+      pocketed: false,
+    };
+
+    const rackStart = { x: 520, y: 220 };
+    const spacing = 21;
+    const rack: PoolBall[] = [];
+    let n = 1;
+    for (let row = 0; row < 5; row++) {
+      for (let col = 0; col <= row; col++) {
+        rack.push({
+          id: `ball-${n}`,
+          number: n,
+          pos: {
+            x: rackStart.x + row * (spacing - 2),
+            y: rackStart.y - row * (spacing / 2) + col * spacing,
+          },
+          vel: { x: 0, y: 0 },
+          radius: 10,
+          mass: 1,
+          restitution: 0.93,
+          friction: 0.015,
+          linearDamping: 0.6,
+          pocketed: false,
+        });
+        n++;
+      }
+    }
+
+    return {
+      bounds: { x: 60, y: 60, width: 620, height: 320 },
+      balls: [cue, ...rack],
+      pockets: [
+        { id: 'tl', pos: { x: 60, y: 60 }, radius: 18 },
+        { id: 'tm', pos: { x: 370, y: 55 }, radius: 18 },
+        { id: 'tr', pos: { x: 680, y: 60 }, radius: 18 },
+        { id: 'bl', pos: { x: 60, y: 380 }, radius: 18 },
+        { id: 'bm', pos: { x: 370, y: 385 }, radius: 18 },
+        { id: 'br', pos: { x: 680, y: 380 }, radius: 18 },
+      ],
+      current: 'P1',
+      aiming: true,
+    };
+  }
+
+  reduce(state: PoolState, input: PoolInput): PoolState {
+    if (input.type !== 'shoot' || !state.aiming) return state;
+    const balls = state.balls.map((b) => ({ ...b, pos: { ...b.pos }, vel: { ...b.vel } }));
+    const cue = balls.find((b) => b.number === 0 && !b.pocketed);
+    if (!cue) return state;
+    const power = Math.max(0, Math.min(1, input.power));
+    cue.vel = {
+      x: Math.cos(input.angleRad) * (power * 900),
+      y: Math.sin(input.angleRad) * (power * 900),
+    };
+    return { ...state, balls, aiming: false };
+  }
+
+  tick(state: PoolState, dtMs: number): PoolState {
+    const dt = dtMs / 1000;
+    let balls = state.balls.map((b) => {
+      if (b.pocketed) return b;
+      let next = integrateCircle(b, dt);
+      next = resolveBounds(next, state.bounds) as PoolBall;
+      // rolling friction
+      next.vel = vec.scale(next.vel, Math.max(0, 1 - next.friction));
+      if (vec.len(next.vel) < 2) next.vel = { x: 0, y: 0 };
+      return next;
+    });
+
+    for (let i = 0; i < balls.length; i++) {
+      for (let j = i + 1; j < balls.length; j++) {
+        if (balls[i].pocketed || balls[j].pocketed) continue;
+        const [a, b] = resolveCircleCollision(balls[i], balls[j]);
+        balls[i] = a as PoolBall;
+        balls[j] = b as PoolBall;
+      }
+    }
+
+    balls = balls.map((ball) => {
+      if (ball.pocketed) return ball;
+      for (const pocket of state.pockets) {
+        const d = vec.len(vec.sub(ball.pos, pocket.pos));
+        if (d < pocket.radius) {
+          return { ...ball, pocketed: true, vel: { x: 0, y: 0 } };
+        }
+      }
+      return ball;
+    });
+
+    const allStopped = balls.every((b) => b.pocketed || vec.len(b.vel) === 0);
+    return {
+      ...state,
+      balls,
+      aiming: allStopped,
+    };
+  }
+
+  getWinner(state: PoolState) {
+    return state.winner;
+  }
+}
+
+// ------------------------------------------------------------
+// AIR HOCKEY STARTER
+// ------------------------------------------------------------
+
+export interface AirHockeyBody extends CircleBody {
+  owner?: PlayerID;
+}
+
+export interface AirHockeyState {
+  bounds: TableBounds;
+  puck: AirHockeyBody;
+  paddles: Record<PlayerID, AirHockeyBody>;
+  score: Record<PlayerID, number>;
+  targetScore: number;
+}
+
+export type AirHockeyInput =
+  | { type: 'move'; player: PlayerID; pos: Vec2 }
+  | { type: 'reset' };
+
+export class AirHockeyStarter implements BaseGame<AirHockeyState, AirHockeyInput> {
+  readonly gameId = 'air-hockey';
+
+  createInitialState(): AirHockeyState {
+    return {
+      bounds: { x: 60, y: 60, width: 620, height: 320 },
+      puck: {
+        id: 'puck',
+        pos: { x: 370, y: 220 },
+        vel: { x: 0, y: 0 },
+        radius: 11,
+        mass: 0.7,
+        restitution: 0.98,
+        friction: 0.002,
+        linearDamping: 0.08,
+      },
+      paddles: {
+        P1: {
+          id: 'p1',
+          owner: 'P1',
+          pos: { x: 180, y: 220 },
+          vel: { x: 0, y: 0 },
+          radius: 22,
+          mass: 2.5,
+          restitution: 0.9,
+          friction: 0,
+          linearDamping: 0,
+        },
+        P2: {
+          id: 'p2',
+          owner: 'P2',
+          pos: { x: 560, y: 220 },
+          vel: { x: 0, y: 0 },
+          radius: 22,
+          mass: 2.5,
+          restitution: 0.9,
+          friction: 0,
+          linearDamping: 0,
+        },
+      },
+      score: { P1: 0, P2: 0 },
+      targetScore: 7,
+    };
+  }
+
+  reduce(state: AirHockeyState, input: AirHockeyInput): AirHockeyState {
+    if (input.type === 'reset') return this.createInitialState();
+    const paddle = state.paddles[input.player];
+    const vel = vec.sub(input.pos, paddle.pos);
+    return {
+      ...state,
+      paddles: {
+        ...state.paddles,
+        [input.player]: { ...paddle, pos: input.pos, vel },
+      },
+    };
+  }
+
+  tick(state: AirHockeyState, dtMs: number): AirHockeyState {
+    const dt = dtMs / 1000;
+    let puck = integrateCircle(state.puck, dt);
+    puck = resolveBounds(puck, state.bounds);
+    puck.vel = vec.scale(puck.vel, 0.997);
+
+    let p1 = state.paddles.P1;
+    let p2 = state.paddles.P2;
+    [puck, p1] = resolveCircleCollision(puck, p1);
+    [puck, p2] = resolveCircleCollision(puck, p2);
+
+    const goalTop = 160;
+    const goalBottom = 280;
+    if (puck.pos.x - puck.radius <= state.bounds.x && puck.pos.y >= goalTop && puck.pos.y <= goalBottom) {
+      const score = { ...state.score, P2: state.score.P2 + 1 };
+      return { ...this.createInitialState(), score, targetScore: state.targetScore };
+    }
+    if (puck.pos.x + puck.radius >= state.bounds.x + state.bounds.width && puck.pos.y >= goalTop && puck.pos.y <= goalBottom) {
+      const score = { ...state.score, P1: state.score.P1 + 1 };
+      return { ...this.createInitialState(), score, targetScore: state.targetScore };
+    }
+
+    return { ...state, puck, paddles: { P1: p1, P2: p2 } };
+  }
+
+  getWinner(state: AirHockeyState) {
+    if (state.score.P1 >= state.targetScore) return 'P1';
+    if (state.score.P2 >= state.targetScore) return 'P2';
+    return undefined;
+  }
+}
+
+// ------------------------------------------------------------
+// MINI GOLF STARTER (GamePigeon-inspired flow)
+// ------------------------------------------------------------
+
+export interface GolfHole {
+  tee: Vec2;
+  cup: Vec2;
+  bounds: TableBounds;
+  obstacles: Array<{ x: number; y: number; width: number; height: number }>;
+  par: number;
+}
+
+export interface GolfBall extends CircleBody {
+  strokes: number;
+  holed: boolean;
+}
+
+export interface MiniGolfState {
+  holeIndex: number;
+  holes: GolfHole[];
+  current: PlayerID;
+  balls: Record<PlayerID, GolfBall>;
+  finished: boolean;
+  totalStrokes: Record<PlayerID, number>;
+}
+
+export interface MiniGolfInput {
+  type: 'swing';
+  player: PlayerID;
+  angleRad: number;
+  power: number;
+}
+
+export class MiniGolfStarter implements BaseGame<MiniGolfState, MiniGolfInput> {
+  readonly gameId = 'mini-golf';
+
+  createInitialState(seed = 1): MiniGolfState {
+    const holes = generateStarterGolfCourses(seed);
+    const hole = holes[0];
+    return {
+      holeIndex: 0,
+      holes,
+      current: 'P1',
+      balls: {
+        P1: {
+          id: 'g1', pos: hole.tee, vel: { x: 0, y: 0 }, radius: 9, mass: 1, restitution: 0.84, friction: 0.02, linearDamping: 0.8, strokes: 0, holed: false,
+        },
+        P2: {
+          id: 'g2', pos: vec.add(hole.tee, { x: 0, y: 22 }), vel: { x: 0, y: 0 }, radius: 9, mass: 1, restitution: 0.84, friction: 0.02, linearDamping: 0.8, strokes: 0, holed: false,
+        },
+      },
+      finished: false,
+      totalStrokes: { P1: 0, P2: 0 },
+    };
+  }
+
+  reduce(state: MiniGolfState, input: MiniGolfInput): MiniGolfState {
+    if (state.finished || input.player !== state.current) return state;
+    const ball = state.balls[input.player];
+    if (ball.holed || vec.len(ball.vel) > 0) return state;
+    const power = Math.max(0, Math.min(1, input.power));
+    const vel = {
+      x: Math.cos(input.angleRad) * power * 760,
+      y: Math.sin(input.angleRad) * power * 760,
+    };
+    return {
+      ...state,
+      balls: {
+        ...state.balls,
+        [input.player]: { ...ball, vel, strokes: ball.strokes + 1 },
+      },
+    };
+  }
+
+  tick(state: MiniGolfState, dtMs: number): MiniGolfState {
+    const dt = dtMs / 1000;
+    const hole = state.holes[state.holeIndex];
+    const balls = { ...state.balls };
+
+    for (const player of ['P1', 'P2'] as PlayerID[]) {
+      let b = balls[player];
+      if (b.holed) continue;
+      b = integrateCircle(b, dt) as GolfBall;
+      b = resolveBounds(b, hole.bounds) as GolfBall;
+      b.vel = vec.scale(b.vel, Math.max(0, 1 - b.friction));
+
+      // obstacle reflection starter
+      for (const o of hole.obstacles) {
+        if (
+          b.pos.x + b.radius > o.x &&
+          b.pos.x - b.radius < o.x + o.width &&
+          b.pos.y + b.radius > o.y &&
+          b.pos.y - b.radius < o.y + o.height
+        ) {
+          b.vel = { x: -b.vel.x * 0.9, y: -b.vel.y * 0.9 };
+        }
+      }
+
+      const toCup = vec.sub(hole.cup, b.pos);
+      if (vec.len(toCup) < 12 && vec.len(b.vel) < 140) {
+        b = { ...b, holed: true, vel: { x: 0, y: 0 }, pos: hole.cup };
+      } else if (vec.len(b.vel) < 2) {
+        b.vel = { x: 0, y: 0 };
+      }
+      balls[player] = b;
+    }
+
+    const stopped = ['P1', 'P2'].every((p) => vec.len(balls[p as PlayerID].vel) === 0);
+    let current = state.current;
+    if (stopped && !balls[state.current].holed) current = state.current === 'P1' ? 'P2' : 'P1';
+
+    const bothHoled = balls.P1.holed && balls.P2.holed;
+    if (bothHoled) {
+      const totalStrokes = {
+        P1: state.totalStrokes.P1 + balls.P1.strokes,
+        P2: state.totalStrokes.P2 + balls.P2.strokes,
+      };
+      const nextHoleIndex = state.holeIndex + 1;
+      if (nextHoleIndex >= state.holes.length) {
+        return { ...state, balls, totalStrokes, finished: true };
+      }
+      const nextHole = state.holes[nextHoleIndex];
+      return {
+        ...state,
+        holeIndex: nextHoleIndex,
+        current: 'P1',
+        totalStrokes,
+        balls: {
+          P1: { ...balls.P1, pos: nextHole.tee, vel: { x: 0, y: 0 }, strokes: 0, holed: false },
+          P2: { ...balls.P2, pos: vec.add(nextHole.tee, { x: 0, y: 22 }), vel: { x: 0, y: 0 }, strokes: 0, holed: false },
+        },
+      };
+    }
+
+    return { ...state, balls, current };
+  }
+
+  getWinner(state: MiniGolfState) {
+    if (!state.finished) return undefined;
+    if (state.totalStrokes.P1 === state.totalStrokes.P2) return 'DRAW';
+    return state.totalStrokes.P1 < state.totalStrokes.P2 ? 'P1' : 'P2';
+  }
+}
+
+export function generateStarterGolfCourses(seed = 1): GolfHole[] {
+  const rand = mulberry32(seed);
+  const bounds = { x: 70, y: 70, width: 620, height: 320 };
+  const variants: GolfHole[] = [
+    {
+      tee: { x: 130, y: 230 },
+      cup: { x: 620, y: 220 },
+      bounds,
+      obstacles: [{ x: 310, y: 140, width: 24, height: 150 }],
+      par: 3,
+    },
+    {
+      tee: { x: 110, y: 120 },
+      cup: { x: 640, y: 320 },
+      bounds,
+      obstacles: [
+        { x: 250, y: 70, width: 22, height: 180 },
+        { x: 440, y: 190, width: 22, height: 200 },
+      ],
+      par: 4,
+    },
+    {
+      tee: { x: 130, y: 320 },
+      cup: { x: 610, y: 120 },
+      bounds,
+      obstacles: [
+        { x: 250, y: 250, width: 160, height: 24 },
+        { x: 410, y: 130, width: 24, height: 130 },
+      ],
+      par: 4,
+    },
+  ];
+  return Array.from({ length: 3 }, () => variants[Math.floor(rand() * variants.length)]);
+}
+
+// ------------------------------------------------------------
+// BOWLING STARTER
+// ------------------------------------------------------------
+
+export interface BowlingPin {
+  id: string;
+  pos: Vec2;
+  standing: boolean;
+}
+
+export interface BowlingState {
+  ball: CircleBody;
+  pins: BowlingPin[];
+  frame: number;
+  roll: number;
+  score: number;
+}
+
+export type BowlingInput = { type: 'roll'; angleRad: number; power: number };
+
+export class BowlingStarter implements BaseGame<BowlingState, BowlingInput> {
+  readonly gameId = 'bowling';
+  createInitialState(): BowlingState {
+    const pins: BowlingPin[] = [];
+    let id = 1;
+    for (let row = 0; row < 4; row++) {
+      for (let col = 0; col <= row; col++) {
+        pins.push({ id: `pin-${id++}`, pos: { x: 360 + row * 25, y: 220 - row * 12 + col * 24 }, standing: true });
+      }
+    }
+    return {
+      ball: {
+        id: 'bowling-ball', pos: { x: 120, y: 220 }, vel: { x: 0, y: 0 }, radius: 14, mass: 3, restitution: 0.65, friction: 0.01, linearDamping: 0.35,
+      },
+      pins,
+      frame: 1,
+      roll: 1,
+      score: 0,
+    };
+  }
+  reduce(state: BowlingState, input: BowlingInput): BowlingState {
+    if (vec.len(state.ball.vel) > 0) return state;
+    const power = Math.max(0, Math.min(1, input.power));
+    return { ...state, ball: { ...state.ball, vel: { x: Math.cos(input.angleRad) * power * 850, y: Math.sin(input.angleRad) * power * 850 } } };
+  }
+  tick(state: BowlingState, dtMs: number): BowlingState {
+    const dt = dtMs / 1000;
+    let ball = integrateCircle(state.ball, dt);
+    ball.vel = vec.scale(ball.vel, 0.992);
+    if (vec.len(ball.vel) < 2) ball.vel = { x: 0, y: 0 };
+    const pins = state.pins.map((p) => {
+      if (!p.standing) return p;
+      if (vec.len(vec.sub(ball.pos, p.pos)) < ball.radius + 10) return { ...p, standing: false };
+      return p;
+    });
+    return { ...state, ball, pins };
+  }
+  getWinner() {
+    return undefined;
+  }
+}
+
+// ------------------------------------------------------------
+// TOP-DOWN RACING STARTER
+// ------------------------------------------------------------
+
+export interface RaceTrack {
+  id: string;
+  name: string;
+  checkpoints: Vec2[];
+  laps: number;
+}
+
+export interface RaceCar {
+  id: string;
+  player: PlayerID;
+  pos: Vec2;
+  vel: Vec2;
+  angle: number;
+  speed: number;
+  lap: number;
+  checkpointIndex: number;
+}
+
+export interface RacingState {
+  track: RaceTrack;
+  cars: Record<PlayerID, RaceCar>;
+  winner?: PlayerID;
+}
+
+export type RacingInput = {
+  type: 'control';
+  player: PlayerID;
+  throttle: number;
+  brake: number;
+  steer: number;
+};
+
+const STARTER_TRACKS: RaceTrack[] = [
+  { id: 'track-1', name: 'Sunset Loop', checkpoints: [{ x: 140, y: 140 }, { x: 620, y: 140 }, { x: 620, y: 320 }, { x: 140, y: 320 }], laps: 3 },
+  { id: 'track-2', name: 'Neon Bend', checkpoints: [{ x: 160, y: 120 }, { x: 560, y: 110 }, { x: 640, y: 250 }, { x: 540, y: 350 }, { x: 200, y: 340 }, { x: 120, y: 220 }], laps: 3 },
+  { id: 'track-3', name: 'Grand Apex', checkpoints: [{ x: 170, y: 120 }, { x: 650, y: 150 }, { x: 600, y: 340 }, { x: 210, y: 350 }, { x: 110, y: 210 }], laps: 3 },
+];
+
+export class RacingStarter implements BaseGame<RacingState, RacingInput> {
+  readonly gameId = 'racing';
+  createInitialState(seed = 1): RacingState {
+    const track = STARTER_TRACKS[seed % STARTER_TRACKS.length];
+    return {
+      track,
+      cars: {
+        P1: { id: 'car-1', player: 'P1', pos: { x: 180, y: 180 }, vel: { x: 0, y: 0 }, angle: 0, speed: 0, lap: 1, checkpointIndex: 0 },
+        P2: { id: 'car-2', player: 'P2', pos: { x: 180, y: 220 }, vel: { x: 0, y: 0 }, angle: 0, speed: 0, lap: 1, checkpointIndex: 0 },
+      },
+    };
+  }
+  reduce(state: RacingState, input: RacingInput): RacingState {
+    const car = state.cars[input.player];
+    const turnRate = 0.055;
+    const accel = 14;
+    const brakePower = 18;
+    const drag = 0.97;
+
+    let angle = car.angle + input.steer * turnRate;
+    let speed = car.speed + input.throttle * accel - input.brake * brakePower;
+    speed *= drag;
+    speed = Math.max(0, Math.min(260, speed));
+    const vel = { x: Math.cos(angle) * speed, y: Math.sin(angle) * speed };
+    const pos = vec.add(car.pos, vec.scale(vel, 0.016));
+
+    const nextCheckpoint = state.track.checkpoints[car.checkpointIndex];
+    let checkpointIndex = car.checkpointIndex;
+    let lap = car.lap;
+    if (vec.len(vec.sub(pos, nextCheckpoint)) < 35) {
+      checkpointIndex++;
+      if (checkpointIndex >= state.track.checkpoints.length) {
+        checkpointIndex = 0;
+        lap++;
+      }
+    }
+
+    const nextCar: RaceCar = { ...car, angle, speed, vel, pos, checkpointIndex, lap };
+    const winner = lap > state.track.laps ? input.player : state.winner;
+    return { ...state, winner, cars: { ...state.cars, [input.player]: nextCar } };
+  }
+  getWinner(state: RacingState) {
+    return state.winner;
+  }
+}
+
+// ------------------------------------------------------------
+// REACT INTEGRATION NOTES
+// ------------------------------------------------------------
+// Suggested structure:
+// /games/core/physics.ts
+// /games/core/loop.ts
+// /games/eight-ball/state.ts
+// /games/eight-ball/renderers/canvasRenderer.ts
+// /games/mini-golf/state.ts
+// /games/connect-four/ConnectFourCanvas.tsx
+// /games/block-blast/BlockBlastBoard.tsx
+// /games/racing/RacingCanvas.tsx
+//
+// Use requestAnimationFrame with a fixed or semi-fixed timestep.
+// Keep server-authoritative rules for ranked / wagered matches where outcomes matter.
+// Send only validated player inputs over the network, not full client state.
+//
+// Example client loop:
+// let last = performance.now();
+// function frame(now:number){
+//   const dt = Math.min(now - last, 32);
+//   state = game.tick ? game.tick(state, dt) : state;
+//   render(state);
+//   last = now;
+//   requestAnimationFrame(frame);
+// }
+// requestAnimationFrame(frame);
+
+
+// ============================================================
+// JANGO V2 ENHANCEMENTS BASED ON CURRENT BUILD FEEDBACK
+// Focused upgrades for: Mini Golf, 8-Ball Pool, Block Blast, Air Hockey
+// These additions are meant to be merged into the earlier starter base.
+// ============================================================
+
+// ------------------------------------------------------------
+// MINI GOLF V2: stronger shot scaling, better roll feel, better random holes
+// ------------------------------------------------------------
+
+export interface GolfSurfaceZone {
+  kind: 'fairway' | 'rough' | 'sand' | 'water';
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+export interface GolfHoleV2 extends GolfHole {
+  surfaces: GolfSurfaceZone[];
+  theme: 'night' | 'sunset' | 'neon';
+}
+
+export function pointInRect(p: Vec2, r: { x: number; y: number; width: number; height: number }): boolean {
+  return p.x >= r.x && p.x <= r.x + r.width && p.y >= r.y && p.y <= r.y + r.height;
+}
+
+export function getGolfSurfaceDrag(hole: GolfHoleV2, pos: Vec2): number {
+  for (const s of hole.surfaces) {
+    if (pointInRect(pos, s)) {
+      switch (s.kind) {
+        case 'fairway':
+          return 0.988;
+        case 'rough':
+          return 0.972;
+        case 'sand':
+          return 0.93;
+        case 'water':
+          return 0.0;
+      }
+    }
+  }
+  return 0.986;
+}
+
+export function generateRandomizedGolfCoursesV2(seed = 1, holeCount = 3): GolfHoleV2[] {
+  const rand = mulberry32(seed);
+  const holes: GolfHoleV2[] = [];
+
+  for (let i = 0; i < holeCount; i++) {
+    const bounds = { x: 70, y: 70, width: 620, height: 320 };
+    const tee = {
+      x: 110 + Math.floor(rand() * 90),
+      y: 110 + Math.floor(rand() * 180),
+    };
+    const cup = {
+      x: 520 + Math.floor(rand() * 110),
+      y: 110 + Math.floor(rand() * 180),
+    };
+
+    const obstacles = Array.from({ length: 2 + Math.floor(rand() * 2) }, () => ({
+      x: 180 + Math.floor(rand() * 320),
+      y: 90 + Math.floor(rand() * 180),
+      width: 18 + Math.floor(rand() * 80),
+      height: 18 + Math.floor(rand() * 80),
+    }));
+
+    const surfaces: GolfSurfaceZone[] = [
+      { kind: 'fairway', x: bounds.x, y: bounds.y, width: bounds.width, height: bounds.height },
+      {
+        kind: 'sand',
+        x: 220 + Math.floor(rand() * 220),
+        y: 170 + Math.floor(rand() * 70),
+        width: 70 + Math.floor(rand() * 70),
+        height: 45 + Math.floor(rand() * 45),
+      },
+      {
+        kind: 'water',
+        x: 240 + Math.floor(rand() * 200),
+        y: 110 + Math.floor(rand() * 120),
+        width: 70 + Math.floor(rand() * 85),
+        height: 40 + Math.floor(rand() * 55),
+      },
+    ];
+
+    holes.push({
+      tee,
+      cup,
+      bounds,
+      obstacles,
+      par: 3 + Math.floor(rand() * 2),
+      surfaces,
+      theme: (['night', 'sunset', 'neon'] as const)[Math.floor(rand() * 3)],
+    });
+  }
+
+  return holes;
+}
+
+export class MiniGolfV2 extends MiniGolfStarter {
+  override readonly gameId = 'mini-golf-v2';
+
+  override createInitialState(seed = 1): MiniGolfState {
+    const holes = generateRandomizedGolfCoursesV2(seed, 3);
+    const hole = holes[0];
+    return {
+      holeIndex: 0,
+      holes,
+      current: 'P1',
+      balls: {
+        P1: {
+          id: 'g1',
+          pos: { ...hole.tee },
+          vel: { x: 0, y: 0 },
+          radius: 9,
+          mass: 1,
+          restitution: 0.8,
+          friction: 0.006,
+          linearDamping: 0.18,
+          strokes: 0,
+          holed: false,
+        },
+        P2: {
+          id: 'g2',
+          pos: vec.add(hole.tee, { x: 0, y: 22 }),
+          vel: { x: 0, y: 0 },
+          radius: 9,
+          mass: 1,
+          restitution: 0.8,
+          friction: 0.006,
+          linearDamping: 0.18,
+          strokes: 0,
+          holed: false,
+        },
+      },
+      finished: false,
+      totalStrokes: { P1: 0, P2: 0 },
+    };
+  }
+
+  override reduce(state: MiniGolfState, input: MiniGolfInput): MiniGolfState {
+    if (state.finished || input.player !== state.current) return state;
+    const ball = state.balls[input.player];
+    if (ball.holed || vec.len(ball.vel) > 0) return state;
+
+    const power = Math.max(0, Math.min(1, input.power));
+    // Stronger shot scaling so 100% no longer feels like a dead tap.
+    // This was the core complaint in the current build.
+    const shotSpeed = 180 + power * 1180;
+    const vel = {
+      x: Math.cos(input.angleRad) * shotSpeed,
+      y: Math.sin(input.angleRad) * shotSpeed,
+    };
+
+    return {
+      ...state,
+      balls: {
+        ...state.balls,
+        [input.player]: {
+          ...ball,
+          vel,
+          strokes: ball.strokes + 1,
+        },
+      },
+    };
+  }
+
+  override tick(state: MiniGolfState, dtMs: number): MiniGolfState {
+    const dt = Math.min(dtMs, 20) / 1000;
+    const hole = state.holes[state.holeIndex] as GolfHoleV2;
+    const balls = { ...state.balls };
+
+    for (const player of ['P1', 'P2'] as PlayerID[]) {
+      let b = { ...balls[player] };
+      if (b.holed) continue;
+
+      // More natural motion integration.
+      b.pos = vec.add(b.pos, vec.scale(b.vel, dt));
+      b = resolveBounds(b, hole.bounds) as GolfBall;
+
+      // Surface-dependent drag.
+      const drag = getGolfSurfaceDrag(hole, b.pos);
+      b.vel = vec.scale(b.vel, drag);
+
+      // Obstacle collision reflection.
+      for (const o of hole.obstacles) {
+        if (pointInRect(b.pos, { x: o.x - b.radius, y: o.y - b.radius, width: o.width + b.radius * 2, height: o.height + b.radius * 2 })) {
+          const center = { x: o.x + o.width / 2, y: o.y + o.height / 2 };
+          const d = vec.sub(b.pos, center);
+          if (Math.abs(d.x / o.width) > Math.abs(d.y / o.height)) {
+            b.vel = { x: -b.vel.x * 0.86, y: b.vel.y * 0.96 };
+          } else {
+            b.vel = { x: b.vel.x * 0.96, y: -b.vel.y * 0.86 };
+          }
+        }
+      }
+
+      // Water trap reset behavior.
+      for (const s of hole.surfaces) {
+        if (s.kind === 'water' && pointInRect(b.pos, s)) {
+          b.pos = { ...hole.tee };
+          b.vel = { x: 0, y: 0 };
+        }
+      }
+
+      const cupDelta = vec.sub(hole.cup, b.pos);
+      const cupDist = vec.len(cupDelta);
+      const speed = vec.len(b.vel);
+
+      // Better cup capture window: slow approach falls in, hard shots can lip past.
+      if (cupDist < 13 && speed < 210) {
+        b.holed = true;
+        b.vel = { x: 0, y: 0 };
+        b.pos = { ...hole.cup };
+      } else if (speed < 4) {
+        b.vel = { x: 0, y: 0 };
+      }
+
+      balls[player] = b;
+    }
+
+    const stopped = ['P1', 'P2'].every((p) => vec.len(balls[p as PlayerID].vel) === 0);
+    let current = state.current;
+    if (stopped && !balls[state.current].holed) current = state.current === 'P1' ? 'P2' : 'P1';
+
+    const bothHoled = balls.P1.holed && balls.P2.holed;
+    if (bothHoled) {
+      const totalStrokes = {
+        P1: state.totalStrokes.P1 + balls.P1.strokes,
+        P2: state.totalStrokes.P2 + balls.P2.strokes,
+      };
+      const nextHoleIndex = state.holeIndex + 1;
+      if (nextHoleIndex >= state.holes.length) {
+        return { ...state, balls, totalStrokes, finished: true };
+      }
+      const nextHole = state.holes[nextHoleIndex] as GolfHoleV2;
+      return {
+        ...state,
+        holeIndex: nextHoleIndex,
+        current: 'P1',
+        totalStrokes,
+        balls: {
+          P1: { ...balls.P1, pos: { ...nextHole.tee }, vel: { x: 0, y: 0 }, strokes: 0, holed: false },
+          P2: { ...balls.P2, pos: vec.add(nextHole.tee, { x: 0, y: 22 }), vel: { x: 0, y: 0 }, strokes: 0, holed: false },
+        },
+      };
+    }
+
+    return { ...state, balls, current };
+  }
+}
+
+// ------------------------------------------------------------
+// 8-BALL POOL V2: stronger collision stability, modernized UI hooks, better feel
+// ------------------------------------------------------------
+
+export interface PoolUiState {
+  aimingAngleRad: number;
+  aimingPower: number;
+  showAimGuide: boolean;
+  shotInProgress: boolean;
+}
+
+export interface PoolStateV2 extends PoolState {
+  ui: PoolUiState;
+}
+
+export function resolveCircleCollisionStable(a: CircleBody, b: CircleBody): [CircleBody, CircleBody] {
+  const delta = vec.sub(b.pos, a.pos);
+  let dist = vec.len(delta);
+  if (dist === 0) dist = 0.0001;
+  const minDist = a.radius + b.radius;
+  if (dist >= minDist) return [a, b];
+
+  const normal = { x: delta.x / dist, y: delta.y / dist };
+  const tangent = { x: -normal.y, y: normal.x };
+
+  const penetration = minDist - dist;
+  const invMassA = a.isStatic ? 0 : 1 / a.mass;
+  const invMassB = b.isStatic ? 0 : 1 / b.mass;
+  const totalInvMass = invMassA + invMassB || 1;
+
+  const aPos = a.isStatic ? a.pos : vec.sub(a.pos, vec.scale(normal, penetration * (invMassA / totalInvMass)));
+  const bPos = b.isStatic ? b.pos : vec.add(b.pos, vec.scale(normal, penetration * (invMassB / totalInvMass)));
+
+  const vaN = vec.dot(a.vel, normal);
+  const vbN = vec.dot(b.vel, normal);
+  const vaT = vec.dot(a.vel, tangent);
+  const vbT = vec.dot(b.vel, tangent);
+
+  const restitution = Math.min(a.restitution, b.restitution);
+
+  const nextVaN = (vaN * (a.mass - b.mass * restitution) + (1 + restitution) * b.mass * vbN) / (a.mass + b.mass);
+  const nextVbN = (vbN * (b.mass - a.mass * restitution) + (1 + restitution) * a.mass * vaN) / (a.mass + b.mass);
+
+  const nextAVel = vec.add(vec.scale(normal, nextVaN), vec.scale(tangent, vaT));
+  const nextBVel = vec.add(vec.scale(normal, nextVbN), vec.scale(tangent, vbT));
+
+  return [
+    { ...a, pos: aPos, vel: nextAVel },
+    { ...b, pos: bPos, vel: nextBVel },
+  ];
+}
+
+export class EightBallV2 extends EightBallStarter {
+  override readonly gameId = 'eight-ball-v2';
+
+  override createInitialState(): PoolStateV2 {
+    const base = super.createInitialState();
+    return {
+      ...base,
+      ui: {
+        aimingAngleRad: 0,
+        aimingPower: 0.45,
+        showAimGuide: true,
+        shotInProgress: false,
+      },
+    };
+  }
+
+  override reduce(state: PoolStateV2, input: PoolInput): PoolStateV2 {
+    if (input.type !== 'shoot' || !state.aiming) return state;
+    const balls = state.balls.map((b) => ({ ...b, pos: { ...b.pos }, vel: { ...b.vel } }));
+    const cue = balls.find((b) => b.number === 0 && !b.pocketed);
+    if (!cue) return state;
+
+    const power = Math.max(0, Math.min(1, input.power));
+    // Stronger scaling and a real-feeling impulse curve.
+    const launchSpeed = 220 + power * 1180;
+    cue.vel = {
+      x: Math.cos(input.angleRad) * launchSpeed,
+      y: Math.sin(input.angleRad) * launchSpeed,
+    };
+
+    return {
+      ...state,
+      balls,
+      aiming: false,
+      ui: {
+        ...state.ui,
+        shotInProgress: true,
+        aimingPower: power,
+        aimingAngleRad: input.angleRad,
+      },
+    };
+  }
+
+  override tick(state: PoolStateV2, dtMs: number): PoolStateV2 {
+    const dt = Math.min(dtMs, 20) / 1000;
+    let balls = state.balls.map((b) => {
+      if (b.pocketed) return b;
+      let next = { ...b };
+      next.pos = vec.add(next.pos, vec.scale(next.vel, dt));
+      next = resolveBounds(next, state.bounds) as PoolBall;
+      // Lower damping, less fake slowdown, more table-like roll.
+      next.vel = vec.scale(next.vel, 0.992);
+      if (vec.len(next.vel) < 3) next.vel = { x: 0, y: 0 };
+      return next;
+    });
+
+    for (let i = 0; i < balls.length; i++) {
+      for (let j = i + 1; j < balls.length; j++) {
+        if (balls[i].pocketed || balls[j].pocketed) continue;
+        const [a, b] = resolveCircleCollisionStable(balls[i], balls[j]);
+        balls[i] = a as PoolBall;
+        balls[j] = b as PoolBall;
+      }
+    }
+
+    balls = balls.map((ball) => {
+      if (ball.pocketed) return ball;
+      for (const pocket of state.pockets) {
+        const d = vec.len(vec.sub(ball.pos, pocket.pos));
+        const speed = vec.len(ball.vel);
+        if (d < pocket.radius - 1 && speed < 520) {
+          return { ...ball, pocketed: true, vel: { x: 0, y: 0 } };
+        }
+      }
+      return ball;
+    });
+
+    const allStopped = balls.every((b) => b.pocketed || vec.len(b.vel) === 0);
+    return {
+      ...state,
+      balls,
+      aiming: allStopped,
+      ui: {
+        ...state.ui,
+        shotInProgress: !allStopped,
+        showAimGuide: allStopped,
+      },
+    };
+  }
+}
+
+// ------------------------------------------------------------
+// BLOCK BLAST V2: more vibrant Jango feel, bigger clear feedback hooks
+// ------------------------------------------------------------
+
+export type JangoBlockRarityGlow = 'cyan' | 'pink' | 'orange' | 'purple' | 'lime';
+
+export const JANGO_BLOCK_COLORS: Record<BlockColor, { fill: string; glow: string; rarityGlow: JangoBlockRarityGlow }> = {
+  A: { fill: '#28e7ff', glow: 'rgba(40,231,255,0.55)', rarityGlow: 'cyan' },
+  B: { fill: '#ff4db8', glow: 'rgba(255,77,184,0.55)', rarityGlow: 'pink' },
+  C: { fill: '#ff8a1f', glow: 'rgba(255,138,31,0.55)', rarityGlow: 'orange' },
+  D: { fill: '#9b5cff', glow: 'rgba(155,92,255,0.55)', rarityGlow: 'purple' },
+  E: { fill: '#65ff72', glow: 'rgba(101,255,114,0.55)', rarityGlow: 'lime' },
+};
+
+export interface BlockBlastStateV2 extends BlockBlastState {
+  lastClearCount: number;
+  lastComboAward: number;
+  pulseTicks: number;
+}
+
+export class BlockBlastV2 extends BlockBlastGame {
+  override readonly gameId = 'block-blast-v2';
+
+  override createInitialState(seed = Date.now()): BlockBlastStateV2 {
+    return {
+      ...super.createInitialState(seed),
+      lastClearCount: 0,
+      lastComboAward: 0,
+      pulseTicks: 0,
+    };
+  }
+
+  override reduce(state: BlockBlastStateV2, input: BlockBlastMove): BlockBlastStateV2 {
+    const next = super.reduce(state, input) as BlockBlastStateV2;
+    const clearedDelta = next.score - state.score;
+    const didPulse = clearedDelta > input.shapeId.length; // lightweight signal that something notable happened
+    return {
+      ...next,
+      lastClearCount: next.combo > state.combo ? 1 : 0,
+      lastComboAward: next.combo,
+      pulseTicks: didPulse ? 16 : Math.max(0, state.pulseTicks - 1),
+    };
+  }
+}
+
+// Renderer guidance for Block Blast V2:
+// - On row/column clears, animate tile flash -> bloom -> shrink -> disappear.
+// - Add score burst text: "+40", "+COMBO x2", etc.
+// - Use stronger board glow while pulseTicks > 0.
+// - Add Jango gradient background accents behind the board container.
+// - Use colored drop shadows and ambient border glow, matching item shop energy.
+
+// ------------------------------------------------------------
+// AIR HOCKEY V2: less lag, capped paddle velocity, smoother puck response
+// ------------------------------------------------------------
+
+export interface AirHockeyStateV2 extends AirHockeyState {
+  lastGoalAt?: number;
+}
+
+export class AirHockeyV2 extends AirHockeyStarter {
+  override readonly gameId = 'air-hockey-v2';
+
+  override createInitialState(): AirHockeyStateV2 {
+    return {
+      ...super.createInitialState(),
+      lastGoalAt: undefined,
+    };
+  }
+
+  override reduce(state: AirHockeyStateV2, input: AirHockeyInput): AirHockeyStateV2 {
+    if (input.type === 'reset') return this.createInitialState();
+    const paddle = state.paddles[input.player];
+
+    // Cap paddle delta to reduce insane spikes and laggy-feeling collision jumps.
+    const rawVel = vec.sub(input.pos, paddle.pos);
+    const cappedVel = vec.clampLen(rawVel, 32);
+
+    // Keep paddles in their own half.
+    const clampedPos: Vec2 = {
+      x:
+        input.player === 'P1'
+          ? Math.max(state.bounds.x + paddle.radius, Math.min(input.pos.x, state.bounds.x + state.bounds.width / 2 - 18))
+          : Math.max(state.bounds.x + state.bounds.width / 2 + 18, Math.min(input.pos.x, state.bounds.x + state.bounds.width - paddle.radius)),
+      y: Math.max(state.bounds.y + paddle.radius, Math.min(input.pos.y, state.bounds.y + state.bounds.height - paddle.radius)),
+    };
+
+    return {
+      ...state,
+      paddles: {
+        ...state.paddles,
+        [input.player]: { ...paddle, pos: clampedPos, vel: cappedVel },
+      },
+    };
+  }
+
+  override tick(state: AirHockeyStateV2, dtMs: number): AirHockeyStateV2 {
+    const dt = Math.min(dtMs, 16) / 1000;
+    let puck = { ...state.puck };
+    puck.pos = vec.add(puck.pos, vec.scale(puck.vel, dt));
+    puck = resolveBounds(puck, state.bounds);
+    puck.vel = vec.scale(puck.vel, 0.994);
+    if (vec.len(puck.vel) < 2) puck.vel = { x: 0, y: 0 };
+
+    let p1 = { ...state.paddles.P1 };
+    let p2 = { ...state.paddles.P2 };
+
+    [puck, p1] = resolveCircleCollisionStable(puck, p1);
+    [puck, p2] = resolveCircleCollisionStable(puck, p2);
+
+    // Add paddle velocity influence to make hits feel more alive.
+    puck.vel = vec.add(puck.vel, vec.scale(p1.vel, 0.045));
+    puck.vel = vec.add(puck.vel, vec.scale(p2.vel, 0.045));
+    puck.vel = vec.clampLen(puck.vel, 980);
+
+    const goalTop = 160;
+    const goalBottom = 280;
+    if (puck.pos.x - puck.radius <= state.bounds.x && puck.pos.y >= goalTop && puck.pos.y <= goalBottom) {
+      const score = { ...state.score, P2: state.score.P2 + 1 };
+      return { ...this.createInitialState(), score, targetScore: state.targetScore, lastGoalAt: Date.now() };
+    }
+    if (puck.pos.x + puck.radius >= state.bounds.x + state.bounds.width && puck.pos.y >= goalTop && puck.pos.y <= goalBottom) {
+      const score = { ...state.score, P1: state.score.P1 + 1 };
+      return { ...this.createInitialState(), score, targetScore: state.targetScore, lastGoalAt: Date.now() };
+    }
+
+    return { ...state, puck, paddles: { P1: p1, P2: p2 } };
+  }
+}
+
+// ------------------------------------------------------------
+// UI / RENDER NOTES FOR CURRENT VISUAL COMPLAINTS
+// ------------------------------------------------------------
+// MINI GOLF:
+// - keep current camera, but render stronger trail/aim line and better ball shadow
+// - use hole theme from GolfHoleV2 to swap palette without changing gameplay
+// - render water with animated shimmer and sand with grain/noise texture
+//
+// 8-BALL:
+// - remove large slider/button UI from the center of the game layout
+// - use click-drag aim + pull-back shot interaction instead of separate "Shot Power" + "Shoot"
+// - modern table styling: felt gradient, wood rails, realistic pocket shadows, cue guide line
+// - only show compact bottom HUD: current turn, solids/stripes, shot hint, foul indicator
+//
+// BLOCK BLAST:
+// - animate clears with flash/bloom/score burst
+// - use JANGO_BLOCK_COLORS for tile gradients/glow
+// - add subtle background particles in the board container
+//
+// AIR HOCKEY:
+// - render to canvas only, not DOM-heavy nested glow layers per frame
+// - keep neon vibe, but move glows into one composited pass to reduce lag
+// - use requestAnimationFrame and fixed step simulation for the puck

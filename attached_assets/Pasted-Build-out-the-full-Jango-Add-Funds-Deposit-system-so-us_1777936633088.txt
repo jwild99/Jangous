@@ -1,0 +1,283 @@
+Build out the full Jango “Add Funds / Deposit” system so users can deposit funds with crypto and normal payment methods, with a polished UI/UX that matches the current dark neon Jango style.
+
+CURRENT ISSUE:
+When users click “Generate Deposit Address,” the app shows:
+403: Email verification required for deposit
+
+Do not just hide this error. Fix the actual flow. If email verification is required by the payment provider, the app needs to guide the user through verification clearly.
+
+CORE GOAL:
+Users should be able to open Add Funds, choose a payment method, enter an amount, verify their email if required, generate or complete the payment, and then see their Jango balance update only after the payment is confirmed.
+
+PAYMENT METHODS TO ADD:
+Crypto:
+- Bitcoin
+- Ethereum
+- Solana
+- USDC if supported
+
+Normal payments:
+- PayPal
+- Venmo
+- Visa / debit card / credit card
+
+Use whatever payment processors are legally and technically appropriate for this type of platform. Do not fake the payment flow. Deposits must be real, secure, logged, and confirmed before the balance updates.
+
+IMPORTANT:
+This is for a real-money gaming platform, so make sure the implementation follows all payment processor rules, crypto compliance rules, KYC/AML requirements, gambling/sweepstakes laws, age restrictions, state restrictions, chargeback rules, and any required legal holds. If a payment method or provider does not allow this use case, do not force it. Build the system in a compliant way.
+
+UI / UX STYLE:
+Keep the visuals consistent with the current Jango UI:
+- Dark background
+- Neon glow accents
+- Premium casino/gaming feel
+- Smooth animations
+- Clean cards
+- Rounded corners
+- Subtle gradients
+- Modern iconography
+- Clear spacing
+- No outdated UI
+- Mobile responsive
+
+The deposit flow should feel rewarding and fun, similar to polished gaming/casino apps, but still professional and trustworthy.
+
+ADD FUNDS DRAWER / MODAL:
+Create a polished Add Funds panel with tabs or sections:
+1. Crypto
+2. PayPal / Venmo
+3. Card
+
+Each method should have:
+- Method icon
+- Method name
+- Short description
+- Deposit amount input
+- Quick amount buttons: $10, $25, $50, $100, $250
+- Fee breakdown
+- Amount user receives in Jango balance / Scalps
+- Clear CTA button
+- Loading state
+- Error state
+- Success state
+
+CRYPTO FLOW:
+For Bitcoin, Ethereum, Solana, and USDC:
+1. User selects crypto type
+2. User enters deposit amount in USD
+3. App shows:
+   - Network name
+   - Estimated crypto amount
+   - USD value
+   - Processing fee
+   - Final amount credited
+4. User clicks Generate Deposit Address
+5. Backend checks:
+   - User is logged in
+   - User email is verified
+   - User is eligible to deposit
+   - Deposit amount is within min/max limits
+   - User passed any required KYC/compliance checks
+6. Backend requests a real deposit address from the payment provider
+7. Frontend displays:
+   - Deposit address
+   - QR code
+   - Copy address button
+   - Crypto amount
+   - Expiration timer if applicable
+   - Network warning, like:
+     “Only send BTC on the Bitcoin network. Sending the wrong asset may result in permanent loss.”
+8. Create a pending deposit record in the database
+9. Track deposit status:
+   - Pending
+   - Waiting for blockchain confirmation
+   - Confirmed
+   - Failed
+   - Expired
+10. Balance only updates after payment confirmation from the provider/blockchain webhook
+
+DO NOT instantly credit the user just because they generated a deposit address.
+
+PAYPAL / VENMO FLOW:
+Add PayPal and Venmo deposit options if supported by the chosen payment provider and allowed for this business type.
+
+Flow:
+1. User selects PayPal or Venmo
+2. User enters deposit amount
+3. App shows:
+   - Deposit amount
+   - Fees if any
+   - Final credited amount
+4. User clicks Continue
+5. Backend creates payment session/order
+6. User completes payment through PayPal/Venmo checkout
+7. App shows pending confirmation state
+8. Webhook confirms payment
+9. Balance updates only after confirmed payment
+
+CARD / VISA FLOW:
+Add Visa / debit / credit card deposit flow if supported and compliant.
+
+Flow:
+1. User selects Card
+2. User enters deposit amount
+3. Show:
+   - Deposit amount
+   - Card processing fee if any
+   - Final credited amount
+4. User clicks Continue
+5. Use secure hosted checkout or payment element from the provider
+6. Do not store raw card data
+7. Backend creates payment intent/session
+8. Webhook confirms successful payment
+9. Balance updates only after confirmed payment
+
+EMAIL VERIFICATION FIX:
+If the provider requires verified email before deposit:
+- Replace the current red 403 error with a clean UI state
+- Show:
+  “Verify your email before adding funds.”
+- Add a button:
+  “Send Verification Email”
+- Add another button:
+  “I Verified — Check Again”
+- Backend should check verification status before allowing deposits
+- Once verified, allow the user to continue the deposit flow
+
+USER-FRIENDLY ERRORS:
+Replace raw technical errors with clean messages:
+- 403 email verification required → “Please verify your email before adding funds.”
+- Payment provider unavailable → “Deposits are temporarily unavailable. Please try again soon.”
+- Invalid amount → “Enter an amount between $X and $Y.”
+- Crypto address generation failed → “Could not generate your deposit address. Try again.”
+- Payment failed → “Payment failed. No funds were added.”
+- Deposit expired → “This deposit address/session expired. Start a new deposit.”
+
+BACKEND REQUIREMENTS:
+Create secure backend API routes for:
+- Get available payment methods
+- Check user deposit eligibility
+- Send verification email
+- Check email verification status
+- Create crypto deposit
+- Create PayPal deposit/session
+- Create Venmo deposit/session
+- Create card payment session
+- Get deposit status
+- Get deposit history
+- Handle payment provider webhooks
+
+SECURITY REQUIREMENTS:
+- No payment API keys exposed on frontend
+- All payment actions must happen server-side
+- Validate all deposit amounts server-side
+- Enforce min/max deposit limits
+- Verify webhook signatures
+- Store webhook events
+- Make webhook handling idempotent so duplicate webhooks cannot double-credit a user
+- Never update user balance without confirmed payment
+- Log all failed payment/deposit events
+- Add fraud/risk checks if available
+- Add KYC, age, location, and compliance checks if required
+- Prevent users from bypassing verification or eligibility checks
+
+DATABASE REQUIREMENTS:
+Add tables/models for:
+Users:
+- emailVerified
+- paymentCustomerId
+- kycStatus
+- depositEligible
+- restrictedState/country if needed
+
+Deposits:
+- id
+- userId
+- method
+- asset/network
+- amountUsd
+- amountCrypto
+- fee
+- creditedAmount
+- status
+- providerDepositId
+- providerPaymentId
+- walletAddress
+- transactionHash
+- createdAt
+- confirmedAt
+- expiresAt
+
+Payment/Webhook Events:
+- id
+- provider
+- eventId
+- eventType
+- rawPayload
+- processed
+- createdAt
+
+DEPOSIT HISTORY:
+Add a clean deposit history section with:
+- Date
+- Method
+- Amount
+- Status
+- Transaction hash / payment ID
+- Receipt/details button
+
+REWARDING SUCCESS EXPERIENCE:
+When a deposit is confirmed:
+- Show a polished success animation
+- Use neon glow, coin/scalp animation, or balance count-up
+- Show:
+  “Deposit Confirmed”
+  “+$50 added”
+  “Your balance is ready”
+- Animate the balance increasing
+- Add a subtle sound toggle if the app already supports sound
+- Make it feel exciting but not childish
+- Keep it premium, fast, and casino/gaming style
+
+PENDING EXPERIENCE:
+After user starts a deposit:
+- Show status card:
+  “Waiting for confirmation”
+- For crypto, show:
+  “Blockchain confirmations can take a few minutes.”
+- Add progress/status steps:
+  1. Deposit created
+  2. Payment sent
+  3. Confirming
+  4. Funds added
+- Let user close the modal and still track deposit in history
+
+ADMIN / DEBUG:
+Add admin visibility for:
+- User deposits
+- Deposit status
+- Provider IDs
+- Failed webhooks
+- Manual review flags
+- Do not add manual balance editing unless permission-protected
+
+TESTING:
+Test in sandbox/test mode:
+- Unverified email user
+- Verified email user
+- BTC deposit
+- ETH deposit
+- SOL deposit
+- PayPal deposit
+- Venmo deposit
+- Visa/card deposit
+- Failed payment
+- Expired crypto deposit
+- Duplicate webhook
+- Wrong deposit amount
+- User closes modal and returns later
+- Mobile layout
+- Deployed production layout
+
+FINAL RESULT:
+The Add Funds system should feel fully built, not temporary. Users should be able to deposit using crypto, PayPal, Venmo, or Visa/card when supported and compliant. The UI should match the current Jango dark neon design, the deposit process should feel smooth and rewarding, and the balance should only update after real confirmed payment.

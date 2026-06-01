@@ -1,0 +1,448 @@
+OVERNIGHT PLATFORM SYSTEM BUILD
+JANGO.US
+
+You are improving the Jango.us platform by implementing major systems that transform the site from a simple collection of games into a full competitive gaming platform similar to GamePigeon, Skillz, and modern multiplayer gaming hubs.
+
+Your task is to build and integrate the following systems while maintaining compatibility with existing games and user accounts.
+
+Do NOT remove existing functionality. Only extend and improve the system.
+
+--------------------------------------------------
+
+1. MATCHMAKING SYSTEM
+
+Create a real matchmaking system that allows players to find opponents quickly.
+
+Features to implement:
+
+• Global matchmaking queue
+• Skill-based matching (use player rank or win rate)
+• Match found animation
+• Queue timer
+• Cancel queue button
+• Rematch option after matches
+• Private match codes for inviting friends
+
+Flow:
+
+Player presses "Find Match"
+→ Player enters matchmaking queue
+→ System searches for opponent
+→ Match found screen appears
+→ Game loads automatically
+
+UI Elements:
+
+Find Match  
+Searching for Opponent…  
+Opponent Found  
+Rematch  
+Exit Match  
+
+Make sure matchmaking works across all multiplayer games.
+
+--------------------------------------------------
+
+2. SPECTATOR MODE
+
+Allow users to watch matches live.
+
+Features:
+
+• Spectate button on live matches
+• Live viewer count
+• Real-time game rendering
+• Ability to leave spectating anytime
+
+Add a “Live Matches” section showing games currently being played.
+
+Example:
+
+Air Hockey Match  
+Beau vs Carson  
+Spectators: 7  
+[Watch]
+
+Spectators should not affect gameplay performance.
+
+--------------------------------------------------
+
+3. GAME REPLAY SYSTEM
+
+Automatically record gameplay data so players can watch replays of previous matches.
+
+Features:
+
+• Save last 5 matches for each player
+• Replay playback controls
+• Pause
+• Play
+• Fast forward
+• Replay timeline
+
+Replays should be accessible on the player's profile under:
+
+Match History → Watch Replay
+
+Optimize replay storage so it does not consume excessive resources.
+
+--------------------------------------------------
+
+4. CLAN SYSTEM
+
+Build a full clan system to allow players to form teams and communities.
+
+Clan Features:
+
+• Create clan
+• Join clan
+• Clan invite system
+• Clan chat
+• Clan leaderboard
+• Clan total winnings
+• Clan member list
+• Clan profile page
+
+Clan Profile Page should display:
+
+Clan Name  
+Clan Logo  
+Total Winnings  
+Members  
+Clan Rank  
+Recent Clan Activity  
+
+Support clan battles and clan tournaments.
+
+--------------------------------------------------
+
+5. PLAYER REPUTATION SYSTEM
+
+Create a sportsmanship score system to encourage fair play.
+
+Each player receives a Reputation Score.
+
+Score increases when players:
+
+• finish matches
+• avoid reports
+• maintain good behavior
+
+Score decreases when players:
+
+• rage quit
+• disconnect frequently
+• receive reports
+
+Display on player profile:
+
+⭐ Reputation: 92
+
+Players with extremely low reputation may receive matchmaking penalties.
+
+--------------------------------------------------
+
+6. TOURNAMENT SYSTEM (WITH VISIBLE BRACKET)
+
+Create a full tournament system with visible brackets.
+
+Tournament Types:
+
+• Daily tournaments
+• Weekly tournaments
+• Clan tournaments
+
+Features:
+
+• Automatic bracket generation
+• Player registration
+• Match scheduling
+• Visible tournament bracket
+• Winner progression
+
+The bracket must visually show rounds such as:
+
+Quarterfinals  
+Semifinals  
+Final  
+
+Players should be able to view the bracket at any time.
+
+Add a dedicated "Tournaments" tab to the platform.
+
+--------------------------------------------------
+
+7. XP AND LEVEL PROGRESSION SYSTEM
+
+Implement a progression system to reward active players.
+
+Players gain XP from:
+
+• Winning matches
+• Playing matches
+• Completing challenges
+• Tournament placements
+
+Each player has:
+
+Level  
+XP bar  
+Next level progress  
+
+Example:
+
+Level 14  
+XP: 1200 / 1500
+
+Level rewards may include:
+
+• cosmetics
+• badges
+• profile decorations
+
+--------------------------------------------------
+
+8. RANKED SEASONS
+
+Introduce ranked competitive seasons.
+
+Features:
+
+• Ranked matchmaking mode
+• Seasonal rankings
+• Player divisions (Bronze, Silver, Gold, Platinum, Diamond, Champion)
+• End-of-season rewards
+
+At Champion rank, show leaderboard placement similar to competitive esports games.
+
+Example:
+
+Champion Rank  
+#12 Global
+
+Each season should reset ranks partially while rewarding top players.
+
+--------------------------------------------------
+
+9. LIVE ACTIVITY FEED
+
+Create a social activity feed showing real-time events across the platform.
+
+Examples:
+
+Beau defeated Carson in Air Hockey for 50 Scalps  
+Mason scored a strike in Bowling  
+Sharks Clan defeated Wolves Clan  
+Carson won the Mini Golf tournament  
+
+Users should be able to:
+
+• react to posts
+• click profiles
+• challenge players from the feed
+
+Display this feed in the Social tab.
+
+--------------------------------------------------
+
+10. PLAYER CHALLENGE SYSTEM
+
+Allow players to challenge other users directly.
+
+Features:
+
+• Challenge button on player profiles
+• Select game
+• Optional wager amount
+• Accept / decline challenge
+
+Example:
+
+Beau challenged Carson to Air Hockey  
+Wager: 25 Scalps
+
+If accepted, the match launches automatically.
+
+--------------------------------------------------
+
+11. GLOBAL GAME SOUND ENGINE
+
+Implement a universal sound system used across all games.
+
+Add sound effects for:
+
+• menu clicks
+• match countdown
+• victory sounds
+• defeat sounds
+• puck impacts
+• bowling pin collisions
+• connect four chip drops
+• mini golf ball hits
+
+Ensure sounds are:
+
+• lightweight
+• toggleable in settings
+• consistent across all games
+
+--------------------------------------------------
+
+12. GAME ANALYTICS DASHBOARD
+
+Create an admin analytics dashboard to track game performance.
+
+Track:
+
+• most played games
+• total matches played
+• average match duration
+• player retention
+• rage quit rate
+• wagers placed
+• daily active users
+
+Display analytics using charts and tables.
+
+--------------------------------------------------
+
+13. GAME CATALOG PAGE
+
+Create a dedicated Game Catalog page listing all games.
+
+Sections:
+
+Featured Games  
+Popular Games  
+All Games  
+
+Each game card should show:
+
+Game name  
+Player count  
+Play button  
+Game thumbnail  
+
+Example:
+
+Air Hockey  
+Players Online: 42  
+[Play]
+
+Make layout responsive and mobile friendly.
+
+--------------------------------------------------
+
+14. ANIMATED VICTORY SCREEN
+
+Improve the end-of-match experience.
+
+After a player wins, show a full victory screen.
+
+Victory screen displays:
+
+VICTORY  
+XP earned  
+Scalps earned  
+Match stats  
+Play Again button  
+
+Add animations such as:
+
+• confetti
+• glowing text
+• victory sound
+
+--------------------------------------------------
+
+15. ANTI-CHEAT SYSTEM
+
+Implement basic anti-cheat protections.
+
+Detect:
+
+• impossible move speeds
+• physics manipulation
+• automated inputs
+• disconnect abuse
+• suspicious gameplay patterns
+
+Log suspicious activity for admin review.
+
+Players repeatedly flagged should receive warnings or restrictions.
+
+--------------------------------------------------
+
+16. STREAMER MODE
+
+Create a streamer-friendly mode for content creators.
+
+Features:
+
+• hide sensitive information
+• hide wagers if needed
+• clean UI for streams
+• spectator overlay
+
+This allows players to stream matches safely.
+
+--------------------------------------------------
+
+17. BETTING SLIP SYSTEM
+
+Create a betting slip style interface where users can track wagers placed on matches.
+
+Features:
+
+• Active bets
+• Pending bets
+• Won bets
+• Lost bets
+
+Display wagers clearly with match details.
+
+Example:
+
+Air Hockey  
+Beau vs Carson  
+Wager: 25 Scalps  
+Status: Active
+
+--------------------------------------------------
+
+18. BATTLE PASS SYSTEM
+
+Create a seasonal battle pass progression system.
+
+Players complete challenges to unlock rewards.
+
+Battle Pass Features:
+
+• tiered rewards
+• XP requirements per tier
+• cosmetic unlocks
+• profile decorations
+• item shop items
+
+Display progress visually with a horizontal progression bar.
+
+--------------------------------------------------
+
+FINAL TASK
+
+After implementing all systems:
+
+Test the platform for:
+
+• mobile compatibility
+• desktop compatibility
+• UI responsiveness
+• matchmaking stability
+• replay functionality
+• tournament functionality
+• ranked system stability
+• spectator mode performance
+
+Fix any bugs discovered during testing.
+
+Do not stop until all systems integrate smoothly with the existing Jango.us platform.

@@ -1,0 +1,212 @@
+You are upgrading the gaming platform by building a fully functional Cosmetic Item Shop for the website. The shop must feel modern, fun, and similar in quality to major gaming platforms.
+
+The shop must be cosmetic-only. No items may affect gameplay or give competitive advantages.
+
+The system must work perfectly on mobile and desktop.
+
+----------------------------
+
+ITEM SHOP STRUCTURE
+
+Create a new tab called Item Shop in the main navigation.
+
+The shop should include the following sections:
+
+• Featured Items  
+• Daily Deals  
+• New Releases  
+• Player Cosmetics  
+• Profile Cosmetics  
+• Game Cosmetics  
+• Emotes & Animations
+
+Each section should show items in clean card-style grids.
+
+Each item card must include:
+
+• Item image or animated preview  
+• Item name  
+• Short description  
+• Price  
+• Buy button  
+• Preview button
+
+Hover (desktop) or tap (mobile) should show a live preview animation.
+
+----------------------------
+
+CURRENCY SYSTEM
+
+Create a virtual currency called Coins.
+
+Coins can be purchased using:
+
+• Apple Pay  
+• Visa / Mastercard  
+• Venmo  
+• Crypto (Bitcoin, ETH, SOL)
+
+When users buy coins:
+
+• play a cash register / cha-ching sound
+• show a coin animation
+• show a "Coins Added!" celebration popup
+
+----------------------------
+
+ITEM TYPES (ALL COSMETIC)
+
+PLAYER COSMETICS
+
+• Character skins  
+• Character outfits  
+• Hats  
+• Glasses  
+• Masks  
+• Trails that follow the player  
+• Victory poses  
+• Idle animations
+
+PROFILE COSMETICS
+
+• Profile banners  
+• Profile themes  
+• Animated avatars  
+• Custom username colors  
+• Profile frames  
+• Animated background cards
+
+GAME COSMETICS
+
+• Game board skins  
+• Card skins  
+• Dice skins  
+• Timer skins  
+• Win screen effects  
+• Match intro animations
+
+EMOTES
+
+• Dance emotes  
+• Laugh emotes  
+• Angry emotes  
+• Victory celebrations  
+• Funny reactions
+
+EMOTES must appear during matches without affecting gameplay.
+
+----------------------------
+
+SHOP ROTATION SYSTEM
+
+Implement a Daily Shop rotation.
+
+Every 24 hours the shop refreshes with:
+
+• 6 Daily Items  
+• 2 Rare Items  
+• 1 Legendary Item
+
+Include a countdown timer:
+
+"Shop Refreshes In: HH:MM:SS"
+
+----------------------------
+
+RARITY SYSTEM
+
+Each cosmetic must have a rarity color.
+
+Common – Grey  
+Rare – Blue  
+Epic – Purple  
+Legendary – Gold
+
+Legendary items should include extra animations or effects.
+
+----------------------------
+
+USER EXPERIENCE
+
+The shop must feel smooth, exciting, and game-like.
+
+Add:
+
+• smooth page transitions  
+• coin sparkle animations  
+• sound effects when buying items  
+• confetti animation when a purchase succeeds
+
+Users should instantly see the cosmetic equipped after purchase.
+
+----------------------------
+
+INVENTORY SYSTEM
+
+Users must have an Inventory tab where they can:
+
+• view owned cosmetics  
+• equip / unequip items  
+• preview cosmetics
+
+Only one cosmetic per slot can be active.
+
+Slots include:
+
+Avatar  
+Banner  
+Profile Frame  
+Emote  
+Game Skin
+
+----------------------------
+
+FEATURED ITEMS
+
+At the top of the shop include a Featured Banner Carousel.
+
+Featured cosmetics should include:
+
+• Limited-time skins  
+• Seasonal items  
+• Event cosmetics
+
+Examples:
+
+• Neon Cyber Profile Theme  
+• Fire Trail Character Effect  
+• Galaxy Dice Skin  
+• Gold Victory Explosion  
+• Animated Lightning Username Color
+
+----------------------------
+
+MOBILE OPTIMIZATION
+
+The shop must be fully optimized for phones:
+
+• large tap targets  
+• swipeable item cards  
+• fast loading images  
+• responsive grid layout
+
+Animations must remain smooth on mobile devices.
+
+----------------------------
+
+VISUAL STYLE
+
+The shop must match the platform’s design style:
+
+Dark UI  
+Neon accents  
+Modern gaming look  
+High contrast buttons
+
+Use subtle glow effects and smooth UI transitions.
+
+----------------------------
+
+GOAL
+
+The item shop should feel like a real competitive gaming marketplace that encourages users to collect cosmetics and customize their identity without affecting gameplay.

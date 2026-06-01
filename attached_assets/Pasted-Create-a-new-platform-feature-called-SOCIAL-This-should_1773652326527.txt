@@ -1,0 +1,254 @@
+Create a new platform feature called **SOCIAL**.
+This should function as a **community hub** where players can interact, message each other, share wins, and build a competitive community.
+
+The design inspiration is **Kalshi’s Social tab**, combined with a **gaming community feed and messaging system**.
+
+The Social tab should feel active, competitive, and community-driven.
+
+---
+
+SOCIAL TAB STRUCTURE
+
+Add a new navigation tab called:
+
+**Social**
+
+Inside the Social tab there should be three main sections:
+
+1. Community Feed
+2. Messaging
+3. Friends / Social Connections
+
+---
+
+1. COMMUNITY FEED
+
+This is the main social timeline where players can post updates, celebrate wins, challenge others, and interact.
+
+Posts can include:
+
+• Match wins
+• Big wagers won
+• Rank achievements
+• Calling out other players
+• Clan announcements
+• Tournament wins
+• General community posts
+
+Examples of posts:
+
+"Just took 120 Scalps in Mini Golf. Who wants next?"
+
+"Reached Diamond rank today."
+
+"BBC OG clan looking for a match."
+
+"Beat a Champion player in Chess."
+
+"Who thinks they can beat me in Air Hockey?"
+
+Each post should display:
+
+• Player avatar
+• Username
+• Rank badge
+• Timestamp
+• Post content
+
+Interaction options:
+
+• Like
+• Reply
+• Share
+• Challenge player
+
+Posts should also support:
+
+• images (optional later)
+• match result embeds
+• achievement embeds
+
+---
+
+2. AUTO-GENERATED POSTS
+
+The platform should automatically create posts for big events.
+
+Examples:
+
+• "Nova has become the new GOAT 👑"
+• "Beau won 250 Scalps in Mini Golf"
+• "Jordan reached Champion rank"
+• "BBC OG won a Clan War"
+
+These should appear in the feed automatically.
+
+---
+
+3. MESSAGING SYSTEM
+
+Inside the Social tab add a **Messaging section**.
+
+Users should be able to:
+
+• send direct messages
+• chat with friends
+• receive match invites
+• share posts
+
+Messaging UI should include:
+
+Left panel:
+Friend list / recent chats
+
+Main panel:
+Conversation window
+
+Features:
+
+• real-time chat
+• typing indicators
+• online status
+• send match invite button
+• send challenge button
+
+Example:
+
+Challenge to Match → sends match invite
+
+---
+
+4. FRIEND SYSTEM
+
+Add social connections.
+
+Players should be able to:
+
+• send friend requests
+• accept/decline requests
+• see friends online
+• message friends
+• invite friends to matches
+
+Example friend status:
+
+Nova — Online
+Jordan — In Match
+Alex — Offline
+
+---
+
+5. PLAYER CALLOUT FEATURE
+
+Allow players to publicly challenge others in the feed.
+
+Example:
+
+"@Nova run it back in Mini Golf for 50 Scalps."
+
+Add a **Challenge Button** on posts.
+
+Clicking it opens a quick match setup with that player.
+
+---
+
+6. COMMUNITY REACTIONS
+
+Posts should allow reactions:
+
+• like
+• fire
+• crown
+• skull
+• clap
+
+Keep reactions simple and clean.
+
+---
+
+7. POST TYPES
+
+Support different types of posts:
+
+Win Post
+Challenge Post
+Achievement Post
+Clan Post
+General Post
+
+Each type can have a small icon.
+
+---
+
+8. TRENDING POSTS
+
+Add a section showing the most popular posts.
+
+Examples:
+
+• Most liked
+• Most commented
+• Biggest wins
+
+---
+
+9. SOCIAL NOTIFICATIONS
+
+Notify players when:
+
+• someone replies to their post
+• someone challenges them
+• someone messages them
+• someone mentions them
+
+Example notification:
+
+"Nova challenged you to a match."
+
+---
+
+10. MODERATION
+
+Add moderation tools:
+
+Report Post
+Report Player
+Mute Player
+Block Player
+
+Keep the community clean and competitive.
+
+---
+
+11. VISUAL DESIGN
+
+The Social tab should match the platform’s design language:
+
+• dark premium theme
+• glass panels
+• neon accents
+• clean spacing
+• smooth animations
+
+The feed should feel alive but not cluttered.
+
+---
+
+12. FINAL GOAL
+
+The Social tab should make the platform feel like a real gaming community.
+
+Players should be able to:
+
+• brag about wins
+• call out opponents
+• talk to friends
+• build rivalries
+• celebrate achievements
+• interact with the community
+
+It should feel like a mix of:
+
+competitive gaming
+social media
+and a live esports community.

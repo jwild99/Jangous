@@ -1,0 +1,76 @@
+Feature request:
+Implement a “forfeit handling” system in the Duel PvP game server (Node.js + Socket.IO + PostgreSQL/Supabase backend).
+
+Goal:
+If one player exits, disconnects, or forfeits an ongoing match before it officially ends, automatically declare the remaining player as the winner and transfer the winnings to them.
+
+Context:
+• The game server already hosts 1v1 matches via Socket.IO.
+• Each match record in the database stores:
+  - match_id
+  - player1_id
+  - player2_id
+  - stake_amount
+  - status (“active”, “completed”, “forfeit”, etc.)
+  - winner_id
+  - created_at / updated_at
+
+Requirements:
+1. Detect disconnects:
+   - Use `socket.on("disconnect")` and a short timeout (e.g., 30 seconds) to confirm the user didn’t reconnect.
+   - Each match has two active sockets; if one disconnects and doesn’t return before timeout, mark them as forfeited.
+
+2. Forfeit logic:
+   - If player A leaves mid-match:
+     - Mark match.status = "forfeit"
+     - match.winner_id = player B’s user_id
+     - Trigger payout function awarding 97% of total pot to winner (3% rake for platform)
+     - Emit real-time events:
+       • “match_forfeit” → both players (so the winner sees victory screen)
+       • “funds_transferred” → to winner with new balance
+   - Log all forfeits in an audit table for anti-abuse review.
+
+3. Anti-abuse handling:
+   - If both players disconnect, end match as “no contest” (funds refunded).
+   - Add a “grace_period” constant (e.g., 10 seconds) before marking a quit as a forfeit to allow temporary network loss.
+   - Include rate-limiting or fraud flag if a user frequently quits before losing.
+
+4. Database updates:
+   - Update match record atomically (transaction-safe).
+   - Insert into `transactions` table:
+       id, match_id, payer_id, receiver_id, amount, rake, reason="forfeit_win"
+   - Update player balances accordingly.
+
+5. Functions to add:
+   - `handleDisconnect(playerId, matchId)`
+   - `processForfeit(matchId, quitterId)`
+   - `awardWinnings(winnerId, stakeAmount, rakePercent)`
+   - `refundBoth(matchId)` (optional for double disconnects)
+
+6. Emit events back to frontend:
+   - “match_forfeit”
+   - “match_end”
+   - “funds_updated”
+   - Ensure frontend UI automatically shows “Opponent Forfeited — You Win!”
+
+7. Constants/config:
+   const RAKE_PERCENT = 3;
+   const DISCONNECT_GRACE_MS = 10000;
+
+Deliverable:
+• Update the match manager and Socket.IO logic to handle mid-match disconnects.
+• Add backend transaction safety for automatic fund redistribution.
+• Fully tested simulation: one player quits mid-match → other instantly declared winner, gets 97% payout, rake logged.
+
+Bonus:
+• Send a webhook or log entry to admin dashboard when a forfeit occurs.
+• Include reason field (manual forfeit vs disconnect timeout).
+
+Example test flow:
+- Player A and Player B join match.
+- Both deposit $10 into match pool.
+- Player A quits (disconnects).
+- Server waits 10s → confirms A did not return.
+- Server marks match.winner_id = B, sets match.status = “forfeit”.
+- Server credits B’s balance +$19.40 (97% of $20 pool).
+- Server logs rake of $0.60 and emits “match_forfeit” to B’s client.

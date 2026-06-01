@@ -1,0 +1,127 @@
+The current messaging UI is too basic. It appears as a small dropdown chat box, which feels like a temporary widget rather than a real communication feature.
+
+I want the messaging experience to become a full interactive messaging hub similar to Discord, Slack, or iMessage, and I also want proper global chat tabs.
+
+Main goal:
+Transform the messaging system from a dropdown panel into a full messaging interface that feels like an integrated part of the platform.
+
+Current problems:
+- The chat opens as a small floating panel
+- Limited space for conversation
+- No real chat navigation
+- No message richness or interactivity
+- Global chat feels too limited
+- Feels like a basic web widget instead of a premium feature
+
+New design direction:
+Create a full messaging page or expanded messaging interface with a layout similar to modern chat platforms.
+
+Layout structure:
+
+LEFT SIDEBAR
+- list of conversations
+- sections like:
+  - Global Chats
+  - Direct Messages
+  - Friends
+  - Game Lobbies
+  - Recent conversations
+- show user avatars and status indicators
+- highlight unread messages
+
+GLOBAL CHAT TABS
+Add real global chat tabs/channels instead of only one generic global chat.
+
+I want multiple global chat tabs such as:
+- General
+- Lobby
+- Strategy
+- Bets
+- Wins
+- Off Topic
+
+Optional game-specific global tabs:
+- Chess
+- Mini Golf
+- Connect 4
+- Air Hockey
+- Rock Paper Scissors
+- Dots & Boxes
+- 8-Ball Pool
+- Bowling
+- Cup Pong
+- Tron
+- Tower Stack
+
+Requirements for global chat tabs:
+- Tabs should be clearly visible and easy to switch between
+- Each tab/channel should have its own message history
+- Show unread indicators for each tab
+- Show active user count per tab if possible
+- Let the selected tab feel highlighted and premium
+- Tabs should feel like real chat rooms, not tiny toggle buttons
+
+CENTER CHAT AREA
+- large message timeline
+- modern chat bubbles
+- better spacing and readability
+- show timestamps
+- show user avatars
+- smooth scrolling
+- message grouping by sender
+- clearly show which global chat tab/channel is open
+
+RIGHT SIDEBAR (optional but preferred)
+- active users
+- friends online
+- game lobby players
+- quick invite to match
+
+MESSAGE INPUT AREA
+Upgrade the input box with:
+- emoji picker
+- attachments (images or clips)
+- send button
+- typing indicators
+- auto expanding text input
+- keyboard shortcuts
+
+INTERACTIVE FEATURES
+Add richer messaging capabilities:
+- message reactions
+- reply to message
+- edit / delete messages
+- hover actions
+- copy message
+- thread replies
+
+GAME PLATFORM INTEGRATION
+Make chat feel connected to the gaming platform:
+- show what game a user is playing
+- allow inviting someone to a match directly from chat
+- quick "challenge player" button
+- game lobby chat channels
+- leaderboard discussion
+
+VISUAL DESIGN
+Match the existing premium UI style:
+- glassmorphism panels
+- soft blur backgrounds
+- subtle gradients
+- premium spacing
+- dark mode aesthetic
+- smooth transitions
+- animated hover states
+
+Make the chat feel modern, social, and alive rather than a small dropdown tool.
+
+IMPLEMENTATION
+- Convert the messaging dropdown into a full-page messaging interface
+- Keep the dropdown as a quick preview if needed
+- Build a proper chat layout with sidebar + conversation panel
+- Add fully functional global chat tabs/channels
+- Make sure it works on desktop and mobile
+
+GOAL
+The messaging system should feel like a core feature of the platform, not a small utility widget.
+It should encourage players to socialize, challenge each other, and stay on the platform longer.

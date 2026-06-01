@@ -1,0 +1,465 @@
+You are upgrading the competitive gaming platform Jango.us.
+
+The platform already has:
+• user accounts  
+• player profiles  
+• games with wagers  
+• a wallet system using Scalps  
+• matchmaking and match history  
+
+Your job is to implement the following major systems in a production-ready, scalable, and mobile-friendly way.
+
+Everything must work on mobile and desktop, match the current UI design language, and integrate with the existing Scalps wallet system, profiles, and matches.
+
+The goal is to make Jango.us feel like a real competitive gaming ecosystem.
+
+Implement the following systems in full detail.
+
+--------------------------------------------------
+
+CLAN SYSTEM
+
+Create a complete clan system that allows players to form teams, compete together, track shared winnings, and challenge rival clans.
+
+Each player can only belong to one clan at a time.
+
+CORE CLAN FEATURES
+
+Players must be able to:
+
+• create a clan  
+• join a clan  
+• leave a clan  
+• invite players  
+• accept invites  
+• request to join a clan  
+• view clan stats  
+• challenge other clans  
+• participate in clan matches  
+
+CLAN DATA MODEL
+
+Create backend schema fields including:
+
+clan_id  
+clan_name  
+clan_tag  
+clan_description  
+clan_logo  
+banner_image  
+created_by_user_id  
+created_at  
+clan_level  
+clan_xp  
+total_scalps_won  
+total_scalps_lost  
+total_matches_played  
+total_matches_won  
+total_matches_lost  
+clan_win_rate  
+reputation_score  
+is_public  
+requires_approval  
+minimum_rank_required  
+member_limit  
+current_member_count  
+total_challenges_sent  
+total_challenges_received  
+total_challenge_wins  
+total_challenge_losses  
+season_points  
+last_active_at  
+
+CLAN MEMBERS TABLE
+
+clan_member_id  
+clan_id  
+user_id  
+role  
+joined_at  
+matches_played_for_clan  
+matches_won_for_clan  
+contributed_scalps  
+reputation_in_clan  
+
+CLAN ROLES
+
+Leader  
+• full control  
+• edit clan settings  
+• remove members  
+• promote/demote officers  
+• approve join requests  
+• send clan challenges  
+• accept/decline clan challenges  
+• upload clan logo and banner  
+
+Officer  
+• invite players  
+• approve join requests  
+• send clan challenges  
+• moderate clan chat  
+• remove normal members  
+
+Member  
+• participate in clan matches  
+• chat in clan chat  
+• view clan stats  
+• leave clan  
+
+CLAN CREATION FLOW
+
+When a user clicks Create Clan, show fields:
+
+Clan name  
+Clan tag (2–5 letters)  
+Clan description  
+Clan logo upload  
+Clan banner upload  
+Public or private clan  
+Require join approval toggle  
+Minimum rank requirement  
+Member limit  
+
+Validation rules:
+
+• clan names must be unique or nearly unique  
+• clan tags must be unique  
+• profanity filter for names and descriptions  
+• image upload size limits  
+• mobile responsive layout  
+
+CLAN PROFILE PAGE
+
+Each clan must have its own page.
+
+Header section includes:
+
+• clan logo  
+• clan banner  
+• clan name  
+• clan tag  
+• leader name  
+• member count  
+• total scalps won  
+• clan rank  
+• join/apply button  
+
+PAGE SECTIONS
+
+Overview  
+Members  
+Stats  
+Match History  
+Challenges  
+Clan Chat  
+
+OVERVIEW
+
+Display:
+
+• clan description  
+• creation date  
+• win/loss record  
+• total scalps won  
+• season points  
+• win streak  
+• top contributing members  
+
+MEMBERS TAB
+
+Show member cards with:
+
+• avatar  
+• username  
+• role  
+• wins for clan  
+• scalps contributed  
+• online status  
+
+Officers and leaders should have management buttons.
+
+STATS TAB
+
+Display:
+
+• total clan scalps won  
+• total scalps lost  
+• matches played  
+• matches won  
+• matches lost  
+• win rate  
+• leaderboard rank  
+
+MATCH HISTORY
+
+Show:
+
+• opponent clan  
+• game played  
+• wager amount  
+• players involved  
+• match result  
+• match date  
+
+CLAN CHAT
+
+Add a basic chat system visible only to clan members.
+
+Features:
+
+• message list  
+• timestamps  
+• usernames  
+• unread message badge  
+• leader/officer moderation controls  
+
+--------------------------------------------------
+
+CLAN CHALLENGE SYSTEM
+
+Allow clans to challenge other clans to wager matches.
+
+Only clan leaders and officers can initiate challenges.
+
+CHALLENGE FLOW
+
+Leader selects:
+
+Target clan  
+Game  
+Wager amount in Scalps  
+Match format  
+
+Supported formats:
+
+1v1  
+2v2  
+3v3  
+5v5  
+
+Challenge request is sent to the target clan.
+
+Target clan leader/officer can:
+
+Accept  
+Decline  
+Let it expire  
+
+If accepted:
+
+• match lobby is created  
+• participating players are selected  
+• scalps wager is locked  
+• notifications sent to all players  
+
+When match finishes:
+
+• winning clan receives wagered scalps  
+• clan stats update  
+• leaderboard updates  
+
+--------------------------------------------------
+
+PLAYER REPORT SYSTEM
+
+Add a full reporting system to keep the platform fair.
+
+REPORT ENTRY POINTS
+
+Players can report another user from:
+
+• player profile page  
+• match screen  
+• post match screen  
+• match history  
+
+REPORT CATEGORIES
+
+Cheating  
+Harassment  
+Rage quitting  
+Exploiting bugs  
+Offensive username  
+Spam  
+
+REPORT FLOW
+
+1 Player clicks report  
+2 Select reason  
+3 Optional description  
+4 Submit report  
+
+Store reports in a moderation database.
+
+REPORT DATA MODEL
+
+report_id  
+reporter_user_id  
+reported_user_id  
+match_id  
+reason  
+description  
+created_at  
+status  
+reviewed_by  
+reviewed_at  
+action_taken  
+
+MODERATION ACTIONS
+
+Admins must be able to:
+
+issue warnings  
+temporary ban matchmaking  
+temporary wager restriction  
+mute chat  
+permanent ban  
+
+Prevent report spam by limiting how often a user can submit reports.
+
+--------------------------------------------------
+
+ANTI RAGE QUIT SYSTEM
+
+Implement a reconnect system.
+
+If a player disconnects during a match:
+
+• start a 5 minute reconnect timer
+
+During the timer:
+
+• player may reconnect and resume match  
+• match state must be preserved  
+
+If the player does not return in 5 minutes:
+
+• match is automatically forfeited  
+• opponent receives the wagered scalps  
+• disconnecting player receives a loss  
+• reputation penalty applied  
+
+MATCH STATE STORAGE
+
+Game state must save:
+
+• score  
+• turn state  
+• timers  
+• player positions  
+• wager status  
+
+When reconnecting:
+
+• restore match exactly where it left off  
+
+UI DURING DISCONNECT
+
+Opponent sees:
+
+Opponent disconnected  
+Reconnect timer countdown  
+
+Disconnected player sees:
+
+Reconnect to Match button
+
+--------------------------------------------------
+
+LIMITED ITEM SHOP
+
+Create a rotating cosmetic item shop.
+
+Items must be cosmetic only.
+
+Shop items are purchased with Scalps.
+
+SHOP CATEGORIES
+
+Ping Pong Paddles  
+Pool Cues  
+Profile Banners  
+Profile Frames  
+Victory Animations  
+
+Example items:
+
+Neon Ping Pong Paddle  
+Gold Pool Cue  
+Flame Paddle Trail  
+Galaxy Profile Banner  
+Diamond Profile Frame  
+
+SHOP ROTATION
+
+Items rotate weekly.
+
+Sections:
+
+Featured  
+Weekly Items  
+Daily Items  
+
+Each item shows:
+
+Preview image  
+Description  
+Price in Scalps  
+
+--------------------------------------------------
+
+VICTORY ANIMATIONS
+
+When players win a match:
+
+Show a victory animation.
+
+Examples:
+
+confetti burst  
+neon win flash  
+gold crown animation  
+
+Players can equip different victory animations from their inventory.
+
+--------------------------------------------------
+
+PROFILE COSMETICS
+
+Allow players to customize their profile with:
+
+Profile banners  
+Profile frames  
+Animated backgrounds  
+Victory animations  
+
+Add inventory system so purchased cosmetics can be equipped.
+
+--------------------------------------------------
+
+MOBILE FRIENDLY DESIGN
+
+All systems must:
+
+• work on mobile and desktop  
+• have responsive layouts  
+• support touch controls  
+• avoid overflow or hidden UI elements  
+
+--------------------------------------------------
+
+PERFORMANCE
+
+Systems must support:
+
+thousands of concurrent users  
+real time matchmaking  
+fast UI loading  
+secure wallet transactions  
+
+--------------------------------------------------
+
+FINAL GOAL
+
+These systems should make Jango.us feel like a competitive social gaming platform similar to GamePigeon combined with Skillz and Clash Royale style clan competition.

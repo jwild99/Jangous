@@ -1,0 +1,137 @@
+BUG FIX: "Cannot join your own match" ERROR (400)
+
+PROBLEM:
+Users are receiving:
+400: "Cannot join your own match"
+
+Even when:
+- joining free matches
+- joining bot matches
+- or joining matches they did not create
+
+This is a backend validation issue.
+
+==================================================
+1. ROOT CAUSE CHECK
+==================================================
+
+Current logic likely:
+
+IF (match.creatorId === user.id)
+  → reject
+
+This is TOO SIMPLE and causing false positives.
+
+==================================================
+2. FIX VALIDATION LOGIC (STRICT CONDITIONS)
+==================================================
+
+REPLACE WITH:
+
+IF (
+  match.creatorId === user.id
+  AND match.type === "player_match"
+  AND match.status === "waiting"
+)
+→ reject with "Cannot join your own match"
+
+OTHERWISE → ALLOW
+
+==================================================
+3. ALLOW THESE CASES (IMPORTANT)
+==================================================
+
+Users MUST be able to join:
+
+1. FREE MATCHES
+IF match.type === "free"
+→ ALWAYS ALLOW
+
+2. BOT MATCHES
+IF match.type === "bot"
+→ ALWAYS ALLOW
+
+3. SYSTEM GENERATED MATCHES
+IF match.createdBy === "system"
+→ ALWAYS ALLOW
+
+4. MATCHMAKING QUEUE MATCHES
+IF match.source === "queue"
+→ ALWAYS ALLOW
+
+==================================================
+4. ENSURE MATCH CREATION IS CORRECT
+==================================================
+
+When matches are created:
+
+- creatorId should ONLY be set for:
+  → custom/private matches
+
+- For matchmaking:
+  creatorId = null OR "system"
+
+==================================================
+5. DEBUG LOGGING (TEMPORARY)
+==================================================
+
+Add logs:
+
+console.log({
+  userId: user.id,
+  matchCreator: match.creatorId,
+  matchType: match.type,
+  matchSource: match.source
+})
+
+This will expose why it's failing.
+
+==================================================
+6. FRONTEND ERROR HANDLING
+==================================================
+
+Replace raw error:
+
+"Cannot join your own match"
+
+WITH:
+
+IF error.code === OWN_MATCH:
+→ show:
+"This match is already yours"
+
+IF error.code === INVALID_MATCH:
+→ show:
+"This match is no longer available"
+
+==================================================
+7. EDGE CASE FIXES
+==================================================
+
+- Prevent duplicate joins:
+  IF user already in match.players → block
+
+- Prevent ghost matches:
+  IF match.status !== "waiting" → block
+
+==================================================
+8. FINAL EXPECTED BEHAVIOR
+==================================================
+
+User CAN:
+✔ join free match
+✔ join bot match
+✔ join queue match
+✔ join tournament match
+
+User CANNOT:
+✖ join a private match they created manually
+
+==================================================
+9. IMPORTANT
+==================================================
+
+This is NOT a UI fix.
+This must be corrected in backend match validation logic.
+
+Do NOT patch this on frontend.

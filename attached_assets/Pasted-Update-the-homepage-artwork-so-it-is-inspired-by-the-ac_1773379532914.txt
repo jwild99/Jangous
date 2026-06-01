@@ -1,0 +1,66 @@
+Update the homepage artwork so it is inspired by the actual games on my platform, not generic casino art.
+
+Main goal:
+Create a large illustrated hero/background scene that visually represents the games on Jango.us:
+- Chess
+- Mini Golf
+- Connect 4
+- Air Hockey
+- Rock Paper Scissors
+- Dots & Boxes
+- 8-Ball Pool
+- Bowling
+- Cup Pong
+- Tron
+- Tower Stack
+
+Art direction:
+- Keep the premium dark Apple-glass UI that already exists.
+- Replace the generic background feeling with custom artwork inspired by the games listed above.
+- The art should feel like one connected illustrated world, not random separate icons.
+- Make it cinematic, playful, competitive, and premium.
+- Style should feel polished and immersive, similar in impact to duel.com, but themed around my games instead.
+
+Visual scene ideas:
+- A futuristic arcade / competitive arena world.
+- Chess pieces as towering statues or glowing strategic monuments.
+- Mini golf ramps and neon course elements built into the environment.
+- Giant Connect 4 grid structures in the background.
+- Air hockey table lighting and puck trails.
+- Rock paper scissors symbols worked into signage, banners, or holograms.
+- Dots & Boxes represented as glowing grid connections.
+- 8-ball pool elements like balls, cues, and table felt integrated into the world.
+- Bowling pins and lanes as part of the environment.
+- Cup pong tables or glowing cups in lounge / party sections.
+- Tron-style neon lines or digital arena pathways.
+- Tower Stack elements as vertical structures or skyline towers.
+
+Layout requirements:
+1. Add a large illustrated hero section near the top of the homepage.
+2. The artwork should sit behind or around the featured games area.
+3. Add a dark gradient overlay so text and UI remain readable.
+4. Keep the cards floating above the background with glassmorphism styling.
+5. The hero section should include:
+   - a strong headline
+   - a short subheadline
+   - optional CTA buttons
+6. Keep the current navbar and glass UI styling.
+7. Maintain strong spacing, hierarchy, and premium polish.
+8. Make sure the page stays responsive on desktop and mobile.
+
+Important:
+- Do not remove any current functionality.
+- Do not use plain gradients as the main hero.
+- Do not use generic casino art.
+- The artwork must clearly feel inspired by the games on my site.
+- The final result should feel like a custom illustrated world built around my platform’s game library.
+
+Implementation suggestions:
+- Create a hero background artwork container with layered illustrations.
+- Use floating foreground elements and depth.
+- Add subtle glow, lighting, blur, and shadows.
+- Give the artwork a storybook-meets-futuristic-arcade feeling.
+- Keep branding as Jango.us.
+
+Goal:
+Make the homepage feel like a premium gaming destination with custom worldbuilding artwork inspired by the actual games users can play.

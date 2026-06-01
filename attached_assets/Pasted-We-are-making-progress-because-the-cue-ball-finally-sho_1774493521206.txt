@@ -1,0 +1,259 @@
+We are making progress because the cue ball finally shoots, but the pool game still does not feel correct. The next pass needs to focus on 3 major things:
+
+1. REAL pool-table collision boundaries and ball behavior
+2. BETTER ball-to-ball contact / physics feel
+3. MUCH stronger visuals, atmosphere, and background polish
+
+Right now the game still feels wrong because the table boundaries are not behaving like a real pool table. The ball should never be able to travel into the brown rail area. It should stop at the playable green felt boundary just like real pool. Also, the corners/pocket edges do not look right, and the overall scene still feels bland and empty.
+
+================================
+PRIORITY 1 — FIX TABLE BOUNDARIES / RAIL COLLISION
+================================
+
+This is a big problem:
+- the ball should not be able to go onto or through the brown wood area
+- the playable area should be the green felt only
+- rails should act like real solid pool-table cushions
+- the ball should bounce off the cushion edge before entering any non-playable table art
+
+What to fix:
+- redefine the physics boundaries based on the actual inner cushion / felt playfield
+- the collision walls need to align to the inside edge of the playable table, not the outer artwork
+- the brown rail area is visual only and must never be drivable
+- ball center + radius should be respected so balls cannot clip into rails
+- corner pocket openings should be cut properly into the cushion geometry
+- side pockets should also be cut cleanly into the rail collision shape
+
+Important:
+The collision shape needs to match a real pool table:
+- straight cushion segments
+- proper pocket openings
+- no weird rounded corner blocking
+- no opportunity for the ball to ride up into wood/rail art
+- no entering the brown part at all
+
+The green felt is the playable area.
+The brown rail is NOT playable.
+Fix the geometry so this behaves correctly.
+
+Acceptance criteria:
+- ball never rolls into the brown area
+- all rail collisions happen at the felt/cushion boundary
+- pockets open correctly
+- corner pockets feel like real cutouts instead of weird circles
+- no clipping through cushions
+- no weird snagging on pocket edges
+
+================================
+PRIORITY 2 — MAKE BALL CONTACT FEEL LIKE REAL POOL
+================================
+
+When the cue ball hits another ball or multiple balls, it needs to feel much closer to real-life pool.
+
+Right now I want:
+- more believable contact
+- better transfer of momentum
+- cleaner separation after impact
+- more realistic rebounds
+- more natural cluster reactions
+- stronger accuracy in multi-ball collisions
+
+Tune the physics so:
+- direct hits feel crisp and believable
+- glancing hits deflect naturally
+- cluster breaks feel satisfying and readable
+- energy transfer feels more like arcade-real pool, not random browser physics
+- collisions do not feel mushy, floaty, or dead
+- balls do not overlap, stick, or jitter
+- chain reactions look clean
+
+Specifically improve:
+- ball-ball collision response
+- restitution tuning
+- friction tuning
+- post-collision velocity distribution
+- collision resolution stability
+- rail rebound angles
+- stop thresholds so balls settle naturally
+
+The goal is not hyper-simulation.
+The goal is:
+- realistic enough to feel like real pool
+- clean enough to be fun
+- consistent enough to be competitive
+
+When the cue ball smacks into a rack or a cluster, it should feel satisfying and legit.
+
+================================
+PRIORITY 3 — FIX POCKET / CORNER SHAPE
+================================
+
+The corners still do not look or behave right.
+They should not feel like awkward circles or fake holes.
+
+Fix:
+- corner pocket opening shape
+- side pocket opening shape
+- cushion cut angles near pockets
+- realistic mouth width
+- realistic pocket throat/depth feel
+- pocket entrance should visually and physically match
+
+The pocket should feel like:
+- a real opening in the rail
+- not a circular hole pasted on top
+- not a weird rounded corner blob
+
+Also:
+- ball drop into pockets should look cleaner
+- pocket entrances should feel fair
+- balls should not half-enter weirdly
+- pocketing should feel smooth and intentional
+
+Use actual pool-table geometry inspiration:
+- angled cushion cuts into the corner pocket
+- side pocket mouths that feel centered and properly carved
+- proper relationship between ball size and pocket size
+
+================================
+PRIORITY 4 — MAKE THE GAME WAY MORE VISUALLY APPEALING
+================================
+
+This is still a huge issue.
+The pool game feels like:
+- table in empty darkness
+- little atmosphere
+- little excitement
+- no premium presentation
+- bland scene with not much going on
+
+I want this game to feel alive, premium, and visually interesting like the other games.
+
+Add more to the scene:
+- stronger background environment
+- subtle ambient motion
+- better surrounding visual design
+- more lighting and depth
+- more layered presentation
+- more energy and dopamine
+
+Ideas for the background / surrounding scene:
+- premium dark sports-lounge vibe
+- subtle spotlighting around the table
+- blurred pool hall / neon / arcade inspired background
+- tasteful animated background glow
+- ambient particles or floating dust very subtly
+- vignette around edges
+- subtle motion in the environment so the screen does not feel dead
+- layered shadows and gradients around the play area
+
+Do NOT make it cheesy.
+Do NOT clutter gameplay.
+Do make it feel premium and alive.
+
+The game should feel like a real featured mode, not just a canvas dropped on a dark screen.
+
+================================
+PRIORITY 5 — ADD MORE DOPAMINE / FEEDBACK
+================================
+
+The game still needs more reaction and more payoff.
+
+Improve visual feedback for:
+- cue strike
+- ball-to-ball contact
+- stronger hits
+- rail hits
+- pocketed balls
+- scratches
+- 8-ball moments
+- turn changes
+
+Add tasteful effects like:
+- contact spark/ring on strong collisions
+- subtle rail hit flash
+- pocket glow pulse
+- event banners
+- player card animation
+- stronger sound design
+- slight table/camera emphasis on big shots
+- satisfying ball sink feedback
+
+Every important action should feel more rewarding and noticeable.
+
+================================
+PRIORITY 6 — TABLE ART / PRESENTATION PASS
+================================
+
+Make the table itself prettier and more premium:
+- better felt texture
+- richer cushion shading
+- more realistic wood rail material
+- better pocket trim
+- improved ball shading
+- stronger shadows under balls
+- more depth in the table frame
+- cleaner cue stick art
+- more contrast between playfield and surroundings
+
+The table should look like a polished game asset, not a simple flat graphic.
+
+================================
+PRIORITY 7 — KEEP GAMEPLAY READABLE
+================================
+
+While improving visuals, do not hurt gameplay clarity.
+
+Must keep:
+- clear aiming line
+- readable cue ball / target balls
+- clean contrast
+- no distracting background elements over the table
+- no FX that make it harder to play
+- table remains the hero of the screen
+
+The visuals should add hype, not reduce precision.
+
+================================
+STRICT ORDER OF WORK
+================================
+
+Do this in order:
+
+1. Fix table collision boundaries so balls cannot enter the brown rail area
+2. Fix pocket/corner geometry to behave like real pool
+3. Improve ball-ball and rail collision realism
+4. Improve pocket feel and drop behavior
+5. Add background atmosphere and scene polish
+6. Add dopamine / feedback / event polish
+7. Final visual quality pass
+
+================================
+FINAL ACCEPTANCE CRITERIA
+================================
+
+This task is complete only if all of this is true:
+
+PHYSICS / TABLE:
+- balls cannot enter the brown rail area
+- the playable area is correctly limited to the green felt
+- collisions happen at real cushion boundaries
+- pocket openings are shaped properly
+- corner pockets do not look like fake circles
+- ball contact feels much closer to real pool
+- cluster impacts feel clean and believable
+
+VISUALS:
+- the game no longer feels bland or empty
+- the background has more life and atmosphere
+- the whole scene feels premium and polished
+- the table art looks better
+- the game has more dopamine and visual energy
+
+FEEL:
+- shots feel satisfying
+- collisions feel legit
+- pockets feel fair and rewarding
+- the mode feels like a polished real game, not a placeholder
+
+Do not stop at small tweaks. This needs a real physics boundary pass plus a real visual atmosphere pass.

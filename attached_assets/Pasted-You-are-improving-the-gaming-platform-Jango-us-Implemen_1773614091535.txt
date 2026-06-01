@@ -1,0 +1,235 @@
+You are improving the gaming platform Jango.us. Implement the following features across the website and games. Everything must work smoothly on mobile and desktop, load quickly, and match the site's existing design style.
+
+---
+
+# 1. Animated Currency System (Scalps)
+
+Scalps are the main platform currency. 1 Scalp = $1 USD.
+
+Create a highly satisfying animated experience when users receive or spend Scalps.
+
+Features:
+
+Wallet UI
+• Animated wallet balance counter that increases or decreases smoothly  
+• Scalps icon displayed beside balance  
+• Wallet should always be visible in the header  
+
+Win Animations
+• When a player wins a match, Scalps coins fall into the wallet area  
+• Balance counter animates upward  
+• Play a satisfying cash register “cha-ching” sound  
+• Show text animation: “+X Scalps Won”
+
+Loss Animation
+• Balance slightly shakes and subtracts smoothly  
+• Small red animation showing “-X Scalps”
+
+Deposit Animation
+• When users add funds, show coins dropping into wallet  
+• Play success sound  
+• Show celebratory confetti animation
+
+Make all animations smooth, fast, and not overly distracting.
+
+---
+
+# 2. Game Lobby World
+
+Replace the boring game list with a visual lobby experience.
+
+Lobby Features:
+
+Main Lobby
+• Large central hub screen  
+• Displays active matches, tournaments, and trending games  
+
+Sections inside lobby
+• Live Matches happening now  
+• Quick Play games  
+• Tournaments  
+• Leaderboards  
+
+Live Match Display
+• Shows player avatars  
+• Shows wager amount  
+• Shows game being played  
+
+Users can click to:
+• Spectate
+• Challenge winner
+• Join queue
+
+Mobile Version
+• Vertical scroll layout  
+• Large buttons for quick play  
+
+Desktop Version
+• Grid-based layout with animated cards
+
+---
+
+# 3. Player Profile Pages
+
+Every user should have a full profile page.
+
+Profile Page Components:
+
+Profile Header
+• Avatar
+• Username
+• Rank badge
+• Scalps balance
+• Join date
+
+Player Statistics
+• Total games played
+• Win rate
+• Total Scalps won
+• Current streak
+• Favorite game
+
+Recent Matches
+• Show last 10 matches
+• Result (Win/Loss)
+• Opponent name
+• Wager amount
+
+Achievements
+• Display unlocked badges
+
+Cosmetics Display
+• Profile frames
+• Animations
+• Emotes
+
+Profile Customization
+Users can equip:
+• Profile banner
+• Avatar frame
+• Victory animation
+
+Profiles must load quickly and look premium.
+
+---
+
+# 4. Rival System
+
+Automatically create rivalries between players.
+
+How Rivalries Trigger
+• If two players face each other 3+ times
+• If matches are very close
+• If players rematch often
+
+When rivalry is created:
+
+Show message
+“A Rivalry Has Started”
+
+Rival Page
+• Shows both players
+• Shows total wins against each other
+• Shows total Scalps exchanged
+
+Rival Features
+• Rival leaderboard
+• Rival rematch button
+• Rival streak tracking
+
+Special UI
+Display flame icon 🔥 next to rival matches.
+
+---
+
+# 5. Double or Nothing Feature
+
+After a match ends, show both players a rematch screen.
+
+Screen shows:
+
+"RUN IT BACK"
+
+Options
+• Double or Nothing
+• Same Wager Rematch
+• Exit
+
+Double or Nothing Rules
+• Wager automatically doubles
+• Both players must accept
+• If accepted within 10 seconds the match instantly restarts
+
+Add dramatic countdown animation.
+
+---
+
+# 6. Tournament Tab
+
+Create a new navigation tab labeled:
+
+TOURNAMENTS
+
+Tournament Page Layout:
+
+Top Section
+• Featured tournaments
+• Large animated banners
+
+Tournament Types
+
+Quick Tournaments
+• 8 players
+• fast brackets
+
+Standard Tournaments
+• 16 players
+
+Large Tournaments
+• 32 players
+
+Tournament UI
+Each tournament card shows:
+• Entry fee (Scalps)
+• Prize pool
+• Game type
+• Players joined
+• Start time
+
+Tournament Flow
+
+1. Players pay entry fee
+2. System automatically generates bracket
+3. Players are matched
+4. Winners advance
+
+Bracket UI
+• Visual bracket tree
+• Player names
+• Live updates
+
+Tournament Rewards
+• 1st place = majority of prize pool
+• 2nd place = smaller percentage
+• 3rd place = small reward
+
+Tournament Features
+• Spectator mode
+• Chat during tournaments
+• Leaderboard for tournament winners
+
+Mobile Layout
+• Vertical bracket display
+• Swipe navigation
+
+---
+
+# Final Requirements
+
+• Everything must be mobile responsive  
+• All UI should feel modern and polished  
+• Animations should be smooth and fast  
+• Avoid cluttered layouts  
+• Maintain consistent design with Jango.us branding  
+
+Goal: Make Jango.us feel like a premium competitive gaming platform similar to Skillz or GamePigeon but with wagering and a cosmetic item system.

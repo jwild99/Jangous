@@ -1,0 +1,398 @@
+You are now doing a full **mobile parity, mobile bug-fix, and mobile gameplay implementation pass** for Jango.us.
+
+Important:
+Jango.us already has a mobile version, but it is not good enough yet.
+
+Your job is to make the **mobile version fully match the desktop version in features, reliability, and usability**, while also making sure users can actually **play all games properly on mobile devices**.
+
+This is not just a design cleanup.
+This is a full product-level mobile upgrade.
+
+The final result must make the mobile version feel like a real, complete version of the platform — not a stripped down or broken version of desktop.
+
+--------------------------------------------------
+CORE GOAL
+
+Make the mobile version of Jango.us:
+
+- have all the same important features as desktop
+- allow users to fully play the games on mobile
+- fix all bugs, broken flows, hidden UI, and incomplete features
+- keep all wallet, wager, clan, profile, shop, and match systems working correctly
+- feel polished on iPhone and Android
+
+If anything works on desktop but not on mobile, fix it.
+If anything exists on mobile but is buggy, fix it.
+If any game is not properly playable on mobile, rebuild the mobile controls and gameplay layout so it is playable.
+
+--------------------------------------------------
+MOBILE / DESKTOP FEATURE PARITY
+
+Audit the entire platform and make sure mobile includes the same functionality as desktop.
+
+This includes, but is not limited to:
+
+- account creation
+- login
+- profile pages
+- profile editing
+- wallet / deposit / add funds
+- scalps balance display
+- match creation
+- matchmaking
+- wagers
+- match history
+- leaderboards
+- clan creation
+- clan joining
+- clan management
+- clan challenges
+- clan chat
+- player reporting
+- reconnect / anti-rage-quit flow
+- item shop
+- cosmetic inventory
+- equip / unequip cosmetics
+- notifications
+- player reputation system
+- all major game screens
+- all playable games
+
+Do a full parity audit and identify anything missing on mobile compared to desktop, then implement it.
+
+If any feature is desktop-only right now, bring it to mobile.
+
+--------------------------------------------------
+FULL MOBILE BUG FIX PASS
+
+Perform a complete bug and QA pass on the mobile version.
+
+Fix issues including:
+
+- buttons not working
+- menus not opening
+- tabs not switching correctly
+- pages not loading properly
+- wallet actions failing
+- clan actions failing
+- challenge actions failing
+- shop purchases not completing
+- cosmetics not equipping
+- notifications not showing
+- reconnect flow breaking
+- touch interactions failing
+- scrolling problems
+- frozen UI
+- overlapping elements
+- broken spacing
+- missing icons
+- invisible text
+- stuck loading states
+- mismatched data between desktop and mobile
+- modals that do not fit on screen
+- forms that break when keyboard opens
+- any crashes or console errors on mobile
+
+Do not patch only obvious bugs.
+Actively test and fix edge cases and hidden issues across the mobile experience.
+
+--------------------------------------------------
+GAMEPLAY ON MOBILE
+
+This is one of the most important parts.
+
+Users must be able to actually play every supported game on mobile devices in a smooth and competitive way.
+
+For every game on Jango.us:
+
+1. audit whether the game is currently playable on mobile
+2. if not, build a proper mobile gameplay version
+3. optimize controls, layout, and performance for touchscreens
+4. preserve fairness and competitive integrity
+5. make sure wager matches work the same on mobile as desktop
+
+Every game must support:
+- touch input
+- responsive game canvas/layout
+- readable HUD
+- mobile-safe buttons
+- no controls covering critical gameplay area
+- stable performance on phones
+- reconnect support during live gameplay
+- match completion and payout logic on mobile
+
+If a game currently only works well with keyboard/mouse, create proper mobile controls for it.
+
+Examples of acceptable mobile control patterns:
+- tap controls
+- swipe controls
+- drag controls
+- virtual buttons
+- on-screen joystick if needed
+- hold-to-aim / release-to-act if needed
+
+Choose the right control scheme for each game based on the gameplay.
+
+Do not just shrink the desktop game screen onto mobile.
+The games must feel intentionally designed for phone play.
+
+--------------------------------------------------
+GAME-BY-GAME MOBILE GAMEPLAY REQUIREMENTS
+
+For each game, do the following:
+
+- make the play area fit within mobile screens
+- make touch controls intuitive
+- avoid accidental taps
+- keep score visible
+- keep timer visible
+- keep wager and match status visible but compact
+- support portrait or landscape depending on what is best for that specific game
+- prevent HUD from blocking key game elements
+- ensure end-of-match flow works correctly on mobile
+- ensure report, reconnect, and result screens work correctly on mobile
+- ensure mobile players can compete fairly against other players
+
+If certain games are best in landscape mode, support landscape properly for those games.
+If certain games can work in portrait, optimize them for portrait.
+
+--------------------------------------------------
+MOBILE MATCH FLOW
+
+The full match flow on mobile must work from start to finish:
+
+- find or create match
+- enter match lobby
+- confirm wager
+- load game
+- play full game
+- handle disconnect if needed
+- finish game
+- determine winner
+- transfer scalps correctly
+- update stats and history
+- allow rematch or exit
+
+No part of this flow should break on mobile.
+
+--------------------------------------------------
+RECONNECT / DISCONNECT SUPPORT ON MOBILE
+
+Make sure the anti-rage-quit reconnect system works reliably on phones.
+
+Requirements:
+- if player disconnects on mobile, reconnect timer starts properly
+- if player refreshes, backgrounds app, or temporarily loses signal, reconnect flow still works
+- returning player sees clear reconnect button
+- match state restores correctly
+- opponent sees accurate timer
+- forfeit happens correctly if 5 minutes expires
+- payout logic still works
+- reputation penalties still apply correctly
+
+Test reconnect behavior for:
+- app backgrounding
+- browser tab refresh
+- switching between wifi and cellular
+- brief signal loss
+- returning to app after interruption
+
+--------------------------------------------------
+MOBILE NAVIGATION + DISCOVERABILITY
+
+Make sure mobile users can actually reach every major feature easily.
+
+Audit and fix:
+- home navigation
+- game discovery
+- wallet access
+- shop access
+- profile access
+- clans access
+- notifications access
+- active matches access
+
+Important:
+No major feature should be buried, missing, or harder to use on mobile than desktop.
+
+If needed:
+- improve mobile menu
+- improve bottom nav
+- improve screen transitions
+- improve deep linking into features
+
+--------------------------------------------------
+MOBILE UI / UX BUG FIX REQUIREMENTS
+
+Fix all mobile layout and usability problems, including:
+
+- horizontal scrolling
+- cut off cards
+- buttons off screen
+- tabs hidden or hard to reach
+- elements too close together
+- text too small
+- modals too tall
+- popups impossible to close
+- sticky elements covering content
+- keyboard covering inputs
+- bottom sheets conflicting with safe area
+- poor spacing on smaller screens
+- tables breaking layout
+- poor scroll behavior inside nested containers
+
+Use mobile-first best practices.
+
+--------------------------------------------------
+SYSTEM PARITY REQUIREMENTS
+
+Every major system must behave the same on mobile as desktop.
+
+Verify parity for:
+
+Wallet / Scalps:
+- deposits
+- balance updates
+- wager locking
+- payout receiving
+- transaction history
+
+Clans:
+- create
+- join
+- leave
+- manage
+- challenge
+- chat
+- view rankings and stats
+
+Profiles:
+- view profile
+- edit profile
+- equip cosmetics
+- see reputation
+- see history
+
+Shop:
+- browse items
+- see previews
+- buy items
+- receive items
+- equip items
+
+Reporting:
+- submit report
+- choose category
+- send description
+- attach match context if needed
+
+Notifications:
+- receive
+- read
+- clear
+- navigate from notification to relevant page
+
+Matches:
+- queue
+- join
+- play
+- reconnect
+- complete
+- update match history
+
+--------------------------------------------------
+MOBILE PERFORMANCE
+
+Improve performance specifically for mobile gameplay and mobile browsing.
+
+Requirements:
+- fast initial page load
+- smooth screen transitions
+- optimized game rendering on phones
+- no laggy UI during matches
+- reduced unnecessary re-renders
+- optimized asset loading
+- optimized images for banners, clan logos, and shop items
+- mobile-friendly animation performance
+- efficient websocket or real-time sync handling if used
+
+Do not let cosmetic animations or background effects hurt gameplay performance on mobile.
+
+--------------------------------------------------
+SAFE AREA + DEVICE COMPATIBILITY
+
+Support:
+- iPhone devices with notches / dynamic island / safe areas
+- Android devices with different screen sizes
+- Safari on iPhone
+- Chrome on Android
+
+Ensure:
+- buttons are not hidden behind browser UI
+- bottom nav respects safe area
+- gameplay controls do not overlap device edges
+- modals fit correctly
+- fixed elements do not block important content
+- touch controls remain usable on smaller phones
+
+--------------------------------------------------
+TESTING REQUIREMENTS
+
+Do a serious mobile QA pass across common breakpoints and devices.
+
+Test at minimum:
+- 320px
+- 360px
+- 375px
+- 390px
+- 414px
+- 768px
+
+Test the following flows completely on mobile:
+- sign up / login
+- wallet deposit
+- starting a wager match
+- joining a match
+- playing each game
+- clan creation
+- clan challenge creation
+- clan challenge acceptance
+- player reporting
+- shop purchase
+- cosmetic equip
+- reconnect after disconnect
+- receiving winnings
+- match history update
+- notification flow
+
+For each tested flow, fix every mobile-specific issue until it works smoothly.
+
+--------------------------------------------------
+DESKTOP MUST NOT BREAK
+
+While improving mobile, do not damage the desktop experience.
+
+Requirements:
+- preserve current desktop functionality
+- preserve desktop layouts where appropriate
+- preserve feature behavior across both platforms
+- use shared logic where possible
+- use responsive/adaptive UI where needed
+
+--------------------------------------------------
+DELIVERABLES
+
+I want you to complete all of the following:
+
+1. audit the entire mobile version against desktop
+2. identify every missing or broken mobile feature
+3. implement full feature parity on mobile
+4. fix all major and minor mobile bugs
+5. make every game fully playable on mobile
+6. improve mobile controls and game HUDs
+7. verify wallet, wagers, clans, shop, reporting, and notifications all work on mobile
+8. test end-to-end mobile match flow
+9. preserve desktop functionality
+10. make the mobile version feel complete, polished, competitive, and production-ready
+
+This should result in a mobile version of Jango.us that is not a limited companion version, but a true full-featured platform where users can browse, wager, compete, manage clans, use cosmetics, and actually play the games smoothly.

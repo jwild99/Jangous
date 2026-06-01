@@ -1,0 +1,228 @@
+We are getting closer, but the 8-ball pool game still needs a stronger polish and gameplay pass. The current version is a step up, but it still does not feel premium, realistic, or satisfying enough. It needs more dopamine, better feedback, more realistic table art, larger/more accurate pockets, and the shot release mechanic still is not functioning correctly. Right now, dragging back and releasing is not consistently translating into an actual cue strike / cue ball motion. That must be fixed.
+
+THIS NEXT PASS SHOULD FOCUS ON 5 THINGS:
+1. Make the table look more realistic and premium
+2. Add more satisfying visual/game feedback (“dopamine”)
+3. Fix shot release so drag-back and release always shoots correctly
+4. Make pockets feel more like a real pool table
+5. Improve game-state feedback for scratches, 8-ball mistakes, and pocketed balls
+
+PRIORITY #1 — FIX THE DRAG-AND-RELEASE SHOT
+This is still the biggest gameplay issue.
+
+Current problem:
+- aiming works
+- dragging back for power looks better
+- but releasing does not reliably strike the cue ball
+- sometimes the cue animation does not actually translate into a shot
+- the ball needs to clearly launch when I release
+
+Fix this properly:
+- on pointer/touch drag start: begin charge state
+- on drag back: update power continuously and visually
+- on release: ALWAYS convert the stored shot vector + power into a cue strike impulse
+- do not lose shot state because of event ordering issues
+- make sure pointerup / mouseup / touchend all route into the same fireShot() logic
+- ensure the cue ball velocity is applied immediately on release
+- prevent release events from being swallowed by overlay/UI layers
+- prevent stale state / async state timing bugs
+- log the following during testing:
+  - drag started
+  - charge amount
+  - release detected
+  - shot impulse applied
+  - cue ball velocity after shot
+
+Technical requirement:
+- there should be one clear, central shot release function
+- desktop mouse release and mobile touch release should both call the same reliable shot execution path
+- no fake animation without real physics impulse
+- no release state where the cue animates but the ball does not move
+
+Acceptance test:
+- click/touch drag back
+- release
+- cue ball moves every single time
+
+PRIORITY #2 — TABLE SHOULD LOOK MORE REALISTIC
+The table is improved, but it still looks a little flat and game-prototype-ish. Push it further toward a more realistic, premium look.
+
+Upgrade the table visuals:
+- more realistic felt texture
+- better lighting and shading across the table
+- more believable wooden rails
+- stronger rail depth and edge highlights
+- more realistic pocket cutouts
+- darker pocket interiors with depth
+- subtle table shadowing and contact shadows under balls
+- improve ball gloss/reflections slightly
+- make the cue stick cleaner and more premium
+- improve contrast so the table pops against the background
+
+Design target:
+- real pool table inspiration
+- arcade premium feel
+- cleaner than pure realism, but more believable than current version
+- should feel like a polished mobile pool game, not a placeholder browser game
+
+Do not overdo texture noise.
+Keep it clean, readable, and premium.
+
+PRIORITY #3 — POCKETS / HOLES NEED TO LOOK AND FEEL RIGHT
+The pockets especially the corner pockets feel too small and not quite right visually.
+
+Update pockets:
+- enlarge and reshape corner pockets so they feel closer to a real table
+- improve side pocket shape too
+- pocket openings should visually read clearly
+- pocket mouths should feel more forgiving and natural
+- balls should drop in more satisfyingly
+- improve collision/pocket funneling near the openings
+- make sure pocket geometry matches the visual pocket size
+
+Important:
+- do not just fake larger visuals while keeping tiny detection
+- visual size and gameplay detection need to match
+- pocketing should feel fair and satisfying
+
+PRIORITY #4 — ADD MORE DOPAMINE / FEEDBACK
+The game needs more “something happened” energy. Pocketing a ball should feel rewarding. Fouls and big moments should feel noticeable.
+
+Add satisfying feedback for key events:
+
+WHEN A BALL IS POCKETED:
+- quick popup text like:
+  - “Nice Shot”
+  - “Ball Sunk”
+  - “Clean Pocket”
+- subtle score/event banner
+- pocket flash or pulse near the hole
+- little impact sparkle or clean ring effect
+- satisfying sound
+- brief UI animation on active player panel
+- optional tiny combo feeling if multiple balls drop
+
+WHEN THE PLAYER SCRATCHES:
+- clear foul feedback
+- show “Scratch” or “Cue Ball Scratch”
+- visually distinguish it from normal pocketing
+- different sound / warning feedback
+- briefly explain turn consequence if rules support it
+
+WHEN THE 8-BALL IS SUNK ACCIDENTALLY:
+- strong event treatment
+- big clear warning / fail state feedback
+- examples:
+  - “8-Ball Sunk”
+  - “Bad Pocket”
+  - “You Sunk the 8”
+- dark/red dramatic overlay pulse or banner
+- more intense sound cue
+- transition into loss/foul logic depending on rules
+
+WHEN IT IS A GOOD SHOT:
+- stronger positive feedback
+- subtle camera/table pulse or screen emphasis
+- active player glow
+- nicer sound stack
+- ball sink should feel satisfying, not silent and dead
+
+Keep this tasteful:
+- premium arcade polish
+- not cheesy casino overload
+- fast and rewarding, not annoying
+
+PRIORITY #5 — BETTER EVENT / RULE FEEDBACK
+The game should communicate what happened more clearly.
+
+Add event messaging for:
+- ball pocketed
+- scratch
+- illegal shot
+- turn change
+- solids/stripes assignment if supported
+- 8-ball pocketed
+- win
+- loss
+
+HUD improvements:
+- temporary event text near top center or over table
+- active turn label should feel more alive
+- player panels should react to important events
+- status text should not feel tiny and hidden
+
+Make sure players always understand:
+- what just happened
+- whether it was good or bad
+- whose turn it is now
+- if a foul occurred
+- if the game ended
+
+GAME FEEL IMPROVEMENTS
+Tune the feel of the shot and ball response:
+- cue strike should feel punchier
+- add better release snap to cue animation
+- collision sounds should feel clean and satisfying
+- pocket drops should feel more meaningful
+- no weak or dead-feeling launches
+- make the shot feel like it has intent and impact
+
+VISUAL FX TO ADD
+Add subtle but polished effects:
+- pocket glow pulse on sink
+- impact sparkle/ring on strong contact
+- ball shadow refinement
+- cue release snap animation
+- event banner animation
+- turn card glow animation
+- win/loss overlay treatment
+- foul feedback treatment
+
+Do not overuse effects.
+Everything should feel premium, sharp, and competitive.
+
+MOBILE + DESKTOP
+Keep the improved drag system for both desktop and mobile, but make sure:
+- drag back = power
+- release = immediate shot
+- works on touch and mouse
+- no missed releases
+- no UI element blocking pointer release
+- no difference in shot reliability between platforms
+
+REQUIRED DEBUG / QA PASS
+Before calling this complete, test all of the following:
+1. aim and drag back
+2. release shot on desktop
+3. release shot on mobile/touch
+4. weak shot
+5. strong shot
+6. corner pocket sink
+7. side pocket sink
+8. cue ball scratch
+9. 8-ball accidental sink
+10. turn change after pocket/no pocket
+11. repeated shots back to back
+12. no dead release state
+
+Log and verify:
+- shot release fired
+- cue ball impulse applied
+- ball velocity non-zero after release
+- pocket event triggered
+- foul event triggered when appropriate
+- game state updated correctly
+
+FINAL ACCEPTANCE CRITERIA
+This task is only done if:
+- drag and release shoots every single time
+- the cue ball actually launches on release
+- the table looks more realistic and premium
+- the pockets look bigger and more like a real pool table
+- pocketing a ball feels rewarding and noticeable
+- scratching feels clearly different from a normal sink
+- sinking the 8-ball accidentally has a major feedback moment
+- the game has more energy, more polish, and more dopamine
+- it no longer feels visually flat or mechanically unreliable
+
+Do not just patch visuals. Fix the drag-release shot logic first, then do the realism + feedback pass on top.

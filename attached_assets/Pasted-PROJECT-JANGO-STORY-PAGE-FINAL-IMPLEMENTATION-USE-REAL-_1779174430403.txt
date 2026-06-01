@@ -1,0 +1,295 @@
+PROJECT: JANGO STORY PAGE — FINAL IMPLEMENTATION (USE REAL STORY)
+
+DO NOT MODIFY STORY CONTENT.
+DO NOT ADD FAKE LORE.
+DO NOT ADD RANDOM DETAILS.
+
+This page must present the EXACT story provided, elevated through design, layout, animation, and visuals.
+
+==================================================
+0. GLOBAL RULES
+==================================================
+
+- Use the EXACT story text below (word-for-word)
+- No fake dates, no fake cities, no added characters
+- Tone must feel cinematic, raw, competitive
+- This is NOT a blog page — it is a storytelling experience
+- Think: Netflix intro + AAA game lore + premium landing page
+
+==================================================
+1. ROUTING + NAV INTEGRATION
+==================================================
+
+Route:
+→ /story OR /arena-origins
+
+Top-right profile dropdown:
+Insert BETWEEN:
+- Streamer Mode
+- Settings
+
+Label:
+→ "Arena Origins" (preferred)
+
+==================================================
+2. PAGE STRUCTURE OVERVIEW
+==================================================
+
+The page is broken into cinematic sections:
+
+1. Hero (Full screen)
+2. Early Life (Dice Stand)
+3. Rise (Little Lion)
+4. Domination (Scalps Era)
+5. The Stranger (Turning Point)
+6. The Disappearance (Legacy)
+7. Final CTA (Enter Arena)
+
+Each section:
+- Uses one of your provided images
+- Has animated transitions
+- Uses glass UI overlays
+- Has strong typography hierarchy
+
+==================================================
+3. HERO SECTION
+==================================================
+
+BACKGROUND:
+Use:
+→ JangoCollegeKidsGamblingOnPhones.png (preferred hero)
+
+STYLING:
+- Full-screen background
+- Dark gradient overlay (black → transparent)
+- Subtle neon glow (orange/pink edges)
+
+TEXT:
+
+TITLE (large, bold, center):
+"JANGO"
+
+SUBTITLE:
+"The King of the Table"
+
+BODY:
+"In the back alleys, under neon lights, where every move matters… one name rose above them all."
+
+CTA BUTTONS:
+- "Enter the Arena"
+- "Read the Story"
+
+ANIMATION:
+- Fade in background (0.8s)
+- Title slides up (0.6s)
+- Buttons glow pulse loop
+
+==================================================
+4. SECTION 1 — ORIGIN
+==================================================
+
+IMAGE:
+→ JangoCollegeKidsPhones.png
+
+LAYOUT:
+Left: Image
+Right: Text (glass panel)
+
+TITLE:
+"The Beginning"
+
+TEXT (USE EXACT):
+
+"In the back alleys of Marula City, where neon lights flickered over smoke-filled card rooms, a boy named Jango learned the art of chance before he could even spell his own name. His mother ran a small dice stand in the slums, and Jango would sit beside her, watching coins change hands, eyes reading every twitch and tremor of the desperate."
+
+DESIGN:
+- Glass card (blur + glow border)
+- Soft shadow
+- Slight parallax on image
+
+==================================================
+5. SECTION 2 — THE RISE
+==================================================
+
+IMAGE:
+→ JangoBackground.png
+
+TITLE:
+"Little Lion"
+
+TEXT:
+
+"By the time he was sixteen, Jango was a legend in the underground circuits. They called him “Little Lion”—young, fast, and fearless. He never smiled when he won, never cursed when he lost. Every game was a hunt, and Jango was always the predator."
+
+ANIMATION:
+- Text fades in line-by-line
+- Background slowly zooms (scale 1 → 1.05)
+
+==================================================
+6. SECTION 3 — DOMINATION
+==================================================
+
+IMAGE:
+→ JangoBackground1.png
+
+TITLE:
+"The Scalps"
+
+TEXT:
+
+"He started with dice, then cards, then anything people were foolish enough to wager on—racing birds, dominoes, digital chips. No matter the game, Jango didn’t just win; he destroyed. His opponents said he could see through cards, through people, straight into their fear.
+
+Soon, gamblers whispered his name with dread. He was known for “taking scalps,” a phrase that meant crushing an opponent so completely that they never played again. Jango kept a list of every player he’d beaten—his “collection.” He didn’t need trophies; the names were enough."
+
+UX DETAIL:
+- Add subtle floating “names” effect (blurred text particles)
+- Add faint sound effect on scroll (low hum)
+
+==================================================
+7. SECTION 4 — THE PEAK
+==================================================
+
+IMAGE:
+→ reuse strongest wide artwork (Background or Phones)
+
+TITLE:
+"The King"
+
+TEXT:
+
+"By twenty-five, he ruled the gambling halls from Cape Meridian to Lagos Prime. No one dared face him head-to-head. Even the old masters who had built their lives on the shuffle and roll stayed away."
+
+DESIGN:
+- Center aligned
+- Large typography
+- Gold/orange glow accent
+
+==================================================
+8. SECTION 5 — THE STRANGER
+==================================================
+
+IMAGE:
+→ darker image (use most dramatic)
+
+TITLE:
+"The One Who Didn’t Flinch"
+
+TEXT:
+
+"But Jango grew bored. One night, a stranger sat across from him—a silent man in a dark coat, his eyes hidden behind mirrored lenses. They played for hours. For the first time, Jango’s pulse quickened. The stranger never flinched, never blinked.
+
+At dawn, Jango pushed his final chips forward. The stranger matched him, then smiled.
+
+'Every king,' he said softly, 'needs someone to take his crown.'"
+
+UX:
+- Slight vignette effect
+- Ambient tension sound (VERY subtle)
+
+==================================================
+9. SECTION 6 — THE LOSS
+==================================================
+
+TITLE:
+"The Fall"
+
+TEXT:
+
+"When the cards were turned, Jango’s heart froze. He’d lost."
+
+DESIGN:
+- Minimalist
+- Black background
+- Large centered text
+- Pause moment (no animation for 1 sec)
+
+==================================================
+10. SECTION 7 — THE LEGACY
+==================================================
+
+TITLE:
+"The Laugh"
+
+TEXT:
+
+"But instead of rage, he laughed—a deep, relieved laugh that echoed through the empty hall. 'Keep the pot,' he said. 'You’ve earned your place in my collection.'
+
+He rose, left his fortune behind, and vanished into the morning mist."
+
+DESIGN:
+- Fade back into color
+- Slight glow returns
+
+==================================================
+11. SECTION 8 — FINAL MYTH
+==================================================
+
+TITLE:
+"The Game Never Ends"
+
+TEXT:
+
+"Some say Jango still plays, drifting from city to city, chasing the perfect game—not for money, not for pride, but for the thrill of finding a rival worthy of being his final scalp."
+
+UX:
+- Subtle particle effects
+- Slow fade
+
+==================================================
+12. FINAL CTA SECTION
+==================================================
+
+BACKGROUND:
+→ dark gradient
+
+TEXT:
+
+"Your name isn’t in the collection yet."
+
+SUBTEXT:
+"Play. Compete. Take scalps."
+
+BUTTON:
+→ "Enter the Arena"
+
+SECONDARY:
+→ "Play Now"
+
+==================================================
+13. SOUND + IMMERSION (IMPORTANT)
+==================================================
+
+Add:
+- soft ambient background loop (low volume)
+- hover sounds on buttons
+- subtle bass hit on section transitions
+- disable on mobile if performance drops
+
+==================================================
+14. PERFORMANCE RULES
+==================================================
+
+- Lazy load images
+- Optimize all artwork
+- Disable heavy animations on low-end devices
+- Keep scroll smooth (no lag)
+
+==================================================
+15. FINAL EXPECTATION
+==================================================
+
+This page should feel like:
+
+- A cinematic origin story
+- A brand-defining experience
+- Something users remember
+
+NOT:
+- generic text page
+- fake lore generator
+- boring scroll page
+
+When done correctly:
+→ Users should WANT to play after reading this
+→ It should feel like entering a world
+→ It should match AAA game storytelling quality

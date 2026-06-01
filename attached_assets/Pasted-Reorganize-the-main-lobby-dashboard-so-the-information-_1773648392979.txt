@@ -1,0 +1,174 @@
+Reorganize the main lobby dashboard so the information is cleaner, easier to scan, and more structured.
+
+The current dashboard contains all the correct features, but the layout feels crowded and visually overwhelming. We need to simplify the hierarchy and group related sections.
+
+The goal is a dashboard that feels organized, focused, and easy to navigate.
+
+---
+
+1. ESTABLISH A CLEAR HIERARCHY
+
+The dashboard should follow this order of importance:
+
+1. Start Match
+2. Ranked Arena
+3. Live Matches
+4. Tournaments
+5. Personal Stats / Wallet
+6. Leaderboards
+7. Activity Feed
+
+Each section should visually feel like it belongs in that order.
+
+---
+
+2. MAKE "START A MATCH" THE PRIMARY SECTION
+
+The Start Match panel should be the main focal point.
+
+It should be centered and slightly larger than other cards.
+
+Move it to the very top of the main content area below the header.
+
+Keep it clean with:
+
+Game selector
+Wager selector
+Quick Match button
+Private Match button
+
+Avoid excessive padding or extra information inside this card.
+
+---
+
+3. PLACE RANKED ARENA DIRECTLY UNDER START MATCH
+
+The Ranked Arena section should sit directly under Start Match.
+
+This establishes the two primary actions:
+
+Casual Play
+Ranked Play
+
+The Ranked card should include:
+
+Rank badge
+Rating number
+Progress bar
+Queue Ranked button
+
+Do not overcrowd the Ranked card with too many stats.
+
+---
+
+4. MOVE LIVE MATCHES BELOW RANKED
+
+Live Matches should come next.
+
+Limit the list to 4–5 matches.
+
+If there are more, show a "View More" button.
+
+Each row should show:
+
+Player names
+Game
+Device icons
+Join button
+
+Avoid long lists that stretch the page.
+
+---
+
+5. MOVE TOURNAMENTS BELOW LIVE MATCHES
+
+Tournament cards should be grouped together in one row.
+
+Each tournament card should show:
+
+Tournament name
+Prize pool
+Players joined
+Join button
+
+Limit to 3 visible tournaments.
+
+---
+
+6. RIGHT SIDEBAR ORGANIZATION
+
+The right sidebar currently contains too many stacked modules.
+
+Reorganize them into a clear vertical order:
+
+User Profile Card
+Wallet
+Top Players
+Live Activity
+
+Each card should have equal spacing and consistent height.
+
+---
+
+7. REDUCE VISUAL CLUTTER
+
+Apply these cleanup rules:
+
+• remove unnecessary text lines
+• remove duplicate labels
+• reduce card padding slightly
+• keep consistent spacing between sections
+• ensure every section has a clear header
+
+The page should breathe more.
+
+---
+
+8. LIMIT DATA PER CARD
+
+Each card should contain only the most important information.
+
+Examples:
+
+Wallet:
+Balance
+Add
+Withdraw
+
+User Profile:
+Level
+Win Rate
+Wins
+
+Do not overload small cards with too many numbers.
+
+---
+
+9. IMPROVE SECTION SPACING
+
+Increase vertical spacing between major sections so the dashboard is easier to scan.
+
+Use consistent spacing between:
+
+Start Match
+Ranked Arena
+Live Matches
+Tournaments
+
+This helps visually separate sections.
+
+---
+
+10. FINAL GOAL
+
+The dashboard should feel like a structured control center rather than a collection of many cards.
+
+Users should immediately understand:
+
+Where to start a match
+How to play ranked
+What matches are live
+What tournaments are active
+Their stats and wallet information
+
+The layout should feel clean, organized, and focused.

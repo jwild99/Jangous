@@ -1,0 +1,1389 @@
+PROJECT: JANGO TUTORIAL MODE 2.0 — FULL INTERACTIVE ONBOARDING + GAME TRAINING SYSTEM
+
+GOAL:
+Build a full tutorial system that teaches new users how Jango works and how to play every game, while making the experience feel fun, polished, rewarding, and high-energy.
+
+This should NOT feel like a boring help page.
+
+It should feel like:
+- a guided game campaign
+- an interactive onboarding experience
+- a first mission inside the Jango Arena
+- a training ground that gets users excited to play for real
+
+The tutorial must teach:
+1. What Jango is
+2. What Scalps are
+3. How matches work
+4. How stakes/pots work
+5. How tournaments work
+6. How ranks/progression work
+7. How to play each individual game
+8. How to safely practice before playing real matches
+
+IMPORTANT:
+Do NOT give away free Scalps as tutorial rewards.
+Tutorial rewards should be cosmetic, XP-based, badge-based, or progression-based only.
+
+==================================================
+SECTION 1: CORE TUTORIAL DESIGN PHILOSOPHY
+==================================================
+
+The tutorial must follow this loop:
+
+TEACH → MAKE USER DO IT → GIVE FEEDBACK → REWARD → MOVE FORWARD
+
+Do not explain everything with text.
+
+Every step should include:
+- a visual highlight
+- a short instruction
+- an action the user performs
+- instant feedback when completed
+- a progress checkmark
+- sound/haptic if enabled
+
+Bad tutorial style:
+“Here is a paragraph explaining everything.”
+
+Good tutorial style:
+“Click Play.”
+User clicks Play.
+Button glows.
+Sound plays.
+Step completes.
+Progress bar moves.
+
+==================================================
+SECTION 2: TUTORIAL ENTRY POINTS
+==================================================
+
+Add tutorial access from multiple places.
+
+1. First-time user onboarding
+After account creation, show:
+“Welcome to Jango. Want a 2-minute training run?”
+
+Buttons:
+- Start Tutorial
+- Skip for Now
+
+2. Game page
+Each game should have:
+- “Tutorial”
+- “Practice”
+- “How to Play”
+
+3. Profile dropdown
+Add:
+- Tutorial Mode
+- Training Hub
+
+4. Settings
+Add:
+- Reset Tutorial Progress
+- Replay Platform Tutorial
+
+5. Empty states
+If user has never played:
+Show:
+“New here? Learn the basics in 2 minutes.”
+Button:
+“Start Training”
+
+==================================================
+SECTION 3: TUTORIAL HUB
+==================================================
+
+Create a dedicated Tutorial Hub page.
+
+Route:
+/tutorial
+or
+/training
+
+The Tutorial Hub should show:
+
+A. Platform Basics
+- Jango Basics
+- Scalps & Pots
+- Matchmaking
+- Tournaments
+- Ranking & Rewards
+
+B. Game Tutorials
+- Chess
+- Mini Golf
+- Connect 4
+- Air Hockey
+- Rock Paper Scissors
+- Dots & Boxes
+- 8 Ball
+- Bowling
+- Cup King
+- Stack Tower
+- Block Blast
+- Tron
+- Basketball
+- Football
+- Racing
+
+C. Progress Tracker
+Show:
+- completed tutorials
+- in-progress tutorials
+- locked/unstarted tutorials
+- earned badges
+- total training progress
+
+Example:
+Tutorial Progress: 4/20 Complete
+
+D. Recommended Next
+If user is new:
+Recommend:
+“Start with Rock Paper Scissors”
+or
+“Start with Connect 4”
+
+If user struggles with a game:
+Recommend:
+“Practice Air Hockey defense”
+
+==================================================
+SECTION 4: TUTORIAL HUB UI DESIGN
+==================================================
+
+The Tutorial Hub should feel like a training academy inside Jango.
+
+Visual style:
+- dark premium background
+- neon training grid
+- glowing cards
+- progress rings
+- game icons
+- animated completion checkmarks
+- “Training Arena” feel
+
+Each tutorial card should show:
+- game icon
+- tutorial title
+- difficulty
+- estimated time
+- completion state
+- reward preview
+- Start / Continue / Replay button
+
+Card states:
+
+UNSTARTED:
+- dim glow
+- button: Start
+
+IN PROGRESS:
+- animated progress bar
+- button: Continue
+
+COMPLETED:
+- checkmark
+- glowing border
+- button: Replay
+
+Recommended:
+- “Recommended” badge
+- stronger glow
+
+==================================================
+SECTION 5: GLOBAL TUTORIAL OVERLAY SYSTEM
+==================================================
+
+Build one reusable tutorial overlay component.
+
+Component:
+TutorialOverlay
+
+Must support:
+- spotlight/highlight target element
+- tooltip positioning
+- step progress
+- next/back buttons
+- skip button
+- keyboard navigation
+- mobile support
+- completion trigger
+- sound/haptic triggers
+
+Overlay behavior:
+- darken rest of screen
+- highlight target element with glowing border
+- tooltip appears near target
+- user action completes the step when required
+
+Tooltip should include:
+- step title
+- short text
+- action instruction
+- progress indicator
+
+Example:
+Title:
+“Choose a Game”
+
+Text:
+“This is where you pick what you want to play.”
+
+Action:
+“Click a game card to continue.”
+
+Progress:
+Step 2 of 8
+
+==================================================
+SECTION 6: TUTORIAL STEP TYPES
+==================================================
+
+Support different tutorial step types.
+
+1. CLICK_STEP
+User must click highlighted element.
+
+2. INPUT_STEP
+User must press a key, drag, aim, move, or select.
+
+3. WATCH_STEP
+User watches a short animation/demo.
+
+4. CONFIRM_STEP
+User clicks Continue after reading short info.
+
+5. PRACTICE_STEP
+User performs a gameplay mechanic.
+
+6. QUIZ_STEP
+Optional quick check:
+“What happens when you win a wagered match?”
+Choices:
+- Winner receives pot
+- Everyone gets free Scalps
+- Match restarts
+
+7. COMPLETION_STEP
+Reward reveal + next action.
+
+==================================================
+SECTION 7: PLATFORM BASICS TUTORIAL
+==================================================
+
+This is the first tutorial new users should see.
+
+Title:
+“Welcome to Jango”
+
+Estimated time:
+2–3 minutes
+
+Goal:
+Teach the user how the platform works without overwhelming them.
+
+--------------------------------------------------
+STEP 1: Welcome
+--------------------------------------------------
+
+Full-screen intro.
+
+Text:
+“Welcome to Jango.”
+
+Then:
+“Skill games. Real competition. Every match matters.”
+
+Button:
+“Enter Training”
+
+Animation:
+- background glow
+- logo fade in
+- subtle particles
+
+--------------------------------------------------
+STEP 2: Choose a Game
+--------------------------------------------------
+
+Highlight game selector.
+
+Text:
+“Start by choosing a game. Each game has its own style, strategy, and arena.”
+
+User action:
+Click any recommended starter game.
+
+Recommended starter games:
+- Rock Paper Scissors
+- Connect 4
+- Air Hockey
+
+--------------------------------------------------
+STEP 3: Match Types
+--------------------------------------------------
+
+Highlight match type selector.
+
+Teach:
+- Practice
+- VS Bot
+- Ranked
+- Tournament
+
+Text:
+“Practice is risk-free. Ranked affects your progression. Tournaments are live events with brackets.”
+
+User action:
+Select Practice.
+
+--------------------------------------------------
+STEP 4: Scalps Explanation
+--------------------------------------------------
+
+Show animated visual of Scalps moving into a pot.
+
+Text:
+“Scalps are the platform currency used for entries, pots, cosmetics, and competition.”
+
+Important:
+Do NOT say users receive free Scalps.
+
+Teach:
+- entry fee
+- pot
+- winner receives
+- transaction history
+
+--------------------------------------------------
+STEP 5: Match Confirmation
+--------------------------------------------------
+
+Show fake/tutorial match confirmation.
+
+Highlight:
+- entry fee
+- total pot
+- winner receives
+- confirm button
+
+Text:
+“Before joining, you always see exactly what you are entering and what the winner receives.”
+
+User action:
+Click Confirm.
+
+This should be simulation only.
+No real balance movement.
+
+--------------------------------------------------
+STEP 6: Play First Guided Match
+--------------------------------------------------
+
+Launch guided starter match.
+
+Recommended:
+Rock Paper Scissors or Connect 4.
+
+Make first tutorial match short and easy.
+
+--------------------------------------------------
+STEP 7: Result Screen
+--------------------------------------------------
+
+After user wins, show result overlay.
+
+Text:
+“This is your post-match screen. From here you can run it back, switch games, or keep climbing.”
+
+Buttons highlighted:
+- Run It Back
+- Switch Game
+
+--------------------------------------------------
+STEP 8: Rank + Rewards
+--------------------------------------------------
+
+Show rank progression preview.
+
+Text:
+“Playing ranked helps you climb divisions and unlock cosmetic rewards.”
+
+Show:
+- current rank placeholder
+- next reward preview
+- progress bar
+
+--------------------------------------------------
+STEP 9: Complete
+--------------------------------------------------
+
+Reward:
+- Rookie Badge
+- Training Completed title
+- XP only if XP system exists
+
+No Scalps.
+
+Text:
+“You completed the basics. You’re ready for the Arena.”
+
+Buttons:
+- Play Practice
+- View Tutorials
+- Enter Lobby
+
+==================================================
+SECTION 8: GAME-SPECIFIC TUTORIAL TEMPLATE
+==================================================
+
+Every game tutorial must follow the same structure:
+
+1. Game intro
+2. Objective
+3. Controls
+4. Core mechanic 1
+5. Core mechanic 2
+6. Guided practice
+7. Mini challenge
+8. Completion reward
+9. Next action
+
+Each game tutorial must include:
+- game-themed background
+- custom sound cues
+- highlighted controls
+- simple bot/opponent behavior
+- clear win condition
+- replay option
+
+==================================================
+SECTION 9: CHESS TUTORIAL
+==================================================
+
+Goal:
+Teach basic chess flow without overwhelming new users.
+
+Estimated time:
+4–6 minutes
+
+Use simplified board scenarios, not full chess theory.
+
+Sections:
+
+1. Intro
+Text:
+“Chess is about control, pressure, and trapping the king.”
+
+2. Objective
+Text:
+“Win by putting the enemy king in checkmate.”
+
+3. Pieces basics
+Teach only essentials:
+- King
+- Queen
+- Rook
+- Bishop
+- Knight
+- Pawn
+
+Use clickable piece cards.
+When clicked, show legal moves.
+
+4. Movement practice
+Highlight one piece at a time.
+User must move:
+- pawn
+- knight
+- rook
+
+5. Capture practice
+Set up easy capture.
+User captures opponent piece.
+
+6. Check practice
+Show:
+“You are attacking the king.”
+
+7. Checkmate demo
+Show a short forced checkmate.
+
+8. Mini challenge
+User completes a one-move checkmate.
+
+Feedback:
+- legal moves glow
+- selected piece lifts
+- capture particles
+- check warning glow
+- checkmate cinematic flash
+
+Completion reward:
+“Chess Trainee” badge or XP.
+
+==================================================
+SECTION 10: MINI GOLF TUTORIAL
+==================================================
+
+Goal:
+Teach aiming, power, strokes, and hole completion.
+
+Estimated time:
+2–4 minutes
+
+Steps:
+
+1. Objective
+“Sink the ball in the fewest strokes.”
+
+2. Aim
+Highlight drag/aim control.
+Show aim arrow.
+
+User action:
+Aim toward highlighted target.
+
+3. Power
+Highlight power meter.
+User sets light power.
+
+4. First shot
+Ball rolls toward hole.
+Use forgiving physics.
+
+5. Stroke count
+Show:
+“Stroke 1”
+
+6. Hole completion
+Set up easy second shot.
+User sinks ball.
+
+7. Advanced tip
+Show:
+“Bank shots can help on harder holes.”
+
+Visuals:
+- glowing aim line
+- ball trail
+- hole glow
+- ripple when ball sinks
+
+Completion:
+“Mini Golf Rookie” badge.
+
+==================================================
+SECTION 11: CONNECT 4 TUTORIAL
+==================================================
+
+Goal:
+Teach dropping discs, blocking, and connecting four.
+
+Estimated time:
+2–3 minutes
+
+Steps:
+
+1. Objective
+“Connect four discs before your opponent does.”
+
+2. Drop disc
+Highlight a column.
+User drops disc.
+
+3. Opponent move
+Bot drops disc slowly.
+
+4. Build a line
+Guide user to create 3 in a row.
+
+5. Block
+Show opponent has 3.
+Highlight blocking column.
+
+6. Win
+Set up winning move.
+User drops final disc.
+Winning line glows.
+
+Visuals:
+- column hover preview
+- disc drop animation
+- bounce on landing
+- winning line laser/glow
+
+Completion:
+“Connect 4 Rookie” badge.
+
+==================================================
+SECTION 12: AIR HOCKEY TUTORIAL
+==================================================
+
+Goal:
+Teach movement, defense, attacking, scoring.
+
+Estimated time:
+2–4 minutes
+
+Steps:
+
+1. Objective
+“Protect your goal and score on your opponent.”
+
+2. Move paddle
+User moves paddle left/right/up/down.
+
+3. Defend
+Slow puck comes toward goal.
+User blocks it.
+
+4. Attack
+Puck placed in front of user.
+User hits it toward goal.
+
+5. Score
+Opponent bot intentionally misses one shot.
+User scores.
+
+6. Round flow
+Explain:
+“First to X goals wins.”
+
+Controls:
+Desktop:
+Mouse or keyboard depending implementation.
+
+Mobile:
+drag paddle.
+
+Visuals:
+- puck trail
+- paddle glow
+- spark on hit
+- goal flash
+
+Completion:
+“Air Hockey Rookie” badge.
+
+==================================================
+SECTION 13: ROCK PAPER SCISSORS TUTORIAL
+==================================================
+
+Goal:
+Teach quick selection and outcome logic.
+
+Estimated time:
+1–2 minutes
+
+Steps:
+
+1. Objective
+“Choose Rock, Paper, or Scissors. Beat your opponent’s pick.”
+
+2. Rule cards
+Show:
+Rock beats Scissors
+Scissors beats Paper
+Paper beats Rock
+
+3. Pick move
+User chooses highlighted option.
+
+4. Reveal
+Animate both choices slamming into center.
+
+5. Result
+User wins first round.
+
+6. Best of mode
+Explain if game uses best of 3/5.
+
+Visuals:
+- large animated hand icons
+- versus effect
+- reveal explosion
+
+Completion:
+“RPS Rookie” badge.
+
+==================================================
+SECTION 14: DOTS & BOXES TUTORIAL
+==================================================
+
+Goal:
+Teach line placement, box capture, extra turns.
+
+Estimated time:
+3–4 minutes
+
+Steps:
+
+1. Objective
+“Draw lines to complete boxes. Most boxes wins.”
+
+2. Place line
+Highlight line between two dots.
+User clicks/taps.
+
+3. Opponent turn
+Bot places line.
+
+4. Complete box
+Set up three sides.
+User draws fourth side.
+
+5. Extra turn
+Show:
+“Completing a box gives you another move.”
+
+6. Mini challenge
+Capture two boxes.
+
+Visuals:
+- dots glow
+- line draws animated
+- box fills with color
+- combo glow
+
+Completion:
+“Grid Rookie” badge.
+
+==================================================
+SECTION 15: 8-BALL POOL TUTORIAL
+==================================================
+
+Goal:
+Teach aiming, power, cue ball, pocketing, solids/stripes basics.
+
+Estimated time:
+4–6 minutes
+
+Steps:
+
+1. Objective
+“Pocket your assigned balls, then the 8-ball.”
+
+2. Aim line
+Show cue ball and target ball.
+Highlight aim line.
+
+3. Ghost ball helper
+Show ghost ball position for tutorial only.
+
+4. Power meter
+User sets power.
+
+5. Shoot
+User takes shot.
+Tutorial setup should make pocketing likely.
+
+6. Solids/stripes
+Explain:
+“After groups are assigned, you target your group.”
+
+7. 8-ball warning
+“Do not shoot the 8-ball early.”
+
+8. Mini challenge
+Pocket one easy ball.
+
+Visuals:
+- cue rotation
+- power bar glow
+- ball reflections
+- pocket highlight
+- satisfying pocket sound
+
+Completion:
+“Pool Rookie” badge.
+
+==================================================
+SECTION 16: BOWLING TUTORIAL
+==================================================
+
+Goal:
+Teach aim, power, release, scoring basics.
+
+Estimated time:
+3–4 minutes
+
+Steps:
+
+1. Objective
+“Knock down as many pins as possible.”
+
+2. Aim
+User moves aim arrow.
+
+3. Power
+User controls power meter.
+
+4. Release
+User throws ball.
+
+5. Pins fall
+First attempt should knock several pins.
+
+6. Strike/spare explanation
+Show:
+“Strike = all pins first throw. Spare = all pins in two throws.”
+
+7. Mini challenge
+Set up easier spare.
+
+Visuals:
+- lane perspective
+- ball trail
+- pin impact particles
+- scoreboard frame highlight
+
+Completion:
+“Bowling Rookie” badge.
+
+==================================================
+SECTION 17: CUP KING TUTORIAL
+==================================================
+
+Goal:
+Teach watching cups, tracking movement, choosing.
+
+Estimated time:
+2–3 minutes
+
+Steps:
+
+1. Objective
+“Find the hidden item after the shuffle.”
+
+2. Reveal
+Show ball/item under one cup.
+
+3. Shuffle slow
+Cups move slowly.
+Highlight eyes/tracking.
+
+4. Choose
+User selects cup.
+
+5. Reveal
+First tutorial should be easy.
+
+6. Speed explanation
+“Harder rounds shuffle faster.”
+
+Visuals:
+- spotlight table
+- cup shadows
+- dramatic reveal pause
+- gold burst on correct choice
+
+Completion:
+“Cup Rookie” badge.
+
+==================================================
+SECTION 18: STACK TOWER TUTORIAL
+==================================================
+
+Goal:
+Teach timing, placement, perfect stacks, tower height.
+
+Estimated time:
+2–4 minutes
+
+Steps:
+
+1. Objective
+“Stack blocks as high as possible.”
+
+2. Moving block
+User watches block move.
+
+3. Tap to place
+Highlight timing window.
+
+4. Perfect placement
+First one should be easy.
+Show “Perfect.”
+
+5. Miss explanation
+Show how overhang gets cut.
+
+6. Mini challenge
+Stack 5 blocks.
+
+Visuals:
+- vertical camera motion
+- block glow
+- perfect hit burst
+- height meter
+
+Completion:
+“Tower Rookie” badge.
+
+==================================================
+SECTION 19: BLOCK BLAST TUTORIAL
+==================================================
+
+Goal:
+Teach dragging blocks, valid placement, line clears, combos.
+
+Estimated time:
+3–4 minutes
+
+Steps:
+
+1. Objective
+“Place blocks to clear rows and columns.”
+
+2. Drag block
+User drags highlighted block.
+
+3. Valid preview
+Grid cells glow.
+
+4. Place block
+Block snaps into grid.
+
+5. Clear line
+Set up row/column clear.
+
+6. Combo
+Set up second clear.
+Show combo multiplier.
+
+Visuals:
+- colorful blocks
+- valid placement glow
+- line clear particle burst
+- combo text pop
+
+Completion:
+“Block Rookie” badge.
+
+==================================================
+SECTION 20: TRON TUTORIAL
+==================================================
+
+Goal:
+Teach movement, trails, walls, survival.
+
+Estimated time:
+2–3 minutes
+
+Steps:
+
+1. Objective
+“Survive the grid. Avoid walls and trails.”
+
+2. Movement
+User changes direction using WASD/arrow/swipe.
+
+3. Trail danger
+Show player trail remains behind.
+
+4. Avoid wall
+Guide user away from wall.
+
+5. Trap opponent
+Bot moves into bad path.
+User survives.
+
+6. Win
+Opponent crashes.
+
+Visuals:
+- grid boot-up
+- neon trail
+- collision spark
+- slow-motion crash
+
+Completion:
+“Grid Rider” badge.
+
+==================================================
+SECTION 21: BASKETBALL TUTORIAL
+==================================================
+
+Goal:
+Teach aim, power/timing, shot release.
+
+Estimated time:
+2–4 minutes
+
+Steps:
+
+1. Objective
+“Time your shot and score.”
+
+2. Aim
+Highlight hoop.
+
+3. Power/timing meter
+User holds/releases.
+
+4. Shot arc
+Show ball path.
+
+5. Make shot
+Tutorial should favor make.
+
+6. Streak explanation
+“Consecutive makes build pressure.”
+
+Visuals:
+- ball trail
+- rim glow
+- net animation
+- perfect shot flash
+
+Completion:
+“Shooter Rookie” badge.
+
+==================================================
+SECTION 22: FOOTBALL TUTORIAL
+==================================================
+
+Goal:
+Teach core objective based on current game mechanics.
+
+Because football implementations can vary, tutorial must adapt to actual gameplay:
+- passing
+- kicking
+- running
+- timing
+- field goal
+- dodge/score
+
+Required:
+Use the real mechanics already in the game.
+
+General steps:
+1. Objective
+2. Movement/control
+3. First action
+4. Scoring action
+5. Defense/avoidance if relevant
+6. Mini challenge
+
+Visuals:
+- stadium lights
+- yard lines
+- ball trail
+- score flash
+
+Completion:
+“Football Rookie” badge.
+
+==================================================
+SECTION 23: RACING TUTORIAL
+==================================================
+
+Goal:
+Teach steering, speed, boost, lap/finish.
+
+Estimated time:
+3–4 minutes
+
+Steps:
+
+1. Objective
+“Finish the race first.”
+
+2. Steering
+User moves left/right.
+
+3. Avoid obstacle/wall
+Guide user.
+
+4. Boost
+Highlight boost button/key.
+
+5. Lap/finish
+User crosses finish line.
+
+Visuals:
+- road speed lines
+- boost trail
+- checkpoint glow
+- finish flash
+
+Completion:
+“Racer Rookie” badge.
+
+==================================================
+SECTION 24: BOT BEHAVIOR DURING TUTORIALS
+==================================================
+
+Tutorial bots should be scripted, not fully competitive.
+
+Rules:
+- bot should help teach
+- bot should not crush the user
+- bot should make controlled mistakes
+- bot should pause long enough for explanation
+- bot should never freeze
+
+First tutorial win should be highly likely.
+
+Bot difficulty:
+Tutorial bot = easier than Easy.
+
+==================================================
+SECTION 25: TUTORIAL REWARD SYSTEM
+==================================================
+
+Rewards should motivate but not give away money.
+
+Allowed rewards:
+- XP
+- Rookie Badge
+- game-specific trainee badges
+- profile title
+- avatar border
+- tutorial completion banner
+- cosmetic unlock
+- achievement progress
+
+Not allowed:
+- free Scalps
+- cash bonus
+- wager credits
+
+Reward examples:
+- “Arena Rookie” badge
+- “Training Complete” title
+- “First Lesson” banner
+- “Grid Rider” badge for Tron tutorial
+- “Pool Rookie” badge
+
+Reward reveal:
+- card flips
+- glow burst
+- sound
+- equip now button
+
+==================================================
+SECTION 26: PROGRESS SAVING
+==================================================
+
+Track tutorial progress per user.
+
+Database:
+tutorial_progress
+- id
+- user_id
+- tutorial_id
+- game_id
+- status
+- current_step
+- completed_at
+- reward_granted
+
+Statuses:
+- not_started
+- in_progress
+- completed
+- skipped
+
+Backend:
+- save step progress
+- mark complete
+- grant reward once only
+- prevent duplicate reward grants
+
+Frontend:
+- resume tutorial from last step
+- show progress in hub
+
+==================================================
+SECTION 27: ANALYTICS
+==================================================
+
+Track tutorial analytics.
+
+Events:
+- tutorial_started
+- tutorial_step_completed
+- tutorial_skipped
+- tutorial_completed
+- tutorial_failed
+- game_tutorial_started
+- game_tutorial_completed
+- reward_claimed
+
+Use this to see where users drop off.
+
+Admin dashboard should show:
+- tutorial completion rate
+- most skipped step
+- first game chosen
+- conversion from tutorial to first real match
+
+==================================================
+SECTION 28: SKIP + REPLAY
+==================================================
+
+Users must be able to:
+- skip platform tutorial
+- skip game tutorial
+- replay any tutorial
+- reset tutorial progress from settings
+
+If user skips:
+Show:
+“You can replay this anytime from Tutorial Mode.”
+
+Do not punish skipping.
+
+==================================================
+SECTION 29: ERROR HANDLING
+==================================================
+
+Tutorial must never trap the user.
+
+If step breaks:
+- show:
+  “Something went wrong with this step.”
+- buttons:
+  Retry Step
+  Skip Step
+  Exit Tutorial
+
+If game fails to load:
+- show fallback instruction card
+- allow return to Tutorial Hub
+
+If user refreshes:
+- resume at last saved step
+
+==================================================
+SECTION 30: MOBILE REQUIREMENTS
+==================================================
+
+Tutorial must work on mobile.
+
+Mobile rules:
+- tooltips must not cover controls
+- use bottom sheets instead of tiny popups
+- larger tap targets
+- swipe-friendly game tutorials
+- reduce particles
+- haptics enabled
+- no horizontal overflow
+
+Spotlight overlay must correctly position on mobile.
+
+==================================================
+SECTION 31: ACCESSIBILITY
+==================================================
+
+Add:
+- captions for sound cues where needed
+- reduced motion support
+- keyboard navigation
+- readable contrast
+- skip animations option
+
+Reduced motion:
+- remove parallax
+- reduce particles
+- replace big transitions with fades
+
+==================================================
+SECTION 32: SOUND + HAPTICS
+==================================================
+
+Use centralized Feedback system.
+
+Tutorial sounds:
+- step complete
+- reward reveal
+- correct action
+- invalid action
+- match start
+- win
+- tutorial complete
+
+Haptics:
+- light tap on step complete
+- medium on reward
+- success pattern on tutorial complete
+
+Must respect settings:
+- sound off
+- haptics off
+- reduced effects
+
+==================================================
+SECTION 33: ADMIN / CONTENT MANAGEMENT
+==================================================
+
+Admin should be able to view tutorial data.
+
+Admin Tutorial Panel:
+- total tutorial starts
+- total completions
+- completion rate
+- skipped steps
+- most completed game tutorial
+- least completed game tutorial
+
+Optional:
+Allow tutorial text to be edited from admin later.
+
+==================================================
+SECTION 34: FINAL QA CHECKLIST
+==================================================
+
+Test every tutorial:
+
+Platform:
+- starts for new user
+- skip works
+- progress saves
+- reward grants once
+- replay works
+
+Each game:
+- tutorial loads
+- instructions match actual controls
+- guided step works
+- bot behaves
+- completion works
+- reward appears
+
+Mobile:
+- overlay positions correctly
+- controls usable
+- no clipped text
+- haptics work
+
+Error:
+- refresh resumes
+- broken step can retry/skip
+- no console errors
+
+Performance:
+- no lag
+- animations smooth
+- no heavy memory leaks
+
+==================================================
+FINAL EXPECTATION
+==================================================
+
+The tutorial should make new users feel:
+
+“I understand Jango.”
+“I know how to play.”
+“I already won something.”
+“I want to play again.”
+
+The tutorial is not a help page.
+It is the user’s first dopamine hit.
+
+It should be polished enough to feel like a real game onboarding experience.

@@ -1,0 +1,371 @@
+I need a FULL GAME QUALITY OVERHAUL across the entire Jango platform.
+
+Right now too many of the games look bad, feel cheap, run poorly, and do not feel polished enough for a competitive wagering platform. This needs to be treated like a serious product-wide rebuild, not a few small fixes.
+
+The goal is simple:
+
+Make every game look better, feel better, run smoother, and be easier to play on both desktop and mobile.
+
+I want all current games reviewed, cleaned up, optimized, and polished to a much higher standard.
+
+==================================================
+MAIN PROBLEM
+==================================================
+
+Right now the games have issues like:
+- bad graphics
+- flat visuals
+- weak animations
+- clunky controls
+- poor responsiveness
+- inconsistent UI
+- bad mobile experience
+- poor performance / lag / frame drops
+- game feel is weak
+- not enough polish
+- not enough feedback when actions happen
+
+The games should feel premium, smooth, satisfying, and competitive.
+
+They should not feel like rough demos or placeholders.
+
+==================================================
+CORE GOAL
+==================================================
+
+I want every game on Jango to feel like a polished AAA-style arcade game experience.
+
+That means:
+- better graphics
+- cleaner UI
+- stronger sound/visual feedback
+- smoother performance
+- better controls
+- better animations
+- better physics where relevant
+- consistent design quality across the platform
+
+==================================================
+STEP 1: AUDIT EVERY GAME
+==================================================
+
+I need you to go game by game and audit everything.
+
+Review each current game for:
+- visual quality
+- performance
+- controls
+- responsiveness
+- mobile usability
+- desktop usability
+- animation quality
+- physics feel
+- bugs / broken interactions
+- readability / clarity
+- overall fun factor
+
+Do not just say “looks fine.”
+Actually identify what feels bad, outdated, cheap, clunky, or unfinished.
+
+==================================================
+STEP 2: GRAPHICS OVERHAUL
+==================================================
+
+Upgrade the visual quality of every game.
+
+Fix:
+- flat backgrounds
+- weak textures
+- low-detail visuals
+- poor lighting
+- ugly or inconsistent colors
+- lack of depth
+- weak visual hierarchy
+
+Improve with:
+- better lighting
+- shadows
+- glow where appropriate
+- cleaner textures
+- better contrast
+- more depth
+- more premium game-like presentation
+- stronger visual identity per game
+
+Each game should look like its own polished world, not just boxes and buttons on a screen.
+
+==================================================
+STEP 3: PERFORMANCE OVERHAUL
+==================================================
+
+I want all games optimized to run smoothly.
+
+Fix:
+- lag
+- stutters
+- frame drops
+- delayed input
+- slow asset loading
+- bad transitions
+- jittery movement
+- inconsistent animation speed
+
+Optimize for:
+- desktop
+- mobile
+- lower-end devices
+
+Important:
+The games must feel smooth and responsive.
+If a game looks nice but plays poorly, it is still bad.
+
+==================================================
+STEP 4: CONTROLS OVERHAUL
+==================================================
+
+Review and improve controls for every game.
+
+Goals:
+- immediate response
+- easy to understand
+- smooth interaction
+- intuitive on both desktop and mobile
+
+Check:
+- button size
+- tap targets
+- dragging
+- aiming
+- clicking
+- shot timing
+- movement controls
+- touch gestures
+
+Every game should feel natural, not awkward.
+
+==================================================
+STEP 5: ANIMATION + FEEDBACK OVERHAUL
+==================================================
+
+Every game needs stronger game feel.
+
+Add or improve:
+- hover states
+- click feedback
+- movement smoothing
+- impact effects
+- score feedback
+- win/loss feedback
+- reward animations
+- transitions between turns/rounds/states
+
+Actions should feel satisfying.
+
+Examples:
+- ball hit should feel like impact
+- chess move should glide smoothly
+- scoring should pop visually
+- wins should feel rewarding
+- losses should still feel polished
+
+Nothing should feel dead or static.
+
+==================================================
+STEP 6: PHYSICS / GAME FEEL
+==================================================
+
+For games with motion or collision, improve the feel dramatically.
+
+Fix:
+- floaty movement
+- unrealistic collisions
+- weak momentum
+- stiff animations
+- cheap-looking motion
+
+Games like:
+- 8-ball
+- air hockey
+- mini golf
+- racing
+- basketball
+- football
+- any physics-based game
+
+must feel smoother, more responsive, and more believable.
+
+Not hyper-realistic necessarily, but satisfying.
+
+==================================================
+STEP 7: UI / HUD CONSISTENCY
+==================================================
+
+I want all in-game UI cleaned up and standardized.
+
+Fix:
+- clutter
+- poor spacing
+- inconsistent fonts
+- ugly score displays
+- confusing layouts
+- bad alignment
+- weak information hierarchy
+
+Every game should have:
+- clean score display
+- clear timers if needed
+- readable player info
+- visually consistent interface
+- premium styling that matches Jango
+
+==================================================
+STEP 8: MOBILE EXPERIENCE
+==================================================
+
+This is very important.
+
+Many games feel bad on mobile.
+
+Fix mobile across all games:
+- controls must be thumb-friendly
+- no tiny buttons
+- no cramped layouts
+- no broken scaling
+- no off-screen UI
+- no hard-to-read text
+- no desktop-only interactions forced onto mobile
+
+Every game should be intentionally designed for mobile, not just shrunk down.
+
+==================================================
+STEP 9: DESKTOP EXPERIENCE
+==================================================
+
+Desktop should also feel strong:
+- no awkward scaling
+- no giant empty spaces
+- no weird alignment
+- smooth mouse input
+- keyboard support where appropriate
+- premium feel
+
+==================================================
+STEP 10: GAME-BY-GAME POLISH PASS
+==================================================
+
+I want a full polish pass for every current game.
+
+This includes:
+- Chess
+- 8-Ball Pool
+- Mini Golf
+- Connect 4
+- Air Hockey
+- Rock Paper Scissors
+- Dots & Boxes
+- Bowling
+- Cup King
+- Stack Tower Duel
+- Block Blast
+- Tron
+- and any other current game on the platform
+
+For each game:
+- improve graphics
+- improve responsiveness
+- improve controls
+- improve feedback
+- fix bugs
+- optimize performance
+- improve overall fun and polish
+
+==================================================
+STEP 11: REMOVE CHEAP / PLACEHOLDER FEEL
+==================================================
+
+I want all “prototype energy” removed.
+
+That means removing:
+- generic visuals
+- awkward menus
+- weak colors
+- abrupt transitions
+- stiff movement
+- basic effects
+- dead screens
+- boring loading states
+
+Replace with:
+- polish
+- depth
+- game feel
+- immersion
+- responsiveness
+
+==================================================
+STEP 12: ADD PREMIUM MOMENTS
+==================================================
+
+I want each game to have satisfying premium moments:
+- countdowns
+- round start transitions
+- clean match intro
+- better win screen
+- better result screen
+- reward feedback
+- rematch flow
+
+These moments matter because they make the platform feel high quality.
+
+==================================================
+STEP 13: TECHNICAL CLEANUP
+==================================================
+
+Do a technical cleanup across all games:
+- remove duplicated logic
+- fix broken state handling
+- fix input bugs
+- clean up render issues
+- improve asset loading
+- reduce unnecessary re-renders
+- improve animation performance
+- fix layering/z-index issues
+- fix any mobile scaling bugs
+
+==================================================
+STEP 14: FINAL STANDARD
+==================================================
+
+Before considering this complete, every game should pass this standard:
+
+1. Looks visually polished
+2. Runs smoothly
+3. Feels good to control
+4. Is easy to understand
+5. Has satisfying feedback
+6. Works on desktop
+7. Works on mobile
+8. Feels worth wagering on
+
+If a game does not meet that standard, it is not done.
+
+==================================================
+FINAL GOAL
+==================================================
+
+I want the entire game catalog to feel dramatically better.
+
+When users play Jango games, they should think:
+- this feels premium
+- this is smooth
+- this is fun
+- this is polished
+- this feels like a real gaming platform
+
+NOT:
+- this is buggy
+- this is ugly
+- this feels unfinished
+- this feels cheap
+
+Please do a serious product-wide overhaul and bring every game up to a much higher quality bar.

@@ -1,0 +1,212 @@
+Merge the current Social tab and Messages tab into one unified tab called Social.
+
+Main goal:
+I do not want Social and Messages to be separate anymore. They should become one combined community hub called Social.
+
+The new Social tab should include:
+- community feed
+- direct messages
+- friends / social connections
+- challenge/callout interactions
+
+This should feel like one connected social system, not two disconnected features.
+
+==================================================
+1. MERGE THE TABS
+==================================================
+
+Remove the separate Messages tab from the main navigation.
+
+Keep only one tab called:
+
+Social
+
+The new Social tab should now contain both:
+- the social/community side
+- the private messaging side
+
+==================================================
+2. SOCIAL TAB STRUCTURE
+==================================================
+
+Inside the Social tab, organize the experience into clear sections or sub-tabs.
+
+Recommended internal sections:
+- Feed
+- Messages
+- Friends
+
+Optional:
+- Notifications
+- Groups / Clans later
+
+The user should enter the Social tab and then be able to switch between:
+1. Community Feed
+2. Direct Messages
+3. Friends
+
+This keeps everything social in one place.
+
+==================================================
+3. COMMUNITY FEED SECTION
+==================================================
+
+The Feed section should be the public-facing social timeline.
+
+Users should be able to:
+- post about wins
+- brag about wagers
+- call players out
+- celebrate rank-ups
+- post clan updates
+- build rivalries
+- reply to others
+- like/react to posts
+- challenge players from posts
+
+Example posts:
+- Just won 120 Scalps in Mini Golf. Who wants next?
+- Reached Diamond today.
+- @Nova run it back in Chess for 50 Scalps.
+- BBC OG clan is looking for smoke.
+
+Each post should show:
+- avatar
+- username
+- rank badge
+- timestamp
+- content
+- reactions
+- reply button
+- challenge button
+
+==================================================
+4. MESSAGES SECTION
+==================================================
+
+Move the current messaging system into the new Social tab under the Messages section.
+
+This section should include:
+- direct messages
+- recent chats
+- unread indicators
+- online/offline status
+- typing indicators
+- send challenge button
+- send invite button
+
+Recommended layout:
+Left side:
+- recent chats
+- friend conversations
+
+Center:
+- active conversation
+
+Optional right side:
+- user profile summary
+- challenge/invite actions
+
+Keep messaging fully functional, just housed inside Social.
+
+==================================================
+5. FRIENDS SECTION
+==================================================
+
+The Friends section should also live inside Social.
+
+It should show:
+- friends list
+- online friends
+- in-match status
+- add friend
+- friend requests
+- invite to match
+- message friend
+- challenge friend
+
+Status examples:
+- Online
+- In Match
+- Offline
+
+==================================================
+6. SHARED SOCIAL FEATURES
+==================================================
+
+Since Social and Messages are now merged, make them work together.
+
+Examples:
+- challenge someone directly from a feed post
+- message someone directly from their post/profile
+- share a post into DMs
+- send a match invite through messages
+- show notifications for replies and messages inside Social
+
+These systems should feel connected.
+
+==================================================
+7. NAVIGATION / UI
+==================================================
+
+The Social tab should feel like a proper community hub.
+
+Recommended internal nav at the top:
+- Feed
+- Messages
+- Friends
+
+Use:
+- clear active tab states
+- unread badges on Messages
+- smooth transitions between sections
+
+Do not make the page feel cluttered.
+Keep it organized.
+
+==================================================
+8. DESIGN
+==================================================
+
+Match the rest of the platform’s design language:
+- dark premium theme
+- glassmorphism panels
+- subtle neon accents
+- clean spacing
+- modern competitive feel
+
+The merged Social tab should feel:
+- active
+- polished
+- community-driven
+- competitive
+- easy to navigate
+
+==================================================
+9. NOTIFICATIONS INSIDE SOCIAL
+==================================================
+
+Inside Social, surface important social notifications such as:
+- new message
+- friend request
+- someone replied to your post
+- someone mentioned you
+- someone challenged you
+
+You can include a small notifications area or badge system within Social.
+
+==================================================
+10. FINAL GOAL
+==================================================
+
+The platform should no longer have separate Social and Messages tabs.
+
+There should only be one tab called Social.
+
+That tab should serve as the full social hub for the platform, combining:
+- public community feed
+- private messaging
+- friend system
+- challenge / callout interactions
+
+It should feel like one connected feature that helps players talk, compete, brag, and build community.

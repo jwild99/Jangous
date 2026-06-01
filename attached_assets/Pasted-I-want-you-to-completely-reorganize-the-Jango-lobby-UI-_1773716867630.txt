@@ -1,0 +1,165 @@
+I want you to completely reorganize the Jango lobby UI/UX so the interface is cleaner, simpler, and much more organized. Right now the lobby has too many competing sections and too much information fighting for attention. The goal is to redesign the experience so users always understand the main action immediately: PLAY.
+
+The new lobby should follow a “Play First” structure.
+
+CORE GOAL:
+Make the lobby feel clean, premium, and easy to understand. Reduce visual clutter. Create a much better hierarchy so users are not overwhelmed. The current lobby feels like too many modules are stacked on top of each other. I want the page to guide the user naturally.
+
+NEW PRIMARY FLOW:
+The main CTA of the lobby should be a large, obvious PLAY button near the top-center of the page. This should be the most visually important action on the screen.
+
+When the user clicks PLAY, do not instantly throw them into a game. Instead, open a clean modal, drawer, or step-by-step panel that asks what type of experience they want.
+
+STEP 1: CHOOSE MODE
+After clicking PLAY, show these mode options:
+- Casual Match
+- Ranked Arena
+- Tournaments
+- Private Match
+
+Each mode should include a short explanation:
+- Casual Match: Quick play for fun, low-pressure experience
+- Ranked Arena: Competitive ladder mode with rating gains/losses
+- Tournaments: Bracket or scheduled competition with prizes
+- Private Match: Create or join a match with friends using an invite code
+
+STEP 2: CHOOSE GAME
+After choosing the mode, show the available games in a clean organized game picker. Do not dump all games at once in the main lobby anymore. Make the game picker easy to scan with better spacing, better icons, and cleaner card design.
+
+Games should include:
+- Chess
+- Mini Golf
+- Connect 4
+- Air Hockey
+- Rock Paper Scissors
+- Dots & Boxes
+- 8-Ball Pool
+- Bowling
+- Cup King
+- Stack Tower Duel
+- Block Blast
+- Tron
+
+STEP 3: MATCH OPTIONS
+After choosing a game, show mode-relevant options:
+- Wager amount
+- Public or private
+- Join code if private
+- Ranked confirmation if ranked mode
+- Tournament info if tournament mode
+
+Then show a final clear CTA:
+- Start Match
+- Queue Ranked
+- Join Tournament
+- Create Private Match
+
+LOBBY REORGANIZATION:
+The current lobby needs a full hierarchy cleanup. Rebuild the lobby so it feels intentional and not crowded.
+
+The homepage/lobby should be organized into these sections only:
+
+1. HERO / WELCOME AREA
+Keep this clean and compact.
+Include:
+- Welcome back, username
+- Balance / Scalps
+- Main PLAY button
+- Maybe one short line of text like “Choose your game. Pick your mode. Queue up.”
+
+Do not overload the hero with too many cards.
+
+2. QUICK STATUS STRIP
+Directly under the hero, have one slim horizontal strip with only high-value info:
+- Balance
+- Current rank
+- Active challenges ready to claim
+- Live matches count
+This should be compact and not full-sized cards everywhere.
+
+3. CONTINUE / RESUME SECTION
+If the player has anything active, show one smart section:
+- Ongoing match
+- Ranked queue status
+- Tournament registration
+- Unclaimed rewards
+This should be prioritized above everything else when relevant.
+
+4. FEATURED / DISCOVERY SECTION
+Have one clean section for games, but make it secondary to the PLAY flow.
+This section should feel like browsing, not the primary decision point.
+Use cleaner spacing and fewer visual distractions.
+
+5. SECONDARY CONTENT TABS OR COLLAPSIBLE MODULES
+Instead of stacking everything on one giant page, move secondary content into tabs, accordions, or expandable sections.
+
+These sections should no longer all scream for attention at once:
+- Challenges
+- Live Activity
+- Weekly Leaderboards
+- Clan War
+- Featured Matches
+- Tournaments preview
+- Achievements
+- Item Shop preview
+
+Only show a small preview of each, with a “View All” or “Expand” action.
+
+DO NOT keep all of them fully expanded on the main lobby.
+
+SIMPLIFY THE START A MATCH CARD:
+The current Start a Match section should be replaced with the new PLAY flow.
+Do not force users to pick game + wager + private/public immediately from the homepage.
+That belongs inside the post-PLAY flow.
+
+INFORMATION ARCHITECTURE RULES:
+- One primary CTA only: PLAY
+- Everything else should feel secondary
+- Reduce card clutter
+- Add more breathing room and spacing
+- Make sections more clearly grouped
+- Use stronger visual hierarchy
+- Stop showing too many equally important widgets at once
+- Make it obvious where a new user should click first
+- Design for speed and clarity, not just “more features on screen”
+
+DESIGN IMPROVEMENTS:
+- Keep the premium dark neon Jango style
+- Maintain the pink/orange/blue accent identity where appropriate
+- Improve spacing between sections
+- Reduce visual noise and repeated containers
+- Standardize card heights and padding
+- Use better section headers
+- Add cleaner divider logic between major areas
+- Make the page feel more like a polished gaming platform and less like a crowded admin dashboard
+
+USER EXPERIENCE GOALS:
+- A first-time user should instantly know to click PLAY
+- A returning user should instantly see what they need to resume
+- A competitive user should be able to quickly get to Ranked
+- A casual user should be able to quickly get to a fun match
+- A tournament user should be able to find events without the whole homepage being a tournament wall
+
+MOBILE + DESKTOP:
+This new organization must work beautifully on both desktop and mobile.
+On mobile:
+- Keep PLAY at the top
+- Collapse secondary sections
+- Use swipeable cards or accordions where helpful
+- Do not force massive scrolling through every system on one page
+
+IMPLEMENTATION NOTES:
+- Rebuild the current lobby structure rather than layering more sections on top
+- Keep all existing functionality, but reorganize how it is presented
+- Make the flow feel intentional, smooth, and premium
+- If needed, create a multi-step modal, slide-over, or wizard flow for PLAY
+- Prioritize usability and clarity over showing everything at once
+
+FINAL RESULT I WANT:
+When users land on the lobby, they should see a clean welcome area, a strong PLAY button, a compact status strip, and a few organized secondary sections. Clicking PLAY should guide them into choosing:
+1. Mode
+2. Game
+3. Match settings
+4. Start
+
+This should feel dramatically more organized than the current version.

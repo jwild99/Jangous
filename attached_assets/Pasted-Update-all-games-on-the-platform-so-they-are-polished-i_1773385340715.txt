@@ -1,0 +1,481 @@
+Update all games on the platform so they are polished, intuitive, visually detailed, and aligned with modern industry standards for casual competitive web games, while also matching the premium design language of the JANGO website.
+
+Main goal:
+Make every game easier to understand, easier to start, smoother to play, more visually polished, and more consistent across the platform.
+
+Important:
+I want each game to use familiar mechanics and interaction patterns that players already recognize from other successful versions of these games.
+Do not reinvent core gameplay unnecessarily.
+Use standard, proven game rules and controls so users can jump in quickly with little confusion.
+
+At the same time, update the visual design of every game so it feels fresh, immersive, detailed, and fully consistent with the overall JANGO design system.
+
+Games to review and improve:
+- Chess
+- Mini Golf
+- Connect 4
+- Air Hockey
+- Rock Paper Scissors
+- Dots & Boxes
+- 8-Ball Pool
+- Bowling
+- Cup Pong
+- Tron
+- Tower Stack
+
+==================================================
+1. CORE GAMEPLAY STANDARDIZATION
+==================================================
+
+For each game:
+- Review whether the current controls are intuitive
+- Review whether the rules are clear
+- Review whether the game loop is fast and understandable
+- Remove confusing or unnecessary custom mechanics unless they truly improve the experience
+- Keep each game aligned with what users already expect from that game
+
+Use familiar gameplay patterns from popular casual/mobile/browser versions of each game.
+
+Examples:
+- Chess should use standard chess rules, legal move highlighting, captured piece tracking, turn indication, and clean board interaction
+- Mini Golf should use familiar aim + drag/power shot controls with predictable ball physics
+- Connect 4 should use classic vertical token-drop gameplay with clean turn feedback
+- Air Hockey should use simple mouse/touch paddle movement with responsive puck physics
+- Rock Paper Scissors should use instant selection with clear countdown and result reveal
+- Dots & Boxes should use easy line placement and obvious square completion feedback
+- 8-Ball Pool should use standard cue aim, power control, ball collision, and turn feedback
+- Bowling should use familiar lane aim + power + curve/spin interaction if included
+- Cup Pong should use simple arc-based aiming and power timing
+- Tron should use clean movement, responsive turns, and readable trails
+- Tower Stack should use familiar timing/drop mechanics with clear precision feedback
+
+==================================================
+2. CONSISTENT ONBOARDING
+==================================================
+
+For every game, add a simple and consistent onboarding system:
+
+- short one-line game summary
+- “How to Play” button or tooltip
+- quick rules modal or expandable instructions
+- controls explanation before match starts
+- optional first-time tutorial overlay
+
+Keep instructions short and easy to scan.
+
+Example format:
+- Objective
+- Controls
+- Win condition
+- Special rules
+
+Do not overwhelm the user with text.
+
+==================================================
+3. CONSISTENT PRE-GAME EXPERIENCE
+==================================================
+
+Before a match starts, standardize the game entry experience across all games:
+
+Each game should include:
+- game title
+- short description
+- difficulty or pace label if useful
+- estimated match time
+- play button
+- practice / casual / ranked options if those exist
+- simple rules link
+
+This should feel consistent across every game.
+
+==================================================
+4. CONSISTENT IN-GAME HUD
+==================================================
+
+Standardize the in-game interface across all games so users do not feel lost when switching between games.
+
+Each game HUD should include, where relevant:
+- player names
+- current turn / active player
+- score
+- timer
+- round or match state
+- pause / exit button
+- rules/help button
+- rematch button after game ends
+
+Use the same visual language for:
+- timers
+- turn indicators
+- score displays
+- win/loss state
+- pause/settings controls
+
+==================================================
+5. RESPONSIVE CONTROLS + GAME FEEL
+==================================================
+
+Improve the feel of every game so inputs are responsive and satisfying.
+
+For each game:
+- reduce input delay
+- improve clarity of click/tap/drag interactions
+- add subtle feedback when actions are taken
+- add hover states where helpful
+- add movement smoothing where appropriate
+- improve animation timing
+- improve sound feedback if sound exists
+
+Game feel should be:
+- responsive
+- readable
+- fair
+- polished
+- easy to learn
+
+==================================================
+6. GAME-SPECIFIC INDUSTRY-STANDARD EXPECTATIONS
+==================================================
+
+Apply these expectations by game:
+
+CHESS
+- standard rules only
+- selectable pieces
+- legal move highlights
+- check/checkmate/stalemate handling
+- move history if possible
+- captured pieces visible
+- clear turn indicator
+- clean promotion flow
+
+MINI GOLF
+- click/drag or pull-back aiming system
+- visible shot direction
+- visible power meter
+- predictable ball physics
+- simple collision behavior
+- clear hole completion feedback
+
+CONNECT 4
+- classic drop columns
+- hover preview of chip drop
+- clean turn transitions
+- obvious 4-in-a-row highlight
+- match end animation
+
+AIR HOCKEY
+- direct paddle control
+- responsive puck collisions
+- score tracking
+- center reset after score
+- strong visual feedback on shots/goals
+
+ROCK PAPER SCISSORS
+- simple choice buttons
+- optional countdown
+- simultaneous reveal
+- clear winner announcement
+- best-of format if needed
+
+DOTS & BOXES
+- easy line targeting
+- square completion animation
+- score update immediately
+- turn continuation after square completion
+- board state easy to read
+
+8-BALL POOL
+- familiar cue aiming
+- visible aim line
+- power control
+- standard turn flow
+- foul handling if implemented
+- clear pocketing feedback
+
+BOWLING
+- aim lane before throw
+- power timing or drag mechanic
+- optional spin/curve if simple enough
+- pin collision clarity
+- frame-by-frame scoreboard
+
+CUP PONG
+- predictable arc-based throwing
+- clean power mechanic
+- obvious cup hit result
+- turn transitions
+- score/cup state clarity
+
+TRON
+- very responsive turning
+- readable trails
+- clear collision detection
+- speed balanced for fairness
+- easy restart/rematch flow
+
+TOWER STACK
+- simple drop timing mechanic
+- clean alignment judgment
+- good feedback for perfect placement
+- increasing tension with height
+- satisfying collapse/fail feedback
+
+==================================================
+7. REDUCE COMPLEXITY WHERE NEEDED
+==================================================
+
+If any game currently has mechanics that are too confusing, too custom, or too hard for new users to understand:
+- simplify them
+- prefer familiar interaction models
+- remove anything that hurts clarity
+- keep depth through execution, not confusion
+
+The goal is not to make every game identical.
+The goal is to make every game immediately understandable.
+
+==================================================
+8. MATCH FLOW IMPROVEMENTS
+==================================================
+
+For every game, improve the full match flow:
+
+Before match:
+- clear setup
+- clear controls
+- clear start state
+
+During match:
+- responsive feedback
+- obvious turn/state changes
+- easy-to-read score/timer
+
+After match:
+- clear winner screen
+- stats summary
+- rematch button
+- return to lobby button
+- challenge again option
+
+==================================================
+9. MATCH THE PLATFORM DESIGN LANGUAGE
+==================================================
+
+Every game interface should follow the same design language used across the platform:
+
+- dark premium theme
+- glassmorphism panels
+- neon accent lighting
+- soft gradients
+- subtle glow effects
+- clean typography
+- smooth animations
+
+Game screens should feel like they belong inside the same system as the dashboard, lobby, and leaderboard.
+
+==================================================
+10. VISUAL DEPTH AND DETAIL
+==================================================
+
+Improve the visual richness of each game environment.
+
+Add:
+- layered lighting
+- subtle shadows
+- reflections where appropriate
+- glow effects for interactive elements
+- depth between background and gameplay surface
+
+Avoid flat or generic visuals.
+
+Each game board or play area should feel like a real environment.
+
+Examples:
+Chess
+- textured board surface
+- polished pieces with subtle reflections
+- soft lighting from above
+
+Mini Golf
+- detailed turf textures
+- shadow under the ball
+- subtle course lighting
+
+Connect 4
+- glossy grid
+- dimensional chips
+- soft glow when a chip drops
+
+Air Hockey
+- reflective table surface
+- glowing puck trails
+- edge lighting
+
+8-Ball Pool
+- felt texture
+- realistic ball shine
+- cue highlight lighting
+
+Bowling
+- polished wood lane
+- pin reflections
+- ball motion blur
+
+Tron
+- neon grid floor
+- glowing trail lines
+- futuristic arena lighting
+
+==================================================
+11. CONSISTENT HUD DESIGN
+==================================================
+
+All games should use the same UI structure for in-game information.
+
+Standard HUD elements:
+
+Top bar:
+- player names
+- score
+- turn indicator
+- timer
+
+Side panels or floating cards:
+- game rules/help
+- rematch button
+- leave game
+
+Use glass panels with blur and soft borders so the UI feels consistent with the rest of the site.
+
+==================================================
+12. INTERACTION FEEDBACK
+==================================================
+
+Make every interaction feel satisfying.
+
+Add:
+- hover highlights
+- button press animation
+- piece movement animation
+- score update animation
+- win state animation
+- smooth transitions between turns
+
+Game actions should never feel abrupt or static.
+
+==================================================
+13. WIN / MATCH RESULT EXPERIENCE
+==================================================
+
+Upgrade the end-of-game moment.
+
+Add:
+- animated victory banner
+- confetti or subtle celebratory effects
+- winner highlight
+- stats summary
+- rematch button
+- return to lobby button
+
+Winning should feel rewarding.
+
+==================================================
+14. VISUAL CONSISTENCY BETWEEN GAMES
+==================================================
+
+Even though each game is different, they should share common visual patterns:
+
+- same UI card style
+- same button style
+- same font usage
+- same glow effects
+- same spacing and padding rules
+- same animation timing
+
+Players should feel like they are still inside the JANGO platform when switching between games.
+
+==================================================
+15. BACKGROUND ENVIRONMENT
+==================================================
+
+Use subtle environmental backgrounds behind the gameplay area.
+
+Examples:
+- dark arena lighting
+- soft neon reflections
+- faint city or arcade environment
+- gradient glow behind boards
+
+Keep these subtle so gameplay remains clear and readable.
+
+==================================================
+16. MOBILE AND RESPONSIVE DESIGN
+==================================================
+
+Ensure all games adapt cleanly to different screen sizes.
+
+Gameplay areas should:
+- stay centered
+- maintain proper proportions
+- keep UI readable on smaller screens
+
+==================================================
+17. PERFORMANCE
+==================================================
+
+All gameplay and visual improvements must remain lightweight and performant.
+
+Avoid heavy effects that could cause lag during gameplay.
+
+Animations should be smooth and responsive.
+
+==================================================
+18. QA / PLAYABILITY REVIEW
+==================================================
+
+Review every game for:
+- broken states
+- input bugs
+- unclear rules
+- unclear win conditions
+- confusing controls
+- poor feedback
+- laggy interactions
+- inconsistent UI behavior
+
+Fix anything that blocks fast understanding or smooth play.
+
+==================================================
+19. IMPLEMENTATION PRIORITY
+==================================================
+
+Implement updates in this order:
+1. Controls and responsiveness
+2. Clear rules/onboarding
+3. Consistent HUD and match flow
+4. End-of-game and rematch experience
+5. Visual polish and feedback
+6. Background/environment polish
+7. Advanced extras only after basics are strong
+
+==================================================
+20. FINAL GOAL
+==================================================
+
+The final result should be:
+- easy to learn
+- hard to master
+- familiar to players
+- polished in execution
+- consistent across the platform
+- visually fresh and detailed
+- fully aligned with the JANGO website design system
+
+Do not overcomplicate the games.
+Use proven, recognizable mechanics and interaction patterns so players can jump in instantly and enjoy the experience.
+
+Do not reinvent the core rules of these games. Prioritize familiar mechanics, clean controls, and polished execution over novelty.
+
+For each game, benchmark the UX against the simplest and most popular digital version of that game type, then bring our implementation up to that level of clarity, playability, and visual quality.
+
+Make every game feel like a premium, streamlined version of a game users already basically know how to play.

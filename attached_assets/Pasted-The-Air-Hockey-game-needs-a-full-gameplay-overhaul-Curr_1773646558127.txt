@@ -1,0 +1,197 @@
+The Air Hockey game needs a full gameplay overhaul.
+
+Current problem:
+- the puck is not reacting correctly when hit by the paddle
+- collisions feel broken or unresponsive
+- the game feels like a prototype instead of a polished competitive game
+- for a skill-based wagering platform, this game needs to feel smooth, fast, and reliable
+
+Main goal:
+Rebuild the Air Hockey game so it feels like a polished, responsive, competitive skill game with strong physics, satisfying puck movement, and a more premium presentation.
+
+==================================================
+1. FIX CORE COLLISION / PUCK RESPONSE
+==================================================
+
+The highest priority is fixing the puck and paddle interaction.
+
+Requirements:
+- when a paddle makes contact with the puck, the puck must move immediately and naturally
+- collisions must feel responsive and consistent
+- puck velocity should be based on paddle movement speed and collision angle
+- no dead collisions
+- no delayed response
+- no clipping or overlap where the puck gets stuck
+- no random or floaty behavior
+
+The puck should feel alive and physical.
+
+==================================================
+2. IMPROVE PHYSICS ENGINE
+==================================================
+
+Upgrade the physics so the game feels competitive and skill-based.
+
+Requirements:
+- smooth puck acceleration and deceleration
+- realistic momentum
+- proper wall bounces
+- angle-based reflection
+- controlled speed retention after rebounds
+- friction tuned so the puck keeps moving but does not feel floaty
+- collision handling between puck and paddles should be stable and predictable
+
+The puck should glide like real air hockey, not like a dead object.
+
+==================================================
+3. PADDLE CONTROL IMPROVEMENTS
+==================================================
+
+Improve paddle movement and responsiveness.
+
+Requirements:
+- paddle follows the player smoothly and instantly
+- no lag between mouse/touch input and paddle movement
+- paddles stay constrained to their side of the table
+- paddle should not teleport or jitter
+- movement should feel precise enough for quick defensive and offensive play
+
+Desktop:
+- mouse-based movement should feel tight and natural
+
+Mobile:
+- touch drag controls should be clean and responsive
+
+==================================================
+4. MAKE GAMEPLAY FEEL FAST AND COMPETITIVE
+==================================================
+
+The game should feel intense and skillful.
+
+Add:
+- faster puck response
+- clearer impact feedback
+- quick transitions after goals
+- satisfying rebounds
+- visible pace increase during active play
+
+Target feel:
+- easy to learn
+- hard to master
+- fast reaction game
+- strong 1v1 competition
+
+==================================================
+5. BETTER VISUAL FEEDBACK
+==================================================
+
+Improve the visual experience when the puck is hit.
+
+Add:
+- impact flash or subtle hit spark
+- stronger puck glow when moving fast
+- motion trail behind the puck
+- slight paddle glow on fast movement
+- goal animation when scoring
+
+Visual feedback should help the player feel each hit.
+
+==================================================
+6. IMPROVE TABLE GRAPHICS
+==================================================
+
+The current table is too basic.
+
+Upgrade the Air Hockey table visuals:
+- more premium table surface
+- stronger edge lighting
+- better center line and goal visuals
+- subtle reflections
+- more depth and shadow
+- cleaner neon accents
+
+The table should feel like a real futuristic competitive arena.
+
+==================================================
+7. SCORE / HUD IMPROVEMENTS
+==================================================
+
+Improve the UI around the match.
+
+Show clearly:
+- player names
+- current score
+- win condition
+- active player state if needed
+- pause button
+- rematch button after game ends
+
+The UI should feel polished and readable.
+
+==================================================
+8. GOAL / RESET FLOW
+==================================================
+
+After a goal:
+- play a goal animation
+- update score clearly
+- reset puck smoothly to center
+- brief countdown before play resumes
+- do not leave the game in awkward paused states
+
+==================================================
+9. SOUND DESIGN
+==================================================
+
+Add satisfying sound effects:
+- paddle hit sound
+- puck wall bounce
+- goal sound
+- countdown / restart sound
+
+These should feel crisp and modern, not cheesy.
+
+==================================================
+10. MULTIPLAYER / FAIRNESS
+==================================================
+
+If this is multiplayer, ensure:
+- puck movement syncs correctly between players
+- collision results are consistent for both sides
+- there is no desync where one player sees different puck behavior
+- gameplay remains fair and server-authoritative if needed
+
+This is especially important since the game is used for skill-based competition.
+
+==================================================
+11. RESPONSIVENESS / DEVICE SUPPORT
+==================================================
+
+Support both:
+- desktop
+- mobile
+
+Desktop:
+- precise mouse control
+
+Mobile:
+- clean drag-based paddle control
+- smooth performance
+- no accidental lag or jumpiness
+
+==================================================
+12. FINAL GOAL
+==================================================
+
+The Air Hockey game should feel like a polished, competitive, wager-worthy skill game.
+
+It should be:
+- responsive
+- fast
+- smooth
+- skill-based
+- visually polished
+- fun to master
+
+Most importantly:
+fix the puck collision and movement first, then improve the rest of the gameplay and presentation around it.

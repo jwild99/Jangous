@@ -1,0 +1,543 @@
+PROJECT: JANGO RANK PROGRESSION + REWARD TRACK SYSTEM
+
+GOAL:
+Create a dedicated rank progression page/section similar in feeling to Rainbow Six Siege’s ranked progression, where users can clearly see:
+
+- current rank
+- next rank
+- progress toward next rank
+- previous rank history
+- rewards/items unlocked at each rank
+- future rewards they can grind toward
+
+This should make ranking up feel valuable, visual, and exciting.
+
+==================================================
+1. NEW PAGE / SECTION
+==================================================
+
+Create a new page or dashboard section:
+
+Preferred route:
+/rank-progression
+
+Alternative:
+/dashboard/rank
+
+Navigation:
+Add access from:
+- Profile dropdown
+- Dashboard
+- Leaderboard page
+- Post-match result screen
+
+Label:
+“Rank Progression”
+
+Icon:
+- trophy
+- shield
+- crown
+- rank badge
+
+==================================================
+2. MAIN PAGE STRUCTURE
+==================================================
+
+The page should include:
+
+1. Hero rank card
+2. Rank progress bar
+3. Rank ladder
+4. Rewards track
+5. Current unlocked items
+6. Upcoming rewards
+7. Rank history
+8. CTA to play ranked
+
+==================================================
+3. HERO RANK CARD
+==================================================
+
+At top, show user’s current rank in a big premium card.
+
+Example:
+
+CURRENT RANK
+Gold II
+
+Rating:
+1,642 / 1,800
+
+Progress:
+72% to Gold I
+
+Stats:
+- wins this season
+- losses this season
+- win rate
+- current streak
+- best rank this season
+
+Visual:
+- large rank emblem
+- glow based on rank color
+- animated particles around emblem
+- subtle background gradient
+
+Rank colors:
+- Bronze = warm brown/orange
+- Silver = silver/blue
+- Gold = gold/yellow
+- Platinum = cyan
+- Diamond = blue/purple
+- Champion = red/pink
+- GOAT = animated gold/pink
+
+==================================================
+4. RANK PROGRESS BAR
+==================================================
+
+Add a large horizontal progress bar showing movement to the next rank.
+
+Example:
+Gold II → Gold I
+
+Show:
+- current rating
+- required rating
+- progress percentage
+- next rank reward preview
+
+Animation:
+- bar fills smoothly on page load
+- glow travels across filled section
+- after match, progress animates from old value to new value
+
+If user is close:
+Show:
+“You’re 34 rating away from Gold I.”
+
+If user ranked up:
+Show:
+“Rank Up!”
+with glow burst and reward reveal.
+
+==================================================
+5. RANK LADDER
+==================================================
+
+Display full rank ladder vertically or horizontally.
+
+Ranks:
+- Bronze
+- Silver
+- Gold
+- Platinum
+- Diamond
+- Champion
+- GOAT
+
+Each rank should expand into divisions if used:
+
+Example:
+Bronze III
+Bronze II
+Bronze I
+
+Silver III
+Silver II
+Silver I
+
+Gold III
+Gold II
+Gold I
+
+Platinum III
+Platinum II
+Platinum I
+
+Diamond III
+Diamond II
+Diamond I
+
+Champion
+
+GOAT
+
+Each rank tile shows:
+- rank icon
+- rank name
+- rating range
+- locked/unlocked state
+- reward attached to rank
+
+Current rank:
+- larger
+- glowing border
+- “YOU” badge
+
+Completed ranks:
+- checkmark
+- subdued glow
+
+Locked ranks:
+- dimmed
+- lock icon
+- reward preview still visible
+
+==================================================
+6. RANK REWARD TRACK
+==================================================
+
+This is the most important feature.
+
+Each rank should have unlockable items.
+
+Reward types:
+- profile frames
+- badges
+- username glows
+- avatar borders
+- victory animations
+- game entrance animations
+- card backs / table skins
+- emotes
+- titles
+- banners
+- shop item access
+
+NO FREE SCALPS unless manually approved.
+Do not give away money as rank rewards.
+
+Example rewards:
+
+Bronze:
+- Bronze Competitor Badge
+- Basic Profile Frame
+
+Silver:
+- Silver Username Accent
+- Silver Avatar Border
+
+Gold:
+- Gold Crown Badge
+- Gold Profile Frame
+- Gold Victory Spark
+
+Platinum:
+- Platinum Neon Border
+- Platinum Match Intro Effect
+
+Diamond:
+- Diamond Username Glow
+- Diamond Arena Banner
+
+Champion:
+- Champion Victory Animation
+- Champion Profile Aura
+
+GOAT:
+- GOAT Crown Effect
+- Animated GOAT Profile Frame
+- Exclusive “King of the Table” Title
+
+==================================================
+7. REWARD CARD DESIGN
+==================================================
+
+Each reward card should show:
+
+- item image/icon
+- item name
+- item type
+- unlock rank
+- locked/unlocked state
+- preview button
+- equip button if unlocked
+
+Locked:
+- dimmed
+- lock icon
+- text:
+  “Unlock at Gold I”
+
+Unlocked:
+- glowing border
+- “Unlocked”
+- equip button
+
+Equipped:
+- “Equipped” badge
+- stronger glow
+
+Preview:
+User can click preview to see:
+- frame on profile
+- username glow
+- victory animation sample
+- badge appearance
+
+==================================================
+8. ITEM INVENTORY INTEGRATION
+==================================================
+
+Unlocked rank rewards must appear in the user’s inventory.
+
+Inventory categories:
+- Profile Frames
+- Badges
+- Username Effects
+- Victory Animations
+- Banners
+- Titles
+- Emotes
+
+Once unlocked:
+- item is added to user inventory
+- user can equip it
+- equipped item appears across platform
+
+Show equipped cosmetics in:
+- profile
+- leaderboard
+- match HUD
+- social feed
+- tournament bracket
+- post-match screen
+
+==================================================
+9. POST-MATCH RANK PROGRESSION
+==================================================
+
+After ranked matches, show a rank progression animation.
+
+Post-match screen should include:
+
+- rating gained/lost
+- progress bar movement
+- current rank
+- next rank
+- reward progress
+
+Example after win:
++32 Rating
+Gold II → Gold I progress: 72% → 88%
+
+Reward preview:
+“Gold Victory Spark unlocks at Gold I”
+
+If rank up:
+Show:
+“RANK UP”
+Gold II → Gold I
+
+Then show:
+“Reward Unlocked”
+Gold Victory Spark
+
+Animation:
+- emblem transforms
+- progress bar bursts
+- reward card flips/reveals
+- sound + haptic
+
+==================================================
+10. RANK UP REWARD FLOW
+==================================================
+
+When user reaches a new rank:
+
+Backend:
+- verifies rank change
+- checks reward table
+- grants reward if not already granted
+- writes inventory record
+- emits reward_unlocked event
+
+Frontend:
+- shows rank up modal
+- shows reward reveal
+- offers:
+  “Equip Now”
+  “View Inventory”
+  “Keep Playing”
+
+Important:
+Reward unlocks must be backend-driven.
+Frontend should not grant items by itself.
+
+==================================================
+11. DATABASE REQUIREMENTS
+==================================================
+
+Tables / models needed:
+
+user_rank_stats:
+- user_id
+- season_id
+- game_id
+- rating
+- rank
+- division
+- wins
+- losses
+- best_rank
+- current_streak
+- updated_at
+
+rank_rewards:
+- id
+- rank
+- division
+- reward_type
+- reward_name
+- reward_asset
+- unlock_requirement
+- season_id
+- is_exclusive
+
+user_inventory:
+- id
+- user_id
+- reward_id
+- item_type
+- item_name
+- equipped
+- unlocked_at
+
+rank_history:
+- id
+- user_id
+- season_id
+- old_rank
+- new_rank
+- old_rating
+- new_rating
+- match_id
+- created_at
+
+==================================================
+12. BACKEND LOGIC
+==================================================
+
+On ranked match result:
+
+1. Calculate rating change
+2. Update user_rank_stats
+3. Detect rank change
+4. Check rank_rewards table
+5. Grant new rewards
+6. Add rank_history row
+7. Emit websocket events:
+   - rank_updated
+   - reward_unlocked
+   - inventory_updated
+
+Rating and rewards must never be controlled by frontend.
+
+==================================================
+13. UI EVENTS
+==================================================
+
+Frontend listens for:
+
+rank_updated:
+- update progress bar
+- update rank badge
+- animate change
+
+reward_unlocked:
+- show reward reveal modal
+- add item to inventory
+
+inventory_updated:
+- refresh cosmetics
+
+==================================================
+14. SEASON SUPPORT
+==================================================
+
+Rank progression should support seasons.
+
+Each season can have:
+- unique rank rewards
+- exclusive cosmetics
+- season badge
+- reset/soft reset logic
+
+Season page should show:
+- current season name
+- time remaining
+- seasonal rewards
+- current placement
+- best rank this season
+
+Past seasons:
+- show rank achieved
+- rewards earned
+- final placement
+
+==================================================
+15. VISUAL STYLE
+==================================================
+
+This page should feel premium and game-like.
+
+Use:
+- dark background
+- rank-colored glows
+- animated emblems
+- glass cards
+- polished reward track
+- subtle particles
+- smooth transitions
+
+Do NOT make it look like:
+- basic settings page
+- spreadsheet
+- plain progress bar
+
+It should feel like a ranked progression screen from a serious competitive game.
+
+==================================================
+16. MOBILE VERSION
+==================================================
+
+Mobile should:
+- stack rank card first
+- show progress bar clearly
+- make reward track horizontally scrollable
+- allow tapping reward cards for preview
+- keep buttons large and easy to tap
+
+==================================================
+17. EMPTY / NEW USER STATE
+==================================================
+
+If user has no rank yet:
+
+Show:
+“Play 3 ranked matches to earn your first rank.”
+
+Button:
+“Start Ranked Match”
+
+Reward preview:
+Show Bronze/Silver rewards to motivate them.
+
+==================================================
+18. FINAL EXPECTATION
+==================================================
+
+Users should clearly understand:
+- where they are ranked
+- how close they are to the next rank
+- what they unlock next
+- what they already earned
+- why they should keep playing
+
+This should create a grind loop:
+Play ranked → gain rating → rank up → unlock item → equip item → show it off → keep playing.
+
+The goal is to make ranking feel meaningful, visual, and rewarding without giving away free Scalps.
