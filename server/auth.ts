@@ -161,22 +161,23 @@ export async function setupAuth(app: Express) {
     const email = parsed.data.email.toLowerCase().trim();
     try {
       const existing = await storage.getUserByEmail(email);
-      if (existing && existing.passwordHash) {
+      // Reject any email already on file, whether or not it has a password.
+      // Silently setting a password on an existing passwordless account (e.g.
+      // one migrated from the old Replit OIDC login) would let anyone who knows
+      // a migrated user's email take over that account without proving
+      // ownership. Such accounts must go through a verified reset/migration
+      // flow instead of being claimable here.
+      if (existing) {
         return res
           .status(409)
           .json({ message: "An account with this email already exists" });
       }
       const passwordHash = await hashPassword(parsed.data.password);
-      // If a legacy account exists for this email without a password (e.g. one
-      // migrated from the old Replit OIDC login), let the owner claim it by
-      // setting a password instead of erroring out.
-      const user = existing
-        ? await storage.setUserPassword(existing.id, passwordHash)
-        : await storage.upsertUser({
-            email,
-            passwordHash,
-            isEmailVerified: true,
-          });
+      const user = await storage.upsertUser({
+        email,
+        passwordHash,
+        isEmailVerified: true,
+      });
       try {
         await storage.updateLoginStreak(user.id);
       } catch (err) {
