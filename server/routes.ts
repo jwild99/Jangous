@@ -85,6 +85,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Auth middleware
   await setupAuth(app);
 
+  // Health check: verifies the server is up and the database is reachable.
+  // Useful for Railway/host health checks and confirming DB wiring after deploy.
+  app.get('/api/health', async (_req, res) => {
+    res.set("Cache-Control", "no-store");
+    try {
+      await db.execute(drizzleSql`select 1`);
+      res.json({ status: "ok", database: "connected" });
+    } catch (error) {
+      console.error("[HEALTH] Database check failed:", error);
+      res.status(503).json({ status: "error", database: "unreachable" });
+    }
+  });
+
   // Auth routes
   app.get('/api/auth/user', isAuthenticated, async (req: any, res) => {
     try {
