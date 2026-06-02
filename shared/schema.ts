@@ -32,6 +32,7 @@ export const sessions = pgTable(
 export const users = pgTable("users", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   email: varchar("email").unique(),
+  passwordHash: varchar("password_hash"), // Email/password auth (null for bots and OAuth-only accounts)
   username: varchar("username", { length: 30 }), // User-chosen display name (nullable, validated in app)
   firstName: varchar("first_name"),
   lastName: varchar("last_name"),
@@ -166,6 +167,18 @@ export const users = pgTable("users", {
 
 export type UpsertUser = typeof users.$inferInsert;
 export type User = typeof users.$inferSelect;
+
+// Email/password auth schemas (shared between client and server)
+export const registerSchema = z.object({
+  email: z.string().email("Enter a valid email address"),
+  password: z.string().min(8, "Password must be at least 8 characters").max(128),
+});
+export const loginSchema = z.object({
+  email: z.string().email("Enter a valid email address"),
+  password: z.string().min(1, "Password is required"),
+});
+export type RegisterInput = z.infer<typeof registerSchema>;
+export type LoginInput = z.infer<typeof loginSchema>;
 
 // Game types enum
 export const gameTypes = ["mini-golf", "chess", "connect-4", "air-hockey", "block-blast", "rock-paper-scissors", "dots-and-boxes", "8-ball", "bowling", "cup-king", "stack-tower", "tron", "basketball", "football", "racing"] as const;

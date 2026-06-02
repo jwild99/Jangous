@@ -313,7 +313,7 @@ export default function Landing() {
             <Button
               size="lg"
               className="text-base px-10 gap-2 shadow-xl shadow-primary/30 relative overflow-visible"
-              onClick={() => (window.location.href = "/api/login")}
+              onClick={() => (window.location.href = "/auth")}
               data-testid="button-start-playing"
             >
               Start Playing
@@ -435,7 +435,7 @@ export default function Landing() {
             <Button
               size="lg"
               className="gap-2 shadow-lg shadow-primary/25"
-              onClick={() => (window.location.href = "/api/login")}
+              onClick={() => (window.location.href = "/auth")}
               data-testid="button-join-now"
             >
               Join the Arena
@@ -569,7 +569,7 @@ export default function Landing() {
             <Button
               size="lg"
               className="text-base px-12 gap-2 shadow-xl shadow-primary/30"
-              onClick={() => (window.location.href = "/api/login")}
+              onClick={() => (window.location.href = "/auth")}
               data-testid="button-cta-signup"
             >
               Create Free Account

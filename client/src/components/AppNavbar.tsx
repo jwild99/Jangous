@@ -319,7 +319,7 @@ export function AppNavbar() {
 
             {/* Sign-in button — logged-out desktop */}
             {!user && (
-              <a href="/api/login" className="hidden md:flex">
+              <a href="/auth" className="hidden md:flex">
                 <Button size="sm" data-testid="button-sign-in-nav">Sign In</Button>
               </a>
             )}

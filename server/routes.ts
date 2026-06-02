@@ -7,7 +7,7 @@ import express from "express";
 import path from "path";
 import { storage, MATCH_PLAYER_COLUMNS } from "./storage";
 import { db } from "./db";
-import { setupAuth, isAuthenticated, getSession } from "./replitAuth";
+import { setupAuth, isAuthenticated, getSession } from "./auth";
 import { isAdmin } from "./adminAuth";
 import { achievementService } from "./achievementService";
 import { createMatchSchema, matches, shopItems, userInventory, userEquipped, users, transactions, playerReports, clans, clanMembers, clanInvites, clanJoinRequests, clanMessages, moderationActions, socialPosts, socialReactions, socialReplies, socialMutes, battlePassSeasons, battlePassTiers, userBattlePassProgress, auditLogs, disconnectPenalties, gameTypes, type GameType } from "@shared/schema";

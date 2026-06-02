@@ -51,7 +51,7 @@ export default function NotFound() {
               Back to Lobby
             </Button>
           </Link>
-          <Link href="/api/login">
+          <Link href="/auth">
             <Button size="lg" variant="outline" className="gap-2 px-8 border-white/10" data-testid="button-sign-in">
               <Swords className="w-4 h-4" />
               Sign In

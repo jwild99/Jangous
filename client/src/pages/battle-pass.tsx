@@ -777,7 +777,7 @@ export default function BattlePassPage() {
           <div className="text-center p-8">
             <Crown className="w-12 h-12 mx-auto mb-4 text-white/20" />
             <p className="text-muted-foreground mb-4">Sign in to access Battle Pass</p>
-            <Link href="/api/login"><Button>Sign In</Button></Link>
+            <Link href="/auth"><Button>Sign In</Button></Link>
           </div>
         </div>
       </div>

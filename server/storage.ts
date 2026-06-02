@@ -103,6 +103,8 @@ export interface IStorage {
   updateProfilePicture(userId: string, profileImageUrl: string): Promise<User>;
   checkUsernameAvailable(username: string, currentUserId?: string): Promise<boolean>;
   getUserByUsername(username: string): Promise<User | undefined>;
+  getUserByEmail(email: string): Promise<User | undefined>;
+  setUserPassword(userId: string, passwordHash: string): Promise<User>;
   
   // Admin user operations
   getAllUsers(limit?: number, offset?: number): Promise<User[]>;
@@ -308,6 +310,20 @@ export class DatabaseStorage implements IStorage {
   // User operations
   async getUser(id: string): Promise<User | undefined> {
     const [user] = await db.select().from(users).where(eq(users.id, id));
+    return user;
+  }
+
+  async getUserByEmail(email: string): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.email, email));
+    return user;
+  }
+
+  async setUserPassword(userId: string, passwordHash: string): Promise<User> {
+    const [user] = await db
+      .update(users)
+      .set({ passwordHash, updatedAt: new Date() })
+      .where(eq(users.id, userId))
+      .returning();
     return user;
   }
 

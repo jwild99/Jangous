@@ -2274,7 +2274,7 @@ export default function Home() {
               <div className="flex flex-col items-center py-8 text-muted-foreground gap-2">
                 <Zap className="w-8 h-8 opacity-20" />
                 <p className="text-sm">Sign in to access daily challenges</p>
-                <Link href="/api/login"><Button size="sm" className="mt-2">Sign In</Button></Link>
+                <Link href="/auth"><Button size="sm" className="mt-2">Sign In</Button></Link>
               </div>
             </SectionCard>
           )}
