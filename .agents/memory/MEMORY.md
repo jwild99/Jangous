@@ -1,0 +1,1 @@
+- [Railway / off-Replit deploy + email-password auth](railway-migration.md) — DB driver selection (neon default, pg for Railway), claims.sub compat, never auto-claim accounts, GitHub Git Data API push.

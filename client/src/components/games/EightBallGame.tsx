@@ -13,6 +13,8 @@ import {
   createInitialState,
   executeShot,
   findFirstBallContact,
+  findFreeCuePosition,
+  cloneState,
   EIGHT_BALL_CONSTANTS,
 } from "@shared/eightBallEngine";
 
@@ -416,6 +418,119 @@ function drawBall(g: CanvasRenderingContext2D, ball: { x:number; y:number; numbe
   g.restore();
 }
 
+// Power meter colour ramp: green → yellow → red as power increases 0 → 100.
+function powerColor(pct: number): string {
+  const h = Math.max(0, Math.min(120, 120 * (1 - pct / 100)));
+  return `hsl(${Math.round(h)}, 85%, 50%)`;
+}
+
+// Rounded-rectangle path helper for canvas overlays.
+function roundRectPath(g: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
+  const rr = Math.min(r, w / 2, h / 2);
+  g.beginPath();
+  g.moveTo(x + rr, y);
+  g.arcTo(x + w, y,     x + w, y + h, rr);
+  g.arcTo(x + w, y + h, x,     y + h, rr);
+  g.arcTo(x,     y + h, x,     y,     rr);
+  g.arcTo(x,     y,     x + w, y,     rr);
+  g.closePath();
+}
+
+// ─── Spin / English control ──────────────────────────────────────────────────
+// A draggable cue-ball widget: the dot marks where the tip strikes the ball.
+// Up = follow (top spin), down = draw (back spin), sides = left/right english.
+function SpinControl({
+  value, onChange, disabled,
+}: {
+  value: { x: number; y: number };
+  onChange: (v: { x: number; y: number }) => void;
+  disabled?: boolean;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const draggingRef = useRef(false);
+
+  const apply = (clientX: number, clientY: number) => {
+    const el = ref.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    const cx = r.left + r.width / 2;
+    const cy = r.top + r.height / 2;
+    let nx = (clientX - cx) / (r.width / 2);
+    let ny = (clientY - cy) / (r.height / 2);
+    const m = Math.hypot(nx, ny);
+    if (m > 1) { nx /= m; ny /= m; }
+    onChange({ x: Math.round(nx * 100) / 100, y: Math.round(-ny * 100) / 100 });
+  };
+
+  const onDown = (e: React.PointerEvent) => {
+    if (disabled) return;
+    e.stopPropagation();
+    e.currentTarget.setPointerCapture(e.pointerId);
+    draggingRef.current = true;
+    apply(e.clientX, e.clientY);
+  };
+  const onMove = (e: React.PointerEvent) => {
+    if (!draggingRef.current) return;
+    e.stopPropagation();
+    apply(e.clientX, e.clientY);
+  };
+  const onUp = (e: React.PointerEvent) => {
+    draggingRef.current = false;
+    e.stopPropagation();
+  };
+
+  const dotLeft = `${50 + value.x * 42}%`;
+  const dotTop  = `${50 - value.y * 42}%`;
+  const active  = Math.abs(value.x) > 0.04 || Math.abs(value.y) > 0.04;
+
+  const label =
+    !active ? "Center"
+    : (Math.abs(value.y) >= Math.abs(value.x)
+        ? (value.y > 0 ? "Top spin (follow)" : "Back spin (draw)")
+        : (value.x > 0 ? "Right english" : "Left english"));
+
+  return (
+    <div className="flex flex-col items-center gap-1.5 select-none">
+      <span className="text-[10px] uppercase tracking-widest text-muted-foreground">Spin</span>
+      <div
+        ref={ref}
+        onPointerDown={onDown}
+        onPointerMove={onMove}
+        onPointerUp={onUp}
+        data-testid="control-spin"
+        className={`relative rounded-full touch-none ${disabled ? "opacity-40" : "cursor-pointer"}`}
+        style={{
+          width: 76, height: 76,
+          background: "radial-gradient(circle at 38% 32%, #ffffff 0%, #e7ecf3 45%, #aab4c4 100%)",
+          boxShadow: "inset 0 2px 6px rgba(255,255,255,0.85), inset 0 -8px 14px rgba(20,30,45,0.32), 0 4px 14px rgba(0,0,0,0.5)",
+          border: "1px solid rgba(255,255,255,0.25)",
+        }}
+      >
+        {/* Crosshair */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute left-1/2 top-[14%] bottom-[14%] w-px -translate-x-1/2" style={{ background: "rgba(40,55,75,0.28)" }} />
+          <div className="absolute top-1/2 left-[14%] right-[14%] h-px -translate-y-1/2" style={{ background: "rgba(40,55,75,0.28)" }} />
+        </div>
+        {/* Contact dot */}
+        <div
+          className="absolute -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none transition-[left,top] duration-75"
+          style={{
+            left: dotLeft, top: dotTop, width: 18, height: 18,
+            background: active
+              ? "radial-gradient(circle at 35% 30%, hsl(var(--primary)) 0%, hsl(var(--primary) / 0.75) 70%)"
+              : "radial-gradient(circle at 35% 30%, rgba(120,135,155,0.95) 0%, rgba(80,95,115,0.85) 70%)",
+            boxShadow: active
+              ? "0 0 10px 2px hsl(var(--primary) / 0.6), 0 1px 3px rgba(0,0,0,0.5)"
+              : "0 1px 3px rgba(0,0,0,0.4)",
+            border: "1.5px solid rgba(255,255,255,0.85)",
+          }}
+        />
+      </div>
+      <span className="text-[10px] text-muted-foreground h-3.5 tabular-nums">{label}</span>
+    </div>
+  );
+}
+
 // ─── Component ────────────────────────────────────────────────────────────────
 export default function EightBallGame({ match, currentUserId }: EightBallGameProps) {
   const [, setLocation] = useLocation();
@@ -431,6 +546,8 @@ export default function EightBallGame({ match, currentUserId }: EightBallGamePro
   const [canvasScale, setCanvasScale] = useState(1);
   const [gameEvent, setGameEvent]     = useState<GameEvent | null>(null);
   const [pocketFlash, setPocketFlash] = useState(false);
+  const [ballInHand, setBallInHand]   = useState(false);
+  const [spin, setSpin]               = useState({ x: 0, y: 0 }); // cue english: x=side, y=follow/draw
   const evId = useRef(0);
 
   const canvasRef     = useRef<HTMLCanvasElement>(null);
@@ -438,6 +555,10 @@ export default function EightBallGame({ match, currentUserId }: EightBallGamePro
   const tableRef      = useRef<HTMLCanvasElement | null>(null);
   const animRef       = useRef<number>();
   const wsRef         = useRef<WebSocket | null>(null);
+  const simRef        = useRef<EightBallState | null>(null);   // live, mutated-in-place sim state
+  const ballInHandRef = useRef(false);
+  const spinRef       = useRef({ x: 0, y: 0 });
+  const drawRef       = useRef<(state: EightBallState, showAim: boolean) => void>(() => {});
 
   // Stable refs for event handlers (avoid stale closure bugs)
   const gsRef         = useRef(gameState);
@@ -504,15 +625,45 @@ export default function EightBallGame({ match, currentUserId }: EightBallGamePro
   }, [match.gameState]);
 
   // ── Physics loop ─────────────────────────────────────────────────────────
+  // Runs entirely inside a ref-driven rAF loop. Physics mutates the working
+  // state in place (no per-frame clone) and draws straight to the canvas every
+  // frame. React state is only updated ONCE — when every ball has stopped.
   useEffect(() => {
     if (!gameState.simulationRunning) return;
+    // Deep clone ONCE at the start of the shot (turn transition).
+    simRef.current = cloneState(gameState);
+
     const tick = () => {
-      setGameState(prev => simulatePhysics(prev));
+      const sim = simRef.current;
+      if (!sim) return;
+      simulatePhysics(sim);              // mutates sim.balls in place
+      drawRef.current(sim, false);       // render this frame without setState
+      if (!sim.simulationRunning) {
+        // All balls settled — commit the final state to React exactly once.
+        simRef.current = null;
+        setGameState(cloneState(sim));
+        return;
+      }
       animRef.current = requestAnimationFrame(tick);
     };
     animRef.current = requestAnimationFrame(tick);
     return () => { if (animRef.current) cancelAnimationFrame(animRef.current); };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameState.simulationRunning]);
+
+  // Keep spin ref in sync for the rAF/draw + fireShot closures.
+  useEffect(() => { spinRef.current = spin; }, [spin]);
+
+  // Keep ball-in-hand ref in sync, and auto-enable it for the player who
+  // receives ball-in-hand after the opponent fouls.
+  useEffect(() => { ballInHandRef.current = ballInHand; }, [ballInHand]);
+  useEffect(() => {
+    if (!gameState.simulationRunning && !gameState.gameOver && gameState.foul && isMyTurn()) {
+      setBallInHand(true);
+    } else {
+      setBallInHand(false);
+    }
+  }, [gameState.simulationRunning, gameState.gameOver, gameState.foul, gameState.currentPlayer, isMyTurn]);
 
   // ── Detect shot resolution → fire events ────────────────────────────────
   useEffect(() => {
@@ -647,8 +798,10 @@ export default function EightBallGame({ match, currentUserId }: EightBallGamePro
     // Capture shot parameters from refs (always current)
     const angle = aimRef.current;
     const power = Math.max(10, powerRef.current); // minimum 10% so taps register
+    const spinX = spinRef.current.x;
+    const spinY = spinRef.current.y;
 
-    console.log(`[8-ball] FIRE — angle:${angle.toFixed(3)} power:${power.toFixed(1)}%`);
+    console.log(`[8-ball] FIRE — angle:${angle.toFixed(3)} power:${power.toFixed(1)}% spin:(${spinX.toFixed(2)},${spinY.toFixed(2)})`);
 
     // Reset drag state synchronously via refs (prevent double-fire)
     draggingRef.current = false;
@@ -660,17 +813,21 @@ export default function EightBallGame({ match, currentUserId }: EightBallGamePro
     // ── ALWAYS apply physics locally ──────────────────────────────────────
     // This is the critical fix: executeShot runs client-side regardless of
     // WebSocket availability. The ball ALWAYS moves.
-    const next = executeShot(gs, angle, power);
+    const next = executeShot(gs, angle, power, spinX, spinY);
     const cb   = next.balls.find(b => b.type === "cue");
     console.log(`[8-ball] velocity — vx:${cb?.vx?.toFixed(2)} vy:${cb?.vy?.toFixed(2)} simRunning:${next.simulationRunning}`);
     setGameState(next);
+
+    // Reset english back to center for the next shot.
+    spinRef.current = { x: 0, y: 0 };
+    setSpin({ x: 0, y: 0 });
 
     // ── Also sync to server for bot response (fire-and-forget) ───────────
     // Server will compute bot's reply and send it back via WS.
     // If WS isn't available, local physics is still correct for practice/bot.
     if (!matchRef.current.isPractice && wsRef.current?.readyState === WebSocket.OPEN) {
       wsRef.current.send(JSON.stringify({
-        type: "8-ball-move", matchId: matchRef.current.id, angle, power,
+        type: "8-ball-move", matchId: matchRef.current.id, angle, power, spinX, spinY,
       }));
     }
   }, [isMyTurn]);
@@ -698,6 +855,25 @@ export default function EightBallGame({ match, currentUserId }: EightBallGamePro
 
   const getCueBall = () => gsRef.current.balls.find(b => b.type === "cue" && !b.pocketed);
 
+  // Ball-in-hand: drop the cue ball anywhere in the LEFT QUARTER of the table.
+  // Position is clamped to the zone and nudged off any ball it would overlap.
+  const placeCueBall = useCallback((tx: number, ty: number) => {
+    const maxX = TABLE_WIDTH / 4 - BALL_RADIUS;
+    const desiredX = Math.min(maxX, tx);
+    setGameState(prev => {
+      const next = cloneState(prev);
+      const cue = next.balls.find(b => b.type === "cue");
+      if (cue) {
+        const spot = findFreeCuePosition(next.balls, desiredX, ty);
+        cue.x = Math.min(maxX, spot.x);
+        cue.y = spot.y;
+        cue.vx = 0; cue.vy = 0; cue.pocketed = false;
+      }
+      return next;
+    });
+    setBallInHand(false);
+  }, []);
+
   // ══════════════════════════════════════════════════════════════════════════
   // POINTER EVENTS — unified mouse + touch via setPointerCapture
   // setPointerCapture routes ALL subsequent events to this element even when
@@ -707,10 +883,21 @@ export default function EightBallGame({ match, currentUserId }: EightBallGamePro
     if (gsRef.current.simulationRunning || gsRef.current.gameOver) return;
     if (!isMyTurn()) return;
 
+    const pt = toTable(e.clientX, e.clientY);
+
+    // Ball-in-hand: click inside the left quarter places the cue ball there.
+    if (ballInHandRef.current) {
+      if (pt.x <= TABLE_WIDTH / 4) {
+        placeCueBall(pt.x, pt.y);
+      } else {
+        toast({ title: "Ball in hand", description: "Place the cue ball in the highlighted left zone.", variant: "default" });
+      }
+      return;
+    }
+
     // Capture pointer — events follow the pointer everywhere
     e.currentTarget.setPointerCapture(e.pointerId);
 
-    const pt = toTable(e.clientX, e.clientY);
     const cb = getCueBall();
     if (!cb) return;
 
@@ -757,14 +944,16 @@ export default function EightBallGame({ match, currentUserId }: EightBallGamePro
     fireShot();
   }, [fireShot]);
 
-  // ── Canvas render ─────────────────────────────────────────────────────────
-  useEffect(() => {
+  // ── Unified canvas draw ───────────────────────────────────────────────────
+  // Called both by React (on aim/state change) and by the physics rAF loop every
+  // frame. Reads live aim/power/drag/ball-in-hand from refs so it stays correct
+  // without re-creating on every input.
+  const drawGame = useCallback((gs: EightBallState, showAim: boolean) => {
     const canvas = canvasRef.current;
     if (!canvas || CW < 100) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
     const S = canvasScale;
-    const gs = gameState;
 
     // Static table
     const tc = tableRef.current;
@@ -775,24 +964,43 @@ export default function EightBallGame({ match, currentUserId }: EightBallGamePro
     }
 
     const cueBall  = gs.balls.find(b => b.type === "cue" && !b.pocketed);
-    const myTurn   = isMyTurn();
-    const canShoot = myTurn && !gs.simulationRunning && !gs.gameOver;
+    const inHand   = ballInHandRef.current;
+    const canShoot = showAim && cueBall && !gs.simulationRunning && !gs.gameOver && isMyTurn() && !inHand;
+
+    // ── Ball-in-hand placement zone (left quarter) ────────────────────────
+    if (inHand && !gs.simulationRunning && !gs.gameOver) {
+      const zoneW = (TABLE_WIDTH / 4) * S;
+      ctx.save();
+      ctx.fillStyle = "rgba(80,200,255,0.10)";
+      ctx.fillRect(ENG_RAIL, ENG_RAIL, zoneW - ENG_RAIL, CH - ENG_RAIL * 2);
+      ctx.strokeStyle = "rgba(120,210,255,0.7)";
+      ctx.lineWidth = 1.5; ctx.setLineDash([7, 6]);
+      ctx.strokeRect(ENG_RAIL, ENG_RAIL, zoneW - ENG_RAIL, CH - ENG_RAIL * 2);
+      ctx.setLineDash([]);
+      ctx.fillStyle = "rgba(190,235,255,0.9)";
+      ctx.font = `${Math.round(11 * S)}px sans-serif`;
+      ctx.textAlign = "center"; ctx.textBaseline = "middle";
+      ctx.fillText("Tap to place cue ball", zoneW * 0.5 + ENG_RAIL * 0.5, CH * 0.5);
+      ctx.restore();
+    }
 
     // ── Aim + Cue visuals ─────────────────────────────────────────────────
-    if (cueBall && canShoot) {
+    if (canShoot && cueBall) {
       const bx = cueBall.x * S;
       const by = cueBall.y * S;
       const br = BALL_RADIUS * S;
-      const ang = aimAngle;
+      const ang = aimRef.current;
       const cw  = Math.cos(ang);
       const sw  = Math.sin(ang);
+      const power = powerRef.current;
+      const dragging = draggingRef.current;
 
-      // Aim line / ghost ball
       ctx.save();
       const contact = findFirstBallContact(cueBall, ang, gs.balls);
       if (contact) {
         const gx = contact.contactX * S;
         const gy = contact.contactY * S;
+        // Cue travel line to ghost contact
         const lg = ctx.createLinearGradient(bx, by, gx, gy);
         lg.addColorStop(0, "rgba(255,255,255,0.7)");
         lg.addColorStop(1, "rgba(255,255,255,0.1)");
@@ -807,6 +1015,44 @@ export default function EightBallGame({ match, currentUserId }: EightBallGamePro
         ctx.beginPath(); ctx.arc(gx, gy, br, 0, Math.PI * 2); ctx.stroke();
         ctx.setLineDash([]);
         ctx.globalAlpha = 1;
+
+        // Target-ball deflection line (direction the struck ball will travel:
+        // from the contact point through the target ball's center).
+        const hb = contact.hitBall;
+        let ddx = hb.x - contact.contactX;
+        let ddy = hb.y - contact.contactY;
+        const dl = Math.hypot(ddx, ddy) || 1;
+        ddx /= dl; ddy /= dl;
+        const hx = hb.x * S, hy = hb.y * S;
+        const dex = hx + ddx * 165 * S, dey = hy + ddy * 165 * S;
+        ctx.strokeStyle = "rgba(255,210,90,0.85)"; ctx.lineWidth = 1.6;
+        ctx.setLineDash([6 * S, 5 * S]);
+        ctx.beginPath(); ctx.moveTo(hx, hy); ctx.lineTo(dex, dey); ctx.stroke();
+        ctx.setLineDash([]);
+
+        // Cue-ball post-contact path (spin-aware preview).
+        // Base = natural "stun" tangent (incoming velocity minus its normal
+        // component). Spin then bends it: follow/draw push along the impact
+        // normal (forward/back), side english nudges it laterally.
+        const sp   = spinRef.current;
+        const dotN = cw * ddx + sw * ddy;
+        let rx = cw - dotN * ddx;          // stun roll-off direction
+        let ry = sw - dotN * ddy;
+        rx += ddx * sp.y * 1.1;            // follow (+) / draw (−)
+        ry += ddy * sp.y * 1.1;
+        rx += -ddy * sp.x * 0.5;           // left/right english (lateral)
+        ry +=  ddx * sp.x * 0.5;
+        const rl = Math.hypot(rx, ry);
+        if (rl > 0.08) {
+          rx /= rl; ry /= rl;
+          const cpx = gx + rx * 100 * S, cpy = gy + ry * 100 * S;
+          ctx.strokeStyle = "rgba(120,210,255,0.85)"; ctx.lineWidth = 1.5;
+          ctx.setLineDash([5 * S, 5 * S]);
+          ctx.beginPath(); ctx.moveTo(gx, gy); ctx.lineTo(cpx, cpy); ctx.stroke();
+          ctx.setLineDash([]);
+          ctx.fillStyle = "rgba(120,210,255,0.95)";
+          ctx.beginPath(); ctx.arc(cpx, cpy, 2.4 * S, 0, Math.PI * 2); ctx.fill();
+        }
       } else {
         const ex = bx + cw * 380 * S;
         const ey = by + sw * 380 * S;
@@ -820,8 +1066,8 @@ export default function EightBallGame({ match, currentUserId }: EightBallGamePro
       }
       ctx.restore();
 
-      // Cue stick (pulls back proportional to dragPower)
-      const pullback = (dragPower / 100) * 55 * S;
+      // Cue stick (pulls back proportional to power)
+      const pullback = (power / 100) * 55 * S;
       const cueLen   = 165 * S;
       const tipGap   = (BALL_RADIUS + 3.5) * S + pullback;
       const tx       = bx - cw * tipGap;
@@ -853,12 +1099,12 @@ export default function EightBallGame({ match, currentUserId }: EightBallGamePro
       ctx.stroke();
       ctx.restore();
 
-      // Power ring (green→red arc around cue ball)
-      if (isDragging && dragPower > 0) {
-        const pct = dragPower / 100;
+      // Power ring (green→yellow→red arc around cue ball)
+      if (dragging && power > 0) {
+        const pct = power / 100;
         const rr  = (BALL_RADIUS + 6.5) * S;
         ctx.save();
-        ctx.strokeStyle = `rgb(${Math.round(220*pct)},${Math.round(220*(1-pct))},30)`;
+        ctx.strokeStyle = powerColor(power);
         ctx.lineWidth = 3.5 * S; ctx.lineCap = "round";
         ctx.shadowColor = ctx.strokeStyle; ctx.shadowBlur = 8;
         ctx.beginPath();
@@ -873,7 +1119,78 @@ export default function EightBallGame({ match, currentUserId }: EightBallGamePro
       drawBall(ctx, b, S);
     }
 
-  }, [gameState, aimAngle, isDragging, dragPower, isMyTurn, CW, CH, canvasScale]);
+    // ── On-canvas status overlay (turn · group · balls left) ──────────────
+    drawCanvasOverlay(ctx, gs, S);
+
+  }, [CW, CH, canvasScale, isMyTurn]);
+
+  // Draw the per-player status chips + turn banner directly on the canvas.
+  const drawCanvasOverlay = useCallback((ctx: CanvasRenderingContext2D, gs: EightBallState, S: number) => {
+    const chipW = Math.min(176 * S, CW * 0.4);
+    const chipH = 30 * S;
+    const pad   = ENG_RAIL + 5 * S;
+    const groupInfo = (g: typeof gs.player1Group) => {
+      if (!g) return { label: "Open", left: null as number | null };
+      const left = gs.balls.filter(b => b.type === g && !b.pocketed).length;
+      return { label: g === "solid" ? "Solids" : "Stripes", left };
+    };
+    const p1 = groupInfo(gs.player1Group);
+    const p2 = groupInfo(gs.player2Group);
+
+    const drawChip = (x: number, name: string, info: { label: string; left: number | null }, active: boolean, align: "left" | "right") => {
+      ctx.save();
+      roundRectPath(ctx, x, pad, chipW, chipH, 6 * S);
+      ctx.fillStyle = active ? "rgba(139,92,246,0.28)" : "rgba(8,16,12,0.55)";
+      ctx.fill();
+      ctx.lineWidth = 1.2;
+      ctx.strokeStyle = active ? "rgba(167,139,250,0.9)" : "rgba(255,255,255,0.14)";
+      ctx.stroke();
+      ctx.textBaseline = "middle";
+      ctx.textAlign = align;
+      const tx = align === "left" ? x + 9 * S : x + chipW - 9 * S;
+      ctx.fillStyle = "rgba(255,255,255,0.95)";
+      ctx.font = `600 ${Math.round(12 * S)}px sans-serif`;
+      ctx.fillText(name.length > 14 ? name.slice(0, 13) + "…" : name, tx, pad + chipH * 0.34);
+      ctx.fillStyle = "rgba(200,210,225,0.85)";
+      ctx.font = `${Math.round(10.5 * S)}px sans-serif`;
+      const sub = info.left === null ? info.label : `${info.label} · ${info.left} left`;
+      ctx.fillText(sub, tx, pad + chipH * 0.72);
+      ctx.restore();
+    };
+
+    drawChip(pad, player1Name, p1, gs.currentPlayer === "player1" && !gs.gameOver, "left");
+    drawChip(CW - pad - chipW, player2Name, p2, gs.currentPlayer === "player2" && !gs.gameOver, "right");
+
+    // Center status banner
+    let banner = "";
+    if (gs.gameOver) banner = `${gs.winner === "player1" ? player1Name : player2Name} wins`;
+    else if (gs.simulationRunning) banner = "";
+    else if (ballInHandRef.current) banner = "Ball in hand";
+    else banner = `${gs.currentPlayer === "player1" ? player1Name : player2Name}'s turn`;
+    if (banner) {
+      ctx.save();
+      ctx.font = `600 ${Math.round(11.5 * S)}px sans-serif`;
+      ctx.textAlign = "center"; ctx.textBaseline = "middle";
+      const tw = ctx.measureText(banner).width + 18 * S;
+      const bx = CW / 2 - tw / 2;
+      roundRectPath(ctx, bx, pad + 1, tw, chipH - 2, 6 * S);
+      ctx.fillStyle = "rgba(8,16,12,0.6)"; ctx.fill();
+      ctx.strokeStyle = "rgba(255,255,255,0.14)"; ctx.lineWidth = 1; ctx.stroke();
+      ctx.fillStyle = "rgba(255,255,255,0.92)";
+      ctx.fillText(banner, CW / 2, pad + chipH / 2);
+      ctx.restore();
+    }
+  }, [CW, player1Name, player2Name]);
+
+  // Keep the draw ref pointed at the latest closure for the rAF loop.
+  useEffect(() => { drawRef.current = drawGame; }, [drawGame]);
+
+  // React-driven render: redraw whenever idle state / aim / power changes.
+  // (During simulation the rAF loop owns the canvas and this stays dormant.)
+  useEffect(() => {
+    if (gameState.simulationRunning) return;
+    drawGame(gameState, true);
+  }, [gameState, aimAngle, isDragging, dragPower, ballInHand, spin, drawGame]);
 
   // ── Derived ───────────────────────────────────────────────────────────────
   const isP1Turn = gameState.currentPlayer === "player1";
@@ -1051,7 +1368,7 @@ export default function EightBallGame({ match, currentUserId }: EightBallGamePro
               pocketFlash ? "shadow-[0_0_36px_10px_rgba(70,255,120,0.4)]" : ""
             }`}
             style={{
-              cursor: gameState.simulationRunning ? "default" : isDragging ? "grabbing" : "crosshair",
+              cursor: gameState.simulationRunning ? "default" : ballInHand ? "copy" : isDragging ? "grabbing" : "crosshair",
               touchAction: "none",
             }}
             data-testid="canvas-pool-table"
@@ -1059,6 +1376,16 @@ export default function EightBallGame({ match, currentUserId }: EightBallGamePro
             onPointerMove={onPointerMove}
             onPointerUp={onPointerUp}
           />
+
+          {/* Spin / english control — floats in the bottom-right of the felt */}
+          {myTurnNow && !gameState.simulationRunning && !gameState.gameOver && !ballInHand && (
+            <div
+              className="absolute bottom-3 right-3 z-20 rounded-xl p-2 backdrop-blur-md animate-in fade-in-0 zoom-in-95 duration-200"
+              style={{ background: "rgba(8,16,12,0.55)", border: "1px solid rgba(255,255,255,0.12)", boxShadow: "0 8px 24px rgba(0,0,0,0.55)" }}
+            >
+              <SpinControl value={spin} onChange={setSpin} />
+            </div>
+          )}
 
           {/* Event overlay */}
           {gameEvent && (
@@ -1081,7 +1408,7 @@ export default function EightBallGame({ match, currentUserId }: EightBallGamePro
                 className="h-full rounded-full transition-all duration-75"
                 style={{
                   width: `${dragPower}%`,
-                  background: `rgb(${Math.round(215 * dragPower / 100)},${Math.round(215 * (1 - dragPower / 100))},35)`,
+                  background: `linear-gradient(to right, ${powerColor(0)}, ${powerColor(50)}, ${powerColor(dragPower)})`,
                 }}
               />
             </div>
