@@ -155,6 +155,10 @@ export default function MiniGolfGame({ match, currentUserId }: MiniGolfGameProps
   const powerRef       = useRef(0);
   const isAnimatingRef = useRef(false);
   const pendingGameStateRef = useRef<MiniGolfGameState | null>(null);
+  const botTurnInProgressRef = useRef(false); // Mutex: prevents multiple simultaneous bot shots
+  const processedShotIdsRef = useRef<Set<string>>(new Set()); // Dedup: prevents double-scoring
+  const gamePhaseRef = useRef<string>("AWAITING_HUMAN_SHOT"); // State machine phase tracker
+  const lastResetReasonRef = useRef<string | null>(null); // Debug: why ball was last reset
 
   // rAF animation
   const rafRef               = useRef<number>();
@@ -206,7 +210,12 @@ export default function MiniGolfGame({ match, currentUserId }: MiniGolfGameProps
       const data = JSON.parse(event.data);
 
       if (data.type === "mini-golf-update" && data.matchId === match.id) {
-        setGameState(data.gameState);
+        // Buffer like mini-golf-shot: never interrupt active ball animation
+        if (isAnimatingRef.current) {
+          pendingGameStateRef.current = data.gameState;
+        } else {
+          setGameState(data.gameState);
+        }
         if (data.penalty === "water") {
           toast({ title: "Water Penalty!", description: "+1 stroke, ball returned to start", variant: "destructive" });
         }
@@ -252,33 +261,53 @@ export default function MiniGolfGame({ match, currentUserId }: MiniGolfGameProps
     botTimersRef.current.clear();
   }, []);
 
-  // ── Bot trigger ───────────────────────────────────────────────────────────
-  useEffect(() => {
+  // ── Bot trigger ───────────────────────────────────────────────────────────  useEffect(() => {
     if (!match.isBotMatch || match.isPractice || match.status !== "in-progress") return;
     if (gameState.currentTurn !== "player2" || gameState.isMatchComplete) return;
-    // Safety: don't fire if bot already finished this hole, summary is showing,
-    // or the player's ball is mid-flight.
+    // Safety: don't fire if bot already finished this hole, summary showing, or animating
     if (gameState.player2.holeComplete) return;
     if (holeSummary) return;
     if (isAnimatingRef.current) return;
-
+    // MUTEX: only one bot turn at a time — prevents multiple API calls from rapid re-renders
+    if (botTurnInProgressRef.current) {
+      console.log('[MiniGolf bot] BOT_TURN_BLOCKED_ALREADY_IN_PROGRESS');
+      return;
+    }
+    botTurnInProgressRef.current = true;
+    gamePhaseRef.current = "BOT_THINKING";
     setBotStatus(`Bot is aiming… (shot ${gameState.player2.strokes + 1}/${MAX_STROKES_PER_HOLE})`);
+    console.log('[MiniGolf] BOT_TURN_START hole=' + gameState.currentHole + ' strokes=' + gameState.player2.strokes);
     const timer = setTimeout(async () => {
       try {
         const r = await fetch(`/api/matches/${match.id}/bot-move`, { method: "POST", credentials: "include" });
         if (r.ok) {
           const data = await r.json();
           if (data.move?.gameState) {
-            // Buffer like WS: don't interrupt animation with a state jump
-            if (isAnimatingRef.current) {
-              pendingGameStateRef.current = data.move.gameState;
+            const newGs = data.move.gameState;
+            // ShotId dedup: prevents double-scoring from duplicate API responses
+            const shotId = `${match.id}-h${gameState.currentHole}-bot-s${gameState.player2.strokes + 1}`;
+            if (processedShotIdsRef.current.has(shotId)) {
+              console.warn('[MiniGolf] BLOCKED_DUPLICATE_SCORE', shotId);
             } else {
-              setGameState(data.move.gameState);
+              processedShotIdsRef.current.add(shotId);
+              console.log('[MiniGolf] SHOT_RESULT_CONFIRMED', shotId, 'strokes=', newGs.player2?.strokes);
+              gamePhaseRef.current = "BOT_RESULT_PENDING";
+              // Buffer like WS: don't interrupt animation with a state jump
+              if (isAnimatingRef.current) {
+                pendingGameStateRef.current = newGs;
+              } else {
+                setGameState(newGs);
+              }
             }
           }
+        } else {
+          console.error('[MiniGolf bot] API error', r.status);
         }
-      } catch (err) { console.error("[MiniGolf bot]", err); }
-      finally {
+      } catch (err) {
+        console.error("[MiniGolf bot]", err);
+      } finally {
+        botTurnInProgressRef.current = false;
+        gamePhaseRef.current = "CHECK_HOLE_COMPLETE";
         botTimersRef.current.delete(timer);
       }
     }, 900);
@@ -286,8 +315,12 @@ export default function MiniGolfGame({ match, currentUserId }: MiniGolfGameProps
     return () => {
       clearTimeout(timer);
       botTimersRef.current.delete(timer);
+      botTurnInProgressRef.current = false;
     };
-  }, [match.isBotMatch, match.isPractice, match.status, match.id, gameState.currentTurn, gameState.isMatchComplete, gameState.player2.strokes, gameState.player2.holeComplete, holeSummary, trackTimer, isAnimating]);
+  // NOTE: gameState.player2.strokes intentionally NOT in deps.
+  // Adding it causes the effect to re-fire every time bot scores, creating a scoring loop.
+  // Effect should only re-fire when the TURN changes or hole advances.
+  }, [match.isBotMatch, match.isPractice, match.status, match.id, gameState.currentTurn, gameState.currentHole, gameState.isMatchComplete, gameState.player2.holeComplete, holeSummary, trackTimer, isAnimating]);
 
   // ── Clear bot status when it's no longer bot's turn ───────────────────────
   useEffect(() => {
@@ -310,6 +343,12 @@ export default function MiniGolfGame({ match, currentUserId }: MiniGolfGameProps
     if (prev === 0) {
       prevHoleRef.current = cur;
       return;
+    }
+    if (cur !== prev) {
+      // New hole: clear per-hole dedup set so valid shots are not blocked
+      processedShotIdsRef.current.clear();
+      lastResetReasonRef.current = 'NEW_HOLE_START';
+      console.log('[MiniGolf] NEXT_HOLE_LOADING hole=' + cur);
     }
     if (cur !== prev && !gameState.isMatchComplete) {
       const recorded = gameState.perHoleStrokes[prev];
@@ -430,19 +469,28 @@ export default function MiniGolfGame({ match, currentUserId }: MiniGolfGameProps
         }
 
         if (animIndexRef.current >= animStepsRef.current.length - 1) {
-          isAnimatingRef.current = false;
-          setIsAnimating(false);
-          const final  = animStepsRef.current[animStepsRef.current.length - 1];
-          const hadWater = animHadWaterRef.current;
-          animOnCompleteRef.current?.(final, hadWater);
-          animOnCompleteRef.current = null;
-          if (final.isInHole) setShowHoleIn(true);
-        // Flush buffered WS state to prevent ball teleport
+        isAnimatingRef.current = false;
+        setIsAnimating(false);
+        const final = animStepsRef.current[animStepsRef.current.length - 1];
+        const hadWater = animHadWaterRef.current;
+        console.log('[MiniGolf] ANIM_COMPLETE isInHole=' + final.isInHole + ' hadWater=' + hadWater + ' phase=' + gamePhaseRef.current);
+        animOnCompleteRef.current?.(final, hadWater);
+        animOnCompleteRef.current = null;
+        if (final.isInHole) {
+          setShowHoleIn(true);
+          gamePhaseRef.current = "BALL_HOLED";
+          console.log('[MiniGolf] BALL_HOLED - tee reset now blocked this hole');
+        }
+        // Flush buffered server state AFTER animation completes
         if (pendingGameStateRef.current) {
-          setGameState(pendingGameStateRef.current);
+          const pending = pendingGameStateRef.current;
           pendingGameStateRef.current = null;
+          setGameState(pending);
         }
+        if (gamePhaseRef.current !== "BALL_HOLED") {
+          gamePhaseRef.current = "AWAITING_HUMAN_SHOT";
         }
+      }
       }
 
       drawFrame(ctx);
@@ -465,11 +513,9 @@ export default function MiniGolfGame({ match, currentUserId }: MiniGolfGameProps
     const frame   = frameRef.current;
 
     // Display ball: use animated position if animating, else real position
-    const displayBall = isAnimatingRef.current && animBallRef.current
-      ? animBallRef.current
-      : gameState[playerKey].ball;
-
-    // ── Background ──────────────────────────────────────────────────────────
+    // Only use animated ball for this player's own shot animation
+  const isMyAnimation = isAnimatingRef.current && animBallRef.current;
+  const displayBall = isMyAnimation ? animBallRef.current! : gameState[playerKey].ball;Background ──────────────────────────────────────────────────────────
     ctx.fillStyle = T.bg;
     ctx.fillRect(0, 0, W, H);
 
@@ -1106,6 +1152,14 @@ function drawAimLine(
     }
     if (isAnimatingRef.current) return;
     if (powerRef.current < 1) return;
+    const shotId = `${match.id}-h${gameState.currentHole}-${playerKey}-s${gameState[playerKey].strokes + 1}`;
+    if (processedShotIdsRef.current.has(shotId)) {
+      console.warn('[MiniGolf] BLOCKED_DUPLICATE_SHOT', shotId);
+      return;
+    }
+    processedShotIdsRef.current.add(shotId);
+    console.log('[MiniGolf] SHOT_CREATED', shotId);
+    gamePhaseRef.current = "HUMAN_SHOT_IN_PROGRESS";
 
     const currentAngle = angleRef.current;
     const currentPower = powerRef.current;
