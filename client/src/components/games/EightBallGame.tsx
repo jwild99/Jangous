@@ -162,94 +162,92 @@ function buildTableCanvas(W: number, H: number, RAIL: number): HTMLCanvasElement
   const SIDE_C   = ENG_SIDE   * S;
   const CT       = 6;
 
-  // Outer wood frame
-  const wood = g.createLinearGradient(0, 0, W, H);
-  wood.addColorStop(0,    "#b87333");
-  wood.addColorStop(0.18, "#8c4e1a");
-  wood.addColorStop(0.42, "#6b3410");
-  wood.addColorStop(0.72, "#4e250a");
-  wood.addColorStop(1,    "#2c1204");
-  g.fillStyle = wood;
+  // Outer dark frame
+  g.fillStyle = "#1a0a00";
   g.fillRect(0, 0, W, H);
+  // Dark border
+  g.strokeStyle = "rgba(80,40,0,0.8)";
+  g.lineWidth = 3;
+  g.strokeRect(1, 1, W - 2, H - 2);
 
-  // Wood grain
-  for (let y = 0; y < H; y += 3.5) {
-    const a  = 0.014 + ((y * 11) % 7) * 0.006;
-    const wv = Math.sin(y * 0.04 + 0.8) * 4;
-    g.strokeStyle = `rgba(0,0,0,${a.toFixed(3)})`;
-    g.lineWidth = 0.5;
-    g.beginPath(); g.moveTo(wv, y); g.lineTo(W + wv, y); g.stroke();
-  }
-  g.strokeStyle = "rgba(220,165,55,0.55)";
-  g.lineWidth = 2.5;
-  g.strokeRect(1.2, 1.2, W - 2.4, H - 2.4);
-  g.strokeStyle = "rgba(0,0,0,0.5)";
-  g.lineWidth = 2;
-  g.strokeRect(RAIL - 2, RAIL - 2, W - (RAIL - 2) * 2, H - (RAIL - 2) * 2);
+  // Red rail background
+  const rail = g.createLinearGradient(0, 0, 0, H);
+  rail.addColorStop(0,   "#8b1a1a");
+  rail.addColorStop(0.5, "#6b1010");
+  rail.addColorStop(1,   "#4a0808");
+  g.fillStyle = rail;
+  g.fillRect(3, 3, W - 6, H - 6);
 
-  // 3-D rail bevel
-  g.fillStyle = "rgba(255,200,80,0.14)";
+  // Rail highlight/bevel
+  g.fillStyle = "rgba(255,80,80,0.12)";
   g.beginPath();
-  g.moveTo(0, 0); g.lineTo(RAIL, RAIL); g.lineTo(W - RAIL, RAIL); g.lineTo(W, 0); g.closePath();
+  g.moveTo(3, 3); g.lineTo(RAIL, RAIL); g.lineTo(W - RAIL, RAIL); g.lineTo(W - 3, 3); g.closePath();
   g.fill();
   g.beginPath();
-  g.moveTo(0, 0); g.lineTo(RAIL, RAIL); g.lineTo(RAIL, H - RAIL); g.lineTo(0, H); g.closePath();
+  g.moveTo(3, 3); g.lineTo(RAIL, RAIL); g.lineTo(RAIL, H - RAIL); g.lineTo(3, H - 3); g.closePath();
   g.fill();
-  g.fillStyle = "rgba(0,0,0,0.38)";
+  g.fillStyle = "rgba(0,0,0,0.4)";
   g.beginPath();
-  g.moveTo(0, H); g.lineTo(RAIL, H - RAIL); g.lineTo(W - RAIL, H - RAIL); g.lineTo(W, H); g.closePath();
+  g.moveTo(3, H - 3); g.lineTo(RAIL, H - RAIL); g.lineTo(W - RAIL, H - RAIL); g.lineTo(W - 3, H - 3); g.closePath();
   g.fill();
   g.beginPath();
-  g.moveTo(W, 0); g.lineTo(W - RAIL, RAIL); g.lineTo(W - RAIL, H - RAIL); g.lineTo(W, H); g.closePath();
+  g.moveTo(W - 3, 3); g.lineTo(W - RAIL, RAIL); g.lineTo(W - RAIL, H - RAIL); g.lineTo(W - 3, H - 3); g.closePath();
   g.fill();
 
-  // Felt surface
-  const felt = g.createRadialGradient(W * 0.5, H * 0.36, 0, W * 0.5, H * 0.5, Math.max(W, H) * 0.68);
-  felt.addColorStop(0,    "#2ab85a");
-  felt.addColorStop(0.28, "#0f7c3e");
-  felt.addColorStop(0.62, "#0a5e2a");
-  felt.addColorStop(1,    "#053016");
+  // Diamond markers on rails (white dots)
+  const drawDiamond = (x: number, y: number) => {
+    g.beginPath(); g.arc(x, y, 4 * S, 0, Math.PI * 2);
+    g.fillStyle = "rgba(255,255,255,0.85)"; g.fill();
+    g.strokeStyle = "rgba(0,0,0,0.3)"; g.lineWidth = 0.5; g.stroke();
+  };
+  // Top rail diamonds
+  const topY = RAIL * 0.5; const botY = H - RAIL * 0.5;
+  const lftX = RAIL * 0.5; const rgtX = W - RAIL * 0.5;
+  for (let i = 1; i <= 3; i++) { drawDiamond(W * i / 4, topY); drawDiamond(W * i / 4, botY); }
+  for (let i = 1; i <= 1; i++) { drawDiamond(lftX, H * i / 2); drawDiamond(rgtX, H * i / 2); }
+
+  // Blue felt surface
+  const felt = g.createRadialGradient(W * 0.5, H * 0.4, 0, W * 0.5, H * 0.5, Math.max(W, H) * 0.7);
+  felt.addColorStop(0,    "#1fa8e8");
+  felt.addColorStop(0.3,  "#1590cc");
+  felt.addColorStop(0.7,  "#0e6fa0");
+  felt.addColorStop(1,    "#0a5580");
   g.fillStyle = felt;
   g.fillRect(RAIL, RAIL, W - RAIL * 2, H - RAIL * 2);
 
-  // Felt nap
+  // Felt texture lines
   g.save();
-  g.globalAlpha = 0.028;
-  g.strokeStyle = "#90ffb8";
-  g.lineWidth = 0.4;
-  for (let x = RAIL; x < W - RAIL; x += 8) {
+  g.globalAlpha = 0.035;
+  g.strokeStyle = "#60d0ff";
+  g.lineWidth = 0.5;
+  for (let x = RAIL; x < W - RAIL; x += 6) {
     g.beginPath(); g.moveTo(x, RAIL); g.lineTo(x, H - RAIL); g.stroke();
-  }
-  for (let y = RAIL; y < H - RAIL; y += 8) {
-    g.beginPath(); g.moveTo(RAIL, y); g.lineTo(W - RAIL, y); g.stroke();
   }
   g.restore();
 
-  // Overhead light bloom
-  for (const lx of [W * 0.3, W * 0.7]) {
-    const lm = g.createRadialGradient(lx, H * 0.28, 0, lx, H * 0.5, W * 0.38);
-    lm.addColorStop(0,   "rgba(255,255,200,0.13)");
-    lm.addColorStop(0.5, "rgba(255,255,180,0.04)");
-    lm.addColorStop(1,   "transparent");
-    g.fillStyle = lm;
-    g.fillRect(RAIL, RAIL, W - RAIL * 2, H - RAIL * 2);
-  }
+  // Center overhead light
+  const lm = g.createRadialGradient(W * 0.5, H * 0.3, 0, W * 0.5, H * 0.5, W * 0.5);
+  lm.addColorStop(0,   "rgba(255,255,255,0.10)");
+  lm.addColorStop(0.5, "rgba(200,240,255,0.04)");
+  lm.addColorStop(1,   "transparent");
+  g.fillStyle = lm;
+  g.fillRect(RAIL, RAIL, W - RAIL * 2, H - RAIL * 2);
 
-  // Cushion rubber strips
+  // Cushion rubber strips (dark red)
   const drawCushion = (x: number, y: number, w: number, h: number) => {
-    g.fillStyle = "#094d26";
+    g.fillStyle = "#6b1010";
     g.fillRect(x, y, w, h);
     const isHoriz = w > h;
     if (isHoriz) {
-      g.fillStyle = "rgba(50,220,120,0.18)";
-      g.fillRect(x, y, w, h * 0.38);
-      g.fillStyle = "rgba(0,0,0,0.35)";
-      g.fillRect(x, y + h * 0.7, w, h * 0.3);
+      g.fillStyle = "rgba(255,80,80,0.15)";
+      g.fillRect(x, y, w, h * 0.35);
+      g.fillStyle = "rgba(0,0,0,0.4)";
+      g.fillRect(x, y + h * 0.65, w, h * 0.35);
     } else {
-      g.fillStyle = "rgba(50,220,120,0.18)";
-      g.fillRect(x, y, w * 0.38, h);
-      g.fillStyle = "rgba(0,0,0,0.35)";
-      g.fillRect(x + w * 0.7, y, w * 0.3, h);
+      g.fillStyle = "rgba(255,80,80,0.15)";
+      g.fillRect(x, y, w * 0.35, h);
+      g.fillStyle = "rgba(0,0,0,0.4)";
+      g.fillRect(x + w * 0.65, y, w * 0.35, h);
     }
   };
 
@@ -267,16 +265,22 @@ function buildTableCanvas(W: number, H: number, RAIL: number): HTMLCanvasElement
   g.restore();
 
   // Spot markers & head string
-  g.strokeStyle = "rgba(255,255,255,0.1)";
+  g.strokeStyle = "rgba(255,255,255,0.18)";
   g.lineWidth = 1.5;
   for (const sx of [W * 0.25, W * 0.5, W * 0.75]) {
     g.beginPath(); g.arc(sx, H * 0.5, 4, 0, Math.PI * 2); g.stroke();
   }
-  g.strokeStyle = "rgba(255,255,255,0.055)";
+  g.strokeStyle = "rgba(255,255,255,0.08)";
   g.lineWidth = 1;
   g.setLineDash([4, 7]);
   g.beginPath(); g.moveTo(W * 0.25, RAIL); g.lineTo(W * 0.25, H - RAIL); g.stroke();
   g.setLineDash([]);
+  // Felt inner border shadow
+  g.save();
+  g.strokeStyle = "rgba(0,0,0,0.5)";
+  g.lineWidth = 6;
+  g.strokeRect(RAIL + 2, RAIL + 2, W - RAIL * 2 - 4, H - RAIL * 2 - 4);
+  g.restore();
 
   // Pockets
   const drawCornerPocket = (cx: number, cy: number, sx: number, sy: number) => {
@@ -554,9 +558,10 @@ function SpinControl({
   };
   const onUp = (e: React.PointerEvent) => { draggingRef.current = false; e.stopPropagation(); };
 
-  const dotLeft = `${50 + value.x * 42}%`;
-  const dotTop  = `${50 - value.y * 42}%`;
-  const active  = Math.abs(value.x) > 0.04 || Math.abs(value.y) > 0.04;
+  // Contact dot position (clamped to 80% of radius)
+  const dotX = value.x * 38;
+  const dotY = -value.y * 38;
+  const active = Math.abs(value.x) > 0.04 || Math.abs(value.y) > 0.04;
 
   const label =
     !active ? "Center"
@@ -565,8 +570,8 @@ function SpinControl({
         : (value.x > 0 ? "Right english" : "Left english"));
 
   return (
-    <div className="flex flex-col items-center gap-1.5 select-none">
-      <span className="text-[10px] uppercase tracking-widest text-muted-foreground">Spin</span>
+    <div className="flex flex-col items-center gap-1 select-none">
+      <span className="text-[11px] font-bold uppercase tracking-widest" style={{ color: "rgba(255,255,255,0.7)" }}>Spin</span>
       <div
         ref={ref}
         onPointerDown={onDown}
@@ -575,31 +580,45 @@ function SpinControl({
         data-testid="control-spin"
         className={`relative rounded-full touch-none ${disabled ? "opacity-40" : "cursor-pointer"}`}
         style={{
-          width: 76, height: 76,
-          background: "radial-gradient(circle at 38% 32%, #ffffff 0%, #e7ecf3 45%, #aab4c4 100%)",
-          boxShadow: "inset 0 2px 6px rgba(255,255,255,0.85), inset 0 -8px 14px rgba(20,30,45,0.32), 0 4px 14px rgba(0,0,0,0.5)",
-          border: "1px solid rgba(255,255,255,0.25)",
+          width: 100, height: 100,
+          // Large pearl cue ball look
+          background: "radial-gradient(circle at 35% 28%, #ffffff 0%, #e8edf5 30%, #c0ccdc 65%, #8898b0 100%)",
+          boxShadow: [
+            "inset 0 3px 8px rgba(255,255,255,0.9)",
+            "inset 0 -10px 20px rgba(10,20,40,0.45)",
+            "0 6px 20px rgba(0,0,0,0.7)",
+            active ? "0 0 18px 4px rgba(255,60,60,0.5)" : "",
+          ].filter(Boolean).join(", "),
+          border: "2px solid rgba(255,255,255,0.3)",
         }}
       >
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute left-1/2 top-[14%] bottom-[14%] w-px -translate-x-1/2" style={{ background: "rgba(40,55,75,0.28)" }} />
-          <div className="absolute top-1/2 left-[14%] right-[14%] h-px -translate-y-1/2" style={{ background: "rgba(40,55,75,0.28)" }} />
+        {/* Crosshair lines */}
+        <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
+          <div style={{ position: "absolute", left: "50%", top: "12%", bottom: "12%", width: "1px", background: "rgba(0,0,80,0.2)", transform: "translateX(-50%)" }} />
+          <div style={{ position: "absolute", top: "50%", left: "12%", right: "12%", height: "1px", background: "rgba(0,0,80,0.2)", transform: "translateY(-50%)" }} />
         </div>
+        {/* Red contact indicator */}
         <div
-          className="absolute -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none transition-[left,top] duration-75"
+          className="absolute pointer-events-none transition-[left,top] duration-75"
           style={{
-            left: dotLeft, top: dotTop, width: 18, height: 18,
-            background: active
-              ? "radial-gradient(circle at 35% 30%, hsl(var(--primary)) 0%, hsl(var(--primary) / 0.75) 70%)"
-              : "radial-gradient(circle at 35% 30%, rgba(120,135,155,0.95) 0%, rgba(80,95,115,0.85) 70%)",
-            boxShadow: active
-              ? "0 0 10px 2px hsl(var(--primary) / 0.6), 0 1px 3px rgba(0,0,0,0.5)"
-              : "0 1px 3px rgba(0,0,0,0.4)",
-            border: "1.5px solid rgba(255,255,255,0.85)",
+            left: `calc(50% + ${dotX}px)`,
+            top: `calc(50% + ${dotY}px)`,
+            transform: "translate(-50%, -50%)",
+            width: 22, height: 22,
+            borderRadius: "50%",
+            background: "radial-gradient(circle at 35% 30%, #ff6060 0%, #cc0000 70%)",
+            boxShadow: "0 0 8px 3px rgba(255,0,0,0.6), 0 2px 4px rgba(0,0,0,0.5)",
+            border: "2px solid rgba(255,180,180,0.8)",
           }}
         />
+        {/* Gloss */}
+        <div className="absolute pointer-events-none" style={{
+          top: "10%", left: "20%", width: "35%", height: "30%",
+          background: "radial-gradient(ellipse, rgba(255,255,255,0.55) 0%, transparent 100%)",
+          borderRadius: "50%",
+        }} />
       </div>
-      <span className="text-[10px] text-muted-foreground h-3.5 tabular-nums">{label}</span>
+      <span className="text-[10px] tabular-nums" style={{ color: "rgba(255,255,255,0.6)", height: "14px" }}>{label}</span>
     </div>
   );
 }
@@ -1391,27 +1410,20 @@ export default function EightBallGame({ match, currentUserId }: EightBallGamePro
           )}
         </div>
 
-        {/* Atmospheric pool hall wrapper */}
+        {/* Pool hall wrapper */}
         <div
           className="relative rounded-xl overflow-hidden"
           style={{
-            padding: "28px 32px 28px 32px",
-            background: [
-              "radial-gradient(ellipse 80% 60% at 50% 20%, rgba(60,180,100,0.09) 0%, transparent 60%)",
-              "radial-gradient(ellipse 120% 80% at 50% 50%, rgba(10,30,18,0.98) 0%, rgba(5,14,8,0.99) 100%)",
-            ].join(", "),
-            boxShadow: "0 0 80px 20px rgba(18,80,40,0.25), 0 0 140px 40px rgba(0,0,0,0.85)",
+            padding: "20px 20px 20px 20px",
+            background: "radial-gradient(ellipse 120% 100% at 50% 50%, rgba(5,10,20,0.98) 0%, rgba(2,5,10,0.99) 100%)",
+            boxShadow: "0 0 60px 10px rgba(0,80,160,0.2), 0 0 120px 30px rgba(0,0,0,0.9)",
           }}
         >
-          {/* Ceiling light shaft */}
+          {/* Overhead light */}
           <div className="absolute pointer-events-none"
-            style={{ left: "10%", right: "10%", top: 0, height: "28px",
-              background: "linear-gradient(to bottom, rgba(240,230,180,0.12) 0%, transparent 100%)",
-              filter: "blur(8px)" }} />
-          <div className="absolute left-0 top-1/4 bottom-1/4 w-6 pointer-events-none"
-            style={{ background: "linear-gradient(to right, rgba(20,100,50,0.15), transparent)" }} />
-          <div className="absolute right-0 top-1/4 bottom-1/4 w-6 pointer-events-none"
-            style={{ background: "linear-gradient(to left, rgba(20,100,50,0.15), transparent)" }} />
+            style={{ left: "5%", right: "5%", top: 0, height: "24px",
+              background: "linear-gradient(to bottom, rgba(200,220,255,0.15) 0%, transparent 100%)",
+              filter: "blur(6px)" }} />
 
           {/* Table */}
           <div className="relative" style={{ width: CW, height: CH }}>
@@ -1458,42 +1470,26 @@ export default function EightBallGame({ match, currentUserId }: EightBallGamePro
             )}
           </div>
 
-          {/* Power bar */}
-          {isDragging && (
-            <div className="flex items-center gap-2.5 w-48 mx-auto mt-2">
-              <div className="flex-1 h-2.5 bg-border rounded-full overflow-hidden shadow-inner">
+          {/* Vertical power bar — left side like reference */}
+          {myTurnNow && !gameState.simulationRunning && !gameState.gameOver && (
+            <div className="absolute left-0 top-0 bottom-0 flex flex-col items-center justify-end py-4 pl-1" style={{ width: "18px" }}>
+              <div className="relative flex-1 w-3 rounded-full overflow-hidden" style={{ background: "rgba(0,0,0,0.5)", maxHeight: "80%" }}>
                 <div
-                  className="h-full rounded-full transition-all duration-75"
+                  className="absolute bottom-0 left-0 right-0 rounded-full transition-all duration-75"
                   style={{
-                    width: `${dragPower}%`,
-                    background: `linear-gradient(to right, ${powerColor(0)}, ${powerColor(50)}, ${powerColor(dragPower)})`,
-                    boxShadow: `0 0 8px 2px ${powerColor(dragPower)}66`,
+                    height: `${dragPower}%`,
+                    background: `linear-gradient(to top, ${powerColor(dragPower)}, ${powerColor(50)}, ${powerColor(0)})`,
+                    boxShadow: dragPower > 0 ? `0 0 6px 2px ${powerColor(dragPower)}88` : "none",
                   }}
                 />
               </div>
-              <span className="text-xs tabular-nums font-semibold w-9 text-right" style={{ color: powerColor(dragPower) }}>
-                {Math.round(dragPower)}%
-              </span>
+              {dragPower > 0 && (
+                <span className="text-[8px] font-bold mt-1 tabular-nums" style={{ color: powerColor(dragPower) }}>
+                  {Math.round(dragPower)}
+                </span>
+              )}
             </div>
           )}
 
           {/* Game over actions */}
-          {gameState.gameOver && (
-            <div className="flex gap-2 justify-center mt-3">
-              <Button
-                size="sm"
-                className="bg-primary/90 hover:bg-primary shadow-lg shadow-primary/25 font-bold px-6"
-                onClick={() => setGameState(createInitialState())}
-              >
-                Play Again
-              </Button>
-              <Button size="sm" variant="ghost" onClick={() => setLocation("/")}>
-                Leave
-              </Button>
-            </div>
-          )}
-        </div>{/* /atmospheric pool hall wrapper */}
-      </div>
-    </GameLayout>
-  );
-}
+          {gameState.gameOver &&
