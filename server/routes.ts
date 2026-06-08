@@ -2258,60 +2258,70 @@ export async function registerRoutes(app: Express): Promise<Server> {
           }
         }
       } else if (match.gameType === "mini-golf") {
-        // Initialize state if needed
-        let mgState: MiniGolfGameState;
-        if (gameState && gameState.currentHole) {
-          mgState = gameState as MiniGolfGameState;
-          // Backfill matchSeed if missing (matches created before this field existed)
-          if (!mgState.matchSeed) mgState = { ...mgState, matchSeed: matchId };
+      // Initialize state if needed
+      let mgState: MiniGolfGameState;
+      if (gameState && gameState.currentHole) {
+        mgState = gameState as MiniGolfGameState;
+        // Backfill matchSeed if missing (matches created before this field existed)
+        if (!mgState.matchSeed) mgState = { ...mgState, matchSeed: matchId };
+      } else {
+        const holeCount = (match as any).miniGolfHoleCount || 3;
+        mgState = initializeMiniGolfMatch(match.player1Id, match.player2Id || '', holeCount, 1, matchId);
+      }
+      // Bot is always player2
+      const botPlayer = "player2";
+      // GUARD 1: Only fire if it's actually the bot's turn
+      if (mgState.currentTurn !== botPlayer || mgState.isMatchComplete) {
+        console.log('[BotMove] Skipped - not bot turn or match complete. currentTurn=' + mgState.currentTurn);
+        move = { gameState: mgState };
+      } else if (mgState.player2.holeComplete) {
+        // GUARD 2: Bot already finished this hole — don't shoot again
+        console.log('[BotMove] Skipped - bot already holeComplete for hole ' + mgState.currentHole);
+        move = { gameState: mgState };
+      } else {
+        // Check stroke cap
+        if (mgState.player2.strokes >= 8) {
+          console.log('[BotMove] Skipped - bot at stroke cap for hole ' + mgState.currentHole);
+          move = { gameState: mgState };
         } else {
-          const holeCount = (match as any).miniGolfHoleCount || 3;
-          mgState = initializeMiniGolfMatch(match.player1Id, match.player2Id || '', holeCount, 1, matchId);
-        }
-
-        // Bot is always player2
-        const botPlayer = "player2";
-        if (mgState.currentTurn === botPlayer && !mgState.isMatchComplete) {
           // Get the procedurally-generated hole definition using the match seed
           const holeDef = getHoleDefinition(mgState.currentHole, mgState.matchSeed);
           const holePos = holeDef ? holeDef.cupPosition : { x: 380, y: 60 };
-
           // Generate shot velocity (hazard-aware)
           const difficulty = (match.botDifficulty || "medium") as "easy" | "medium" | "hard";
           const velocity: Vector2 = generateMiniGolfShot(mgState as any, holePos, difficulty, holeDef);
-
+          console.log('[BotMove] Bot shooting hole=' + mgState.currentHole + ' stroke=' + (mgState.player2.strokes + 1) + ' difficulty=' + difficulty);
           // Apply the shot using the engine
           const afterShot = processShot(mgState, botPlayer, velocity);
-
-          // Advance hole if both players complete
+          console.log('[BotMove] After shot: p2.holeComplete=' + afterShot.player2.holeComplete + ' p2.strokes=' + afterShot.player2.strokes + ' p1.holeComplete=' + afterShot.player1.holeComplete);
+          // Only advance to next hole when BOTH players have finished
           const bothComplete = afterShot.player1.holeComplete && afterShot.player2.holeComplete;
           let finalGS: MiniGolfGameState = bothComplete ? advanceToNextHole(afterShot) : afterShot;
-
+          if (bothComplete) {
+            console.log('[BotMove] BOTH_PLAYERS_FINISHED_HOLE ' + mgState.currentHole + ' -> advancing to ' + finalGS.currentHole);
+          }
           await storage.updateMatchState(matchId, finalGS);
-
           // Complete match if done
           if (finalGS.isMatchComplete) {
             const scores = calculateTotalScore(finalGS);
-            const winnerId = scores.winner === "player1" ? match.player1Id :
-              scores.winner === "player2" ? (match.player2Id || null) : null;
+            const winnerId = scores.winner === "player1" ? match.player1Id : scores.winner === "player2" ? (match.player2Id || null) : null;
             const completedMatch = await storage.completeMiniGolfMatch(
               matchId, winnerId, scores.player1Total, scores.player2Total, finalGS
             );
             await achievementService.checkAndAwardAchievements(completedMatch);
           }
-
           // Broadcast updated state
           const mgConnections = matchConnections.get(matchId);
           if (mgConnections) {
             const msg = JSON.stringify({ type: "mini-golf-shot", matchId, gameState: finalGS });
-            mgConnections.forEach((c: any) => { if (c.readyState === WebSocket.OPEN) c.send(msg); });
+            mgConnections.forEach((c: any) => {
+              if (c.readyState === WebSocket.OPEN) c.send(msg);
+            });
           }
-
           move = { gameState: finalGS };
-        } else {
-          move = { gameState: mgState };
         }
-      } else if (match.gameType === "basketball") {
+      }
+    } } else if (match.gameType === "basketball") {
         const { createBasketballState, shootBall, simulateBasketball } = await import("@shared/basketballEngine");
         let bkState: any = (gameState && gameState.phase) ? gameState : createBasketballState();
 
