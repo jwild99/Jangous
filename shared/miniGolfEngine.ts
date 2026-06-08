@@ -91,12 +91,14 @@ export interface MiniGolfGameState {
 }
 
 // ─── Physics constants ─────────────────────────────────────────────────────
-const FRICTION = 0.982;
-const BOUNCE_DAMPING = 0.72;
-const MIN_VELOCITY = 0.015;
+// Physics constants — tuned for arcade mini golf feel
+const FRICTION = 0.980;          // per-step: 0.980^60 ≈ 0.30/s roll decel on green
+const BOUNCE_DAMPING = 0.65;     // normal-component restitution on wall/boundary
+const WALL_TANGENT_FRICTION = 0.04; // tangent friction — prevents wall sticking
+const MIN_VELOCITY = 0.12;       // stop threshold (raised to kill infinite drift)
 const PHYSICS_TIMESTEP = 1 / 60;
-const MAX_SIMULATION_STEPS = 720; // 12 seconds max
-const SAND_FRICTION = 0.91;
+const MAX_SIMULATION_STEPS = 600; // 10 s max
+const SAND_FRICTION = 0.88;       // per-step inside sand bunkers
 
 // ─── Gameplay constants ────────────────────────────────────────────────────
 // Hard cap on strokes per hole. If a player can't sink the ball in this many
@@ -188,18 +190,32 @@ export function checkObstacleCollision(
 
     if (dist < ballRadius + 2) {
       const wallVec = { x: obstacle.x2 - obstacle.x1, y: obstacle.y2 - obstacle.y1 };
-      const wallNorm = normalize({ x: -wallVec.y, y: wallVec.x });
-      const dot = dotProduct(ball.velocity, wallNorm);
-      const reflection = {
-        x: ball.velocity.x - 2 * dot * wallNorm.x,
-        y: ball.velocity.y - 2 * dot * wallNorm.y,
-      };
-      const pushDir = normalize({ x: ball.position.x - closest.x, y: ball.position.y - closest.y });
-      const newPosition = {
-        x: closest.x + pushDir.x * (ballRadius + 2),
-        y: closest.y + pushDir.y * (ballRadius + 2),
-      };
-      return { collided: true, newVelocity: scaleVector(reflection, BOUNCE_DAMPING), newPosition };
+        const wallNorm = normalize({ x: -wallVec.y, y: wallVec.x });
+        const speedBefore = magnitude(ball.velocity);
+        // Decompose velocity into normal + tangent components
+        const vDotN = dotProduct(ball.velocity, wallNorm);
+        const vN = { x: vDotN * wallNorm.x, y: vDotN * wallNorm.y };
+        const vT = { x: ball.velocity.x - vN.x, y: ball.velocity.y - vN.y };
+        // Reflect normal (restitution), damp tangent (prevents sticking/scraping)
+        const newVN = { x: -vN.x * BOUNCE_DAMPING, y: -vN.y * BOUNCE_DAMPING };
+        const tangentScale = Math.max(0, 1 - WALL_TANGENT_FRICTION);
+        const newVT = { x: vT.x * tangentScale, y: vT.y * tangentScale };
+        let newVelocity = { x: newVN.x + newVT.x, y: newVN.y + newVT.y };
+        // Energy clamp: speed after bounce must never exceed pre-impact speed
+        const speedAfter = magnitude(newVelocity);
+        if (speedAfter > speedBefore) {
+          newVelocity = scaleVector(normalize(newVelocity), speedBefore);
+        }
+        // Kill near-zero velocity to prevent jitter against walls
+        if (magnitude(newVelocity) < MIN_VELOCITY * 0.5) {
+          newVelocity = { x: 0, y: 0 };
+        }
+        const pushDir = normalize({ x: ball.position.x - closest.x, y: ball.position.y - closest.y });
+        const newPosition = {
+          x: closest.x + pushDir.x * (ballRadius + 3),
+          y: closest.y + pushDir.y * (ballRadius + 3),
+        };
+        return { collided: true, newVelocity, newPosition };
     }
   }
 
