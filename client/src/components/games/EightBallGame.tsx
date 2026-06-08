@@ -447,8 +447,12 @@ function drawBall(
   g.fillStyle = sphere;
   g.beginPath(); g.arc(0, 0, r, 0, Math.PI * 2); g.fill();
 
-  // Rotate the ball's markings — number disc and stripe spin with ball.rotation
-  g.rotate(ball.rotation);
+  // Visual rotation — scaled down so the spin looks smooth (~2 rot/sec at medium speed)
+  // Numbers spin WITH the ball so rolling is clearly visible
+  const rot = (ball.rotation ?? 0) * 0.22;
+
+  g.save(); // save pre-rotation state for gloss later
+  g.rotate(rot);
 
   // Stripe band for stripe balls
   if (ball.type === "stripe") {
@@ -467,23 +471,19 @@ function drawBall(
     g.restore();
   }
 
-  // Number disc
+  // Number disc — spins with ball so rolling is obvious
   if (ball.number > 0) {
     g.fillStyle = "rgba(255,255,255,0.94)";
     g.beginPath(); g.arc(0, 0, r * 0.4, 0, Math.PI * 2); g.fill();
-    // Counter-rotate number so it stays readable while ball spins
-    g.save();
-    g.rotate(-ball.rotation);
     g.fillStyle = "#111";
     g.font = `bold ${Math.round(r * 0.8)}px sans-serif`;
     g.textAlign = "center"; g.textBaseline = "middle";
     g.fillText(ball.number.toString(), 0, r * 0.04);
-    g.restore();
   }
 
-  g.rotate(-ball.rotation); // un-rotate before drawing gloss (keep gloss fixed)
+  g.restore(); // back to pre-rotation — gloss stays fixed at light source
 
-  // Gloss highlight
+  // Gloss highlight (fixed light position, doesn't rotate)
   const gloss = g.createRadialGradient(lightX, lightY, 0, lightX * 0.7, lightY * 0.7, r * 0.55);
   gloss.addColorStop(0,   "rgba(255,255,255,0.78)");
   gloss.addColorStop(0.4, "rgba(255,255,255,0.22)");
@@ -1511,3 +1511,4 @@ export default function EightBallGame({ match, currentUserId }: EightBallGamePro
     </GameLayout>
   );
 }
+ 
