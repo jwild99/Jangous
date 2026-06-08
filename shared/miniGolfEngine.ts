@@ -91,14 +91,18 @@ export interface MiniGolfGameState {
 }
 
 // ─── Physics constants ─────────────────────────────────────────────────────
-// Physics constants — tuned for arcade mini golf feel
-const FRICTION = 0.980;          // per-step: 0.980^60 ≈ 0.30/s roll decel on green
-const BOUNCE_DAMPING = 0.65;     // normal-component restitution on wall/boundary
-const WALL_TANGENT_FRICTION = 0.04; // tangent friction — prevents wall sticking
-const MIN_VELOCITY = 0.12;       // stop threshold (raised to kill infinite drift)
-const PHYSICS_TIMESTEP = 1 / 60;
-const MAX_SIMULATION_STEPS = 600; // 10 s max
-const SAND_FRICTION = 0.88;       // per-step inside sand bunkers
+// Physics constants
+// Velocity units: pixels per physics step (NOT per second).
+// physicsStep runs once per simulation step; position += velocity (no dt scaling).
+// At 60 sim steps recorded every 2 (recordEvery=2) → 30 visual keyframes.
+// Shot speed 1-7 px/step gives readable travel distances on a 400-600px course.
+const FRICTION = 0.988;           // per-step multiplier: 0.988^60 ≈ 0.48 remaining after 1 sec
+const BOUNCE_DAMPING = 0.68;      // normal-component restitution on rail/boundary hits
+const WALL_TANGENT_FRICTION = 0.06; // tangent friction — kills wall-sticking without over-damping
+const MIN_VELOCITY = 0.05;        // stop threshold in px/step — kills drift, not real shots
+const PHYSICS_TIMESTEP = 1;       // velocity already in px/step: position += velocity * 1
+const MAX_SIMULATION_STEPS = 800; // ~13 sec max at 60 steps/sec
+const SAND_FRICTION = 0.92;       // heavier per-step damping inside sand bunkers
 
 // ─── Gameplay constants ────────────────────────────────────────────────────
 // Hard cap on strokes per hole. If a player can't sink the ball in this many
