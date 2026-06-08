@@ -305,15 +305,54 @@ export function simulateShot(
 
   while (steps < MAX_SIMULATION_STEPS) {
     steps++;
+    const prevPosition = { ...currentBall.position };
     const result = physicsStep(currentBall, hole);
     currentBall = result.ball;
     if (result.waterPenalty) { waterPenalty = true; }
 
+    // Anti-tunneling: resolve obstacle collisions along the path travelled.
+    const frameDist = distance(prevPosition, currentBall.position);
+    const subSteps = Math.min(8, Math.max(1, Math.ceil(frameDist / 4)));
+    for (let s = 1; s <= subSteps; s++) {
+      const t = s / subSteps;
+      const samplePos = {
+        x: prevPosition.x + (currentBall.position.x - prevPosition.x) * t,
+        y: prevPosition.y + (currentBall.position.y - prevPosition.y) * t,
+      };
+      let collidedThisSub = false;
+      for (const obs of hole.obstacles) {
+        const probe: Ball = { ...currentBall, position: samplePos };
+        const col = checkObstacleCollision(probe, obs, hole);
+        if (col.collided) {
+          if (col.newPosition) currentBall.position = col.newPosition;
+          if (col.newVelocity) currentBall.velocity = col.newVelocity;
+          if (col.penalty === "water") waterPenalty = true;
+          collidedThisSub = true;
+          break;
+        }
+      }
+      if (collidedThisSub) break;
+    }
+
     if (!currentBall.isMoving) break;
 
-    // In cup check
+    // Cup gravity for slow near-cup rolls.
     const distToCup = distance(currentBall.position, hole.cupPosition);
-    if (distToCup < hole.cupRadius + 6 && magnitude(currentBall.velocity) < 12) {
+    const speed = magnitude(currentBall.velocity);
+    if (distToCup < hole.cupRadius * 3 && speed < 3) {
+      const pull = normalize({
+        x: hole.cupPosition.x - currentBall.position.x,
+        y: hole.cupPosition.y - currentBall.position.y,
+      });
+      const strength = (1 - distToCup / (hole.cupRadius * 3)) * 0.35;
+      currentBall.velocity = {
+        x: currentBall.velocity.x + pull.x * strength,
+        y: currentBall.velocity.y + pull.y * strength,
+      };
+    }
+
+    // Speed-gated sink with a tightened radius (fast shots lip out).
+    if (distToCup < hole.cupRadius && magnitude(currentBall.velocity) < 12) {
       currentBall.isInHole = true;
       currentBall.isMoving = false;
       currentBall.velocity = { x: 0, y: 0 };
@@ -339,9 +378,53 @@ export function simulateShotSteps(
 
   while (stepCount < MAX_SIMULATION_STEPS) {
     stepCount++;
+    const prevPosition = { ...currentBall.position };
     const result = physicsStep(currentBall, hole);
     currentBall = result.ball;
     if (result.waterPenalty) waterPenalty = true;
+
+    // Anti-tunneling: sub-sample the path travelled this frame and resolve
+    // obstacle collisions at each sub-point so fast shots can't pass through
+    // thin walls. Number of sub-steps scales with distance travelled.
+    const frameDist = distance(prevPosition, currentBall.position);
+    const subSteps = Math.min(8, Math.max(1, Math.ceil(frameDist / 4)));
+    for (let s = 1; s <= subSteps; s++) {
+      const t = s / subSteps;
+      const samplePos = {
+        x: prevPosition.x + (currentBall.position.x - prevPosition.x) * t,
+        y: prevPosition.y + (currentBall.position.y - prevPosition.y) * t,
+      };
+      let collidedThisSub = false;
+      for (const obs of hole.obstacles) {
+        const probe: Ball = { ...currentBall, position: samplePos };
+        const col = checkObstacleCollision(probe, obs, hole);
+        if (col.collided) {
+          if (col.newPosition) currentBall.position = col.newPosition;
+          if (col.newVelocity) currentBall.velocity = col.newVelocity;
+          if (col.penalty === "water") waterPenalty = true;
+          collidedThisSub = true;
+          break;
+        }
+      }
+      if (collidedThisSub) break;
+    }
+
+    // Cup gravity: when the ball is near the cup and rolling slowly, gently
+    // pull it toward the centre so good shots fall in satisfyingly. The pull
+    // is small so it never feels fake and fast shots still lip out.
+    const distToCup = distance(currentBall.position, hole.cupPosition);
+    const speed = magnitude(currentBall.velocity);
+    if (distToCup < hole.cupRadius * 3 && speed < 3) {
+      const pull = normalize({
+        x: hole.cupPosition.x - currentBall.position.x,
+        y: hole.cupPosition.y - currentBall.position.y,
+      });
+      const strength = (1 - distToCup / (hole.cupRadius * 3)) * 0.35;
+      currentBall.velocity = {
+        x: currentBall.velocity.x + pull.x * strength,
+        y: currentBall.velocity.y + pull.y * strength,
+      };
+    }
 
     if (stepCount % recordEvery === 0) {
       steps.push({ ...currentBall });
@@ -352,9 +435,9 @@ export function simulateShotSteps(
       break;
     }
 
-    // Cup check
-    const distToCup = distance(currentBall.position, hole.cupPosition);
-    if (distToCup < hole.cupRadius + 6 && magnitude(currentBall.velocity) < 12) {
+    // Sink check: ball must be over the cup AND slow enough, otherwise it
+    // rolls over / lips out. Sink radius is tighter than the visual cup.
+    if (distToCup < hole.cupRadius && magnitude(currentBall.velocity) < 12) {
       currentBall.isInHole = true;
       currentBall.isMoving = false;
       currentBall.velocity = { x: 0, y: 0 };
