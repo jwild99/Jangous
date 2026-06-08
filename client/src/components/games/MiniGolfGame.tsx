@@ -516,7 +516,8 @@ export default function MiniGolfGame({ match, currentUserId }: MiniGolfGameProps
     // Display ball: use animated position if animating, else real position
     // Only use animated ball for this player's own shot animation
   const isMyAnimation = isAnimatingRef.current && animBallRef.current;
-  const displayBall = isMyAnimation ? animBallRef.current! : gameState[playerKey].ball;Background ──────────────────────────────────────────────────────────
+  const displayBall = isMyAnimation ? animBallRef.current! : gameState[playerKey].ball;
+  // ── Background ──────────────────────────────────────────────────────────
     ctx.fillStyle = T.bg;
     ctx.fillRect(0, 0, W, H);
 
