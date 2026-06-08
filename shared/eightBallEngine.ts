@@ -6,12 +6,12 @@ export interface Ball {
   y: number;
   vx: number;
   vy: number;
-  rotation?: number;  // radians — accumulates as the ball rolls (undefined-safe for old states)
+  rotation?: number;  // radians â accumulates as the ball rolls (undefined-safe for old states)
   type: BallType;
   pocketed: boolean;
   number: number;
   // Stored cue-ball "english" (contact offset), consumed at first ball contact.
-  // spinX: side english (−1 left … +1 right). spinY: follow (+1) ↔ draw (−1).
+  // spinX: side english (â1 left â¦ +1 right). spinY: follow (+1) â draw (â1).
   spinX?: number;
   spinY?: number;
 }
@@ -43,24 +43,24 @@ const TABLE_WIDTH  = 800;
 const TABLE_HEIGHT = 400;
 const BALL_RADIUS  = 10;
 const POCKET_RADIUS = 22;
-const MIN_VELOCITY = 0.02; // lower → balls roll to a more natural full stop
+const MIN_VELOCITY = 0.02; // lower â balls roll to a more natural full stop
 
-// ── Pre-computed collision constants (hoisted out of hot loops) ───────────────
+// ââ Pre-computed collision constants (hoisted out of hot loops) âââââââââââââââ
 const BALL_DIAMETER    = BALL_RADIUS * 2;        // 20
 const BALL_DIAMETER_SQ = BALL_DIAMETER * BALL_DIAMETER; // 400
 
-// ── Motion model ─────────────────────────────────────────────────────────────
+// ââ Motion model âââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 // Rolling resistance: subtract a FIXED amount of speed each frame (linear
 // deceleration) instead of a flat multiplier. This matches real rolling balls
 // and gives a long, natural roll-out followed by a clean stop.
-const ROLL_DECEL = 0.04; // much lower → balls glide long like the reference
+const ROLL_DECEL = 0.04; // much lower â balls glide long like the reference
 const SUBSTEPS = 6;
 
-// ── Physics boundaries ────────────────────────────────────────────────────────
+// ââ Physics boundaries ââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 const PHYS_RAIL          = 22;
-const CUSHION_REST       = 0.88;  // higher → balls keep more energy off rails
-const CUSHION_TANGENTIAL = 0.92;  // higher → less sideways scrub on cushion
-const BALL_REST          = 0.97;  // higher → ball-ball collisions stay livelier
+const CUSHION_REST       = 0.88;  // higher â balls keep more energy off rails
+const CUSHION_TANGENTIAL = 0.92;  // higher â less sideways scrub on cushion
+const BALL_REST          = 0.97;  // higher â ball-ball collisions stay livelier
 
 const CORNER_MOUTH = 30;
 const SIDE_MOUTH   = 28;
@@ -70,7 +70,7 @@ const RIGHT  = TABLE_WIDTH  - PHYS_RAIL;
 const TOP    = PHYS_RAIL;
 const BOTTOM = TABLE_HEIGHT - PHYS_RAIL;
 
-// ── Pocket centers (inset to real felt pocket mouths) ─────────────────────────
+// ââ Pocket centers (inset to real felt pocket mouths) âââââââââââââââââââââââââ
 const CORNER_POCKET_INSET = CORNER_MOUTH * 0.55 * 0.6;
 const SIDE_POCKET_INSET   = POCKET_RADIUS * 0.7;
 
@@ -121,7 +121,7 @@ export function createInitialState(): EightBallState {
   };
 }
 
-// ── Fast structural clone — only at turn transitions, never per physics frame ─
+// ââ Fast structural clone â only at turn transitions, never per physics frame â
 export function cloneState(state: EightBallState): EightBallState {
   return {
     ...state,
@@ -154,7 +154,7 @@ export function executeShot(
   return next;
 }
 
-// ── Spin / english model ──────────────────────────────────────────────────────
+// ââ Spin / english model ââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 const FOLLOW_K  = 0.5;
 const ENGLISH_K = 0.32;
 function applyCueSpin(cue: Ball, nx: number, ny: number, towardTarget: boolean, impactSpeed: number) {
@@ -171,7 +171,7 @@ function applyCueSpin(cue: Ball, nx: number, ny: number, towardTarget: boolean, 
   cue.spinY = 0;
 }
 
-// ── Wall collision with pocket openings + tangential rail friction ─────────────
+// ââ Wall collision with pocket openings + tangential rail friction âââââââââââââ
 function applyWallCollision(ball: Ball): boolean {
   let hit = false;
 
@@ -224,7 +224,7 @@ function applyWallCollision(ball: Ball): boolean {
   return hit;
 }
 
-// ── Ball-ball elastic collision — two passes per sub-step for stability ────────
+// ââ Ball-ball elastic collision â two passes per sub-step for stability ââââââââ
 function applyBallCollision(b1: Ball, b2: Ball): boolean {
   const dx = b2.x - b1.x;
   const dy = b2.y - b1.y;
@@ -266,7 +266,7 @@ function applyBallCollision(b1: Ball, b2: Ball): boolean {
   return true;
 }
 
-// ── Main physics step — mutates balls in place, no per-frame allocation ────────
+// ââ Main physics step â mutates balls in place, no per-frame allocation ââââââââ
 export function simulatePhysics(state: EightBallState): EightBallState {
   const balls = state.balls;
 
@@ -278,7 +278,7 @@ export function simulatePhysics(state: EightBallState): EightBallState {
       ball.y += ball.vy / SUBSTEPS;
       // Accumulate visual rotation: angular velocity = linear speed / radius
       const spd = Math.sqrt(ball.vx * ball.vx + ball.vy * ball.vy);
-      ball.rotation = (ball.rotation ?? 0) + spd / (BALL_RADIUS * SUBSTEPS);
+      ball.rotation = (ball.rotation ?? 0) + ball.vx / (BALL_RADIUS * SUBSTEPS);
     }
 
     // Cushion collisions
@@ -286,7 +286,7 @@ export function simulatePhysics(state: EightBallState): EightBallState {
       if (!ball.pocketed) applyWallCollision(ball);
     }
 
-    // Ball-ball collisions — TWO passes per sub-step for dense-rack stability
+    // Ball-ball collisions â TWO passes per sub-step for dense-rack stability
     for (let pass = 0; pass < 2; pass++) {
       for (let i = 0; i < balls.length; i++) {
         for (let j = i + 1; j < balls.length; j++) {
@@ -318,7 +318,7 @@ export function simulatePhysics(state: EightBallState): EightBallState {
     }
   }
 
-  // Rolling deceleration — linear, applied once per frame after all sub-steps
+  // Rolling deceleration â linear, applied once per frame after all sub-steps
   for (const ball of balls) {
     if (ball.pocketed) continue;
     const sp = Math.sqrt(ball.vx * ball.vx + ball.vy * ball.vy);
@@ -338,7 +338,7 @@ export function simulatePhysics(state: EightBallState): EightBallState {
   return state;
 }
 
-// ── Find a non-overlapping cue ball position near a desired spot ───────────────
+// ââ Find a non-overlapping cue ball position near a desired spot âââââââââââââââ
 export function findFreeCuePosition(
   balls: Ball[], desiredX: number, desiredY: number,
 ): { x: number; y: number } {
@@ -367,7 +367,7 @@ export function findFreeCuePosition(
   return { x: cx, y: cy };
 }
 
-// ── Compute wall-bounce aim line segments (for renderer trajectory preview) ────
+// ââ Compute wall-bounce aim line segments (for renderer trajectory preview) ââââ
 // Returns up to `maxBounces` segments. Each segment is {x1,y1,x2,y2}.
 export function computeWallBounceTrajectory(
   startX: number, startY: number, dirX: number, dirY: number,
@@ -421,7 +421,7 @@ function evaluateTurn(s: EightBallState): EightBallState {
 
   if (!s.validHit && !s.foul) s.foul = true;
 
-  // ── Break shot group assignment ──────────────────────────────────────────
+  // ââ Break shot group assignment ââââââââââââââââââââââââââââââââââââââââââ
   // FIX: only set breakCompleted = true AFTER a group ball is actually found.
   // This prevents the state getting stuck with null groups if only the 8-ball
   // or no ball was pocketed on break.
