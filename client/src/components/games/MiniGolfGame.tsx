@@ -188,10 +188,10 @@ export default function MiniGolfGame({ match, currentUserId }: MiniGolfGameProps
   const isPlayer1 = match.player1Id === currentUserId;
   const playerKey = isPlayer1 ? "player1" : "player2";
 
-  // ── Sync game state from match prop ──────────────────────────────────────
-  useEffect(() => {
-    if (match.gameState) setGameState(match.gameState as MiniGolfGameState);
-  }, [match.gameState]);
+  // NOTE: match.gameState sync via useEffect intentionally removed.
+  // It caused the snap-back bug: React Query refetches match after bot-move,
+  // updating match.gameState with server state mid-animation, teleporting the ball.
+  // Initial state is set via useState() initializer. Live sync comes from WS only.
 
   // ── WebSocket ─────────────────────────────────────────────────────────────
   useEffect(() => {
@@ -269,7 +269,12 @@ export default function MiniGolfGame({ match, currentUserId }: MiniGolfGameProps
         if (r.ok) {
           const data = await r.json();
           if (data.move?.gameState) {
-            setGameState(data.move.gameState);
+            // Buffer like WS: don't interrupt animation with a state jump
+            if (isAnimatingRef.current) {
+              pendingGameStateRef.current = data.move.gameState;
+            } else {
+              setGameState(data.move.gameState);
+            }
           }
         }
       } catch (err) { console.error("[MiniGolf bot]", err); }
@@ -879,7 +884,7 @@ function drawAimLine(
     ctx.closePath();
     ctx.fill();
 
-    // Trajectory preview dots — scaled to match new shot power (shotSpeed = 2 + power * 4)
+    // Trajectory preview dots — shot speed 1.5 + (power/100) * 5.5 = 1.5-7.0 px/step
     const DOT_COUNT = 8;
     const velScale  = (2 + power * 4.0) * 0.016;
     let px = ballPos.x, py = ballPos.y;
