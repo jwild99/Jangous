@@ -380,27 +380,17 @@ export function computeWallBounceTrajectory(
   let remaining = maxLen;
 
   for (let bounce = 0; bounce <= maxBounces; bounce++) {
-    // How far to each wall
     const tLeft   = dx < 0 ? (LEFT   + BALL_RADIUS - x) / dx : Infinity;
     const tRight  = dx > 0 ? (RIGHT  - BALL_RADIUS - x) / dx : Infinity;
     const tTop    = dy < 0 ? (TOP    + BALL_RADIUS - y) / dy : Infinity;
     const tBottom = dy > 0 ? (BOTTOM - BALL_RADIUS - y) / dy : Infinity;
-
-    const tWall = Math.min(
-      tLeft  > 0 ? tLeft  : Infinity,
-      tRight > 0 ? tRight : Infinity,
-      tTop   > 0 ? tTop   : Infinity,
-      tBottom > 0 ? tBottom : Infinity,
-    );
-
+    const tWall = Math.min(tLeft > 0 ? tLeft : Infinity,tRight > 0 ? tRight : Infinity,tTop > 0 ? tTop : Infinity,tBottom > 0 ? tBottom : Infinity);
     const tStep = Math.min(tWall, remaining);
     const ex = x + dx * tStep;
     const ey = y + dy * tStep;
     segs.push({ x1: x, y1: y, x2: ex, y2: ey });
     remaining -= tStep;
     if (remaining <= 0 || bounce === maxBounces) break;
-
-    // Reflect direction
     if (tStep === tLeft || tStep === tRight)  dx = -dx;
     if (tStep === tTop  || tStep === tBottom) dy = -dy;
     x = ex; y = ey;
@@ -419,88 +409,46 @@ function evaluateTurn(s: EightBallState): EightBallState {
       cue.vx = 0; cue.vy = 0;
     }
   }
-
   if (!s.validHit && !s.foul) s.foul = true;
-
-  // ── Break shot group assignment ──────────────────────────────────────────
-  // FIX: only set breakCompleted = true AFTER a group ball is actually found.
-  // This prevents the state getting stuck with null groups if only the 8-ball
-  // or no ball was pocketed on break.
   if (!s.breakCompleted && s.lastShotPocketed.length > 0) {
-    const first = s.balls.find(b =>
-      b.pocketed && b.type !== "cue" && b.type !== "eight" &&
-      s.lastShotPocketed.includes(b.number)
-    );
+    const first = s.balls.find(b => b.pocketed && b.type !== "cue" && b.type !== "eight" && s.lastShotPocketed.includes(b.number));
     if (first) {
-      s.breakCompleted = true; // only flip once a real group ball is found
-      if (s.currentPlayer === "player1") {
-        s.player1Group = first.type;
-        s.player2Group = first.type === "solid" ? "stripe" : "solid";
-      } else {
-        s.player2Group = first.type;
-        s.player1Group = first.type === "solid" ? "stripe" : "solid";
-      }
+      s.breakCompleted = true;
+      if (s.currentPlayer === "player1") { s.player1Group = first.type; s.player2Group = first.type === "solid" ? "stripe" : "solid"; }
+      else { s.player2Group = first.type; s.player1Group = first.type === "solid" ? "stripe" : "solid"; }
     }
   }
-
   const eight = s.balls.find(b => b.type === "eight");
   if (eight?.pocketed) {
-    const myGroup  = s.currentPlayer === "player1" ? s.player1Group : s.player2Group;
+    const myGroup = s.currentPlayer === "player1" ? s.player1Group : s.player2Group;
     const remaining = s.balls.filter(b => b.type === myGroup && !b.pocketed).length;
-    if (remaining === 0 && !s.foul) {
-      s.winner = s.currentPlayer;
-    } else {
-      s.winner = s.currentPlayer === "player1" ? "player2" : "player1";
-    }
+    s.winner = remaining === 0 && !s.foul ? s.currentPlayer : (s.currentPlayer === "player1" ? "player2" : "player1");
     s.gameOver = true;
   }
-
-  if (!s.gameOver && (s.foul || s.lastShotPocketed.length === 0)) {
-    s.currentPlayer = s.currentPlayer === "player1" ? "player2" : "player1";
-  }
-
+  if (!s.gameOver && (s.foul || s.lastShotPocketed.length === 0)) s.currentPlayer = s.currentPlayer === "player1" ? "player2" : "player1";
   return s;
 }
 
 export function getValidMoves(state: EightBallState): { angle: number; power: number }[] {
   const moves: { angle: number; power: number }[] = [];
-  for (let a = 0; a < Math.PI * 2; a += Math.PI / 8) {
-    for (const p of [30, 55, 80]) {
-      moves.push({ angle: a, power: p });
-    }
-  }
+  for (let a = 0; a < Math.PI * 2; a += Math.PI / 8) { for (const p of [30, 55, 80]) { moves.push({ angle: a, power: p }); } }
   return moves;
 }
 
-export function findFirstBallContact(
-  cueBall: Ball, aimAngle: number, balls: Ball[],
-): { contactX: number; contactY: number; hitBall: Ball } | null {
-  const rdx = Math.cos(aimAngle);
-  const rdy = Math.sin(aimAngle);
-  let minT = Infinity;
-  let result: { contactX: number; contactY: number; hitBall: Ball } | null = null;
-
+export function findFirstBallContact(cueBall: Ball, aimAngle: number, balls: Ball[]): { contactX: number; contactY: number; hitBall: Ball } | null {
+  const rdx = Math.cos(aimAngle), rdy = Math.sin(aimAngle);
+  let minT = Infinity, result = null;
   for (const ball of balls) {
     if (ball.pocketed || ball.type === "cue") continue;
-    const fx = ball.x - cueBall.x;
-    const fy = ball.y - cueBall.y;
-    const b  = fx * rdx + fy * rdy;
+    const fx = ball.x - cueBall.x, fy = ball.y - cueBall.y;
+    const b = fx * rdx + fy * rdy;
     if (b <= 0) continue;
-    const c    = fx * fx + fy * fy - BALL_DIAMETER_SQ;
-    const disc = b * b - c;
+    const c = fx * fx + fy * fy - BALL_DIAMETER_SQ, disc = b * b - c;
     if (disc < 0) continue;
     const t = b - Math.sqrt(disc);
-    if (t > 0 && t < minT) {
-      minT = t;
-      result = { contactX: cueBall.x + rdx * t, contactY: cueBall.y + rdy * t, hitBall: ball };
-    }
+    if (t > 0 && t < minT) { minT = t; result = { contactX: cueBall.x + rdx * t, contactY: cueBall.y + rdy * t, hitBall: ball }; }
   }
   return result;
 }
 
-export const EIGHT_BALL_CONSTANTS = {
-  TABLE_WIDTH,
-  TABLE_HEIGHT,
-  BALL_RADIUS,
-  POCKET_RADIUS,
-  PHYS
+export const EIGHT_BALL_CONSTANTS = { TABLE_WIDTH, TABLE_HEIGHT, BALL_RADIUS, POCKET_RADIUS, PHYS_RAIL, CORNER_MOUTH, SIDE_MOUTH };
