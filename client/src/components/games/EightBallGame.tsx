@@ -1492,4 +1492,22 @@ export default function EightBallGame({ match, currentUserId }: EightBallGamePro
           )}
 
           {/* Game over actions */}
-          {gameState.gameOver &&
+          {gameState.gameOver && (
+            <div className="flex gap-2 justify-center mt-3">
+              <Button
+                size="sm"
+                className="bg-primary/90 hover:bg-primary shadow-lg shadow-primary/25 font-bold px-6"
+                onClick={() => setGameState(createInitialState())}
+              >
+                Play Again
+              </Button>
+              <Button size="sm" variant="ghost" onClick={() => setLocation("/")}>
+                Leave
+              </Button>
+            </div>
+          )}
+        </div>{/* /atmospheric pool hall wrapper */}
+      </div>
+    </GameLayout>
+  );
+}
