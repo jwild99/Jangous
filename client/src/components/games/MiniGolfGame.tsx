@@ -261,7 +261,8 @@ export default function MiniGolfGame({ match, currentUserId }: MiniGolfGameProps
     botTimersRef.current.clear();
   }, []);
 
-  // ── Bot trigger ───────────────────────────────────────────────────────────  useEffect(() => {
+  // ── Bot trigger ───────────────────────────────────────────────────────────
+  useEffect(() => {
     if (!match.isBotMatch || match.isPractice || match.status !== "in-progress") return;
     if (gameState.currentTurn !== "player2" || gameState.isMatchComplete) return;
     // Safety: don't fire if bot already finished this hole, summary showing, or animating
