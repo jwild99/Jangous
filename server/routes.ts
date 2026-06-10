@@ -2270,7 +2270,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (mgState.currentTurn !== botPlayer || mgState.isMatchComplete) {
         move = { gameState: mgState };
       } else if (mgState.player2.holeComplete) {
-        move = { gameState: mgState };
+        if (mgState.player1.holeComplete) {
+          console.log('[MiniGolf bot-move] Both holeComplete in guard, advancing hole', mgState.currentHole);
+          let advGs = advanceToNextHole(mgState);
+          await storage.updateMatchState(matchId, advGs);
+          if (advGs.isMatchComplete) { const sc = calculateTotalScore(advGs); const wId = sc.winner === 'player1' ? match.player1Id : sc.winner === 'player2' ? (match.player2Id || null) : null; const cm = await storage.completeMiniGolfMatch(matchId, wId, sc.player1Total, sc.player2Total, advGs); await achievementService.checkAndAwardAchievements(cm); }
+          const mc = matchConnections.get(matchId); if (mc) { const adMsg = JSON.stringify({ type: 'mini-golf-shot', matchId, gameState: advGs }); mc.forEach((c: any) => { if (c.readyState === WebSocket.OPEN) c.send(adMsg); }); }
+          move = { gameState: advGs };
+        } else { move = { gameState: mgState }; }
       } else if (mgState.player2.strokes >= 8) {
         move = { gameState: mgState };
       } else {
@@ -5526,10 +5533,27 @@ export async function registerRoutes(app: Express): Promise<Server> {
             const bothPlayersComplete = newGameState.player1.holeComplete && newGameState.player2.holeComplete;
 
             // Advance to next hole if both complete (or practice mode after player completes)
-            let finalGameState = newGameState;
-            if (bothPlayersComplete || (match.isPractice && newGameState[player].holeComplete)) {
-              finalGameState = advanceToNextHole(newGameState);
-            }
+        let finalGameState = newGameState;
+        if (bothPlayersComplete || (match.isPractice && newGameState[player].holeComplete)) {
+          finalGameState = advanceToNextHole(newGameState);
+          console.log('[MiniGolf WS] Both done, advancing to hole', finalGameState.currentHole);
+        } else if (match.isBotMatch && newGameState.player1.holeComplete && !newGameState.player2.holeComplete) {
+          // Human done in bot match — run bot shots inline so the hole advances in this same request.
+          // Eliminates the stall where client would need to call /api/bot-move after a WS round-trip.
+          console.log('[MiniGolf WS] Human done, bot inline on hole', newGameState.currentHole);
+          const bHD = getHoleDefinition(newGameState.currentHole, newGameState.matchSeed);
+          const bCP = bHD ? bHD.cupPosition : { x: 380, y: 60 };
+          const bDf = (match.botDifficulty || 'medium') as 'easy' | 'medium' | 'hard';
+          let bGs = newGameState;
+          let bIter = 0;
+          while (!bGs.player2.holeComplete && bGs.player2.strokes < MAX_STROKES_PER_HOLE && bIter < 10) {
+            const bV: Vector2 = generateMiniGolfShot(bGs as any, bCP, bDf, bHD);
+            bGs = processShot(bGs, 'player2', bV);
+            bIter++;
+          }
+          finalGameState = advanceToNextHole(bGs);
+          console.log('[MiniGolf WS] Bot inline done, advancing to hole', finalGameState.currentHole);
+        }
 
             // Save game state
             await storage.updateMatchState(match.id, finalGameState);
