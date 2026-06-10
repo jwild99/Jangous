@@ -13,6 +13,7 @@ import {
   simulateShotSteps,
   advanceToNextHole,
   magnitude,
+  powerToSpeed,
   MAX_STROKES_PER_HOLE,
 } from "@shared/miniGolfEngine";
 import { ArrowLeft, Trophy, Flag, Zap, ChevronRight } from "lucide-react";
@@ -934,7 +935,7 @@ function drawAimLine(
 
     // Trajectory preview dots — shot speed 1.5 + (power/100) * 5.5 = 1.5-7.0 px/step
     const DOT_COUNT = 8;
-    const velScale  = (2 + power * 4.0) * 0.016;
+        const velScale = powerToSpeed(power / 100) * 0.016;
     let px = ballPos.x, py = ballPos.y;
     let vx = Math.cos(angle) * velScale, vy = Math.sin(angle) * velScale;
     for (let d = 0; d < DOT_COUNT; d++) {
@@ -1165,10 +1166,9 @@ function drawAimLine(
 
     const currentAngle = angleRef.current;
     const currentPower = powerRef.current;
-    // Scale power: 0% = gentle 2px/step, 100% = strong 402px/s (travels ~370px on fairway)
-    // Power 0-100 → speed 1.5–7 px/step for sane ball travel distance
-    const powerFrac = Math.min(Math.max(currentPower, 0), 100) / 100;
-    const shotSpeed = 1.5 + powerFrac * 5.5;
+  // powerToSpeed: curve-mapped (exponent 1.35), matches engine ROLL_DECEL.
+  // Max 9.25px/step on full power. Min 0.95px/step on tap.
+  const shotSpeed = powerToSpeed(Math.min(Math.max(currentPower, 0), 100) / 100);
     const velocity = {
       x: Math.cos(currentAngle) * shotSpeed,
       y: Math.sin(currentAngle) * shotSpeed,
