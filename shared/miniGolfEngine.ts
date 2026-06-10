@@ -90,24 +90,36 @@ export interface MiniGolfGameState {
   matchSeed?: string; // Match ID used for procedural hole generation
 }
 
-// ─── Physics constants ─────────────────────────────────────────────────────
-// Physics constants
-// Velocity units: pixels per physics step (NOT per second).
-// physicsStep runs once per simulation step; position += velocity (no dt scaling).
-// At 60 sim steps recorded every 2 (recordEvery=2) → 30 visual keyframes.
-// Shot speed 1-7 px/step gives readable travel distances on a 400-600px course.
-const FRICTION = 0.988;           // per-step multiplier: 0.988^60 ≈ 0.48 remaining after 1 sec
-const BOUNCE_DAMPING = 0.68;      // normal-component restitution on rail/boundary hits
-const WALL_TANGENT_FRICTION = 0.06; // tangent friction — kills wall-sticking without over-damping
-const MIN_VELOCITY = 0.05;        // stop threshold in px/step — kills drift, not real shots
-const PHYSICS_TIMESTEP = 1;       // velocity already in px/step: position += velocity * 1
-const MAX_SIMULATION_STEPS = 800; // ~13 sec max at 60 steps/sec
-const SAND_FRICTION = 0.92;       // heavier per-step damping inside sand bunkers
+// ─── Physics constants ────────────────────────────────────────────
+// Velocity in px/physics-step. physicsStep called once per sim step.
+//
+// FRICTION MODEL: constant linear decel per step (adapted from SodiumFRP/mini-golf:
+//   Signal(t0, a=-70, v0, 0) => pos = -70t^2 + v0*t => constant decel = 140 px/s^2).
+//   We subtract ROLL_DECEL from speed each step. Stops infinite low-speed crawl.
+//   Ball travels v^2/(2*ROLL_DECEL) px total. At 9.25px/step => ~503px on course.
+const ROLL_DECEL = 0.085;   // px/step fairway decel (replaces FRICTION=0.988)
+const SAND_DECEL = 0.22;    // px/step sand decel (replaces SAND_FRICTION=0.92)
+const BOUNCE_DAMPING = 0.74; // wall restitution (spec 0.74, was 0.68)
+const WALL_TANGENT_FRICTION = 0.06; // tangent friction on wall slides
+const MIN_VELOCITY = 0.045;  // magnitude stop threshold px/step (spec 0.045)
+const PHYSICS_TIMESTEP = 1;  // position += velocity each step
+const MAX_SIMULATION_STEPS = 800; // ~13 sec at 60 steps/sec
 
 // ─── Gameplay constants ────────────────────────────────────────────────────
 // Hard cap on strokes per hole. If a player can't sink the ball in this many
 // strokes, the hole is considered finished for them (prevents infinite bot loops).
 export const MAX_STROKES_PER_HOLE = 8;
+
+// ─── Shot power curve ────────────────────────────────────────────
+// Maps power 0..1 to ball speed px/step. Power-curve exponent 1.35 means
+// gentle taps still get decent movement; max shot 9.25px/step => ~503px travel.
+export function powerToSpeed(power01: number): number {
+  const MIN_SPEED = 0.95;
+  const MAX_SPEED = 9.25;
+  const CURVE    = 1.35;
+  const p = Math.max(0, Math.min(1, power01));
+  return MIN_SPEED + (MAX_SPEED - MIN_SPEED) * Math.pow(p, CURVE);
+}
 
 // ─── Vector utilities ──────────────────────────────────────────────────────
 export function addVectors(v1: Vector2, v2: Vector2): Vector2 {
@@ -226,7 +238,8 @@ export function checkObstacleCollision(
   if (obstacle.type === "sand") {
     const dist = distance(ball.position, { x: obstacle.x, y: obstacle.y });
     if (dist < obstacle.radius) {
-      return { collided: true, newVelocity: scaleVector(ball.velocity, SAND_FRICTION) };
+      // Sand drag now handled continuously by SAND_DECEL in physicsStep
+      return { collided: true }; // flag in-sand; decel applied per step above
     }
   }
 
@@ -260,15 +273,29 @@ function physicsStep(ball: Ball, hole: HoleDefinition): { ball: Ball; waterPenal
   let currentBall = { ...ball };
   let waterPenalty = false;
 
-  // Friction — check sand first
-  let currentFriction = FRICTION;
-  for (const obs of hole.obstacles) {
-    if (obs.type === "sand") {
-      const dist = distance(currentBall.position, { x: obs.x, y: obs.y });
-      if (dist < obs.radius) { currentFriction = SAND_FRICTION; break; }
+  // Constant linear decel (SodiumFRP-style): subtract fixed amount per step.
+  // Eliminates multiplicative friction's infinite low-speed crawl.
+  {
+    const spd = magnitude(currentBall.velocity);
+    if (spd > 0) {
+      let isInSand = false;
+      for (const obs of hole.obstacles) {
+        if (obs.type === "sand") {
+          if (distance(currentBall.position, { x: obs.x, y: obs.y }) < obs.radius) {
+            isInSand = true; break;
+          }
+        }
+      }
+      const decel = isInSand ? SAND_DECEL : ROLL_DECEL;
+      const newSpd = Math.max(0, spd - decel);
+      if (newSpd === 0) {
+        currentBall.velocity = { x: 0, y: 0 };
+      } else {
+        const sc = newSpd / spd;
+        currentBall.velocity = { x: currentBall.velocity.x * sc, y: currentBall.velocity.y * sc };
+      }
     }
   }
-  currentBall.velocity = scaleVector(currentBall.velocity, currentFriction);
 
   // Stop check
   if (magnitude(currentBall.velocity) < MIN_VELOCITY) {
