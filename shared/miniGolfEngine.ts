@@ -97,7 +97,7 @@ export interface MiniGolfGameState {
 //   Signal(t0, a=-70, v0, 0) => pos = -70t^2 + v0*t => constant decel = 140 px/s^2).
 //   We subtract ROLL_DECEL from speed each step. Stops infinite low-speed crawl.
 //   Ball travels v^2/(2*ROLL_DECEL) px total. At 9.25px/step => ~503px on course.
-const ROLL_DECEL = 0.085;   // px/step fairway decel (replaces FRICTION=0.988)
+const ROLL_DECEL = 0.026;   // px/step fairway decel — tuned for natural 2–5s roll-out
 const SAND_DECEL = 0.22;    // px/step sand decel (replaces SAND_FRICTION=0.92)
 const BOUNCE_DAMPING = 0.74; // wall restitution (spec 0.74, was 0.68)
 const WALL_TANGENT_FRICTION = 0.06; // tangent friction on wall slides
@@ -114,9 +114,9 @@ export const MAX_STROKES_PER_HOLE = 8;
 // Maps power 0..1 to ball speed px/step. Power-curve exponent 1.35 means
 // gentle taps still get decent movement; max shot 9.25px/step => ~503px travel.
 export function powerToSpeed(power01: number): number {
-  const MIN_SPEED = 0.95;
-  const MAX_SPEED = 9.25;
-  const CURVE    = 1.35;
+  const MIN_SPEED = 0.9;
+  const MAX_SPEED = 6.0;
+  const CURVE    = 1.2;
   const p = Math.max(0, Math.min(1, power01));
   return MIN_SPEED + (MAX_SPEED - MIN_SPEED) * Math.pow(p, CURVE);
 }
@@ -399,7 +399,7 @@ export function simulateShot(
     }
 
     // Speed-gated sink with a tightened radius (fast shots lip out).
-    if (distToCup < hole.cupRadius && magnitude(currentBall.velocity) < 12) {
+    if (distToCup < hole.cupRadius && magnitude(currentBall.velocity) < 2) {
       currentBall.isInHole = true;
       currentBall.isMoving = false;
       currentBall.velocity = { x: 0, y: 0 };
@@ -484,7 +484,7 @@ export function simulateShotSteps(
 
     // Sink check: ball must be over the cup AND slow enough, otherwise it
     // rolls over / lips out. Sink radius is tighter than the visual cup.
-    if (distToCup < hole.cupRadius && magnitude(currentBall.velocity) < 12) {
+    if (distToCup < hole.cupRadius && magnitude(currentBall.velocity) < 2) {
       currentBall.isInHole = true;
       currentBall.isMoving = false;
       currentBall.velocity = { x: 0, y: 0 };
