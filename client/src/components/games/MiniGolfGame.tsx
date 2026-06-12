@@ -13,6 +13,7 @@ import {
   simulateShotSteps,
   advanceToNextHole,
   magnitude,
+  powerToSpeed,
   MAX_STROKES_PER_HOLE,
 } from "@shared/miniGolfEngine";
 import { ArrowLeft, Trophy, Flag, Zap, ChevronRight } from "lucide-react";
@@ -45,80 +46,67 @@ interface Theme {
 }
 
 const THEMES: Theme[] = [
-  // ── Theme 0: Classic Golf Course ──────────────────────────────────────────
+  // ── Bright Arcade — matches reference image: checkerboard green, white rails, blue water ──
   {
     name: "classic",
-    bg: "#1a3d0a", bgGrad0: "#2d6b14", bgGrad1: "#102808",
-    grassPrimary: "#2a6012", grassSecondary: "#1e4a0d",
-    grassLine: "#4a8a20", grassLineAlpha: 0.12,
-    wallFill: "#5c3d1e", wallLine: "#8B6914", wallGlow: "#a07828",
-    water: "#1a4a7a", waterRip: "#4488cc", waterGlow: "#2266aa",
-    sand: "#c4a35a", sandDot: "#d4b46a",
-    cup: "#0a0a0a", cupRim: "#4a4a4a", cupGlow: "#888888",
-    flag: "#cc2222",
-    teeText: "#ffffff",
-    aimLine: "#ffffff", aimDot: "#ffff88",
-    ramp: "#8B6914",
-    ambientTop: "rgba(255,240,180,0.06)", ambientBottom: "rgba(0,40,0,0.15)",
-    vignetteColor: "rgba(0,0,0,0.55)",
-    skyColor: "#87ceeb",
+    bg: "#3ec73e",             bgGrad0: "#4fd44f",     bgGrad1: "#2da82d",
+    grassPrimary: "#4acd4a",   grassSecondary: "#38b838", grassLine: "#5de05d", grassLineAlpha: 0.4,
+    wallFill: "#f0f0f0",       wallLine: "#e0e0e0",    wallGlow: "rgba(0,0,0,0.3)",
+    water: "#2196F3",          waterRip: "#64B5F6",    waterGlow: "#1565C0",
+    sand: "#F4C842",           sandDot: "#E6B030",
+    cup: "#111111",            cupRim: "#cccccc",      cupGlow: "#888888",
+    flag: "#ff2222",           teeText: "#ffffff",
+    aimLine: "#ffffff",        aimDot: "#ffff88",
+    ramp: "#9C27B0",
+    ambientTop: "rgba(255,255,255,0.08)",  ambientBottom: "rgba(0,0,0,0.05)",
+    vignetteColor: "rgba(0,0,0,0.15)",     skyColor: "#87ceeb",
   },
-  // ── Theme 1: Neon Arcade ─────────────────────────────────────────────────
+  // ── Neon (holes 4-6) ──────────────────────────────────────────────────────
   {
     name: "neon",
-    bg: "#030e06", bgGrad0: "#081a0c", bgGrad1: "#030e06",
-    grassPrimary: "#061208", grassSecondary: "#030e06",
-    grassLine: "#00e5b0", grassLineAlpha: 0.04,
-    wallFill: "#0d1f10", wallLine: "#00e5b0", wallGlow: "#00ffcc",
-    water: "#00080f", waterRip: "#0044cc", waterGlow: "#0033ff",
-    sand: "#1a0f00", sandDot: "#7a4a00",
-    cup: "#000000", cupRim: "#22ff88", cupGlow: "#00ffaa",
-    flag: "#ff3b58",
-    teeText: "#00e5b0",
-    aimLine: "#ff8c00", aimDot: "#ffcc44",
+    bg: "#030e06",             bgGrad0: "#081a0c",     bgGrad1: "#030e06",
+    grassPrimary: "#061208",   grassSecondary: "#030e06", grassLine: "#00e5b0", grassLineAlpha: 0.04,
+    wallFill: "#0d1f10",       wallLine: "#00e5b0",    wallGlow: "#00ffcc",
+    water: "#00080f",          waterRip: "#0044cc",    waterGlow: "#0033ff",
+    sand: "#1a0f00",           sandDot: "#7a4a00",
+    cup: "#000000",            cupRim: "#22ff88",      cupGlow: "#00ffaa",
+    flag: "#ff3b58",           teeText: "#00e5b0",
+    aimLine: "#ff8c00",        aimDot: "#ffcc44",
     ramp: "#7c3aed",
-    ambientTop: "rgba(0,255,180,0.03)", ambientBottom: "rgba(0,0,0,0.3)",
-    vignetteColor: "rgba(0,0,0,0.7)",
-    skyColor: "#030e06",
+    ambientTop: "rgba(0,255,180,0.03)",    ambientBottom: "rgba(0,0,0,0.3)",
+    vignetteColor: "rgba(0,0,0,0.7)",      skyColor: "#030e06",
   },
-  // ── Theme 2: Beach ────────────────────────────────────────────────────────
+  // ── Beach (holes 7-9) ─────────────────────────────────────────────────────
   {
     name: "beach",
-    bg: "#e8d5a0", bgGrad0: "#d4c070", bgGrad1: "#b8a040",
-    grassPrimary: "#c8b458", grassSecondary: "#b0983a",
-    grassLine: "#a08830", grassLineAlpha: 0.15,
-    wallFill: "#7a5a20", wallLine: "#d4a030", wallGlow: "#ffcc44",
-    water: "#1a6a9a", waterRip: "#44aadd", waterGlow: "#33aaff",
-    sand: "#e8d5a0", sandDot: "#c4a040",
-    cup: "#1a1a1a", cupRim: "#ff8844", cupGlow: "#ff6622",
-    flag: "#ff4422",
-    teeText: "#4a2800",
-    aimLine: "#ff6600", aimDot: "#ffaa44",
+    bg: "#4acd4a",             bgGrad0: "#5ae05a",     bgGrad1: "#38b838",
+    grassPrimary: "#4acd4a",   grassSecondary: "#38b838", grassLine: "#5de05d", grassLineAlpha: 0.4,
+    wallFill: "#f5f5f5",       wallLine: "#e0e0e0",    wallGlow: "rgba(0,0,0,0.25)",
+    water: "#1e90ff",          waterRip: "#64B5F6",    waterGlow: "#0d6efd",
+    sand: "#e8d060",           sandDot: "#c8a820",
+    cup: "#111111",            cupRim: "#ff8844",      cupGlow: "#ff6622",
+    flag: "#ff4422",           teeText: "#1a1a1a",
+    aimLine: "#ff6600",        aimDot: "#ffaa44",
     ramp: "#8B6914",
-    ambientTop: "rgba(255,220,100,0.12)", ambientBottom: "rgba(80,40,0,0.2)",
-    vignetteColor: "rgba(60,30,0,0.5)",
-    skyColor: "#87ceeb",
+    ambientTop: "rgba(255,220,100,0.10)",  ambientBottom: "rgba(0,60,0,0.08)",
+    vignetteColor: "rgba(0,40,0,0.15)",    skyColor: "#87ceeb",
   },
-  // ── Theme 3: Space ────────────────────────────────────────────────────────
+  // ── Space (holes 10+) ─────────────────────────────────────────────────────
   {
     name: "space",
-    bg: "#04020a", bgGrad0: "#0a0520", bgGrad1: "#020108",
-    grassPrimary: "#0a0520", grassSecondary: "#060318",
-    grassLine: "#6644ff", grassLineAlpha: 0.08,
-    wallFill: "#1a0a40", wallLine: "#aa44ff", wallGlow: "#cc66ff",
-    water: "#000820", waterRip: "#2244aa", waterGlow: "#3366cc",
-    sand: "#2a1a40", sandDot: "#6644aa",
-    cup: "#000000", cupRim: "#aa44ff", cupGlow: "#dd88ff",
-    flag: "#ff44aa",
-    teeText: "#aa44ff",
-    aimLine: "#aa44ff", aimDot: "#dd88ff",
+    bg: "#04020a",             bgGrad0: "#0a0520",     bgGrad1: "#020108",
+    grassPrimary: "#0a0520",   grassSecondary: "#060318", grassLine: "#6644ff", grassLineAlpha: 0.08,
+    wallFill: "#1a0a40",       wallLine: "#aa44ff",    wallGlow: "#cc66ff",
+    water: "#000820",          waterRip: "#2244aa",    waterGlow: "#3366cc",
+    sand: "#2a1a40",           sandDot: "#6644aa",
+    cup: "#000000",            cupRim: "#aa44ff",      cupGlow: "#dd88ff",
+    flag: "#ff44aa",           teeText: "#aa44ff",
+    aimLine: "#aa44ff",        aimDot: "#dd88ff",
     ramp: "#4422aa",
-    ambientTop: "rgba(100,50,255,0.05)", ambientBottom: "rgba(0,0,40,0.4)",
-    vignetteColor: "rgba(0,0,0,0.75)",
-    skyColor: "#04020a",
+    ambientTop: "rgba(100,50,255,0.05)",   ambientBottom: "rgba(0,0,40,0.4)",
+    vignetteColor: "rgba(0,0,0,0.75)",     skyColor: "#04020a",
   },
 ];
-
 function getTheme(holeNumber: number): Theme {
   const idx = Math.floor((holeNumber - 1) / 3) % THEMES.length;
   return THEMES[idx];
@@ -167,6 +155,11 @@ export default function MiniGolfGame({ match, currentUserId }: MiniGolfGameProps
   const angleRef       = useRef(0);
   const powerRef       = useRef(0);
   const isAnimatingRef = useRef(false);
+  const pendingGameStateRef = useRef<MiniGolfGameState | null>(null);
+  const botTurnInProgressRef = useRef(false); // Mutex: prevents multiple simultaneous bot shots
+  const processedShotIdsRef = useRef<Set<string>>(new Set()); // Dedup: prevents double-scoring
+  const gamePhaseRef = useRef<string>("AWAITING_HUMAN_SHOT"); // State machine phase tracker
+  const lastResetReasonRef = useRef<string | null>(null); // Debug: why ball was last reset
 
   // rAF animation
   const rafRef               = useRef<number>();
@@ -200,10 +193,10 @@ export default function MiniGolfGame({ match, currentUserId }: MiniGolfGameProps
   const isPlayer1 = match.player1Id === currentUserId;
   const playerKey = isPlayer1 ? "player1" : "player2";
 
-  // ── Sync game state from match prop ──────────────────────────────────────
-  useEffect(() => {
-    if (match.gameState) setGameState(match.gameState as MiniGolfGameState);
-  }, [match.gameState]);
+  // NOTE: match.gameState sync via useEffect intentionally removed.
+  // It caused the snap-back bug: React Query refetches match after bot-move,
+  // updating match.gameState with server state mid-animation, teleporting the ball.
+  // Initial state is set via useState() initializer. Live sync comes from WS only.
 
   // ── WebSocket ─────────────────────────────────────────────────────────────
   useEffect(() => {
@@ -218,7 +211,12 @@ export default function MiniGolfGame({ match, currentUserId }: MiniGolfGameProps
       const data = JSON.parse(event.data);
 
       if (data.type === "mini-golf-update" && data.matchId === match.id) {
-        setGameState(data.gameState);
+        // Buffer like mini-golf-shot: never interrupt active ball animation
+        if (isAnimatingRef.current) {
+          pendingGameStateRef.current = data.gameState;
+        } else {
+          setGameState(data.gameState);
+        }
         if (data.penalty === "water") {
           toast({ title: "Water Penalty!", description: "+1 stroke, ball returned to start", variant: "destructive" });
         }
@@ -228,7 +226,12 @@ export default function MiniGolfGame({ match, currentUserId }: MiniGolfGameProps
           setTimeout(() => setLocation("/lobby"), 3000);
         }
       } else if (data.type === "mini-golf-shot" && data.matchId === match.id) {
-        setGameState(data.gameState);
+        // Buffer incoming state — apply after any running animation completes to prevent ball teleport
+        if (isAnimatingRef.current) {
+          pendingGameStateRef.current = data.gameState;
+        } else {
+          setGameState(data.gameState);
+        }
         if (data.gameState.isMatchComplete) {
           const w = data.gameState.winner;
           toast({ title: "Match Complete", description: w === "tie" ? "It's a tie!" : w === playerKey ? "You win!" : "Opponent wins!" });
@@ -263,31 +266,63 @@ export default function MiniGolfGame({ match, currentUserId }: MiniGolfGameProps
   useEffect(() => {
     if (!match.isBotMatch || match.isPractice || match.status !== "in-progress") return;
     if (gameState.currentTurn !== "player2" || gameState.isMatchComplete) return;
-    // Safety: don't fire if bot already finished this hole, summary is showing,
-    // or the player's ball is mid-flight.
+    // Safety: don't fire if bot already finished this hole, summary showing, or animating
     if (gameState.player2.holeComplete) return;
     if (holeSummary) return;
     if (isAnimatingRef.current) return;
-
+    // MUTEX: only one bot turn at a time — prevents multiple API calls from rapid re-renders
+    if (botTurnInProgressRef.current) {
+      console.log('[MiniGolf bot] BOT_TURN_BLOCKED_ALREADY_IN_PROGRESS');
+      return;
+    }
+    botTurnInProgressRef.current = true;
+    gamePhaseRef.current = "BOT_THINKING";
     setBotStatus(`Bot is aiming… (shot ${gameState.player2.strokes + 1}/${MAX_STROKES_PER_HOLE})`);
+    console.log('[MiniGolf] BOT_TURN_START hole=' + gameState.currentHole + ' strokes=' + gameState.player2.strokes);
     const timer = setTimeout(async () => {
       try {
         const r = await fetch(`/api/matches/${match.id}/bot-move`, { method: "POST", credentials: "include" });
         if (r.ok) {
           const data = await r.json();
-          if (data.move?.gameState) setGameState(data.move.gameState);
+          if (data.move?.gameState) {
+            const newGs = data.move.gameState;
+            // ShotId dedup: prevents double-scoring from duplicate API responses
+            const shotId = `${match.id}-h${gameState.currentHole}-bot-s${gameState.player2.strokes + 1}`;
+            if (processedShotIdsRef.current.has(shotId)) {
+              console.warn('[MiniGolf] BLOCKED_DUPLICATE_SCORE', shotId);
+            } else {
+              processedShotIdsRef.current.add(shotId);
+              console.log('[MiniGolf] SHOT_RESULT_CONFIRMED', shotId, 'strokes=', newGs.player2?.strokes);
+              gamePhaseRef.current = "BOT_RESULT_PENDING";
+              // Buffer like WS: don't interrupt animation with a state jump
+              if (isAnimatingRef.current) {
+                pendingGameStateRef.current = newGs;
+              } else {
+                setGameState(newGs);
+              }
+            }
+          }
+        } else {
+          console.error('[MiniGolf bot] API error', r.status);
         }
-      } catch (err) { console.error("[MiniGolf bot]", err); }
-      finally {
+      } catch (err) {
+        console.error("[MiniGolf bot]", err);
+      } finally {
+        botTurnInProgressRef.current = false;
+        gamePhaseRef.current = "CHECK_HOLE_COMPLETE";
         botTimersRef.current.delete(timer);
       }
-    }, 1000);
+    }, 900);
     trackTimer(timer);
     return () => {
       clearTimeout(timer);
       botTimersRef.current.delete(timer);
+      botTurnInProgressRef.current = false;
     };
-  }, [match.isBotMatch, match.isPractice, match.status, match.id, gameState.currentTurn, gameState.isMatchComplete, gameState.player2.strokes, gameState.player2.holeComplete, holeSummary, trackTimer]);
+  // NOTE: gameState.player2.strokes intentionally NOT in deps.
+  // Adding it causes the effect to re-fire every time bot scores, creating a scoring loop.
+  // Effect should only re-fire when the TURN changes or hole advances.
+  }, [match.isBotMatch, match.isPractice, match.status, match.id, gameState.currentTurn, gameState.currentHole, gameState.isMatchComplete, gameState.player2.holeComplete, holeSummary, trackTimer, isAnimating]);
 
   // ── Clear bot status when it's no longer bot's turn ───────────────────────
   useEffect(() => {
@@ -310,6 +345,12 @@ export default function MiniGolfGame({ match, currentUserId }: MiniGolfGameProps
     if (prev === 0) {
       prevHoleRef.current = cur;
       return;
+    }
+    if (cur !== prev) {
+      // New hole: clear per-hole dedup set so valid shots are not blocked
+      processedShotIdsRef.current.clear();
+      lastResetReasonRef.current = 'NEW_HOLE_START';
+      console.log('[MiniGolf] NEXT_HOLE_LOADING hole=' + cur);
     }
     if (cur !== prev && !gameState.isMatchComplete) {
       const recorded = gameState.perHoleStrokes[prev];
@@ -430,14 +471,28 @@ export default function MiniGolfGame({ match, currentUserId }: MiniGolfGameProps
         }
 
         if (animIndexRef.current >= animStepsRef.current.length - 1) {
-          isAnimatingRef.current = false;
-          setIsAnimating(false);
-          const final  = animStepsRef.current[animStepsRef.current.length - 1];
-          const hadWater = animHadWaterRef.current;
-          animOnCompleteRef.current?.(final, hadWater);
-          animOnCompleteRef.current = null;
-          if (final.isInHole) setShowHoleIn(true);
+        isAnimatingRef.current = false;
+        setIsAnimating(false);
+        const final = animStepsRef.current[animStepsRef.current.length - 1];
+        const hadWater = animHadWaterRef.current;
+        console.log('[MiniGolf] ANIM_COMPLETE isInHole=' + final.isInHole + ' hadWater=' + hadWater + ' phase=' + gamePhaseRef.current);
+        animOnCompleteRef.current?.(final, hadWater);
+        animOnCompleteRef.current = null;
+        if (final.isInHole) {
+          setShowHoleIn(true);
+          gamePhaseRef.current = "BALL_HOLED";
+          console.log('[MiniGolf] BALL_HOLED - tee reset now blocked this hole');
         }
+        // Flush buffered server state AFTER animation completes
+        if (pendingGameStateRef.current) {
+          const pending = pendingGameStateRef.current;
+          pendingGameStateRef.current = null;
+          setGameState(pending);
+        }
+        if (gamePhaseRef.current !== "BALL_HOLED") {
+          gamePhaseRef.current = "AWAITING_HUMAN_SHOT";
+        }
+      }
       }
 
       drawFrame(ctx);
@@ -460,11 +515,10 @@ export default function MiniGolfGame({ match, currentUserId }: MiniGolfGameProps
     const frame   = frameRef.current;
 
     // Display ball: use animated position if animating, else real position
-    const displayBall = isAnimatingRef.current && animBallRef.current
-      ? animBallRef.current
-      : gameState[playerKey].ball;
-
-    // ── Background ──────────────────────────────────────────────────────────
+    // Only use animated ball for this player's own shot animation
+  const isMyAnimation = isAnimatingRef.current && animBallRef.current;
+  const displayBall = isMyAnimation ? animBallRef.current! : gameState[playerKey].ball;
+  // ── Background ──────────────────────────────────────────────────────────
     ctx.fillStyle = T.bg;
     ctx.fillRect(0, 0, W, H);
 
@@ -483,85 +537,39 @@ export default function MiniGolfGame({ match, currentUserId }: MiniGolfGameProps
     ctx.fillRect(0, 0, W, H);
 
     // ── Grass texture ───────────────────────────────────────────────────────
-    if (T.name === "classic") {
-      // Diagonal grass blade stripes
+    if (T.name === "classic" || T.name === "beach") {
+      // Checkerboard tile grid — reference image arcade style
+      const TILE = 40;
       ctx.save();
-      ctx.strokeStyle = T.grassLine;
-      ctx.lineWidth = 1;
-      ctx.globalAlpha = T.grassLineAlpha;
-      for (let i = -H; i < W + H; i += 18) {
-        ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i + H, H); ctx.stroke();
-      }
-      // Cross stripes for mown look
-      ctx.globalAlpha = T.grassLineAlpha * 0.5;
-      for (let i = -H; i < W + H; i += 36) {
-        ctx.beginPath(); ctx.moveTo(i, H); ctx.lineTo(i + H, 0); ctx.stroke();
-      }
-      ctx.restore();
-
-      // Darker fairway path (center strip)
-      const fairwayGrad = ctx.createLinearGradient(0, 0, W, 0);
-      fairwayGrad.addColorStop(0, "transparent");
-      fairwayGrad.addColorStop(0.3, "rgba(0,30,0,0.08)");
-      fairwayGrad.addColorStop(0.7, "rgba(0,30,0,0.08)");
-      fairwayGrad.addColorStop(1, "transparent");
-      ctx.fillStyle = fairwayGrad;
-      ctx.fillRect(0, 0, W, H);
-
-    } else if (T.name === "beach") {
-      // Sand stipple dots
-      ctx.save();
-      ctx.globalAlpha = 0.1;
-      for (let sx = 0; sx < W; sx += 8) {
-        for (let sy = 0; sy < H; sy += 8) {
-          const jx = ((sx * 7 + sy * 3) % 5) - 2;
-          const jy = ((sy * 11 + sx * 5) % 5) - 2;
-          ctx.fillStyle = T.grassLine;
-          ctx.fillRect(sx + jx, sy + jy, 1.5, 1.5);
+      for (let tx = 0; tx < W; tx += TILE) {
+        for (let ty = 0; ty < H; ty += TILE) {
+          const isEven = (((tx / TILE) + (ty / TILE)) % 2 === 0);
+          ctx.fillStyle = isEven ? T.grassPrimary : T.grassSecondary;
+          ctx.fillRect(tx, ty, TILE, TILE);
         }
       }
       ctx.restore();
-
     } else if (T.name === "space") {
       // Star field
       ctx.save();
-      ctx.globalAlpha = 0.5;
       for (let s = 0; s < 60; s++) {
-        const sx = ((s * 173 + 42) % W);
-        const sy = ((s * 97 + 17) % H);
+        const sx = ((s * 173 + 42) % W); const sy = ((s * 97 + 17) % H);
         const brightness = 0.3 + ((s * 37) % 7) / 10;
-        ctx.globalAlpha = brightness;
-        ctx.fillStyle = "#ffffff";
-        ctx.fillRect(sx, sy, 1, 1);
+        ctx.globalAlpha = brightness; ctx.fillStyle = "#ffffff"; ctx.fillRect(sx, sy, 1, 1);
       }
       ctx.restore();
-      // Purple grid lines
       ctx.save();
-      ctx.strokeStyle = T.grassLine;
-      ctx.lineWidth = 1;
-      ctx.globalAlpha = T.grassLineAlpha;
-      for (let i = 0; i < W; i += 40) {
-        ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, H); ctx.stroke();
-      }
-      for (let j = 0; j < H; j += 40) {
-        ctx.beginPath(); ctx.moveTo(0, j); ctx.lineTo(W, j); ctx.stroke();
-      }
+      ctx.strokeStyle = T.grassLine; ctx.lineWidth = 1; ctx.globalAlpha = T.grassLineAlpha;
+      for (let i = 0; i < W; i += 40) { ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, H); ctx.stroke(); }
+      for (let j = 0; j < H; j += 40) { ctx.beginPath(); ctx.moveTo(0, j); ctx.lineTo(W, j); ctx.stroke(); }
       ctx.restore();
-
     } else {
       // Neon: subtle crosshatch
-      ctx.strokeStyle = T.grassLine;
-      ctx.lineWidth = 1;
-      ctx.globalAlpha = T.grassLineAlpha;
-      for (let i = 0; i < W; i += 30) {
-        ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, H); ctx.stroke();
-      }
-      for (let j = 0; j < H; j += 30) {
-        ctx.beginPath(); ctx.moveTo(0, j); ctx.lineTo(W, j); ctx.stroke();
-      }
+      ctx.strokeStyle = T.grassLine; ctx.lineWidth = 1; ctx.globalAlpha = T.grassLineAlpha;
+      for (let i = 0; i < W; i += 30) { ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, H); ctx.stroke(); }
+      for (let j = 0; j < H; j += 30) { ctx.beginPath(); ctx.moveTo(0, j); ctx.lineTo(W, j); ctx.stroke(); }
       ctx.globalAlpha = 1;
     }
-
     // Reset alpha
     ctx.globalAlpha = 1;
 
@@ -650,85 +658,89 @@ export default function MiniGolfGame({ match, currentUserId }: MiniGolfGameProps
     ctx.save();
 
     if (obs.type === "wall") {
-      // Wall slab fill
-      const wallVec = { x: obs.x2 - obs.x1, y: obs.y2 - obs.y1 };
-      const len     = Math.hypot(wallVec.x, wallVec.y);
-      const norm    = { x: -wallVec.y / len * 6, y: wallVec.x / len * 6 };
-      ctx.beginPath();
-      ctx.moveTo(obs.x1 + norm.x, obs.y1 + norm.y);
-      ctx.lineTo(obs.x2 + norm.x, obs.y2 + norm.y);
-      ctx.lineTo(obs.x2 - norm.x, obs.y2 - norm.y);
-      ctx.lineTo(obs.x1 - norm.x, obs.y1 - norm.y);
-      ctx.closePath();
-      ctx.fillStyle = T.wallFill;
-      ctx.fill();
-
-      // Edge line with theme glow
-      const glowAmount = (T.name === "neon" || T.name === "space") ? 12 : 4;
-      ctx.shadowColor = T.wallGlow;
-      ctx.shadowBlur  = glowAmount;
-      ctx.strokeStyle = T.wallLine;
-      ctx.lineWidth   = T.name === "classic" || T.name === "beach" ? 4 : 3;
-      ctx.lineCap     = "round";
-      ctx.beginPath();
-      ctx.moveTo(obs.x1, obs.y1);
-      ctx.lineTo(obs.x2, obs.y2);
-      ctx.stroke();
-
-      // Classic theme: wood grain texture (short cross-hatch on the slab)
-      if (T.name === "classic") {
-        ctx.shadowBlur = 0;
-        ctx.strokeStyle = "rgba(0,0,0,0.15)";
-        ctx.lineWidth = 0.7;
-        const segCount = Math.floor(len / 12);
-        for (let s = 1; s < segCount; s++) {
-          const t = s / segCount;
-          const mx = obs.x1 + wallVec.x * t;
-          const my = obs.y1 + wallVec.y * t;
-          ctx.beginPath();
-          ctx.moveTo(mx + norm.x * 0.8, my + norm.y * 0.8);
-          ctx.lineTo(mx - norm.x * 0.8, my - norm.y * 0.8);
-          ctx.stroke();
-        }
-      }
+    const wallVec = { x: obs.x2 - obs.x1, y: obs.y2 - obs.y1 };
+    const len = Math.hypot(wallVec.x, wallVec.y);
+    if (len < 1) { ctx.restore(); return; }
+    const nx = -wallVec.y / len;
+    const ny = wallVec.x / len;
+    // Wall half-thickness — chunky white rail like reference image
+    const ht = (T.name === "classic" || T.name === "beach") ? 9 : 6;
+    // Drop shadow
+    ctx.shadowColor = "rgba(0,0,0,0.45)";
+    ctx.shadowBlur = 8;
+    ctx.shadowOffsetX = 3;
+    ctx.shadowOffsetY = 4;
+    // Slab fill
+    ctx.beginPath();
+    ctx.moveTo(obs.x1 + nx * ht, obs.y1 + ny * ht);
+    ctx.lineTo(obs.x2 + nx * ht, obs.y2 + ny * ht);
+    ctx.lineTo(obs.x2 - nx * ht, obs.y2 - ny * ht);
+    ctx.lineTo(obs.x1 - nx * ht, obs.y1 - ny * ht);
+    ctx.closePath();
+    ctx.fillStyle = (T.name === "classic" || T.name === "beach") ? "#f5f5f5" : T.wallFill;
+    ctx.fill();
+    ctx.shadowBlur = 0; ctx.shadowOffsetX = 0; ctx.shadowOffsetY = 0;
+    // Highlight top edge
+    ctx.beginPath();
+    ctx.moveTo(obs.x1 + nx * ht, obs.y1 + ny * ht);
+    ctx.lineTo(obs.x2 + nx * ht, obs.y2 + ny * ht);
+    ctx.strokeStyle = (T.name === "classic" || T.name === "beach") ? "rgba(255,255,255,0.95)" : T.wallGlow;
+    ctx.lineWidth = (T.name === "neon" || T.name === "space") ? 2 : 3;
+    ctx.lineCap = "round";
+    if (T.name === "neon" || T.name === "space") {
+      ctx.shadowColor = T.wallGlow; ctx.shadowBlur = 10;
     }
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+    // Bottom edge (shadow strip)
+    ctx.beginPath();
+    ctx.moveTo(obs.x1 - nx * ht, obs.y1 - ny * ht);
+    ctx.lineTo(obs.x2 - nx * ht, obs.y2 - ny * ht);
+    ctx.strokeStyle = (T.name === "classic" || T.name === "beach") ? "rgba(0,0,0,0.20)" : "rgba(0,0,0,0.5)";
+    ctx.lineWidth = 2; ctx.stroke();
+    // Rounded caps
+    ctx.fillStyle = (T.name === "classic" || T.name === "beach") ? "#f5f5f5" : T.wallFill;
+    [{ x: obs.x1, y: obs.y1 }, { x: obs.x2, y: obs.y2 }].forEach(pt => {
+      ctx.beginPath(); ctx.arc(pt.x, pt.y, ht, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(pt.x, pt.y, ht, 0, Math.PI * 2);
+      ctx.strokeStyle = (T.name === "classic" || T.name === "beach") ? "rgba(255,255,255,0.9)" : T.wallGlow;
+      ctx.lineWidth = 2; ctx.stroke();
+    });
+  }
 
     if (obs.type === "water") {
-      // Animated water fill
-      const waterGrad = ctx.createLinearGradient(obs.x, obs.y, obs.x, obs.y + obs.height);
-      waterGrad.addColorStop(0, T.waterRip);
-      waterGrad.addColorStop(1, T.water);
-      ctx.fillStyle = waterGrad;
-      ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
-      // Animated ripple lines
-      const rippleT = (frame * 0.03) % 1;
-      for (let r = 0; r < 4; r++) {
-        const rPct = (r / 4 + rippleT) % 1;
-        const rAlpha = 0.4 * (1 - rPct);
-        ctx.strokeStyle = T.waterRip + Math.round(rAlpha * 255).toString(16).padStart(2, "0");
-        ctx.lineWidth   = 1.5;
-        ctx.beginPath();
-        // Wave using sine
-        for (let wx = obs.x; wx <= obs.x + obs.width; wx += 4) {
-          const wy = obs.y + obs.height * rPct + Math.sin((wx - obs.x) * 0.15 + frame * 0.06) * 2;
-          if (wx === obs.x) ctx.moveTo(wx, wy); else ctx.lineTo(wx, wy);
-        }
-        ctx.stroke();
+    // Bright blue water fill — reference image style
+    ctx.save();
+    // Base blue fill
+    ctx.fillStyle = T.water;
+    ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
+    // Lighter animated shimmer
+    const shimmer = ctx.createLinearGradient(obs.x, obs.y, obs.x + obs.width, obs.y + obs.height);
+    shimmer.addColorStop(0, "rgba(255,255,255,0.15)");
+    shimmer.addColorStop(0.5, "rgba(255,255,255,0.05)");
+    shimmer.addColorStop(1, "rgba(255,255,255,0.15)");
+    ctx.fillStyle = shimmer;
+    ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
+    // Animated ripple lines
+    const rippleT = (frame * 0.025) % 1;
+    for (let r = 0; r < 3; r++) {
+      const rPct = (r / 3 + rippleT) % 1;
+      const rAlpha = 0.45 * (1 - rPct);
+      ctx.strokeStyle = `rgba(255,255,255,${rAlpha.toFixed(2)})`;
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      for (let wx = obs.x + 4; wx <= obs.x + obs.width - 4; wx += 4) {
+        const wy = obs.y + obs.height * rPct + Math.sin((wx - obs.x) * 0.12 + frame * 0.05) * 2.5;
+        if (wx === obs.x + 4) ctx.moveTo(wx, wy); else ctx.lineTo(wx, wy);
       }
-      // Water border glow
-      ctx.shadowColor = T.waterGlow;
-      ctx.shadowBlur  = 10;
-      ctx.strokeStyle = T.waterRip;
-      ctx.lineWidth   = 2;
-      ctx.strokeRect(obs.x, obs.y, obs.width, obs.height);
-      // Water label
-      ctx.shadowBlur = 0;
-      ctx.font        = "bold 10px sans-serif";
-      ctx.fillStyle   = "rgba(255,255,255,0.6)";
-      ctx.textAlign   = "center";
-      ctx.textBaseline = "middle";
-      ctx.fillText("WATER", obs.x + obs.width / 2, obs.y + obs.height / 2);
+      ctx.stroke();
     }
+    // Water border
+    ctx.strokeStyle = T.waterRip;
+    ctx.lineWidth = 3;
+    ctx.strokeRect(obs.x, obs.y, obs.width, obs.height);
+    ctx.restore();
+  }
 
     if (obs.type === "sand") {
       // Themed sand bunker
@@ -849,68 +861,36 @@ export default function MiniGolfGame({ match, currentUserId }: MiniGolfGameProps
   }
 
   function drawBall(ctx: CanvasRenderingContext2D, ball: Ball, T: Theme) {
-    const { x, y } = ball.position;
-    const r = 7;
-    const speed = magnitude(ball.velocity ?? { x: 0, y: 0 });
-
-    ctx.save();
-
-    // Drop shadow
-    ctx.shadowColor = C.ballShad;
-    ctx.shadowBlur  = 10;
-    ctx.shadowOffsetY = 3;
-
-    // Motion glow when fast — tinted to theme
-    if (speed > 10) {
-      const glow = Math.min(speed / 80, 1);
-      ctx.shadowColor = T.wallGlow + Math.round(glow * 0.7 * 255).toString(16).padStart(2, "0");
-      ctx.shadowBlur  = 22 * glow;
-    }
-
-    // Ball gradient (high quality with 4 stops)
-    const ballGrad = ctx.createRadialGradient(x - r * 0.3, y - r * 0.35, r * 0.05, x, y, r);
-    ballGrad.addColorStop(0, "#ffffff");
-    ballGrad.addColorStop(0.4, "#eeeeee");
-    ballGrad.addColorStop(0.75, "#cccccc");
-    ballGrad.addColorStop(1, "#999999");
-    ctx.fillStyle = ballGrad;
-    ctx.beginPath();
-    ctx.arc(x, y, r, 0, Math.PI * 2);
-    ctx.fill();
-
-    // Outer edge (thin dark ring for depth)
-    ctx.shadowBlur = 0;
-    ctx.strokeStyle = "rgba(0,0,0,0.3)";
-    ctx.lineWidth   = 0.5;
-    ctx.stroke();
-
-    // Gloss highlight (primary)
-    ctx.fillStyle   = "rgba(255,255,255,0.78)";
-    ctx.beginPath();
-    ctx.arc(x - r * 0.28, y - r * 0.32, r * 0.33, 0, Math.PI * 2);
-    ctx.fill();
-
-    // Secondary micro-gloss
-    ctx.fillStyle = "rgba(255,255,255,0.3)";
-    ctx.beginPath();
-    ctx.arc(x + r * 0.15, y + r * 0.2, r * 0.12, 0, Math.PI * 2);
-    ctx.fill();
-
-    // Dimple pattern (rotates with ball)
-    const rot = ball.rotation ?? 0;
-    ctx.strokeStyle = "rgba(130,130,130,0.35)";
-    ctx.lineWidth   = 0.7;
-    ctx.beginPath();
-    ctx.arc(x, y, r * 0.72, rot, rot + Math.PI);
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.arc(x, y, r * 0.72, rot + Math.PI * 0.6, rot + Math.PI * 1.6);
-    ctx.stroke();
-
-    ctx.restore();
+  const { x, y } = ball.position;
+  const r = 7;
+  const rot = ball.rotation ?? 0;
+  ctx.save();
+  // Drop shadow
+  ctx.shadowColor = "rgba(0,0,0,0.5)";
+  ctx.shadowBlur = 6; ctx.shadowOffsetX = 2; ctx.shadowOffsetY = 3;
+  // Ball body
+  const ballGrad = ctx.createRadialGradient(x - r * 0.3, y - r * 0.3, r * 0.1, x, y, r);
+  if (T.name === "classic" || T.name === "beach") {
+    ballGrad.addColorStop(0, "#ffffff"); ballGrad.addColorStop(0.7, "#eeeeee"); ballGrad.addColorStop(1, "#cccccc");
+  } else {
+    ballGrad.addColorStop(0, T.wallLine); ballGrad.addColorStop(1, T.wallFill);
   }
-
-  function drawAimLine(
+  ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2);
+  ctx.fillStyle = ballGrad; ctx.fill();
+  ctx.shadowBlur = 0; ctx.shadowOffsetX = 0; ctx.shadowOffsetY = 0;
+  // Outline
+  ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2);
+  ctx.strokeStyle = (T.name === "neon" || T.name === "space") ? T.wallGlow : "rgba(0,0,0,0.22)";
+  ctx.lineWidth = 1.5; ctx.stroke();
+  // Spin stripe
+  ctx.save(); ctx.translate(x, y); ctx.rotate(rot);
+  ctx.beginPath(); ctx.arc(0, 0, r * 0.55, 0, Math.PI);
+  ctx.strokeStyle = (T.name === "neon" || T.name === "space") ? T.aimLine : "rgba(0,0,0,0.15)";
+  ctx.lineWidth = 1.5; ctx.stroke();
+  ctx.restore();
+  ctx.restore();
+}
+function drawAimLine(
     ctx: CanvasRenderingContext2D,
     ballPos: { x: number; y: number },
     angle: number,
@@ -953,9 +933,9 @@ export default function MiniGolfGame({ match, currentUserId }: MiniGolfGameProps
     ctx.closePath();
     ctx.fill();
 
-    // Trajectory preview dots — scaled to match new shot power (shotSpeed = 2 + power * 4)
+    // Trajectory preview dots — shot speed 1.5 + (power/100) * 5.5 = 1.5-7.0 px/step
     const DOT_COUNT = 8;
-    const velScale  = (2 + power * 4.0) * 0.016;
+        const velScale = powerToSpeed(power / 100) * 0.016;
     let px = ballPos.x, py = ballPos.y;
     let vx = Math.cos(angle) * velScale, vy = Math.sin(angle) * velScale;
     for (let d = 0; d < DOT_COUNT; d++) {
@@ -1175,12 +1155,20 @@ export default function MiniGolfGame({ match, currentUserId }: MiniGolfGameProps
     }
     if (isAnimatingRef.current) return;
     if (powerRef.current < 1) return;
+    const shotId = `${match.id}-h${gameState.currentHole}-${playerKey}-s${gameState[playerKey].strokes + 1}`;
+    if (processedShotIdsRef.current.has(shotId)) {
+      console.warn('[MiniGolf] BLOCKED_DUPLICATE_SHOT', shotId);
+      return;
+    }
+    processedShotIdsRef.current.add(shotId);
+    console.log('[MiniGolf] SHOT_CREATED', shotId);
+    gamePhaseRef.current = "HUMAN_SHOT_IN_PROGRESS";
 
     const currentAngle = angleRef.current;
     const currentPower = powerRef.current;
-    // Scale power: 0% = gentle 2px/step, 100% = strong 402px/s (travels ~370px on fairway)
-    // Old scale (×1) felt like a dead tap; this ×4 multiplier matches proper mini golf feel
-    const shotSpeed = 2 + currentPower * 4.0;
+  // powerToSpeed: curve-mapped (exponent 1.35), matches engine ROLL_DECEL.
+  // Max 9.25px/step on full power. Min 0.95px/step on tap.
+  const shotSpeed = powerToSpeed(Math.min(Math.max(currentPower, 0), 100) / 100);
     const velocity = {
       x: Math.cos(currentAngle) * shotSpeed,
       y: Math.sin(currentAngle) * shotSpeed,

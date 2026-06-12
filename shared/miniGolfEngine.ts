@@ -90,18 +90,36 @@ export interface MiniGolfGameState {
   matchSeed?: string; // Match ID used for procedural hole generation
 }
 
-// ─── Physics constants ─────────────────────────────────────────────────────
-const FRICTION = 0.982;
-const BOUNCE_DAMPING = 0.72;
-const MIN_VELOCITY = 0.015;
-const PHYSICS_TIMESTEP = 1 / 60;
-const MAX_SIMULATION_STEPS = 720; // 12 seconds max
-const SAND_FRICTION = 0.91;
+// ─── Physics constants ────────────────────────────────────────────
+// Velocity in px/physics-step. physicsStep called once per sim step.
+//
+// FRICTION MODEL: constant linear decel per step (adapted from SodiumFRP/mini-golf:
+//   Signal(t0, a=-70, v0, 0) => pos = -70t^2 + v0*t => constant decel = 140 px/s^2).
+//   We subtract ROLL_DECEL from speed each step. Stops infinite low-speed crawl.
+//   Ball travels v^2/(2*ROLL_DECEL) px total. At 9.25px/step => ~503px on course.
+const ROLL_DECEL = 0.06;   // px/step fairway decel (replaces FRICTION=0.988)
+const SAND_DECEL = 0.22;    // px/step sand decel (replaces SAND_FRICTION=0.92)
+const BOUNCE_DAMPING = 0.74; // wall restitution (spec 0.74, was 0.68)
+const WALL_TANGENT_FRICTION = 0.06; // tangent friction on wall slides
+const MIN_VELOCITY = 0.045;  // magnitude stop threshold px/step (spec 0.045)
+const PHYSICS_TIMESTEP = 1;  // position += velocity each step
+const MAX_SIMULATION_STEPS = 800; // ~13 sec at 60 steps/sec
 
 // ─── Gameplay constants ────────────────────────────────────────────────────
 // Hard cap on strokes per hole. If a player can't sink the ball in this many
 // strokes, the hole is considered finished for them (prevents infinite bot loops).
 export const MAX_STROKES_PER_HOLE = 8;
+
+// ─── Shot power curve ────────────────────────────────────────────
+// Maps power 0..1 to ball speed px/step. Power-curve exponent 1.35 means
+// gentle taps still get decent movement; max shot 9.25px/step => ~503px travel.
+export function powerToSpeed(power01: number): number {
+  const MIN_SPEED = 1.0;
+  const MAX_SPEED = 9.5;
+  const CURVE    = 1.0;
+  const p = Math.max(0, Math.min(1, power01));
+  return MIN_SPEED + (MAX_SPEED - MIN_SPEED) * Math.pow(p, CURVE);
+}
 
 // ─── Vector utilities ──────────────────────────────────────────────────────
 export function addVectors(v1: Vector2, v2: Vector2): Vector2 {
@@ -188,25 +206,40 @@ export function checkObstacleCollision(
 
     if (dist < ballRadius + 2) {
       const wallVec = { x: obstacle.x2 - obstacle.x1, y: obstacle.y2 - obstacle.y1 };
-      const wallNorm = normalize({ x: -wallVec.y, y: wallVec.x });
-      const dot = dotProduct(ball.velocity, wallNorm);
-      const reflection = {
-        x: ball.velocity.x - 2 * dot * wallNorm.x,
-        y: ball.velocity.y - 2 * dot * wallNorm.y,
-      };
-      const pushDir = normalize({ x: ball.position.x - closest.x, y: ball.position.y - closest.y });
-      const newPosition = {
-        x: closest.x + pushDir.x * (ballRadius + 2),
-        y: closest.y + pushDir.y * (ballRadius + 2),
-      };
-      return { collided: true, newVelocity: scaleVector(reflection, BOUNCE_DAMPING), newPosition };
+        const wallNorm = normalize({ x: -wallVec.y, y: wallVec.x });
+        const speedBefore = magnitude(ball.velocity);
+        // Decompose velocity into normal + tangent components
+        const vDotN = dotProduct(ball.velocity, wallNorm);
+        const vN = { x: vDotN * wallNorm.x, y: vDotN * wallNorm.y };
+        const vT = { x: ball.velocity.x - vN.x, y: ball.velocity.y - vN.y };
+        // Reflect normal (restitution), damp tangent (prevents sticking/scraping)
+        const newVN = { x: -vN.x * BOUNCE_DAMPING, y: -vN.y * BOUNCE_DAMPING };
+        const tangentScale = Math.max(0, 1 - WALL_TANGENT_FRICTION);
+        const newVT = { x: vT.x * tangentScale, y: vT.y * tangentScale };
+        let newVelocity = { x: newVN.x + newVT.x, y: newVN.y + newVT.y };
+        // Energy clamp: speed after bounce must never exceed pre-impact speed
+        const speedAfter = magnitude(newVelocity);
+        if (speedAfter > speedBefore) {
+          newVelocity = scaleVector(normalize(newVelocity), speedBefore);
+        }
+        // Kill near-zero velocity to prevent jitter against walls
+        if (magnitude(newVelocity) < MIN_VELOCITY * 0.5) {
+          newVelocity = { x: 0, y: 0 };
+        }
+        const pushDir = normalize({ x: ball.position.x - closest.x, y: ball.position.y - closest.y });
+        const newPosition = {
+          x: closest.x + pushDir.x * (ballRadius + 3),
+          y: closest.y + pushDir.y * (ballRadius + 3),
+        };
+        return { collided: true, newVelocity, newPosition };
     }
   }
 
   if (obstacle.type === "sand") {
     const dist = distance(ball.position, { x: obstacle.x, y: obstacle.y });
     if (dist < obstacle.radius) {
-      return { collided: true, newVelocity: scaleVector(ball.velocity, SAND_FRICTION) };
+      // Sand drag now handled continuously by SAND_DECEL in physicsStep
+      return { collided: true }; // flag in-sand; decel applied per step above
     }
   }
 
@@ -240,15 +273,29 @@ function physicsStep(ball: Ball, hole: HoleDefinition): { ball: Ball; waterPenal
   let currentBall = { ...ball };
   let waterPenalty = false;
 
-  // Friction — check sand first
-  let currentFriction = FRICTION;
-  for (const obs of hole.obstacles) {
-    if (obs.type === "sand") {
-      const dist = distance(currentBall.position, { x: obs.x, y: obs.y });
-      if (dist < obs.radius) { currentFriction = SAND_FRICTION; break; }
+  // Constant linear decel (SodiumFRP-style): subtract fixed amount per step.
+  // Eliminates multiplicative friction's infinite low-speed crawl.
+  {
+    const spd = magnitude(currentBall.velocity);
+    if (spd > 0) {
+      let isInSand = false;
+      for (const obs of hole.obstacles) {
+        if (obs.type === "sand") {
+          if (distance(currentBall.position, { x: obs.x, y: obs.y }) < obs.radius) {
+            isInSand = true; break;
+          }
+        }
+      }
+      const decel = isInSand ? SAND_DECEL : ROLL_DECEL;
+      const newSpd = Math.max(0, spd - decel);
+      if (newSpd === 0) {
+        currentBall.velocity = { x: 0, y: 0 };
+      } else {
+        const sc = newSpd / spd;
+        currentBall.velocity = { x: currentBall.velocity.x * sc, y: currentBall.velocity.y * sc };
+      }
     }
   }
-  currentBall.velocity = scaleVector(currentBall.velocity, currentFriction);
 
   // Stop check
   if (magnitude(currentBall.velocity) < MIN_VELOCITY) {
@@ -305,15 +352,54 @@ export function simulateShot(
 
   while (steps < MAX_SIMULATION_STEPS) {
     steps++;
+    const prevPosition = { ...currentBall.position };
     const result = physicsStep(currentBall, hole);
     currentBall = result.ball;
     if (result.waterPenalty) { waterPenalty = true; }
 
+    // Anti-tunneling: resolve obstacle collisions along the path travelled.
+    const frameDist = distance(prevPosition, currentBall.position);
+    const subSteps = Math.min(8, Math.max(1, Math.ceil(frameDist / 4)));
+    for (let s = 1; s <= subSteps; s++) {
+      const t = s / subSteps;
+      const samplePos = {
+        x: prevPosition.x + (currentBall.position.x - prevPosition.x) * t,
+        y: prevPosition.y + (currentBall.position.y - prevPosition.y) * t,
+      };
+      let collidedThisSub = false;
+      for (const obs of hole.obstacles) {
+        const probe: Ball = { ...currentBall, position: samplePos };
+        const col = checkObstacleCollision(probe, obs, hole);
+        if (col.collided) {
+          if (col.newPosition) currentBall.position = col.newPosition;
+          if (col.newVelocity) currentBall.velocity = col.newVelocity;
+          if (col.penalty === "water") waterPenalty = true;
+          collidedThisSub = true;
+          break;
+        }
+      }
+      if (collidedThisSub) break;
+    }
+
     if (!currentBall.isMoving) break;
 
-    // In cup check
+    // Cup gravity for slow near-cup rolls.
     const distToCup = distance(currentBall.position, hole.cupPosition);
-    if (distToCup < hole.cupRadius + 6 && magnitude(currentBall.velocity) < 12) {
+    const speed = magnitude(currentBall.velocity);
+    if (distToCup < hole.cupRadius * 5 && speed < 6) {
+      const pull = normalize({
+        x: hole.cupPosition.x - currentBall.position.x,
+        y: hole.cupPosition.y - currentBall.position.y,
+      });
+      const strength = (1 - distToCup / (hole.cupRadius * 5)) * 0.7;
+      currentBall.velocity = {
+        x: currentBall.velocity.x + pull.x * strength,
+        y: currentBall.velocity.y + pull.y * strength,
+      };
+    }
+
+    // Speed-gated sink with a tightened radius (fast shots lip out).
+    if (distToCup < hole.cupRadius && magnitude(currentBall.velocity) < 6) {
       currentBall.isInHole = true;
       currentBall.isMoving = false;
       currentBall.velocity = { x: 0, y: 0 };
@@ -339,9 +425,53 @@ export function simulateShotSteps(
 
   while (stepCount < MAX_SIMULATION_STEPS) {
     stepCount++;
+    const prevPosition = { ...currentBall.position };
     const result = physicsStep(currentBall, hole);
     currentBall = result.ball;
     if (result.waterPenalty) waterPenalty = true;
+
+    // Anti-tunneling: sub-sample the path travelled this frame and resolve
+    // obstacle collisions at each sub-point so fast shots can't pass through
+    // thin walls. Number of sub-steps scales with distance travelled.
+    const frameDist = distance(prevPosition, currentBall.position);
+    const subSteps = Math.min(8, Math.max(1, Math.ceil(frameDist / 4)));
+    for (let s = 1; s <= subSteps; s++) {
+      const t = s / subSteps;
+      const samplePos = {
+        x: prevPosition.x + (currentBall.position.x - prevPosition.x) * t,
+        y: prevPosition.y + (currentBall.position.y - prevPosition.y) * t,
+      };
+      let collidedThisSub = false;
+      for (const obs of hole.obstacles) {
+        const probe: Ball = { ...currentBall, position: samplePos };
+        const col = checkObstacleCollision(probe, obs, hole);
+        if (col.collided) {
+          if (col.newPosition) currentBall.position = col.newPosition;
+          if (col.newVelocity) currentBall.velocity = col.newVelocity;
+          if (col.penalty === "water") waterPenalty = true;
+          collidedThisSub = true;
+          break;
+        }
+      }
+      if (collidedThisSub) break;
+    }
+
+    // Cup gravity: when the ball is near the cup and rolling slowly, gently
+    // pull it toward the centre so good shots fall in satisfyingly. The pull
+    // is small so it never feels fake and fast shots still lip out.
+    const distToCup = distance(currentBall.position, hole.cupPosition);
+    const speed = magnitude(currentBall.velocity);
+    if (distToCup < hole.cupRadius * 5 && speed < 6) {
+      const pull = normalize({
+        x: hole.cupPosition.x - currentBall.position.x,
+        y: hole.cupPosition.y - currentBall.position.y,
+      });
+      const strength = (1 - distToCup / (hole.cupRadius * 5)) * 0.7;
+      currentBall.velocity = {
+        x: currentBall.velocity.x + pull.x * strength,
+        y: currentBall.velocity.y + pull.y * strength,
+      };
+    }
 
     if (stepCount % recordEvery === 0) {
       steps.push({ ...currentBall });
@@ -352,9 +482,9 @@ export function simulateShotSteps(
       break;
     }
 
-    // Cup check
-    const distToCup = distance(currentBall.position, hole.cupPosition);
-    if (distToCup < hole.cupRadius + 6 && magnitude(currentBall.velocity) < 12) {
+    // Sink check: ball must be over the cup AND slow enough, otherwise it
+    // rolls over / lips out. Sink radius is tighter than the visual cup.
+    if (distToCup < hole.cupRadius && magnitude(currentBall.velocity) < 6) {
       currentBall.isInHole = true;
       currentBall.isMoving = false;
       currentBall.velocity = { x: 0, y: 0 };
