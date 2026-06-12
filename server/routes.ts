@@ -2285,7 +2285,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const holePos = holeDef ? holeDef.cupPosition : { x: 380, y: 60 };
         const difficulty = (match.botDifficulty || "medium") as "easy" | "medium" | "hard";
         const velocity: Vector2 = generateMiniGolfShot(mgState as any, holePos, difficulty, holeDef);
-        const afterShot = processShot(mgState, botPlayer, velocity);
+        let afterShot = processShot(mgState, botPlayer, velocity);
+        // Safeguard: keep the bot shooting inline while it still holds the turn and
+        // has not finished, so the hole always advances within this single request
+        // even if the client fails to re-trigger /bot-move (prevents the bot stall).
+        let botIter = 0;
+        while (afterShot.currentTurn === botPlayer && !afterShot.player2.holeComplete && afterShot.player2.strokes < MAX_STROKES_PER_HOLE && botIter < 10) {
+          const nextVel: Vector2 = generateMiniGolfShot(afterShot as any, holePos, difficulty, holeDef);
+          afterShot = processShot(afterShot, botPlayer, nextVel);
+          botIter++;
+        }
         const bothComplete = afterShot.player1.holeComplete && afterShot.player2.holeComplete;
         let finalGS: MiniGolfGameState = bothComplete ? advanceToNextHole(afterShot) : afterShot;
         await storage.updateMatchState(matchId, finalGS);
